@@ -3,7 +3,7 @@ exmh version: 2.0.3
 welch@acm.org
  
 exmh is a TCL/TK based interface to the MH mail system,
-which can be found at http://www.math.gatech.edu/nmh/
+which can be found at http://www.mhost.com/nmh/
 Version 2 requires Tk 4.1 or higher - works with Tk 8.0
 
 All the docs have moved into html and are viewable from within
