@@ -6,6 +6,10 @@
 #
 
 # $Log$
+# Revision 1.4  1999/08/24 15:51:07  bmah
+# Patch from Kevin Christian to make email PGP key queries work, and
+# to make key attachment RFC 2015 compliant.
+#
 # Revision 1.3  1999/08/22 18:17:08  bmah
 # Email PGP queries now go out correctly.  Use Exmh_Status to inform
 # user of state of an outgoing email key query.
@@ -128,7 +132,7 @@ set pgp(pgp5,keyGenCmd) "rm -f $pgp(pgp5,pubringBkp) && pgpk -g"
 ## ButtonMenuInner
 set pgp(pgp5,pat_MenuInner) {PGP5}
 ## Version checking and Compatibilty
-set pgp(pgp5,pat_Version) "Version:\[ \t\]*(PGP\[^\n\]*(5|6)\\.|PGPsdk).*"
+set pgp(pgp5,pat_Version) "Version:\[ \t\]*((PGP\[^\n\]*)?(5|6)\\.|PGPsdk).*"
 set pgp(pgp5,list_Alien) {gpg pgp}
 
 ###

@@ -19,6 +19,10 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.12  1999/08/24 15:51:07  bmah
+# Patch from Kevin Christian to make email PGP key queries work, and
+# to make key attachment RFC 2015 compliant.
+#
 # Revision 1.11  1999/08/22 19:21:33  bmah
 # Remove More...->old PGP->Encrypt menu.  Getting this to work will be
 # really hard and there doesn't seem to be a lot of demand for it, given
@@ -988,6 +992,60 @@ proc Pgp_MimeShowMultipartEncryptedPgp {tkw part} {
     MimeShowPart $tkw $part=2=1 [MimeLabel $part part] 1
 }
 
+# Show application/pgp-keys
+proc Pgp_MimeShowPgpKeys {tkw part} {
+    global mimeHdr pgp
+
+    Exmh_Debug "<Pgp_MimeShowPgpKeys> part: $part"
+
+    # decide which version to use / implicitely checks for pgp enabled
+    if { [catch {Pgp_CheckVersion $mimeHdr($part,file) real v} err] } {
+        Exmh_Debug "<PGP MimeShowPgpKeys> $err"
+        Exmh_Status "Unknown PGP message version"
+        Mime_ShowDefault $tkw $part
+	return    
+    }
+
+    # Labels to display: "real" is the Version of the program 
+    # which prepared the pgp text, "local" the version, which
+    # will be used to decode the thing
+    set real [set pgp($real,fullName)]
+    set local [set pgp($v,fullName)]
+
+    if {![info exists mimeHdr($part,pgpdecode)]} {
+	if {([set pgp($v,showinline)] == "all") ||
+	    ([set pgp($v,showinline)] == "keys")} {
+	    set mimeHdr($part,pgpdecode) 1
+	} else { set mimeHdr($part,pgpdecode) 0 }
+    }
+
+    set msg ""
+    if [set pgp($v,autoextract)] {
+	append msg "Automatic extraction of application/pgp-keys\n"
+	Pgp_Exec_ExtractKeys $v $mimeHdr($part,file) out 0
+	append msg $out "\n"
+    } else {
+	TextButton $tkw "Extract $real keys into $local keyring" \
+		"Pgp_Exec_ExtractKeys $v $mimeHdr($part,file) out"
+	$tkw insert insert "\n"
+    }
+
+    # Add a menu anyway to allow re-extracting
+    MimeMenuAdd $part command \
+	    -label "Extract $real keys into $local keyring..." \
+	    -command "Pgp_Exec_ExtractKeys $v $mimeHdr($part,file) out"
+
+    if $mimeHdr($part,pgpdecode) {
+	Pgp_Exec $v key $mimeHdr($part,file) out
+	# NEW
+	regexp [set pgp($v,pat_validKeys)] $out out
+	append msg $out "\n"
+    } 
+
+    Pgp_InterpretOutput $v $msg pgpresult
+    Pgp_DisplayMsg $v $tkw $part pgpresult
+}
+
 # store the signed text in a file
 proc Pgp_GetSignedText {tkw part} {
     global mimeHdr
@@ -1242,7 +1300,7 @@ proc Pgp_InsertKeys { draft t } {
 		return
             }
 	    # insert key file
-	    SeditInsertFile $draft $t $tmpfile 1 7bit {application/pgp; format=keys-only} "keys of [lindex $key 4]"
+	    SeditInsertFile $draft $t $tmpfile 1 7bit {application/pgp-keys} "keys of [lindex $key 4]"
 	    File_Delete $tmpfile
 	}
     }

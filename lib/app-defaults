@@ -498,6 +498,7 @@ exmh.iconic:		0
 	audio/basic audio/x-sunaudio application/x-suncalendar \
 	message/delivery-status message/disposition-notification \
 	application/x-pgp-message \
+	application/pgp-keys \
 	application/fv-infohaus \
 	multipart/signed multipart/encrypted \
 	multipart/report \
@@ -538,6 +539,7 @@ exmh.iconic:		0
 *mime_application/pgp:			Pgp_ShowMessage
 *mime_application/x-pgp-message:	Pgp_ShowMessage
 *mime_text/pgp:				Pgp_ShowMessage
+*mime_application/pgp-keys:	Pgp_MimeShowPgpKeys
 *mime_image:			Mime_ShowImage
 *mime_application/fv-infohaus:	Mime_ShowText
 *mime_application/x-url:	Mime_ShowUri

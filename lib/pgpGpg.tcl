@@ -1,6 +1,10 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.6  1999/08/24 15:51:07  bmah
+# Patch from Kevin Christian to make email PGP key queries work, and
+# to make key attachment RFC 2015 compliant.
+#
 # Revision 1.5  1999/08/13 15:10:06  bmah
 # One more try at fixing the problems with 8-byte GPG keyIDs, with a
 # patch from Kevin.Christian@lsil.com.
@@ -389,7 +393,7 @@ set pgp(gpg,args_importKey) {--import $file}
 
 #########################
 # ShowMessage keypattern
-set pgp(gpg,pat_validKeys) "\n(ssb|pub|sec|sub|uid)\[^\n]*"
+set pgp(gpg,pat_validKeys) "\n?(ssb|pub|sec|sub|uid)\[^\n]*"
 
 ##################
 # InterpretOutput
