@@ -28,7 +28,7 @@ proc HMlink_setup {win htag} {
     $win tag bind $tag <Enter> \
 	    [list HMlink_feedback $win hand2 $href2 $tag c_alink]
     $win tag bind $tag <Leave> \
-	    [list HMlink_feedback $win xterm "" $tag c_link]
+	    [list HMlink_feedback $win [option get $win cursor Text] "" $tag c_link]
 
     # Add to history so it shows up in URL chooser dialog
     global History

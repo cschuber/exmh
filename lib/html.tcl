@@ -195,6 +195,8 @@ proc Html_Stop {win} {
     Head_ResetColors $win	;# reset window
     Head_Reset $win		;# clear memory
     $win configure -tabs {}
+    Exmh_Debug resetting wrapping to [option get $win wrap Text]
+    $win config -wrap [option get $win wrap Text]
 }
 proc HtmlHit {win x y} {
     upvar #0 HM$win var
@@ -217,7 +219,7 @@ proc Html_DisplayInline {win url html} {
     HMset_state $win -update 10		;# Frequent updates during 1st display
     HMparse_html $html [list HMrender $win]
     Feedback $win ready
-    $win config -cursor xterm
+    $win config -cursor [option get $win cursor Text]
 }
 
 proc HtmlOpen {win} {

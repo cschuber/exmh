@@ -144,7 +144,7 @@ proc MsgShowInText { win file } {
 	MimeSetStdMenuItems $win $part
 	Mime_ShowRfc822 $win $part
     }
-    $win config -cursor xterm
+    $win config -cursor [option get $win cursor Text ]
     MimeInsertSeparator $win $part 6
     Widget_TextPad $win $mimeHdr(0=1,yview)
     $win yview $mimeHdr(0=1,yview)

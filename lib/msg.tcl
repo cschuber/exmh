@@ -509,7 +509,8 @@ proc Msg_Clip { {folder {}}  {id {}} } {
     Widget_Frame $self but Menubar {top fill}
     Widget_AddBut $self.but quit "Dismiss" [list destroy $self]
     Widget_Label $self.but label {left fill} -text $folder/$id
-    set t [Widget_Text $self $exwin(mtextLines) -cursor xterm -setgrid true]
+    set cursor [option get $self cursor Text]
+    set t [Widget_Text $self $exwin(mtextLines) -cursor $cursor -setgrid true]
     Msg_Setup $t
     if [MsgShowInText $t $mhProfile(path)/$folder/$id] {
         foreach cmd [info commands Hook_MsgClip*] {

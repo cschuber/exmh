@@ -83,7 +83,7 @@ proc TextButtonLeave {w id} {
     #puts "Leave"
     $w tag configure $id -background $tkPriv(background) \
 			-foreground $tkPriv(foreground)
-    $w configure -cursor xterm
+    $w configure -cursor [option get $w cursor Text ]
     set tkPriv(window) ""
     set tkPriv(id) ""
     set tkPriv(cmd) ""
