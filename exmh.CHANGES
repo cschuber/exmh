@@ -1,5 +1,12 @@
 HISTORY
 
+cvs repository 03/28/2002 cwg-exmh@deepeddy.com
+    lib/app-defaults-color, lib/app-defaults-mono, lib/exwin.tcl,
+    lib/fdispColor.tcl, lib/ftoc.tcl, lib/ftocColor.tcl, lib/help.tcl,
+    lib/mh.tcl, lib/msg.tcl, lib/pgpMain.tcl, lib/scan.tcl,
+    lib/thread.tcl - Generalized unseen handling to display other
+    sequences besides unseen.
+
 cvs repository 01/25/2002 slipcon@mercea.net
     lib/html/ppp.howto.html - fixed postfix instructions, via Kevin
         Oberman again.

@@ -602,7 +602,7 @@ proc Ftoc_ClearCurrent {} {
 
     if {$ftoc(curLine) != {}} {
 	$exwin(ftext) tag remove current $ftoc(curLine).0 $ftoc(curLine).end
-	$exwin(ftext) tag remove currentBg $ftoc(curLine).0 $ftoc(curLine).end
+#	$exwin(ftext) tag remove currentBg $ftoc(curLine).0 $ftoc(curLine).end
 	Ftoc_RescanLine $ftoc(curLine)
     }
     return $ftoc(curLine)
@@ -618,7 +618,6 @@ proc Ftoc_Change { msgid line {show show} } {
 	}
 	Ftoc_RescanLine $ftoc(curLine) +
 	$exwin(ftext) tag add current $ftoc(curLine).0 $ftoc(curLine).end
-	$exwin(ftext) tag add currentBg $ftoc(curLine).0 $ftoc(curLine).end
 	set top [$exwin(ftext) index @0,4]
 	if [catch {expr {$top+1}}] {set top 0}	;# trap 100.-1 format, iconic
 	if {$ftoc(curLine) == $top ||
@@ -631,37 +630,31 @@ proc Ftoc_Change { msgid line {show show} } {
     }
     return $ok
 }
-proc Ftoc_ShowUnseen { folder } {
-    global exwin flist
-    set unseen [Flist_UnseenMsgs $folder]
-    if {[llength $unseen] > 0} {
-	set end [$exwin(ftext) index end]
-	set line [lindex [split $end .] 0]
-	set msgNum 0
-	for {} {$line > 0} {incr line -1} {
-	    set msgNum [Ftoc_MsgNumber $line]
-	    set i [lsearch $unseen $msgNum]
-	    if {$i >= 0} {
-		$exwin(ftext) tag add unseen $line.0 $line.end
-		set unseen [lreplace $unseen $i $i]
-		if {[llength $unseen] == 0} {
-		    return 1
+proc Ftoc_ShowSequences { folder } {
+    global exwin
+    Exmh_Debug "Ftoc_ShowSequences $folder"
+    set knownsequences [option get . sequences {}]
+    foreach sequencename $knownsequences {
+	eval $exwin(ftext) tag configure $sequencename \
+		[option get . sequence_$sequencename {}]
+	$exwin(ftext) tag raise $sequencename
+    }
+    foreach sequencename [Mh_Sequences $folder] {
+	set sequence [Mh_Sequence $folder $sequencename]
+	if {[llength $sequence] > 0} {
+	    Exmh_Debug $sequencename: $sequence
+	    set end [$exwin(ftext) index end]
+	    set line [lindex [split $end .] 0]
+	    set msgNum 0
+	    for {} {$line > 0} {incr line -1} {
+		set msgNum [Ftoc_MsgNumber $line]
+		set i [lsearch $sequence $msgNum]
+		if {$i >= 0} {
+		    $exwin(ftext) tag add $sequencename $line.0 $line.end
+		    set sequence [lreplace $sequence $i $i]
 		}
 	    }
 	}
-	# Repair bogus unseen sequences
-	# msgNum is the smallest message number, but it might not be
-	# the first message in the folder because of short scans
-	# Anything in the unseen sequence above msgNum is probably wrong
-	# and can result from races with the background process
-	foreach id $unseen {
-	    if {$id > $msgNum} {
-		Flist_MsgSeen $id
-	    }
-	}
-    } else {
-	Flist_SeenAll $folder	;# clear highlighting
-	return 0
     }
 }
 proc Ftoc_MarkSeen { ids } {

@@ -451,6 +451,20 @@ proc MhCur { f } {
 	return {}
     }
 }
+proc Mh_Sequences { f } {
+    global mhProfile
+    set result {}
+    if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences) r} in] == 0} {
+	set old [read $in]
+	close $in
+	foreach line [split $old \n] {
+	    if {[regexp "^(.*):" $line x seq]} {
+		lappend result $seq
+	    }
+	}
+    }
+    return $result
+}
 proc Mh_Sequence { f seq } {
     # pick +folder cur changes the context, so we access the files directly
     global mhProfile mhPriv

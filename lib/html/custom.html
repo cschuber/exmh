@@ -839,21 +839,18 @@ are blue in exmh, by default, because of the following in app-defaults:
 <pre><blockquote>*Label.foreground: blue
 </blockquote></pre>
 <p>
-The following resources are used to control the looks in the scan listing
-and folder label display. The fact that some have a trailing Bg or
-Fg is purely historical accident. Originally you could only specify
-the foreground (for current and unseen) or the background (for moved
-and deleted) but now, for the benefit of grayscale users, you can specify
-all of them. You might also look at the fdispColor.tcl and ftocColor.tcl
+The following resources are used to control the looks in the folder
+label display. The fact that some have a trailing Bg or Fg is purely
+historical accident. Originally you could only specify the foreground
+(for current and unseen) or the background (for moved and deleted) but
+now, for the benefit of grayscale users, you can specify all of
+them. You might also look at the fdispColor.tcl and ftocColor.tcl 
 files that use these resources. 
 <dl>
 
   <dt>c_current 
   <dd>The color for the current message and current folder. Default is
       violet red. 
- 
-  <dt>c_currentBg 
-  <dd>The background color for the current message. Default is white.
 
   <dt>c_unseen 
   <dd>The color for unseen messages and folders that contain unseen
@@ -871,10 +868,6 @@ files that use these resources.
   <dt>c_movedFg 
   <dd>The foreground color for messages that are marked for
       refile. The default is normal foreground. 
-
-  <dt>c_deletedFg 
-  <dd>The foreground color for messages marked for delete. Default is
-      normal foreground.  
 
   <dt>c_foreground 
   <dd>The foreground color for labels in the folder display. Default
@@ -909,6 +902,39 @@ files that use these resources.
   <dd>The color used for links in HTML display. The default is blue. 
 
 </dl>
+<p>
+The following resources are used to control how sequences are
+highlighted in the scan listing.  This includes both (n)mh sequences
+and also some exmh specific sequences.
+<dl>
+
+  <dt>sequences
+  <dd>The priority of sequences for display.  Sequences which are not
+  in this list will not be displayed.  If a message is in two
+  different sequences, the latter sequence will be applied on top of
+  the former seqeunce.  Default is: mrange drange range moved deleted
+  selected unseen current.
+  <dt>sequence_current
+  <dd>"current" is not really an (n)mh sequence.  This describes how the
+  current message is displayed.  Default is: -foreground {violet red}
+  -background white. 
+  <dt>sequence_unseen
+  <dd>This is the sequence for unseen messages.  Default is:
+  -foreground blue.
+  <dt>sequence_moved
+  <dd>This is the seqeunce for moved messages.  This is not an (n)mh
+  sequence, but is instead merely a marking of messages which are to
+  be moved to a different folder.  Default is: -background yellow.
+  <dt>sequence_deleted
+  <dd>This is the sequence for deleted messages.  This is not an (n)mh
+  sequence, but is instead merely a marking of messages which are to
+  be deleted.  Default is: -overstrike 1
+  <dt>sequence_selected
+  <dd>This is the seqeunce for selected messages.  This is not an (n)mh
+  sequence, but is instead merely a marking of messages which are to
+  be processed.  Default is: -foreground black -background #ececec.
+</dl>
+</p>
 <h3><a NAME="COLORIZING HEADERS" HREF="#CONTENTS">COLORIZING HEADERS</a></h3>
 <p>
 A set of resources are used to specify colors and other font attributes

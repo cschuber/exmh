@@ -29,15 +29,18 @@ proc Help_KeyDisplay {} {
 	set key [Widget_Frame .key rim Rim]
 	$key configure -borderwidth 10
     
-	set t [Widget_SimpleText $key t {top fillx} -width 34 -height 12 -font $font -wrap none]
-	Ftoc_ColorConfigure $t
+	set t [Widget_SimpleText $key t {top fillx} -width 34 -font $font -wrap none]
 	$t configure -state normal
 	$t delete 0.0 end
-	$t insert insert "current message\nmoved messages\ndeleted messages\nunseen messages\n"
-	$t tag add current 1.0 1.end
-	$t tag add moved   2.0 2.end
-	$t tag add deleted 3.0 3.end
-	$t tag add unseen  4.0 4.end
+
+	set sequences [concat [option get . sequences {}] [option get . customsequences {}]]
+	Exmh_Debug all: $sequences
+	foreach sequence $sequences {
+	    $t insert insert "$sequence\n"
+	    $t tag add $sequence {insert - 1 line} insert
+	    eval $t tag configure $sequence [option get . sequence_$sequence {}]
+	}
+
 	$t insert insert "\nFolder Label Bindings\n"
 	$t insert insert "left          => change folder\n"
 	$t insert insert "middle        => view subfolders\n"
@@ -96,7 +99,6 @@ proc Help { {name {Intro}} {title {Help for exmh} }} {
 	bind $t <Key-Prior> {%W yview scroll -1 page}
 	bind $t <Key-Home> {%W see 1.0}
 	bind $t <Key-End> {%W see end}
-	Ftoc_ColorConfigure $t
 	$t insert insert "EXMH Version: $exmh(version)\n"
 	foreach d [list $dir .] {
 	    if [catch {open $d/$file} in] {

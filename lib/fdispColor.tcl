@@ -21,7 +21,6 @@
 # c_current	$fdisp(c_current)	Current folder
 # c_unseen	$fdisp(c_unseen)	Unseen messages in the folder
 # c_moved	$fdisp(c_moved)		Target folder / moved message
-# c_deleted	$fdisp(c_deleted)	Deleted message
 #
 # For monochrome displays, the Canvas.foreground and Canvas.background
 # resources determine the foreground and background colors of the labels

@@ -148,8 +148,6 @@ proc Exwin_Layout {} {
 	mscroll $exwin(ftext) 1
     }
 
-    Ftoc_ColorConfigure $exwin(ftext)
-
     # Frame for faces, status, message buttons
     set mid     [Widget_Frame . mid Mid $fixed]
     Widget_SplitFrameR $mid Face Right

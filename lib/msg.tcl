@@ -684,7 +684,7 @@ proc Msg_MarkUnseen {} {
     Msg_ClearCurrent
     Ftoc_ClearCurrent
     Flist_ForgetUnseen $exmh(folder)
-    Ftoc_ShowUnseen $exmh(folder)
+    Ftoc_ShowSequences $exmh(folder)
 }
 
 proc Msg_ReplyHelp {} {

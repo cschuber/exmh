@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.25  2002/03/28 20:13:12  cwg
+# Generalized unseen sequence handling to support other sequences.
+#
 # Revision 1.24  2001/12/06 16:38:04  kchrist
 # Fixed the "Always choose the sign key." option. Fixed a clearsigning
 # bug. Modified interpretation of app/pgp header to avoid hang.
@@ -373,7 +376,6 @@ proc Pgp_HelpOld {} {
 	Widget_AddBut .pgphelp.but setup "Make Key" [list Pgp_Setup]
     
 	set t [Widget_Text .pgphelp 30 -setgrid true]
-	Ftoc_ColorConfigure $t
 	$t insert insert "EXMH Version: $exmh(version)\n\n"
 	if [catch {open "$exmh(library)/help.PGP" r} in] {
 	    $t insert insert "Cannot find file exmh.PGP.help to display"

@@ -99,7 +99,7 @@ proc ScanFolder {F adjustDisplay} {
     if {$update} {
 	Flist_ForgetUnseen $F
     }
-    Ftoc_ShowUnseen $F
+    Ftoc_ShowSequences $F
     return
 }
 proc Scan_FolderForce {{F ""}} {
@@ -125,7 +125,7 @@ proc Scan_FolderForce {{F ""}} {
 	set ftoc(displayDirty) 1
 	Ftoc_Yview end
 	Flist_ForgetUnseen $F
-	Ftoc_ShowUnseen $F
+	Ftoc_ShowSequences $F
 	Exmh_Status ok
     }
 }
@@ -164,7 +164,7 @@ proc Scan_Inc {folder incOutput} {
 	Ftoc_Yview end
     }
     # Don't forget unseen here, just find recently added unseen messages
-    Ftoc_ShowUnseen $folder
+    Ftoc_ShowSequences $folder
     Label_Folder $folder
 }
 proc Scan_IO {folder scanIO } {

@@ -46,18 +46,13 @@
 ! Colors for the feedback on color displays.
 ! (Black and white feedback is hardwired. It isn't clear that
 !  there is much room to fiddle in a general way.)
-!	c_current	Foreground of current message
-!	c_currentBg	Background of current message (optional)
-!	c_unseen	Foreground of unseen messages
-!	c_unseenBg	Background of unseen messages
-!	c_moved		Background of moved messages, bg of target folder label
-!	c_movedFg	Foreground of moved messages
-!	c_deleted	Background of deleted messages
-!	c_deletedFg	Foreground of deleted messages
-!	c_foreground	Normal forground
-!	c_background	Label background
-!	c_selectedBg	FTOC text foerground for selected ranges
-!	c_selectedBg	FTOC text background for selected ranges
+!	c_current	COlor of Current Folder
+!	c_unseen	Foreground of folder labels with unseen messages
+!	c_unseenBg	Background of folder labels with unseen messages
+!	c_moved		Background of target folder label
+!	c_movedFg	Foreground of target folder label
+!	c_foreground	Normal folder label foreground
+!	c_background	Label folder label background
 !			You can tweak ftoc background with Ftoc.t.background
 !			You can tweak fdisp background with
 !				Fdisp*can.background
@@ -66,19 +61,32 @@
 !	c_label		Foreground for Version, Folder, and MessageID
 
 *c_current: 	violet red
-*c_currentBg:	white
 *c_unseen: 	blue
 *c_unseenBg:
 *c_moved: 	yellow
 *c_movedFg:
-*c_deleted:	#c3c3c3
-*c_deletedFg:
 *c_foreground: 	black
 *c_background: 	white
-*c_selectedFg:	black
-*c_selectedBg:	#ececec
 *c_popup: 	#c3c3c3
 *c_label:	blue
+!
+! Ftoc sequences.
+!
+! Priority of sequences for display, last sequence has highest priority.
+! If you define any additional sequences, you will need to redefine this 
+! resource to include your sequences in the appropriate place.
+*sequences: mrange drange range moved deleted selected unseen current
+! tag arguments for sequences
+*sequence_current: -foreground {violet red} -background white
+*sequence_unseen: -foreground blue
+*sequence_moved: -background yellow
+!*sequence_deleted: -background #c3c3c3
+*sequence_deleted: -overstrike 1
+*sequence_selected: -foreground black -background #ececec
+*sequence_range: -foreground black -background #ececec -relief raised -borderwidth 2
+*sequence_mrange: -background yellow -relief raised -borderwidth 2
+!*sequence_drange: -background #c3c3c3 -relief raised -borderwidth 2
+*sequence_drange: -overstrike 1 -relief raised -borderwidth 2
 !
 ! Status message colors
 !
@@ -157,3 +165,6 @@
 
 ! Sun bug report colours - this appears in headers
 *b_bugrpttok: -foreground mediumseagreen
+!!! Saved Window Positions
+!!! Wed Mar 27 12:17:41 CST 2002
+!!! Do not edit below here

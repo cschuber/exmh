@@ -22,3 +22,13 @@
 ! Link color for HTML links
 *Text.c_link:	black
 
+*sequences: current unseen moved deleted selected range mrange drange
+*Usequences: 
+*sequence_current: -bgstipple {}
+*sequence_unseen: -foreground blue
+*sequence_moved: -bgstipple gray25
+*sequence_deleted: -overstrike 1
+*sequence_selected: -foreground black -background #ececec
+*sequence_range: -relief raised -borderwidth 2
+*sequence_mrange: -bgstipple gray25 -relief raised -borderwidth 2
+*sequence_drange: -overstrike 1 -relief raised -borderwidth 2

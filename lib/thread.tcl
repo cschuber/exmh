@@ -253,7 +253,7 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
     }
 
     Flist_ForgetUnseen $folder
-    Ftoc_ShowUnseen $folder
+    Ftoc_ShowSequences $folder
 
     if {$curmsg != {}} {
         set msg(id) $curmsg
