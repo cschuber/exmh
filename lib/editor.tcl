@@ -477,10 +477,12 @@ proc Edit_Done {act {msg cur}} {
 		}
 	    }
 	    Mh_AnnoCleanup $msg
-	    # Done with this draft, set PGP defaults for next call
-	    set id [SeditId $msg]
-	    foreach var {encrypt sign format version} {
-		set pgp($var,$id) $pgp($var)
+	    if $pgp(enabled) {
+		# Done with this draft, set PGP defaults for next call
+		set id [SeditId $msg]
+		foreach var {encrypt sign format version} {
+		    set pgp($var,$id) $pgp($var)
+		}
 	    }
 	}
 	reedit	{
@@ -528,10 +530,12 @@ proc Edit_Done {act {msg cur}} {
 		Exmh_Status "Draft $msg aborted" error
 		Quote_Cleanup
 		Mh_AnnoCleanup $msg
-		# Done with this draft, set PGP defaults for next call
-		set id [SeditId $msg]
-		foreach var {encrypt sign format version} {
-		    set pgp($var,$id) $pgp($var)
+		if $pgp(enabled) {
+		    # Done with this draft, set PGP defaults for next call
+		    set id [SeditId $msg]
+		    foreach var {encrypt sign format version} {
+			set pgp($var,$id) $pgp($var)
+		    }
 		}
 	    }
 	}

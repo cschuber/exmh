@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 10/29/1999
+    Fix bug introduced with previous PGP options change. -kchrist
+
 cvs repository 10/28/1999
     PGP options were not being preserved on a re-edit.
     Fixed a crash when not-enabled PGP versions were selected in sedit.
