@@ -6,6 +6,9 @@ cvs repository 08/22/1999
 	email query.  --Kevin.Christian@lsil.com and bmah.
     Sanitize PGP info out of debugging logs.  
 	--George Ross <gdmr@dcs.ed.ac.uk> via bmah.
+    Delete More...->old PGP->Encrypt cascaded menu, due to apparent
+	lack of need for this functionality and difficulty in getting
+	it correctly implemented.  --bmah.
 
 cvs repository 08/19/1999
     Change address book expansion to NOT insert new header lines as this 
