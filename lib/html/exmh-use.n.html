@@ -46,12 +46,13 @@
 exmh-use - A more advanced user guide to the exmh mail user interface.
 <h3><a NAME="INTRODUCTION" HREF="#CONTENTS">INTRODUCTION</a></h3>
 <p>
-This man page provides more detailed information about using <i>exmh</i>,
+This page provides more detailed information about using <i>exmh</i>,
 such as managing nested folders, filtering mail, and using an external
-editor. The <a HREF="exmh.n.html"><b>exmh</b></a> man page is an introduction.
-The <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a> man page describes
-customization of <i>exmh</i>, and the <a HREF="exmh-ref.n.html"><b>exmh-ref</b></a>
-man page describes all the buttons and menus of <i>exmh</i>. 
+editor. <a HREF="exmh.n.html"><code>exmh</code></a> is an
+introduction. <a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>
+describes customization of <i>exmh</i>, and 
+<a HREF="exmh-ref.n.html"><code>exmh-ref</code></a> describes all the
+buttons and menus of <i>exmh</i>.
 <p>
 <i>Exmh</i> uses the regular MH programs to manipulate your mail folders
 and messages. This means it is compatible with command-line use of
@@ -59,121 +60,148 @@ MH programs, and its actions should be familiar if you are an experienced
 MH user. If you are a new MH user, then the details of running MH programs
 is hidden behind the graphical interface. 
 <p>
-This man page will occasionally make references to advanced MH features
-like scan formats and reply filters. If you do not know about these
-you can ignore the comments. If you do know about them, however, you
-will see that <i>exmh</i> can be affected by settings for these features
-in your MH profile. 
+This documentation will occasionally make references to advanced MH
+features like scan formats and reply filters. If you do not know about
+these you can ignore that part. If you do know about them, however,
+you will see that <i>exmh</i> can be affected by settings for these
+features in your MH profile. 
 
 <h3><a NAME="OVERVIEW OF FEATURES" HREF="#CONTENTS">OVERVIEW OF FEATURES</a></h3>
 <p>
 As well as providing basic MH functionality, <i>exmh</i> has a number
 of other features: 
-<p>
-<b>MIME support</b>. <i>Exmh</i> can display MIME (Multipurpose Internet
-Mail Extensions) messages, either directly or with the help of the
-<i>metamail</i> package. The built-in editor lets you compose enriched
-text messages and insert files as parts of a multipart message. 
-<p>
-<b>Sun Attachments</b>. These attachments are coerced into MIME format.
-Special treatment is given to certain common sun attachments like Calendar
-Appointments. You cannot create a Sun format attachment within <i>exmh</i>,
-however. 
-<p>
-<b>Nested Folder Display</b>. A display of your folders appears as
-a set of labels, one for each folder. This is similar to <i>xmh</i>,
-except that the folder labels are highlighted to indicate the current
-folder, the target folder for moves, folders with unread mail in them,
-and folders with nested folders under them. <i>Exmh</i> supports arbitrarily
-nested folder structures, unlike <i>xmh</i>, which only supports a
-single level of nesting. 
-<p>
-<b>Scan Listing Highlights</b>. The scan listing (folder table-of-contents)
-is also highlighted to indicate the current message, unread messages,
-and messages marked for move or delete. Either color or monochrome
-highlighting is used, depending on your display. 
-<p>
-<b>Facesaver bitmap display</b>. If you have a facesaver database on
-your system, <i>exmh</i> displays the bitmap face of the person that
-sent the current message (or their organization). 
-<p>
-<b>Background processing</b>. You can set <i>exmh</i> to run <i>inc</i>
-periodically, check for new messages arriving asynchronously in folders,
-run the MH <i>msgchk</i> program, or count up the messages in your
-mail spool file. Additionally, <i>exmh</i> can periodically retrieve
-NNTP news from specified newsgroups.
-<p>
-<b>Mail filtering</b>. <i>Exmh</i> is designed to work with external
-agents that filter arriving mail into different folders. 
-<p>
-<b>Unseen folder display</b>. If you use a system that delivers mail
-into various folders, not just inbox, then you have the problem of
-finding what folders have unseen messages in them. <i>exmh</i> provides
-feedback in the folder display so you can tell which folders have new
-messages. Also, the Next command will chain to the next folder with
-unread messages if you are at the end of the current folder. 
-<p>
-<b>Pick</b>. An interface to MH <i>pick</i> lets you select messages
-by patterns in the header fields, by date, or by sequence name. The
-interface is similar, but not identical, to the <i>xmh</i> pick interface.
 
-<p>
-<b>Fast Search</b>. Because <i>pick</i> can be slow, <i>exmh</i> also
-implements fast searching over the current folder listing and current
-message body. 
-<p>
-<b>Glimpse interface</b>. Glimpse is a full text search tool from the
-University of Arizona. It has a low overhead indexing scheme that costs
-about 10% to 12% of your mail storage space. It is quite useful to
-find messages in any of your many folders. 
-<p>
-<b>Editor interface</b>. You can hook <i>exmh</i> to your favorite
-editor using the <b>exmh-async</b> script. Or, Tcl-based editors such
-as <i>mxedit</i> can interact with <i>exmh</i> directly. As the default,
-a simple built-in editor named <i>sedit</i> is provided. 
-<p>
-<b>Keybinding User Interface</b>. Bindings for common editing and
-cursor motion commands are exposed in a UI that lets you choose keystroke
-sequences to match your expectations. You can also define key bindings
-for Tcl commands that are part of the implementation. 
-<p>
-<b>Aliases User Interface</b>. A browser for your MH aliases lets you
-define new aliases and insert aliases into mail messages. 
-<p>
-<b>Pretty Good Privacy (PGP)</b>. If you have PGP, you can use it from
-<i>exmh</i> to digitally sign, encrypt, and decrypt messages. 
-<p>
-<b>Preferences User Interface</b>. There are many knobs and dials you
-can adjust to control the behavior of <i>exmh</i>. 
-<p>
-<b>URL Smarts</b>. Exmh can scan for embedded URLs in your messages,
-and it can look for X-URI: mail headers. These are turned into active
-text buttons. Click on them and exmh asks your favorite Web browser
-to display the URL. 
-<p>
-<b>User Programming</b>. If the preference settings are not enough
-for you, you can program <i>exmh</i> more directly. You can define
-new buttons and menus and add new Tcl code to its implementation. This
-is described in the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page. 
+<dl>
+  <dt>MIME support
+  <dd><i>Exmh</i> can display MIME (Multipurpose Internet Mail
+      Extensions) messages, either directly or with the help of the
+      <i>metamail</i> package. The built-in editor lets you compose
+      enriched text messages and insert files as parts of a multipart
+      message. 
+
+  <dt>Sun Attachments
+  <dd>These attachments are coerced into MIME format.  Special
+      treatment is given to certain common sun attachments like
+      Calendar Appointments. You cannot create a Sun format attachment
+      within <i>exmh</i>, however. 
+
+  <dt>Nested Folder Display
+  <dd>A display of your folders appears as a set of labels, one for
+      each folder. This is similar to <i>xmh</i>, except that the
+      folder labels are highlighted to indicate the current folder,
+      the target folder for moves, folders with unread mail in them,
+      and folders with nested folders under them. <i>Exmh</i> supports
+      arbitrarily nested folder structures, unlike <i>xmh</i>, which
+      only supports a single level of nesting. 
+
+  <dt>Scan Listing Highlights
+  <dd>The scan listing (folder table-of-contents) is also highlighted
+      to indicate the current message, unread messages, and messages
+      marked for move or delete. Either color or monochrome
+      highlighting is used, depending on your display.  
+
+  <dt>Facesaver bitmap display
+  <dd>If you have a facesaver database on your system, <i>exmh</i>
+      displays the bitmap face of the person that sent the current
+      message (or their organization).  
+
+  <dt>Background processing
+  <dd>You can set <i>exmh</i> to run <code>inc</code> periodically,
+      check for new messages arriving asynchronously in folders, run
+      the MH <code>msgchk</code> program, or count up the messages in
+      your mail spool file. Additionally, <i>exmh</i> can periodically
+      retrieve NNTP news from specified newsgroups.
+
+  <dt>Mail filtering
+  <dd><i>Exmh</i> is designed to work with external agents that filter
+      arriving mail into different folders. 
+
+  <dt>Unseen folder display
+  <dd>If you use a system that delivers mail into various folders, not
+      just inbox, then you have the problem of finding what folders
+      have unseen messages in them. <i>exmh</i> provides feedback in
+      the folder display so you can tell which folders have new
+      messages. Also, the Next command will chain to the next folder
+      with unread messages if you are at the end of the current
+      folder.
+
+  <dt>Pick
+  <dd>An interface to MH <code>pick</code> lets you select messages by
+      patterns in the header fields, by date, or by sequence name. The
+      interface is similar, but not identical, to the <i>xmh</i> pick
+      interface.  
+
+  <dt>Fast Search
+  <dd>Because <i>pick</i> can be slow, <i>exmh</i> also implements
+      fast searching over the current folder listing and current message body. 
+
+  <dt>Glimpse interface
+  <dd>Glimpse is a full text search tool from the University of
+      Arizona. It has a low overhead indexing scheme that costs about
+      10% to 12% of your mail storage space. It is quite useful to
+      find messages in any of your many folders.
+
+  <dt>Editor interface
+  <dd>You can hook <i>exmh</i> to your favorite editor using the
+      <code>exmh-async</code> script. Or, Tcl-based editors such as
+      <code>mxedit</code> can interact with <i>exmh</i> directly. As
+      the default, a simple built-in editor named <i>sedit</i> is
+      provided.
+
+  <dt>Keybinding User Interface
+  <dd>Bindings for common editing and cursor motion commands are
+      exposed in a UI that lets you choose keystroke sequences to
+      match your expectations. You can also define key bindings for
+      Tcl commands that are part of the implementation.  
+
+  <dt>Aliases User Interface
+  <dd>A browser for your MH aliases lets you define new aliases and
+      insert aliases into mail messages.
+
+  <dt>Pretty Good Privacy (PGP)
+  <dd>If you have PGP, you can use it from <i>exmh</i> to digitally
+      sign, encrypt, and decrypt messages. 
+
+  <dt><Button -Command Preferences_Dialog>Preferences</Button> User Interface
+  <dd>There are many knobs and dials you can adjust to control the
+      behavior of <i>exmh</i>. 
+
+  <dt>URL Smarts
+  <dd>Exmh can scan for embedded URLs in your messages, and it can
+      look for X-URI: mail headers. These are turned into active text
+      buttons. Click on them and exmh asks your favorite Web browser
+      to display the URL.
+
+  <dt>User Programming
+  <dd>If the preference settings are not enough for you, you can
+      program <i>exmh</i> more directly. You can define new buttons
+      and menus and add new Tcl code to its implementation. This is
+      described in the <a
+      HREF="exmh-custom.n.html"><code>exmh-custom</code></a> man
+      page.
+
+<dl>
 
 <h3><a NAME="GETTING STARTED" HREF="#CONTENTS">GETTING STARTED</a></h3>
 <p>
-Mostly likely you are already an MH user. If not, go through the tutorial
-in the basic <i>exmh</i> man page. 
+Mostly likely you are already an MH user. If not, go through the 
+<a href="exmh.n.html">tutorial</a>. 
 <p>
 If you previously used a mail reader like Elm or Sun's mailtool that
-manages mail folders in mbox-like files, then you can use the <i>Import
-mailbox folders</i> menu entry to copy your old folder contents into
-the folders manage by MH and <i>exmh</i>. This menu entry is under
-the folder More... menu. 
+manages mail folders in mbox-like files, then you can use the 
+<button -command Import_Dialog>Import mailbox folders</button> menu
+entry to copy your old folder contents into the folders manage by MH
+and <i>exmh</i>. This menu entry is under the folder More... menu.
 <p>
-There is an extensive Preferences system for <i>exmh</i> that lets
-you tune it in many ways. Throughout the man page, references to Preference
-settings will be made when there are tunable parameters associated
-with a feature. A more complete description of the Preference facility
-is given in the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page. 
+There is an extensive
+<Button -Command Preferences_Dialog>Preferences</Button> system for
+<i>exmh</i> that lets you tune it in many ways. Throughout the man
+page, references to
+<Button -Command Preferences_Dialog>Preferences</Button> settings will
+be made when there are tunable parameters associated with a feature. A
+more complete description of the 
+<button -command Preferences_Dialog>Preferences</button> facility is
+given in <a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>.
 
 <h3><a NAME="KEYBOARD COMMANDS" HREF="#CONTENTS">KEYBOARD COMMANDS</a></h3>
 <p>
@@ -181,11 +209,12 @@ Several of the folder and message operations have keystroke bindings
 so you can do much of your browsing with hands on the keyboard. The
 <a HREF="Keys.html">default bindings</a> are defined with the Tk syntax
 that you'll need to use in the Bind dialogs. Capitalization is important.
-For more information, see the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page. You can browse, change, and define new command keystrokes
-via the Bind user interfaces available under the Bindings menu. There
-are two dialogs: one for editing commands in the built-in editor, and
-another for the command bindings described above. 
+For more information, see <a
+HREF="exmh-custom.n.html"><code>exmh-custom</code></a>. You can
+browse, change, and define new command keystrokes via the Bind user
+interfaces available under the Bindings menu. There are two dialogs:
+one for editing commands in the built-in editor, and another for the
+command bindings described above.
 
 <h3><a NAME="THE EXMH DISPLAY" HREF="#CONTENTS">THE EXMH DISPLAY</a></h3>
 <p>
@@ -196,14 +225,23 @@ Both the folder display and table of contents have some highlights
 that are described below. 
 <p>
 The command buttons are grouped into three sets. The buttons along
-the top apply to <i>exmh</i> itself, such as Help, Preferences, and
-Quit. The buttons above the scan listing are operations on folders,
-like Inc and Commit. There is a menu there labeled More... that has
-several more folder-related operations like Pack and Sort. The row
-of buttons above the message display are for operations on messages,
-such as Send, Next, and Delete. There is another menu here labeled
-More... that has several more operations on messages, such as Print,
-Edit, Burst Digest, and Edit Message. 
+the top apply to <i>exmh</i> itself, such as Help..., 
+<Button -Command Preferences_Dialog>Preferences</Button>, and
+<button -command Exmh_Done>Quit</button>. The buttons above the scan
+listing are operations on folders, like 
+<button -command "Inc">Inc</button> and 
+<button -command "Folder_Commit">Commit</button>. There is a menu
+there labeled More... that has several more folder-related operations
+like <button -command "busy Folder_Pack">Pack folders</button> and
+Sort.... The row of buttons above the message display are for
+operations on messages, such as 
+<button -command "Msg_Compose">Comp</button>, 
+<button -command "Ftoc_Next show">Next</button>, and 
+<button -command "Msg_Remove">Delete</button>. There is another menu
+here labeled More... that has several more operations on messages,
+such as <button -command "Print">Print</button>, 
+<button -command "Msg_Edit">Edit message</button>, and
+<button -command "Msg_BurstDigest">Burst Digest</button>.
 <p>
 The version number of <i>exmh</i> is displayed next to the top row
 of buttons. The release cycle for <i>exmh</i> goes something like 1.5alpha,
@@ -241,14 +279,16 @@ display area by more than the size of the folder cache, if it exists.
 
 <p>
 There are also preference settings for each of the sub-window sizes.
-Look under Scan Listing, Folder Cache, and Folder Display preferences.
+Look under Scan Listing, Folder Cache, and Folder Display 
+<button -command Preferences_Dialog>Preferences</button>.
 
 
 <h3><a NAME="FOLDER DISPLAY" HREF="#CONTENTS">FOLDER DISPLAY</a></h3>
 <p>
 The top sub-window has a label for each of your MH folders. The folder
-display is highlighted to reflect the state of folders. The <i><button -command Help_KeyDisplay>Color Legend </button></i> menu
-item under the main Help menu will display a key for the highlights.
+display is highlighted to reflect the state of folders. The 
+<button -command Help_KeyDisplay>Color Legend</button> menu item
+under the main Help menu will display a key for the highlights. 
 
 <pre><blockquote>black - the current folder.
 bold outline - a folder with unseen messages.
@@ -259,8 +299,10 @@ On color displays:
 <pre><blockquote>red - the current folder.
 blue - a folder with unseen messages.
 yellow - the target folder for move and link operations.
-</blockquote></pre>Folders that have nested folders
-under them are highlighted by a shadow box. 
+</blockquote></pre>
+
+Folders that have nested folders under them are highlighted by a
+shadow box.
 <p>
 The mouse bindings for the folders labels are: 
 <pre><blockquote>Left - Change to folder.
@@ -282,15 +324,17 @@ A middle click on the folder label displays a pop-up window with the
 folder labels for nested folders, and you can operate on these labels
 just like the top-level ones. The pop-ups work recursively for nested
 folders. When the mouse leaves the pop-up it is withdrawn. The Folder
-Display preferences lets you adjust how the pop-up behaves. 
+Display <button -command Preferences_Dialog>Preferences</button> lets
+you adjust how the pop-up behaves.
 <p>
 <i>Hint:</i> If you change the pop-up-related settings, you'll have
 to resize the <i>exmh</i> window a bit to force it to redisplay the
 folder labels. Only then will the new bindings take effect. 
 <p>
 You can make the folder display into a separate top-level window with
-a setting under the Folder Display Preferences. This means you can
-close the main window and still view the folder display to see what
+a setting under the Folder Display 
+<Button -command Preferences_Dialog>Preferences</Button>. This means
+you can close the main window and still view the folder display to see what
 folders have new mail in them. When you click on a folder label the
 main window will be opened automatically. 
 
@@ -298,19 +342,22 @@ main window will be opened automatically.
 <p>
 Below the main folder display is a cache line of recently visited folders.
 If you have nested folders, their complete pathname is given in the
-cache window. Using the Folder Cache preferences settings you can choose
-how many lines of folder cache. You can also put some folders into
-the cache permanently with the Sticky Folders preference item. 
+cache window. Using the Folder Cache 
+<button -command Preferences_Dialog>Preferences</button> settings you
+can choose how many lines of folder cache. You can also put some
+folders into the cache permanently with the Sticky Folders preference
+item.
 <p>
 If you don't have many folders, the folder cache line is really just
 a waste of screen real estate. In this case, set the number of folder
-cache lines to 0 in the Folder Cache Preferences section to eliminate
-this part of the display altogether. 
+cache lines to 0 in the Folder Cache 
+<Button -Command Preferences_Dialog>Preferences</Button> section to
+eliminate this part of the display altogether. 
 <p>
-You can drag folders in and out of the folder cache. Use &lt;Shift-Button-2&gt;
-to drag a folder label. Drag a label from the main display into the
-cache to add it, or from the cache to the main display to remove it
-from the cache. 
+You can drag folders in and out of the folder cache. Use
+&lt;Shift-Button-2&gt; to drag a folder label. Drag a label from the
+main display into the cache to add it, or from the cache to the main
+display to remove it from the cache. 
 
 <h3><a NAME="FOLDER TABLE OF CONTENTS" HREF="#CONTENTS">FOLDER TABLE
 OF CONTENTS</a></h3>
@@ -346,19 +393,19 @@ Several of the operations on messages can be applied to a set of selected
 messages. You can create a discontinuous selection by using the Shift-Left
 (and Shift-Left-Drag) mouse actions. 
 <p>
-<i>Hint</i>: The scan listing comes from <i>both</i> the MH <i>scan</i>
-and <i>inc</i> programs, depending on circumstance. If you define a
-custom scan format, set the same filter in your profile for both <i>inc</i>
-and <i>scan</i>. 
+<i>Hint</i>: The scan listing comes from <i>both</i> the MH
+<code>scan</code> and <code>inc</code> programs, depending on
+circumstance. If you define a custom scan format, set the same filter
+in your profile for both <code>inc</code> and <code>scan</code>.
 
 <h3><a NAME="MESSAGE DISPLAY" HREF="#CONTENTS">MESSAGE DISPLAY</a></h3>
 <p>
 The current message, if any, is displayed in the bottom sub-window.
 The uninteresting mail headers are scrolled off the top of this display
-initially. You can control this with the Header-Display and Header-Suppress
-profile entries as described in the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page. That man page also describes how to colorize different mail
-headers. 
+initially. You can control this with the Header-Display and
+Header-Suppress profile entries as described in 
+<a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>. That page
+also describes how to colorize different mail headers. 
 <p>
 Pressing the space bar will page you through the message, or take you
 to the next message if you are at the end of the current message. Backspace
@@ -377,12 +424,14 @@ their contents or processing the contents with an external viewer.
 Press the right mouse button in the message display area to obtain
 this menu. Make sure you press the mouse button over the message body,
 not the headers. For multipart messages, the menu changes depending
-on what part of the message you are looking at. See also the Preferences
+on what part of the message you are looking at. See also the 
+<Button -Command Preferences_Dialog>Preferences</Button>
 entry for MIME for some parameters you can adjust. 
 <p>
 Every content type can be saved or printed, and other types can have
 additional options depending on entries in your site's mailcap file.
-The print function just prints the item as text using your Print preferences
+The print function just prints the item as text using your Print
+<button -command Preferences_Dialog>Preferences</button>
 command. The print-with-mailcap entry, if available, uses the print
 command as defined for the content-type in the mailcap file. 
 <p>
@@ -397,7 +446,8 @@ the URLs in the message. (This is ad-hoc and not %100 accurate.) The
 URLs are turned into active text buttons. Click on one and exmh asks
 your web browser to display the page. You can have exmh scan every
 message automatically for URLs, although this can be slow. Tune this
-with the settings under the WWW preferences. 
+with the settings under the WWW 
+<button -command Preferences_Dialog>Preferences</button>. 
 <p>
 If exmh sees special X-URL (or X-URI) headers it will turn the facesaver
 area into an active button. It takes on a raised relief and when you
@@ -425,7 +475,8 @@ limited to):
 These options may bring you to a web site or may put you in email
 composition mode.
 <p>
-Evangelism about the usefulness of this functionality would be appreciated.
+Evangelism about the usefulness of this functionality to mailing list
+managers would be appreciated.
 
 <h3><a NAME="MANAGING MESSAGES" HREF="#CONTENTS">MANAGING MESSAGES</a></h3>
 <p>
@@ -434,8 +485,9 @@ it alone, delete it, or refile it to another folder. You automatically
 advance to the next message after you delete or refile the current
 message. This makes it easy to go through your mail messages, deleting
 and refiling as you go. There are several settings under the Scan Listing
-preferences section that control the behavior of <i>exmh</i> when reading
-mail, and some of these will be mentioned below. 
+<button -command Preferences_Dialog>Preferences</button> section that
+control the behavior of <i>exmh</i> when reading mail, and some of
+these will be mentioned below.
 <p>
 Like <i>xmh</i>, <i>exmh</i> does deletes and refiles in two steps.
 In the first step you <i>mark</i> a message as needing some action.
@@ -467,11 +519,12 @@ or type 'm' to refile the message and advance to the next message.
 the next message. 
 <p>
 <b>Undo</b>. If you make a mistake, you can unmark a message with the
-<i>Unmark (Undo)</i> message More... menu entry. This operation applies
-to the currently selected message(s), not necessarily to the last message
-you marked for delete or refile. If you want to change the disposition
-of a message, like refile it instead of delete it, you do not need
-to unmark it first. Just select it and take the new action. 
+<button -command "Ftoc_Unmark">Unmark (Undo)</button> message
+More... menu entry. This operation applies to the currently selected
+message(s), not necessarily to the last message you marked for delete
+or refile. If you want to change the disposition of a message, like
+refile it instead of delete it, you do not need to unmark it
+first. Just select it and take the new action.
 <p>
 <i>Trick</i>: use '-' (minus) to back up to a message you just marked,
 and 'u' to unmark the message. 
@@ -479,52 +532,67 @@ and 'u' to unmark the message.
 <b>Linking Messages</b>. To link the current message(s) into a folder,
 hold the shift key down as you right click the destination folder label.
 If the right folder happens to be selected as the target already, you
-can also use the Link button. If you use Link frequently, you should
-adjust the Scan Listing preferences item for <i>Advance after Link</i>.
-If you turn this off, then the current message remains selected after
-a Link, which makes it easier to link a message into multiple folders.
+can also use the <button -command "Msg_Move Ftoc_CopyMark
+advance?">Link</button> button. If you use Link frequently, you should
+adjust the Scan Listing
+<button -command Preferences_Dialog>Preferences</button> item for
+<i>Advance after Link</i>. If you turn this off, then the current
+message remains selected after a Link, which makes it easier to link a
+message into multiple folders.
 
 <p>
-<b>Auto Commit</b>. The <i>Auto Commit</i> Scan Listing preferences
-item will let <i>exmh</i> commit your changes when you change folders,
-sort or pack a folder, or quit the program. Without auto commit, you
-will be prompted to commit when you try to take one of these actions
-and have messages still marked for delete or refile. In addition, auto
-commit will commit changes when you close the main window. 
+<b>Auto Commit</b>. The <i>Auto Commit</i> Scan Listing
+<button -command Preferences_Dialog>Preferences</button> item will let
+<i>exmh</i> commit your changes when you change folders, sort or pack
+a folder, or quit the program. Without auto commit, you will be
+prompted to commit when you try to take one of these actions and have
+messages still marked for delete or refile. In addition, auto commit
+will commit changes when you close the main window.
 <p>
-<b>Implied Direction</b>. The next message viewed after a Delete or
-Move is usually the next message. However, if you set the <i>Implied
-Direction</i> preference item, then <i>exmh</i> will remember your
-last Next or Prev action and move that direction after a Delete or
-Move. This means you can just as conveniently go through a folder backwards
-as forwards, although it might catch you by surprise. 
+<b>Implied Direction</b>. The next message viewed after a 
+<button -command "Msg_Remove">Delete</button> or 
+<button -command "Msg_Move Ftoc_MoveMark">Move</button> is usually the
+next message. However, if you set the <i>Implied Direction</i>
+preference item, then <i>exmh</i> will remember your last 
+<button -command "Ftoc_Next show">Next</button> or 
+<button -command "Ftoc_Prev show">Prev</button> action and move that
+direction after a <button -command "Msg_Remove">Delete</button> or 
+<button -command "Msg_Move Ftoc_MoveMark">Move</button>. This means
+you can just as conveniently go through a folder backwards as
+forwards, although it might catch you by surprise.
 <p>
-<b>Skipping Marked Messages</b>. The <i>skip marked msgs</i> preference
-item controls whether Next and Prev take you to a message marked for
-delete or refile, or whether you skip over these. Remember the handy
-'-' key binding, which takes you to the previous message even if it
-is marked. 
+<b>Skipping Marked Messages</b>. The <i>skip marked msgs</i> 
+<button -command Preferences_Dialog>Preferences</button> item controls
+whether Next and Prev take you to a message marked for delete or
+refile, or whether you skip over these. Remember the handy '-' key
+binding, which takes you to the previous message even if it is
+marked.
 <p>
 <b>Changing Folders Automatically</b>. When you are at the end of a
 folder, <i>exmh</i> will be ready to take you to the next folder that
 has unseen messages in it. You can just press Next, and it will automatically
 change folders for you. If you have marked messages, however, you will
-be reminded of that. At this point you can press the Commit button,
-or if you have auto-commit enabled, then you can press the Next button
-again to trigger the commit and folder change. If you always want to
-be warned before an automatic folder change, enable the <i>Next Guard</i>
-preference item. With this enabled you will have to click Next twice
-(or type 'n' twice) to get the automatic folder change. It will also
-tell you to which folder it is about to change. 
+be reminded of that. At this point you can press the 
+<button -command "Folder_Commit">Commit</button> button, or if you
+have auto-commit enabled, then you can press the 
+<button -command "Ftoc_Next show">Next</button> button again to
+trigger the commit and folder change. If you always want to be warned
+before an automatic folder change, enable the <i>Next Guard</i> 
+<button -command Preferences_Dialog>Preferences</button> item. With
+this enabled you will have to click 
+<button -command "Ftoc_Next show">Next</button> twice (or type 'n'
+twice) to get the automatic folder change. It will also tell you to
+which folder it is about to change.
 <p>
 The final twist on automatic folder changing is that, by default, <i>exmh</i>
 will automatically change back to your "first" folder if there are
 no more folders with unseen messages in them. You can disable this
-feature with the <i>Cycle back to first</i> preference item. The default
-Folder-Order profile component defines inbox to be the first folder,
-so ordinarily you will change back there. The Folder-Order profile
-component is described in the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page. 
+feature with the <i>Cycle back to first</i> 
+<button -command Preferences_Dialog>Preferences</button> item. The
+default Folder-Order profile component defines inbox to be the first
+folder, so ordinarily you will change back there. The Folder-Order
+profile component is described in 
+<a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>. 
 
 <h3><a NAME="SENDING MAIL" HREF="#CONTENTS">SENDING MAIL</a></h3>
 This section describes how to start a mail message. The messages are
@@ -532,33 +600,39 @@ created as templates in your drafts folder and then your editor is
 opened on the draft. The next two sections describe how to actually
 compose the message when using the built-in editor or an external editor.
 <p>
-<b>Sending a New Message</b>. Use the Send message button to create
-a new draft message. This runs the MH <i>comp</i> command to set up
-the template for the draft, so it is affected by your components file,
-if any, and your comp profile entry, if any. 
+<b>Sending a New Message</b>. Use the 
+<button -command "Msg_Compose">Comp</button> message button to create
+a new draft message. This runs the MH <code>comp</code> command to set
+up the template for the draft, so it is affected by your
+<code>components</code> file, if any, and your comp profile entry, if
+any.
 <p>
-<b>Replying to a Message</b>. The Reply... menu has two entries: <i>Reply
-to sender</i> and <i>Reply all</i>. These use the MH <i>repl</i> command,
-so they are affected by your replcomps file, if any, and your repl
-profile entry, if any. The first entry uses <i>-nocc to -nocc cc</i>
-so that the reply just goes to the sender and you, while the other
-entry uses <i>-cc all</i> so that the reply goes to everyone in the
-To and Cc headers of the original message. There is also an entry that
-displays instructions for adding more entries to the Reply... menu.
-This is described in more detail in the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page.. 
+<b>Replying to a Message</b>. The Reply... menu has two entries: 
+<button -command "Msg_Reply -nocc to -nocc cc">Reply to
+sender</button> and <button -command "Msg_Reply -cc to -cc cc">Reply
+all</button>. These use the MH <code>repl</code> command, so they are
+affected by your replcomps file, if any, and your repl profile entry,
+if any. The first entry uses <code>-nocc to -nocc cc</code> so that
+the reply just goes to the sender and you, while the other entry uses
+<code>-cc all</code> so that the reply goes to everyone in the To and
+Cc headers of the original message. There is also an entry that
+displays instructions for adding more entries to the
+Reply... menu. This is described in more detail in
+<a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>. 
 <p>
-<b>Forwarding a Message</b>. Use the Forward button to forward the
-current message, or messages. This uses the MH <i>forw</i> command
-to set up the message, so it is affected by your forwcomps file and
-your forw profile entry, if these exist. 
+<b>Forwarding a Message</b>. Use the 
+<button -command "MsgForward">Forward</button> button to forward the
+current message, or messages. This uses the MH <code>forw</code>
+command to set up the message, so it is affected by your forwcomps
+file and your forw profile entry, if these exist.
 <p>
 <b>Using an Existing Message as a Template</b>. You can use an existing
-message as a template for a new message by using the <i>Use message
-as draft</i> menu entry under the message More... menu. In this case
-the message is copied into the draft folder first. You will also use
-this menu entry if you have to go back into your drafts folder to continue
-work on a message draft. 
+message as a template for a new message by using the 
+<button -command "Msg_Compose +\$exmh(folder) \$msg(id)">Use message
+as draft</button> menu entry under the message More... menu. In this
+case the message is copied into the draft folder first. You will also
+use this menu entry if you have to go back into your drafts folder to
+continue work on a message draft.
 
 <h3><a NAME="THE BUILT-IN EDITOR" HREF="#CONTENTS">THE BUILT-IN EDITOR</a></h3>
 <p>
@@ -602,29 +676,33 @@ prompt you for confirmation.
 the OK button in the confirmation dialog. 
 <p>
 <b>Signatures</b>. The editor supports signatures in two ways. If you
-select Auto-sign from the Simple Editor Preferences section, then your
-.signature file will be appended to the message when you press the
-Send button. Otherwise, you can use the Sign button to insert your
-.signature file at the end of the message. 
+select Auto-sign from the Simple Editor 
+<Button -Command Preferences_Dialog>Preferences</Button> section, then
+your <code>.signature</code> file will be appended to the message when
+you press 
+the Send button. Otherwise, you can use the Sign button to insert your
+<code>.signature</code> file at the end of the message. 
 <p>
-If you have several files that match the pattern ~/.signature*, then
-you will have a menu of signature options available under the Sign...
-menu, which replaces the Sign button. You can define the default choice
-with a Preference setting under the Simple Editor section. With auto-sign,
-the Sign... menu has a set of check box items that determine which
-signature file will be used. Otherwise, the menu simply selects which
-signature you want to insert at the end of the message, and the signature
-is inserted when you select the menu entry. If you are composing a
-multipart MIME message, your signature is added as another MIME part.
+If you have several files that match the pattern
+<code>~/.signature*</code>, then you will have a menu of signature
+options available under the Sign... menu, which replaces the Sign
+button. You can define the default choice with a Preference setting
+under the Simple Editor section. With auto-sign, the Sign... menu has
+a set of check box items that determine which signature file will be
+used. Otherwise, the menu simply selects which signature you want to
+insert at the end of the message, and the signature is inserted when
+you select the menu entry. If you are composing a multipart MIME
+message, your signature is added as another MIME part. 
 <p>
 When auto-sign is enabled, a further option on the Sign... menu allows
 "intelligent" signing of messages.  This means that messages which are
 sent solely to addresses within the local domain can be signed
 differently from messages being sent outside of it.  The Intelligent
-Signatures Preferences section allows you to specify two different files,
-one as the local signature file and one as the external signature file,
-along with a list of domains to be considered "local", and the default
-state of the intelligent sign menu option.
+Signatures <Button -Command Preferences_Dialog>Preferences</Button>
+section allows you to specify two different files, one as the local
+signature file and one as the external signature file, along with a
+list of domains to be considered "local", and the default state of the
+intelligent sign menu option. 
 
 <p>
 <i><strong>Trick</strong></i>: if your signature file has the execute
@@ -645,11 +723,13 @@ enter text. Unfortunately, this doesn't actually insert newline characters,
 and it is done based on the size of the window. Therefore, the line
 breaking is done a second time by <i>exmh</i> after you press the Send
 button. The line length limit defaults to 79, although you can change
-that in the Simple Edit Preferences section. 
+that in the Simple Edit 
+<Button -Command Preferences_Dialog>Preferences</Button> section.
 <p>
 <i>Hint</i>: If you change the line length, you should also resize
 the editor window to match the width (e.g. 72) so your message will
-look right as you type it in. Set the following resource in your ~/.exmh/exmh-defaults
+look right as you type it in. Set the following resource in your
+<code>~/.exmh/exmh-defaults</code>:
 
 <pre><blockquote>*Sedit*Text.width: 72
 </blockquote></pre>
@@ -668,7 +748,8 @@ The <i>Insert @</i> button is used to insert the body of the message
 being replied to. This button is only enabled when you are replying
 to a message. The body is formatted a little, just by prefixing each
 line of the message body with a string. The default is "&gt; ", and
-you can change this via the Simple Editor Preferences section. 
+you can change this via the Simple Editor 
+<Button -Command Preferences_Dialog>Preferences</Button> section.  
 <p>
 <i>Note</i>: it is apparently not possible to define a repl prefix
 with leading spaces. This is a side effect of storing the prefix in
@@ -683,7 +764,7 @@ The <b>Crypt</b> menu provides access to the Pretty Good Privacy public
 key system. With this you can send messages with a digital signature
 that certifies that you sent the message. You can also encrypt and
 decrypt messages with PGP. A complete discussion of PGP is far beyond
-the scope of this man page. However, if you know PGP, you will find
+the scope of this page. However, if you know PGP, you will find
 the PGP features of <i>exmh</i> useful. 
 <p>
 <i><strong>Hint</strong>:</i>. The <i>Insert PGP Keys</i> menu entry
@@ -700,8 +781,8 @@ poorly with the formatting described next. This is one of the roughest
 spots in the <i>exmh</i> implementation. For example, if you include
 a file in your message that has important formatting, like a Postscript
 file or some program code, you will want to disable the line-break
-formatting. You can do this by turning off the <i>Format mail</i> check-box
-item under the More... menu. 
+formatting. You can do this by turning off the <i>Format mail</i>
+check-box item under the More... menu.
 <p>
 If you are familiar with MHN directives, you can enter them into your
 message. In this case, you will want to select the <i>Attempt MHN</i>
@@ -740,20 +821,22 @@ wrong.
 The built-in editor supports 8-bit characters found in European character
 sets. Insert an 8-bit character by pressing the Compose key and then
 two other keys to get the special character. For example, Compose,
-then <b>e</b> and <b>'</b> creates an accented e character. All the
-vowels can be composed with ' ` and " to get accents, and there are
-several more bindings. The complete table of compose key sequences
-is given by the <i>Compose Key</i> entry in the Bindings... menu. 
+then <code>e</code> and <code>'</code> creates an accented e
+character. All the vowels can be composed with ' ` and " to get
+accents, and there are several more bindings. The complete table of
+compose key sequences is given by the 
+<button -command Sedit_ComposeUI>Compose Key</button> entry in the
+Bindings... menu.
 <p>
 When you compose a mail message that contains 8-bit characters you
 need to be careful when sending it. Some mail gateways do not like
-8-bit characters and will bounce the message or corrupt it. The Quoted-Printable
-encoding will protect 8-bit characters. The built-in editor will do
-this quoting for you if it detects input of an 8-bit character. The
-quoting is done when you press Send. You can control whether or not
-this happens with a combination of the Quote Printable menu entry (for
-per-message control) and the Quoted Printable default preference item
-for the Simple Editor. 
+8-bit characters and will bounce the message or corrupt it. The
+Quoted-Printable encoding will protect 8-bit characters. The built-in
+editor will do this quoting for you if it detects input of an 8-bit
+character. The quoting is done when you press Send. You can control
+whether or not this happens with a combination of the Quote Printable
+menu entry (for per-message control) and the Quoted Printable default
+preference item for the Simple Editor. 
 <p>
 The built-in editor handles the special coding required when including
 8-bit characters in mail headers. 
@@ -769,9 +852,10 @@ encoding instead of the 8-bit character.
 EDITOR</a></h3>
 <p>
 You can use your favorite editor with exmh by specifying an <i>Editor
-command</i> in the Editor Support Preferences section. This command
-has the complete pathname of the draft message appended to it before
-it is executed. Several examples of editor commands include: 
+command</i> in the Editor Support
+<Button -Command Preferences_Dialog>Preferences</Button> section. This
+command has the complete pathname of the draft message appended to it
+before it is executed. Several examples of editor commands include: 
 <pre><blockquote>sedit
 mxedit
 emacsclient &amp;
@@ -800,11 +884,12 @@ the MH whom program to verify the addresses you have specified. You
 can also invoke the built-in editor, <i>sedit</i>, in case you want
 to use its MIME composition features. 
 <p>
-There is an "Alternate Editor" preference setting. The built-in editor
-has a menu entry that saves the draft and starts the alternate editor.
-The What Now dialog also has a menu entry to do this. 
+There is an "Alternate Editor" 
+<Button -Command Preferences_Dialog>Preferences</Button> setting. The
+built-in editor has a menu entry that saves the draft and starts the
+alternate editor. The What Now dialog also has a menu entry to do this. 
 <p>
-In most cases you will use the <b>exmh-async</b> wrapper script to
+In most cases you will use the <code>exmh-async</code> wrapper script to
 run an external editor. This is a short Tcl/Tk script that runs your
 editor and then communicates with <i>exmh</i> when your editor exits.
 This means the <i>exmh</i> user interface can remain active while you
@@ -812,22 +897,25 @@ compose your message. You can even compose several messages at once.
 You will get a different <i>What Now</i> dialog for each message draft.
 
 <p>
-The <b>exmh-async</b> wrapper tries to pass through all the arguments
-to the editor command you specify. However, a couple arguments are
-picked up by the Tcl/Tk shell (wish). Some tricks are played, however,
-so you can protect arguments. For example, the following works: 
+The <code>exmh-async</code> wrapper tries to pass through all the
+arguments to the editor command you specify. However, a couple
+arguments are picked up by the Tcl/Tk shell (wish). Some tricks are
+played, however, so you can protect arguments. For example, the
+following works:
 <pre><blockquote>exmh-async xterm {-geo 80x40+0+0} -e vi {+c /: *$}
-</blockquote></pre>This protects the -geo argument
-from exmh-async, and it protects the complex format of the <i>vi</i>
-search command from interpretation by the Tcl parser. 
+</blockquote></pre>
+This protects the <code>-geo</code> argument from
+<code>exmh-async</code>, and it protects the complex format of the
+<code>vi</code> search command from interpretation by the Tcl parser.
 <p>
 As a final note, if you try to test exmh-async from the command line,
 you need to execute it like this: 
 <pre><blockquote>exmh-async exmh xterm -e vi &amp;
-</blockquote></pre>The first argument is the name
-of the exmh application, which is needed for the Tk-based communication
-between exmh-async and exmh. This argument does not appear when you
-define the command in Preferences. 
+</blockquote></pre>
+The first argument is the name of the exmh application, which is
+needed for the Tk-based communication between <code>exmh-async</code>
+and exmh. This argument does not appear when you define the command in
+<Button -Command Preferences_Dialog>Preferences</Button>.
 
 <h3><a NAME="FILTERING MAIL" HREF="#CONTENTS">FILTERING MAIL</a></h3>
 <p>
@@ -839,40 +927,45 @@ and all the mail from a mailing list or digests into another folder.
 <i>Exmh</i> visually highlights the folders that have new mail. This
 depends on the definition of the Unseen-Sequence profile component,
 and the support of this sequence by the mail filtering system. Both
-the <i>slocal</i> and <i>procmail</i> filtering systems use the <i>rcvstore</i>
-program that takes care of these details. The <i>inc</i> program also
-adds messages to the unseen sequence, so even if you do not filter
-mail the new messages in inbox will be highlighted by <i>exmh</i>.
+the <code>slocal</code> and <code>procmail</code> filtering systems
+use the <code>rcvstore</code> program that takes care of these
+details. The <code>inc</code> program also adds messages to the unseen
+sequence, so even if you do not filter mail the new messages in inbox
+will be highlighted by <i>exmh</i>.
 
 <p>
-The standard filter used with MH is described in the mhook (or slocal)
-man page. Below is a quick summary of how it works. You must maintain
-a file named ~/.maildelivery that has your mail filter specifications.
-The contents of the file are explained below. If you can forward mail
-into programs at your site, then put this into your .forward file to
-get filtering: 
+The standard filter used with MH is described in the
+<code>mhook</code> (or <code>slocal</code>) man page. Below is a quick
+summary of how it works. You must maintain a file named
+<code>~/.maildelivery</code> that has your mail filter
+specifications. The contents of the file are explained below. If you
+can forward mail into programs at your site, then put this into your
+<code>.forward</code> file to get filtering: 
 <pre><blockquote>| /usr/local/mh/lib/slocal -user yourname
 </blockquote></pre>
 <p>
 Alternatively, if you select the "presort" inc-style described below,
-then exmh will run slocal for you each time you say Inc. 
+then exmh will run <code>slocal</code> for you each time you say 
+<button -command "Inc">Inc</button>. 
 <p>
-If you use the <i>procmail</i> system, or perhaps supply your own,
-use the MH rcvstore program to put messages into folders. This program
-updates the unseen sequence so exmh can find the new mail. Unfortunately,
-the rcvstore program is in the MH library, so you must reference it
-with a long pathname, (e.g., /usr/local/mh/lib/rcvstore.) 
+If you use the <code>procmail</code> system, or perhaps supply your
+own, use the MH <code>rcvstore</code> program to put messages into
+folders. This program updates the unseen sequence so exmh can find the
+new mail. Unfortunately, the <code>rcvstore</code> program is in the
+MH library, so you must reference it with a long pathname, (e.g.,
+<code>/usr/local/mh/lib/rcvstore</code>.)
 <p>
-A sample .maildelivery filter file is shown below. Note: this file
-is ignored if it has group or world write permission. It uses the <i>rcvstore</i>
-program to refile messages into different folders. The first field
-is the header to match, and the second is the value to look for. This
-is a case-insensitive string. The third column specifies an action.
-In this case | says to pipe the message into the program in the last
-column. The fourth column provides limited decision making. In this
-case the ? means to try and match this filter if the message has not
-already matched a previous filter. The complete syntax of the filters
-is given in the mhook man page. 
+A sample <code>.maildelivery</code> filter file is shown below. Note:
+this file is ignored if it has group or world write permission. It
+uses the <code>rcvstore</code> program to refile messages into
+different folders. The first field is the header to match, and the
+second is the value to look for. This is a case-insensitive
+string. The third column specifies an action. In this case | says to
+pipe the message into the program in the last column. The fourth
+column provides limited decision making. In this case the ? means to
+try and match this filter if the message has not already matched a
+previous filter. The complete syntax of the filters is given in the
+<code>mhook</code> man page. 
 <pre><blockquote>subject exmh            |  ?  "/usr/local/lib/mh/rcvstore +exmh"
 subject mxedit          |  ?  "/usr/local/lib/mh/rcvstore +mxedit"
 subject book            |  ?  "/usr/local/lib/mh/rcvstore +book"
@@ -881,12 +974,12 @@ from    footbag-digest" |  ?  "/usr/local/lib/mh/rcvstore +footlist"
 default -               |  ?  "/usr/local/lib/mh/rcvstore +inbox"
 </blockquote></pre>
 <p>
-<i>Warning!</i> If you use the .maildelivery file to filter messages,
-you should always have a default action in the file that refiles the
-messages into your inbox (or some catch-all folder). Depending on your
-local configuration, there might not be a good pre-default default
-action. If there is no default action, mail that does not match a filter
-will be discarded! 
+<i>Warning!</i> If you use the <code>.maildelivery</code> file to
+filter messages, you should always have a default action in the file
+that refiles the messages into your inbox (or some catch-all
+folder). Depending on your local configuration, there might not be a
+good pre-default default action. If there is no default action, mail
+that does not match a filter will be discarded! 
 <p>
 A patch for the slocal program is distributed with exmh. It adds an
 additional syntax to the maildelivery file that makes it simpler to
@@ -905,48 +998,63 @@ incorporate mail from your system spool file. <i>Exmh</i> supports
 several different styles: <i>inbox</i>, <i>multidrop</i>, <i>presort</i>,
 <i>presortmulti</i> and <i>none</i>. Use the <i>Incorporate Mail</i>
 preference section to choose one. You may also want to enable periodic
-inc under the <i>Background Processing</i> preferences section. 
+inc under the <i>Background Processing</i>
+<button -command Preferences_Dialog>Preferences</button> section. 
 <dl>
-<dt>inbox 
-<dd>Inc moves new messages into your inbox folder. This is the default.
-No filtering is done, but the inbox folder label will highlight when
-new mail is incorporated into it, and unread messages will be highlighted.
-<dt>none 
-<dd>If you use your .forward file to process mail through an external
-program in order to deliver messages into various folders, then you
-don't need Inc in the user interface. Selecting "none" will eliminate
-the Inc button altogether and disable the internal Inc procedure. A
-background "flist" task is a nice complement to this setting so that
-you can see what folders are getting mail. 
-<dt>presort 
-<dd>Inc moves new messages directly into various folders. This is similar
-to what you may be doing already with an external program. This is
-built this into exmh in order to eliminate the need for an external
-program. (I cannot use a .forward file at my site.) The way presort
-works is to inc from your spool file into a temporary folder (MyIncTmp).
-Then, the MH filtering hook <i>slocal</i> is run on each message. In
-this mode, it is expected that the filtering action is to put the message
-into a folder. You do this by specifying an action that is to pipe
-the message into the MH <i>rcvstore</i> program. See the MH man page
-for <i>mhook</i> for details. 
-<dt>multidrop 
-<dd>This assumes that you use POP or the MH maildelivery facilities
-(see <i>mhook</i>) to put new messages into a set of drop-boxes (inbox-like
-files). You set up the correspondence between POP hosts and folders,
-or between inbox files and folders with your ~/.xmhcheck file. Inc
-moves messages from the POP server or drop-boxes into folders. The format
-of each line of ~/.xmhcheck file is shown below. In the first case,
-the file name must be an absolute pathname (i.e., has leading /). In
-the second case (POP), the third field is an optional user ID. 
-<dt>presortmulti 
-<dd>This is a combination of multidrop and presort. Any drop-box that
-is associated with the MyIncTmp folder gets filtered just as with presort.
+
+  <dt>inbox 
+  <dd><button -command "Inc">Inc</button> moves new messages into your
+      inbox folder. This is the default. No filtering is done, but the
+      inbox folder label will highlight when new mail is incorporated
+      into it, and unread messages will be highlighted. 
+
+  <dt>none 
+  <dd>If you use your <code>.forward</code> file to process mail
+      through an external program in order to deliver messages into
+      various folders, then you don't need Inc in the user
+      interface. Selecting "none" will eliminate the 
+      <button -command "Inc">Inc</button> button altogether and
+      disable the internal Inc procedure. A background "flist" task is
+      a nice complement to this setting so that you can see what
+      folders are getting mail. 
+
+  <dt>presort 
+  <dd><button -command "Inc">Inc</button> moves new messages directly
+      into various folders. This is similar to what you may be doing
+      already with an external program. This is built this into exmh
+      in order to eliminate the need for an external program. (I
+      cannot use a <code>.forward</code> file at my site.) The way
+      presort works is to inc from your spool file into a temporary
+      folder (<code>MyIncTmp</code>).  Then, the MH filtering hook
+      <code>slocal</code> is run on each message. In this mode, it is
+      expected that the filtering action is to put the message into a
+      folder. You do this by specifying an action that is to pipe the
+      message into the MH <code>rcvstore</code> program. See the MH
+      man page for <code>mhook</code> for details. 
+
+  <dt>multidrop 
+  <dd>This assumes that you use POP or the MH maildelivery facilities
+      (see <code>mhook</code>) to put new messages into a set of
+      drop-boxes (inbox-like files). You set up the correspondence
+      between POP hosts and folders, or between inbox files and
+      folders with your <code>~/.xmhcheck</code. file. 
+      <button -command "Inc">Inc</button> moves messages from the POP
+      server or drop-boxes into folders. The format of each line of
+      <code>~/.xmhcheck</code> file is shown below. In the first case,
+      the file name must be an absolute pathname (i.e., has leading
+      <code>/</code>). In the second case (POP), the third field is an
+      optional user ID.
+
+  <dt>presortmulti 
+  <dd>This is a combination of multidrop and presort. Any drop-box
+      that is associated with the <code>MyIncTmp</code> folder gets
+      filtered just as with presort. 
 </dl>
 <p>
-The <a HREF="exmh.n.html"><b>.xmhcheck</b></a> file. The following
-shows the format of the .xmhcheck file. If the folder_name is MyIncTmp
-and you use presortmulti inc style, then messages are filtered after
-they are fetched from the dropbox. 
+The <code>.xmhcheck</code> file. The following shows the format of the
+<code>.xmhcheck</code> file. If the folder_name is
+<code>MyIncTmp</code> and you use presortmulti inc style, then
+messages are filtered after they are fetched from the dropbox.
 <pre>folder_name   /filename/of/dropbox
 or
 folder_name   POP_hostname [POP_user_name]
@@ -955,42 +1063,48 @@ folder_name   POP_hostname [POP_user_name]
 <h3><a NAME="NNTP NEWS" HREF="#CONTENTS">NNTP NEWS</a></h3>
 <p>
 <i>Exmh</i> has support for retrieval of unread news messages from
-user-specified newsgroups via NNTP (Network News Transfer Protocol). It does
-not have the full functionality provided by a threaded news-reading program
-such as <i>trn</i> or the <i>gnus</i> package for <i>emacs</i>; however, it can
-be useful to download news periodically from a small number of low-volume
-groups within <i>exmh</i>'s mail-reading environment. There is also an item on
-the More... message menu to allow the current message to be posted to a
-newsgroup.
+user-specified newsgroups via NNTP (Network News Transfer
+Protocol). It does not have the full functionality provided by a
+threaded news-reading program such as <code>trn</code> or the
+<code>gnus</code> package for <code>emacs</code>; however, it can be
+useful to download news periodically from a small number of low-volume
+groups within <i>exmh</i>'s mail-reading environment. There is also an
+item on the More... message menu to allow the current message to be
+posted to a newsgroup.
 <p>
-News retrieval is configured using the NNTP Support preferences
-section. The machine running your local NNTP server (often called
-"news") can be specified, along with the port it uses to listen for
-connections (this is almost always port 119). If your news server
-requires authentication, you can also specify your username and
-password. You can specify a whitespace-separated list of newsgroups
-which should periodically be checked for new news, and you should give
-the pathname of a file which will be used to store a record of the
-messages you have already read. Most news-reading programs use the
-<b>.newsrc</b> file in your home directory for this purpose, so if you
-want to use <i>exmh</i> as well as another news-reader you should use
-this filename. Two options are provided for newsgroup moderators to
-ease the process of posting a moderated message to the group.
+News retrieval is configured using the NNTP Support 
+<button -command Preferences_Dialog>Preferences</button> section. The
+machine running your local NNTP server (often called "news") can be
+specified, along with the port it uses to listen for connections (this
+is almost always port 119). If your news server requires
+authentication, you can also specify your username and password. You
+can specify a whitespace-separated list of newsgroups which should
+periodically be checked for new news, and you should give the pathname
+of a file which will be used to store a record of the messages you
+have already read. Most news-reading programs use the
+<code>.newsrc</code> file in your home directory for this purpose, so
+if you want to use <i>exmh</i> as well as another news-reader you
+should use this filename. Two options are provided for newsgroup
+moderators to ease the process of posting a moderated message to the
+group.
 <p>
-In order to enable background news processing, two options in the Background
-Processing preferences section must be set; one of these enables background
-news retrieval, and the other specifies the interval at which this should be
-performed. News retrieval is a relatively time-consuming business, so it is
-recommended that this interval be no shorter than 60 minutes, and 120 or 180
-minutes would be quite reasonable. Note that background news retrieval can be
-enabled and disabled independently of any background mail-processing option you
-have selected.
+In order to enable background news processing, two options in the
+Background Processing 
+<button -command Preferences_Dialog>Preferences</button> section must
+be set; one of these enables background news retrieval, and the other
+specifies the interval at which this should be performed. News
+retrieval is a relatively time-consuming business, so it is
+recommended that this interval be no shorter than 60 minutes, and 120
+or 180 minutes would be quite reasonable. Note that background news
+retrieval can be enabled and disabled independently of any background
+mail-processing option you have selected.
 <p>
-When retrieving news, <i>exmh</i> uses a method identical to the "presort" inc
-style described in the <a HREF="#FILTERING MAIL">Filtering Mail</a> section
-above, i.e. news articles are downloaded into a temporary folder and then the
-<i>slocal</i> program is run on each one. For more information, see the mhook
-or slocal man page.
+When retrieving news, <i>exmh</i> uses a method identical to the
+"presort" inc style described in the <a HREF="#FILTERING
+MAIL">Filtering Mail</a> section above, i.e. news articles are
+downloaded into a temporary folder and then the <code>slocal</code>
+program is run on each one. For more information, see the
+<code>mhook</code> or </code>slocal</code> man page.
 
 <h3><a NAME="FACES" HREF="#CONTENTS">FACES</a></h3>
 <p>
@@ -998,37 +1112,40 @@ One of the more fun features of exmh is its ability to display the
 facesaver bitmap of the person that sent you mail. There are three
 sources of the images: the facesaver database, inline X-Face mail
 header fields or inline X-image-url mail header fields. These sources
-can be used independently, but the main trick is getting <a
-HREF="exmh.n.html">exmh</a> configured properly to use them.
+can be used independently, but the main trick is getting <i>exmh</i>
+configured properly to use them. 
 <p>
 <b>Facesaver Database</b>. The exmh installer asks for two pieces of
-facesaver-related information: the root directory of your faces installation
-and a search path of faces directories. This assumes that you have
-retrieved the faces software and associated databases and installed
-them under on directory, which is referred to as its root directory.
-The default is /usr/local/faces. Underneath this directory there is
-assumed to be one or more directories that contain facesaver databases.
-It is these directories that are named in the search path; the names
-are relative to the root of the faces installation. Typically there
-is facesaver, logos, and a local database, which is called "parc" at
-my site. The first two databases come from the facesaver.tar.Z and
-logos.tar.Z files, respectively. The default values are: 
+facesaver-related information: the root directory of your faces
+installation and a search path of faces directories. This assumes that
+you have retrieved the faces software and associated databases and
+installed them under on directory, which is referred to as its root
+directory. The default is <faces>/usr/local/faces</faces>. Underneath
+this directory there is assumed to be one or more directories that
+contain facesaver databases. It is these directories that are named in
+the search path; the names are relative to the root of the faces
+installation. Typically there is <code>facesaver</code>,
+<code>logos</code>, and a local database, which is called
+<code>parc</code> at my site. The first two databases come from the
+<code>facesaver.tar.Z</code> and <code>logos.tar.Z</code> files,
+respectively. The default values are: 
 <pre><blockquote>Faces Root Directory /usr/local/faces
 Faces Search Path    parc logos news facesaver
 </blockquote></pre>
 <p>
 If you are setting up your own database, you need to understand how it
 is organized. It is easiest to demonstrate by example. For myself,
-welch@parc.xerox.com, my facesaver image is found as
-com/xerox/parc/welch/face.xbm.  <i>Exmh</i> will look for this file
-under each of the directories named by the faces search path. The
-complete pathname might be
-/usr/local/faces/parc/com/xerox/parc/welch/face.xbm.  If a bitmap is
-not found, then the search algorithm trims off trailing components in
-an effort to find a more general bitmap, typically a company or
-organizational logo. At your site, for example, you might only have
-/usr/local/faces/logos/com/xerox/face.xbm, which contains the Xerox
-corporate logo.
+<a href="mailto:welch@parc.xerox.com">welch@parc.xerox.com</a>, my
+facesaver image is found as
+<code>com/xerox/parc/welch/face.xbm</code>.  <i>Exmh</i> will look for
+this file under each of the directories named by the faces search
+path. The complete pathname might be
+<code>/usr/local/faces/parc/com/xerox/parc/welch/face.xbm<code>.  If a
+bitmap is not found, then the search algorithm trims off trailing
+components in an effort to find a more general bitmap, typically a
+company or organizational logo. At your site, for example, you might
+only have <code>/usr/local/faces/logos/com/xerox/face.xbm</code>,
+which contains the Xerox corporate logo.
 <p>
 If your <i>exmh</i> installation is not correct, or if you have a
 personal faces database that the <i>exmh</i> maintainer doesn't know
@@ -1047,16 +1164,18 @@ X-Face pipeline for this to work. If the pipeline is blank (the default),
 no processing is done. To decompress and display the header, use a
 pipeline setting like this: 
 <pre><blockquote>uncompface | ikon2xbm
-</blockquote></pre>The uncompface program comes with
-the faces software. It also has a version of <i>ikon2xbm</i>, but a
-faster version of this program (a C program instead of some scripts)
-is distributed with <i>exmh</i> in its misc directory. Future versions
-of <i>exmh</i> will cache the results of decompressing the X-Face line
-in a personal faces database, but in the current version it just writes
-the file to /tmp/FACES.[pid]. If you are inspired you could add a
-Hook_MsgDisplay to stash this file into a real facesaver database. The
-<a HREF="exmh-custom.n.html"><b>exmh-custom</b></a> man page describes
-hook procedures. 
+</blockquote></pre>The <code>uncompface</code> program comes with
+the faces software. It also has a version of <code>ikon2xbm</code>,
+but a faster version of this program (a C program instead of some
+scripts) is distributed with <i>exmh</i> in its misc directory. Future
+versions of <i>exmh</i> will cache the results of decompressing the
+X-Face line in a personal faces database, but in the current version
+it just writes the file to /tmp/FACES.[pid]. If you are inspired you
+could add a Hook_MsgDisplay to stash this file into a real facesaver
+database. <a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>
+describes hook procedures.  If you do this, please post your
+inspiration to 
+<a href="mailto:exmh-workers@redhat.com">exmh-workers@redhat.com</a>.
 <p>
 <b>X-image-url headers</b>.  The X-image-url header contains a URL
 referring to an image.  These should be icon-sized.
@@ -1064,133 +1183,158 @@ referring to an image.  These should be icon-sized.
 <h3><a NAME="SEARCHING IN EXMH" HREF="#CONTENTS">SEARCHING IN EXMH</a></h3>
 There are several ways to search for things in exmh: 
 <dl>
-<dt>Find in message body 
-<dd>Searching uses regular expression syntax, and case is ignored.
-<dt>Find in table of contents 
-<dd>Searching uses regular expression syntax, and case is ignored.
-This just searches over what you can see in the display. If you select
-All, then all matching messages are selected. 
-<br>
 
-Hint: Use the "List only selected messages" folder More... menu entry
-to get a listing that only contains the selected messages. 
-<dt>Pick by attributes 
-<dd>A general search (i.e, MH pick) over the messages in the folder.
-This can run slowly because each message in the folder must be processed.
-You can match on various header fields by using the "Choose pick option"
-menu in the Pick dialog. If you choose more than one option, the messages
-must match all of them, unless you use the Not and Or buttons to build
-up more complex criteria. This interface is explained in more detail
-in the <i>exmh</i> man page. 
-<br>
+  <dt>Find in message body 
+  <dd>Searching uses regular expression syntax, and case is ignored.
 
-The "Add to Sequence(s)" option will add the matching messages to
-an MH sequence. Just pick a meaningful name for the sequence. (Sequences
-are not supported well by exmh, yet.) The "Pick from Seq/msg(s)" lets
-you narrow the search to a sequence (e.g., "unseen" or something you
-defined yourself) or a set of messages (e.g., last:100 for the last
-100 messages in the folder). 
-<br>
+  <dt>Find in table of contents 
+  <dd>Searching uses regular expression syntax, and case is
+      ignored. This just searches over what you can see in the
+      display. If you select All, then all matching messages are
+      selected. 
+      <br>
+      Hint: Use the "List only selected messages" folder More... menu
+      entry to get a listing that only contains the selected messages. 
 
-The "All to Sel" option determines if the matching messages are added
-to the currently selected set, or if a new set is created. 
-<dt>Glimpse full text 
-<dd>Glimpse is a full text searching tool from the University of Arizona.
-Invoke the "Glimpse full text" menu entry under the Search... menu
-to bring up an interface to this tool. You must first index your mail,
-so to get started click "index" to build your indexes. This process
-runs in the background, and the status of the index process is displayed
-in the Glimpse log. The storage overhead of the indexes is about 10%
-to 15%, which is quite good for a full text index system. 
-<br>
+  <dt>Pick by attributes 
+  <dd>A general search (i.e, MH pick) over the messages in the
+      folder. This can run slowly because each message in the folder
+      must be processed. You can match on various header fields by
+      using the "Choose pick option" menu in the Pick dialog. If you
+      choose more than one option, the messages must match all of
+      them, unless you use the Not and Or buttons to build up more
+      complex criteria. This interface is explained in more detail in
+      <a HREF="exmh.n.html"><i>exmh</i></a>. 
+      <br>
+      The "Add to Sequence(s)" option will add the matching messages
+      to an MH sequence. Just pick a meaningful name for the
+      sequence. (Sequences are not supported well by exmh, yet.) The
+      "Pick from Seq/msg(s)" lets you narrow the search to a sequence
+      (e.g., "unseen" or something you defined yourself) or a set of
+      messages (e.g., last:100 for the last 100 messages in the folder).
+      <br>
+      The "All to Sel" option determines if the matching messages are
+      added to the currently selected set, or if a new set is created. 
 
-To search, enter a word in the search area and press "Search". The
-button changes to a "Stop" button, although the stop may take a moment
-to take effect. The search results are displayed in the log. Click
-on the message in the log and exmh will visit that message. 
-<br>
+  <dt>Glimpse full text 
+  <dd>Glimpse is a full text searching tool from the University of
+      Arizona. Invoke the "Glimpse full text" menu entry under the
+      Search... menu to bring up an interface to this tool. You must
+      first index your mail, so to get started click "index" to build
+      your indexes. This process runs in the background, and the
+      status of the index process is displayed in the Glimpse log. The
+      storage overhead of the indexes is about 10% to 15%, which is
+      quite good for a full text index system. 
+      <br>
+      To search, enter a word in the search area and press
+      "Search". The button changes to a "Stop" button, although the
+      stop may take a moment to take effect. The search results are
+      displayed in the log. Click on the message in the log and exmh
+      will visit that message.
+      <br>
+      Glimpse supports approximate pattern matching, so under the
+      Opts... menu you can choose how many errors are allowed in a
+      word match. You can also control if the search is case sensitive
+      or whole word.
+      <br>
+      Exmh creates one glimpse index per mail folder. These are stored
+      under the <code>~/Mail/.glimpse</code> directory. This lets you
+      limit the search to the current folder, or to the current folder
+      and its sub-folders.
+      <br>
+      To update the index, just press index again. If a folder has not
+      changed then the index is not rebuilt. While Glimpse has an
+      incremental reindex feature, exmh does not use it. There appear
+      to be bugs in it.
+      <br>
+      For more information about Glimpse, see
+      <a href="http://glimpse.cs.arizona.edu:1994/">http://glimpse.cs.arizona.edu:1994/</a>.
 
-Glimpse supports approximate pattern matching, so under the Opts...
-menu you can choose how many errors are allowed in a word match. You
-can also control if the search is case sensitive or whole word. 
-<br>
-
-Exmh creates one glimpse index per mail folder. These are stored under
-the ~/Mail/.glimpse directory. This lets you limit the search to the
-current folder, or to the current folder and its sub-folders. 
-<br>
-
-To update the index, just press index again. If a folder has not changed
-then the index is not rebuilt. While Glimpse has an incremental reindex
-feature, exmh does not use it. There appear to be bugs in it. 
-<br>
-
-For more information about Glimpse, see this URL: http://glimpse.cs.arizona.edu:1994/
 </dl>
-<h3><a NAME="TIPS" HREF="#CONTENTS">TIPS</a></h3>
-<p>
-<b>Background Processing</b>. You can set up <i>exmh</i> to periodically
-incorporate mail (i.e., <i>inc</i>) for you. If you already do this
-via an external agent, then you should have <i>exmh</i> periodically
-check for new mail in your folders, which is the <i>flist</i> action.
-The folder highlighting and icon feedback work best with <i>inc</i>
-and <i>flist</i>. You can also have it periodically run <i>msgchk</i>
-or count messages in your spool file, but the disadvantage of doing
-this is that there is no audible or icon feedback when it sees mail
-waiting in your spool file. Instead, there is just a status message
-that you might not notice. Choose what background action is taken and
-how frequently it is done with the Background Processing preferences
-section. (Background NNTP news retrieval can also be enabled via the
-Background Processing preferences section, independently of which of the
-above background actions you have chosen).
-<p>
-<b>Scan Caches</b>. <i>Exmh</i> maintains a cache of the scan output
-for each folder. If you run MH programs from the command line it can
-invalidate the cache. You can manually update the cache with the <i>Rescan
-Folder</i> operation under the Folder More... menu. There are also
-menu entries that update scan caches for all your folders. These run
-in the background so the user interface can remain active. The scan
-cache is compatible with <i>xmh</i>. 
-<p>
-<b>Performance</b>. If you want message display to go as fast as possible,
-do three things. 1) Disable the X-Face pipeline command so you do not
-try to decompress X-Face headers. 2) Disable the facesaver database,
-which is distinct from the X-Face pipeline. Actually, this is only
-slow on the first message you receive from a new email address. The
-pathname of the bitmap image that corresponds to that address is cached
-to avoid the expensive lookup the next time you view a message from
-that address. 3) Disable the Graphic Separator in the MIME preferences.
-That uses a 3D line of text instead of a blank line, and it takes a
-bit longer to display. 
-<p>
-<i>exmh</i> does not like really big folders. If you have more than
-several hundred messages in a folder you will notice that folder change
-times get pretty slow. Take this as a nudge to reorganize things into
-sub-folders. Every three months I move saved messages into sub-folders
-with names like 94Q2, 94Q3, etc. I understand the performance problems
-involved, and plan to overhaul some of the exmh internals to improve
-this situation. In the meantime... 
-<p>
-Really big folders with lots of messages in the unseen sequence are
-really slow. Use the "Catch-up unseen" folder More... operation to
-clear the unseen sequence. You probably want to do this when you import
-mail from other systems mailboxes. 
-<p>
-<b>More Keyboard Stuff</b>. If you really like using the keyboard instead
-of the mouse, you can change folders, set the target folder, and select
-messages by number with keyboard commands. When you type plus ('+'),
-focus warps to the status line so you can type in the name of a folder.
-In this mode, a plus cycles between choosing the target folder for
-moves or a folder to change into. &lt;space&gt; does folder name completion,
-&lt;Return&gt; accepts the folder name, and &lt;Control-c&gt; cancels
-the folder selection. If you start by typing a number (not plus), that
-message is selected, but it is not displayed until you press &lt;Return&gt;.
 
+<h3><a NAME="TIPS" HREF="#CONTENTS">TIPS</a></h3>
+
+<dl>
+  <dt>Background Processing
+  <dd>You can set up <i>exmh</i> to periodically incorporate mail
+      (i.e., <button -command "Inc">Inc</button>) for you. If you
+      already do this via an external agent, then you should have
+      <i>exmh</i> periodically check for new mail in your folders,
+      which is the
+      <button -command "busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</button> 
+      action. The folder highlighting and icon feedback work best with
+      <button -command "Inc">Inc</button> and 
+      <button -command "busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</button>. 
+      You can also have it periodically run <code>msgchk</code> or
+      count messages in your spool file, but the disadvantage of doing
+      this is that there is no audible or icon feedback when it sees
+      mail waiting in your spool file. Instead, there is just a status
+      message that you might not notice. Choose what background action
+      is taken and how frequently it is done with the Background
+      Processing 
+      <button -command Preferences_Dialog>Preferences</button>
+      section. (Background NNTP news retrieval can also be enabled via
+      the Background Processing
+      <button -command Preferences_Dialog>Preferences</button>
+      section, independently of which of the above background actions
+      you have chosen). 
+
+  <dt>Scan Caches
+  <dd><i>Exmh</i> maintains a cache of the scan output for each
+      folder. If you run MH programs from the command line it can
+      invalidate the cache. You can manually update the cache with the
+      <button -command "busy Scan_FolderForce">Rescan folder</button>
+      operation under the Folder More... menu. There are also menu
+      entries that update scan caches for all your folders. These run
+      in the background so the user interface can remain active. The
+      scan cache is compatible with <i>xmh</i>. 
+
+  <dt>Performance
+  <dd>If you want message display to go as fast as possible, do three
+      things. 1) Disable the X-Face pipeline command so you do not try
+      to decompress X-Face headers. 2) Disable the facesaver database,
+      which is distinct from the X-Face pipeline. Actually, this is
+      only slow on the first message you receive from a new email
+      address. The pathname of the bitmap image that corresponds to
+      that address is cached to avoid the expensive lookup the next
+      time you view a message from that address. 3) Disable the
+      Graphic Separator in the MIME <button -command
+      Preferences_Dialog>Preferences</button>. That uses a 3D line of
+      text instead of a blank line, and it takes a bit longer to display. 
+      <p>
+      <i>exmh</i> does not like really big folders. If you have more
+      than several hundred messages in a folder you will notice that
+      folder change times get pretty slow. Take this as a nudge to
+      reorganize things into sub-folders. Every three months I move
+      saved messages into sub-folders with names like 94Q2, 94Q3,
+      etc. I understand the performance problems involved, and plan to
+      overhaul some of the exmh internals to improve this
+      situation. In the meantime...
+      <p>
+      Really big folders with lots of messages in the unseen sequence
+      are really slow. Use the "Catch-up unseen" folder
+      More... operation to clear the unseen sequence. You probably
+      want to do this when you import mail from other systems
+      mailboxes. 
+
+  <dt>More Keyboard Stuff
+  <dd>If you really like using the keyboard instead of the mouse, you
+      can change folders, set the target folder, and select messages
+      by number with keyboard commands. When you type plus ('+'),
+      focus warps to the status line so you can type in the name of a
+      folder. In this mode, a plus cycles between choosing the target
+      folder for moves or a folder to change into. &lt;space&gt; does
+      folder name completion, &lt;Return&gt; accepts the folder name,
+      and &lt;Control-c&gt; cancels the folder selection. If you start
+      by typing a number (not plus), that message is selected, but it
+      is not displayed until you press &lt;Return&gt;. 
+</dl>
 
 <h3><a NAME="INSTALLATION" HREF="#CONTENTS">INSTALLATION</a></h3>
 Installation is done via the exmh.install script. Invoke it as: 
 <pre><blockquote>    wish -f ./exmh.install
-</blockquote></pre>This puts up a dialog box that
+</blockquote></pre>
+This puts up a dialog box that
 lets you patch various file system specific pathnames and enable or
 disable features that your system cannot support (e.g., facesaver,
 sound). Read the info in the dialog box and enter the appropriate file
@@ -1228,24 +1372,26 @@ retrieve configuration information from previous versions installed
 in peer directories. You can also maintain configuration information
 via the "Conf" button, which looks for ../*/.exmhinstall*. 
 <p>
-A patch to the MH <b>slocal</b> program is included as "misc/slocal.patch".
-The patch adds a "+" syntax to your .maildelivery file that results
-in messages being filed into a folder by means of the MH <b>rcvstore</b>
-library program. You can keep your patched copy of <b>slocal</b> distinct
-from the installed version because <i>exmh</i> runs <b>slocal</b> directly.
-The installation dialog lets you set up the pathname for your custom
-copy. 
+A patch to the MH <code>slocal</code> program is included as
+<code>misc/slocal.patch</code>. The patch adds a "+" syntax to your
+.maildelivery file that results in messages being filed into a folder
+by means of the MH <code>rcvstore</code> library program. You can keep
+your patched copy of <code>slocal</code> distinct from the installed
+version because <i>exmh</i> runs <code>slocal</code> directly. The
+installation dialog lets you set up the pathname for your custom
+copy.
 <p>
 There is also a patch for the MH folder.c program. The patch makes
-"folders -recurse" run much faster because it avoids directories that
-do not have sub-folders. The patches apply to MH 6.7. 
+<code>folders -recurse</code> run much faster because it avoids
+directories that do not have sub-folders. The patches apply to MH
+6.7.
 
 <h3><a NAME="UPGRADING WITH PATCHES" HREF="#CONTENTS">UPGRADING WITH
 PATCHES</a></h3>
 <p>
 There are usually patch files to go between releases (e.g. from 1.6.4
 to 1.6.5). The best way to use these patches is to patch your 1.6.4
-<b>source</b>directory and then reinstall using the procedure described
+<code>source</code>directory and then reinstall using the procedure described
 above. This has the benefit of fixing the version number in the main
 script. Finally, this is how the patches are generated, so if you apply
 them to your installed directories they might not work properly. 
@@ -1255,7 +1401,8 @@ XAUTHORITY</a></h3>
 <p>
 The thing that causes the most trouble with new exmh users is the Tk
 send facility and the Xauthority mechanism. This matters if you use
-the detached background process or the <b>exmh-async</b> editor wrapper.
+the detached background process or the <code>exmh-async</code> editor
+wrapper. 
 
 <p>
 The send facility is used for communication between Tk interpreters.
@@ -1271,9 +1418,9 @@ run from your account can read the file to get the right bit string.
 For the details, read about the -auth or -xauth argument to your server.
 
 <p>
-Even if you get this right, you must also make sure that the old <i>xhost</i>
-security system is not used. That is, the xhost list must be empty.
-To do this, run the following command: 
+Even if you get this right, you must also make sure that the old
+<code>xhost</code> security system is not used. That is, the xhost
+list must be empty. To do this, run the following command:
 <pre><blockquote>xhost -
 </blockquote></pre>
 <p>
@@ -1282,17 +1429,19 @@ It can clear out any hosts that creep onto the list. This typically
 happens with wrapper scripts used to run other programs. If you use
 Xauthority properly, the additional use of xhost is completely bogus
 and insecure. Not to mention that it breaks Tk send. Under Background
-Processing preferences, select "Keep xhost list clear". 
+Processing <button -command Preferences_Dialog>Preferences</button>,
+select "Keep xhost list clear".
 <p>
-The other alternative is to recompile the Tk library with the -DTK_NO_SECURITY
-compile flag. This is appropriate if your X server just cannot do the
-Xauthority protocol, or you think your environment is safe enough.
-That is, you don't have to worry about other users popping up rogue
-windows on your display. 
+The other alternative is to recompile the Tk library with the
+<code>-DTK_NO_SECURITY</code> compile flag. This is appropriate if
+your X server just cannot do the Xauthority protocol, or you think
+your environment is safe enough. That is, you don't have to worry
+about other users popping up rogue windows on your display.
 
 <h3><a NAME="MORE INFORMATION" HREF="#CONTENTS">MORE INFORMATION</a></h3>
 You are welcome to send bug reports and comments about exmh to the
-following email address: welch@acm.org. 
+following email address: 
+<a href="mailto:exmh-workers@redhat.com">exmh-workers@redhat.com</a>.
 <p>
 Exmh is available via FTP on ftp.sunlabs.com in the pub/tcl/exmh directory.
 

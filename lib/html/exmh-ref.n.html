@@ -57,7 +57,7 @@ is based on Tk, not Xt.
   <dt><code>-iconic</code> 
   <dd>Begin execution iconic. 
 
-  <dt><strong>-nofaces</strong> 
+  <dt><code>-nofaces</code> 
   <dd>Do not use faces database during this run. 
 
   <dt><code>-sedit</code> 
@@ -88,7 +88,7 @@ Log, Help..., Bindings..., Address..., Preferences, and Quit.
          <dd>This provides a highlighting key for color or monochrome
              screens. 
 
-         <dt><button -command "Html_Window file:\$exmh(library)/html/index.html">HTML Docs </button> 
+         <dt><button -command "Html_Window file:\$exmh(library)/html/index.html">HTML Docs</button> 
          <dd>This provides access to all the exmh documentation. 
 
          <dt><button -command "Help exmh-faq">Frequently Asked
@@ -99,10 +99,10 @@ Log, Help..., Bindings..., Address..., Preferences, and Quit.
          <dt>Exmh Mailing Lists... 
          <dd>This is a sub-menu that lets you administer your
              membership in the exmh-related mailing lists. See the
-             <button -command "Help Lists {About the exmh mailing lists}">
-	     About</button> menu entry for an explanation of the various
-             mailing lists. The add/remove operations result in mail
-             messages. You'll need to Send the draft messages.
+             <button -command "Help Lists {About the exmh mailing lists}">About</button>
+	     menu entry for an explanation of the various mailing
+	     lists. The add/remove operations result in mail
+	     messages. You'll need to Send the draft messages. 
 
          <dt><button -command "Report_Bug">Submit Bug Report</button>
          <dd>A mail message is started so you can report a problem
@@ -408,7 +408,7 @@ Search... and More...
 	     except for .xmhcache, .mh_sequences, and any .nfs junk
 	     files. 
 
-	 <dt><button -command Catch-up Unseen>Catch-up Unseen</button>
+	 <dt><button -command Pick_MarkSeen>Catch-up Unseen</button>
 	 <dd>This clears the unseen sequence from the current folder. 
 
 	 <dt><button -command Scan_AllFolders>Update scan caches</button>
@@ -570,7 +570,7 @@ actions have their text grayed out.
 	<dd>This uses the MH <code>dist</code> command to resend a
 	    message to a different recipient. Your editor is invoked
 	    with a small buffer containing only
-	    code>Resent-To:</code> and <code>Resent-Cc:</code> lines. 
+	    <code>Resent-To:</code> and <code>Resent-Cc:</code>lines. 
 
 	<dt><button -command Msg_Save>Save to file</button>
 	<dd>This simply copies the current message(s) to a file

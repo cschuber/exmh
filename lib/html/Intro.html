@@ -168,8 +168,8 @@ The bottom set of buttons are for message operations:
 
 	<dt><button -command "Ftoc_Unmark">Unmark</button>
 	<dd>cancel a <button -command "Msg_Move
-	    Ftoc_MoveMark">Move</button> or <button -command
-	    "Msg_Remove">Delete</button> mark. 
+	    Ftoc_MoveMark">Move</button> or 
+	    <button -command "Msg_Remove">Delete</button> mark. 
 
 	<dt><button -command "Msg_Clip">Clip</button>
 	<dd>make a new window containing the current message. 
@@ -189,12 +189,13 @@ And many more. Check out the <a HREF="exmh-ref.n.html">exmh-ref</a>
 man page for details. 
 <h4>UNDO</h4>
 <p>
-The <button -command "Msg_Move Ftoc_MoveMark">Move</button>, <button
--command "Msg_Move Ftoc_CopyMark advance?">Link</button>, and <button
--command "Msg_Remove">Delete</button> operations mark a message with a
-pending operation. The way to undo this mark is to reselect the
-message(s) and select the <button
--command "Ftoc_Unmark">Unmark</button> operation from the More... menu.
+The <button -command "Msg_Move Ftoc_MoveMark">Move</button>, 
+<button -command "Msg_Move Ftoc_CopyMark advance?">Link</button>, and
+<button -command "Msg_Remove">Delete</button> operations mark a
+message with a pending operation. The way to undo this mark is to
+reselect the message(s) and select the 
+<button -command "Ftoc_Unmark">Unmark</button> operation from the
+More... menu.
 
 <h3>Folder Commands</h3>
 <p>
@@ -209,8 +210,7 @@ The middle set of buttons are for folder commands:
   <dd>a menu with Search options.  More info may be found <a
       href="#search">below</a> 
 
-  <dt><button
-      -command "busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</button>
+  <dt><button -command "busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</button>
   <dd>refreshes the display of folder buttons. This counts up all the
       unseen messages in all folders. 
 

@@ -3,7 +3,9 @@ HISTORY
 cvs repository 08/03/1999
     Display the body of a message which fails to be decoded by
 	PGP. -cwg 
-    Finished <button> tagging exmh-ref.n.html -cwg
+    Finished <button> tagging exmh-ref.n.html; and tagged
+	exmh-use.n.html as well as finding various problems in various
+	html pages -cwg 
 
 cvs repository 08/02/1999
     Spell checked html documentation and fleshed out documentation on
