@@ -293,9 +293,6 @@ being replied to into the quote file.  Sedit expects this to be on." }
 }
 proc Sound_Init {} {
     global sound
-    if {$sound(cmd) == {}} {
-	set sound(bell) 1
-    }
     # Preferences_Add will set these variables to Xresource values,
     # but only if the variables are not already defined.
     # These sound variables are defined at install time,
@@ -329,6 +326,9 @@ searched for in the exmh script library directory."] \
 you forget to commit pending operations.  Relative pathnames are
 searched for in the exmh script library directory."] \
 ]
+    if {$sound(enabled) && ([string length $sound(cmd)] == 0)} {
+	set sound(bell) 1
+    }
 }
 
 proc Sedit_Init {} {
@@ -632,7 +632,6 @@ proc Glimpse_Init {} {
 	    return
 	}
 	if [info exists glimpse(init)] { return }
-	set glimpse(init) 1
 
 	if [catch {exec $glimpse(path)/glimpse -V} voutput] {
 	    Exmh_Debug "$voutput"
@@ -640,7 +639,9 @@ proc Glimpse_Init {} {
 	}
 	if {! [regexp {[0-9]\.[0-9]} $voutput glimpse(version)] } {
 	    Exmh_Debug "glimpse version info error : $voutput"
+	    return
 	}
+	set glimpse(init) 1
 
 	Preferences_Add "Glimpse" \
 "Glimpse (which stands for GLobal IMPlicit SEarch) is an indexing and query
