@@ -6,6 +6,9 @@
 #
 
 # $Log$
+# Revision 1.6  2000/06/16 18:16:26  valdis
+# Various PGP fixes...
+#
 # Revision 1.5  2000/06/09 03:46:25  valdis
 # PGP 6.5 support
 #
@@ -70,6 +73,7 @@ set pgp(gpg,pubring) "$pgp(gpg,defaultPath)/pubring.gpg"
 set pgp(gpg,secring) "$pgp(gpg,defaultPath)/secring.gpg"
 set pgp(gpg,pubringBkp) "$pgp(gpg,defaultPath)/pubring.gpg~"
 set pgp(gpg,keyGenCmd) "rm -f $pgp(gpg,pubringBkp) && gpg --gen-key"
+set pgp(gpg,ownPattern) ""
 
 ## ButtonMenuInner
 set pgp(gpg,pat_MenuInner) {GPG}
@@ -109,6 +113,7 @@ set pgp(pgp,afterKeyGen) {
         File_Delete $tmpfile
     }
 }
+set pgp(pgp,ownPattern) ""
 
 ## ButtonMenuInner
 set pgp(pgp,pat_MenuInner) {PGP[^5]}
@@ -130,6 +135,7 @@ set pgp(pgp5,pubring) "$pgp(pgp5,defaultPath)/pubring.pkr"
 set pgp(pgp5,secring) "$pgp(pgp5,defaultPath)/secring.skr"
 set pgp(pgp5,pubringBkp) "$pgp(pgp5,defaultPath)/pubring.bak"
 set pgp(pgp5,keyGenCmd) "rm -f $pgp(pgp5,pubringBkp) && pgpk -g"
+set pgp(pgp5,ownPattern) ""
 
 ## ButtonMenuInner
 set pgp(pgp5,pat_MenuInner) {PGP5}
@@ -168,6 +174,8 @@ set pgp(pgp6,afterKeyGen) {
         File_Delete $tmpfile
     }
 }
+# this is somewhat bogus, but seems to work...
+set pgp(pgp6,ownPattern) "."
 
 ## ButtonMenuInner
 set pgp(pgp6,pat_MenuInner) {PGP6}

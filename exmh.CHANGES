@@ -6,6 +6,13 @@ cvs repostiory 06/16/2000 Brent Welch <welch@ajubasolutions.com>
     control over using color icons for the Exmh desktop icon as
     well as for the faces icons.
 
+cvs repository 06/16/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
+    lib/app-defaults - missed a PGP menu
+    lib/pgpBase.tcl, lib/pgpExec.tcl, lib/pgpMain.tcl - handle missing 
+    "pattern" which caused PGP 6.5 to not list private keyring.
+    lib/pgpMain.tcl - after changing PGP version in sedit, wrong
+    PGP version used in 'select key' dialog.
+
 cvs repository 06/15/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/main.tcl, lib/sedit.tcl, lib/seditMime.tcl - output MH version
     as well as Exmh on X-Mailer: line

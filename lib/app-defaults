@@ -1124,7 +1124,7 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.l_pgpversion:	Version
 *WhatNow.more.m.encrypt.t_pgpversion:	cascade
 *WhatNow.more.m.encrypt.m_pgpversion:	version
-*WhatNow.more.m.encrypt.version.entrylist:	pgp2 pgp5 gpg
+*WhatNow.more.m.encrypt.version.entrylist:	pgp2 pgp5 gpg pgp6
 *WhatNow.more.m.encrypt.version.l_pgp2:	PGP2
 *WhatNow.more.m.encrypt.version.t_pgp2:	radio
 *WhatNow.more.m.encrypt.version.v_pgp2:	pgp(version,$id)
@@ -1137,6 +1137,10 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.version.t_gpg:	radio
 *WhatNow.more.m.encrypt.version.v_gpg:	pgp(version,$id)
 *WhatNow.more.m.encrypt.version.x_gpg:	gpg
+*WhatNow.more.m.encrypt.version.l_pgp6:	PGP6
+*WhatNow.more.m.encrypt.version.t_pgp6:	radio
+*WhatNow.more.m.encrypt.version.v_pgp6:	pgp(version,$id)
+*WhatNow.more.m.encrypt.version.x_pgp6:	pgp6
 
 *WhatNow.more.m.encrypt.l_pgpsign:	Sign
 *WhatNow.more.m.encrypt.t_pgpsign:	cascade

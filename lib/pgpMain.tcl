@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.21  2000/06/16 18:16:26  valdis
+# Various PGP fixes...
+#
 # Revision 1.20  2000/04/22 10:34:49  gruber
 # Handle PGP messages without Version: xxx
 #
@@ -297,7 +300,7 @@ you want to use to generate your key?"]
     	if {![set pgp($v,enabled)]} {
 	    Pgp_Init
     	} else {
-	    set pgp($v,privatekeys) [Pgp_Exec_KeyList $v "" Sec]
+	    set pgp($v,privatekeys) [Pgp_Exec_KeyList $v $pgp($v,ownPattern) Sec]
     	}
 
 	# something todo after keygeneration, send to keyserver ?
@@ -501,6 +504,7 @@ proc Pgp_ChoosePrivateKey { v text } {
 proc Pgp_SetMyName { v id } {
    global pgp
 
+Exmh_Debug In PGP_SetMyName $v $id
     # first, save old pgp passphrase if set
    if {[info exists pgp(cur,pass,$id)] && \
 	   ([string length $pgp(cur,pass,$id)] > 0) && \
@@ -574,6 +578,7 @@ proc Pgp_SetSeditPgpVersion { v id } {
     } else {
 	set pgp(cur,pass,$id) {}
     }
+    set pgp(version,$id) $v
     Pgp_SetSeditPgpName $pgp($v,myname,$id) $id
 
 }

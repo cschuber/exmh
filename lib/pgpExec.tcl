@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.14  2000/06/16 18:16:26  valdis
+# Various PGP fixes...
+#
 # Revision 1.13  2000/06/15 17:03:11  valdis
 # Add X-Mailer: change, fix PGP Comment: line...
 #
@@ -758,7 +761,7 @@ proc Pgp_Exec_Init {} {
             if {![file exists [set pgp($v,secring)]]} {
                 set pgp($v,secring) {}
             }
-            set pgp($v,privatekeys) [Pgp_Exec_KeyList $v "" Sec]
+            set pgp($v,privatekeys) [Pgp_Exec_KeyList $v $pgp($v,ownPattern) Sec]
             #
             if [info exists pgp($v,config,myname)] {
                 set myname [string tolower [set pgp($v,config,myname)]]
