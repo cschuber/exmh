@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 12/07/2001 kchrist
+    lib/pgpExec.tcl - Fixed "GPG silently ignores untrusted keys during
+        encryption" bug. Thanks to Ben Escoto.
+
 cvs repository 12/06/2001 kchrist
     lib/mime.tcl: Do not call viewer if mailcap rule has needsterminal
         attribute. When using Mime_Magic to replace application/octet-stream

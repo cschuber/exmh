@@ -6,6 +6,10 @@
 # 
 
 # $Log$
+# Revision 1.17  2001/12/08 00:39:52  kchrist
+# Fixed "GPG silently ignores untrusted keys during encryption" bug.
+# Thanks to Ben Escoto.
+#
 # Revision 1.16  2001/12/06 16:39:13  kchrist
 # Exmh can now parse the GnuPG options file and identify the
 # "default-key" (same as "myname" in PGP).  Added "--status-fd 2" to
@@ -442,17 +446,29 @@ proc Pgp_Exec_CheckSuccess {v out output object} {
     if {![file exists $out] && [file exists "$out.asc"]} {
 	Mh_Rename "$out.asc" $out
     }
-    if {![file exists $out]} {
-        # pgp5 refuses to generate ciphertext in batchmode if tokey is untrusted
-        if {[regexp [set pgp($v,pat_Untrusted)] $output]} {
+
+    if {$v != "gpg"} {
+    	# pgp5 refuses to generate ciphertext in batchmode 
+	# if tokey is untrusted
+    	if {![file exists $out]} {
+	    if {[regexp [set pgp($v,pat_Untrusted)] $output]} {
+		return 1
+    	    } else {
+	    	error "[set pgp($v,fullName)] refused to generate the ${object}:\n$output"
+    	    }
+    	} else {
+	    return 0
+    	}
+    } else {
+        # GnuPG will also not encrypt to a key if it is untrusted but if
+        # any of the encryption keys are trusted a file will be generated
+        if {[regexp {^gpg:.* no info} $output]} {
             return 1
         } else {
-	    error "[set pgp($v,fullName)] refused to generate the ${object}:\n$output"
+            return 0
         }
-    } else {
-	return 0
     }
-}    
+}
 
 
 #################
