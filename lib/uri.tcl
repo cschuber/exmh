@@ -324,8 +324,10 @@ proc URI_ScanMsg { {w {}} {limit end} } {
     Exmh_Debug "URI_ScanMsg $limit"
     set multiline 0
     set hit 0
-#    set protocol (ftp|http|https|gopher|nntp|telnet|wais|file|prospero|finger|urn|mailto|news|solo|x500)
-    set protocol {[A-Za-z_]+[-A-Za-z0-9_]*}
+    set protocol (ftp|http|https|gopher|nntp|telnet|wais|file|prospero|finger|urn|mailto|news|solo|x500)
+    # the following pattern runs extremely slowly if there are long,
+    # unbroken character sequences in a message.
+#    set protocol {[A-Za-z_]+[-A-Za-z0-9_]*}
 
     for {set i 0} {[$w compare $i.0 < $limit]} {if {! $hit} {incr i}} {
 	if {! $hit} {
