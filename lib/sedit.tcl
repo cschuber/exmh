@@ -155,15 +155,19 @@ proc Sedit_Start { draft } {
 
 	foreach M [Widget_GetMenuBDef .sedit$id.but] {
 	    global pgp
+	    # We don't create pgp... or dsn... menus if we don't have backend code
+	    # that supports the feature.
 	    if {$pgp(enabled) || ($M != "pgp")} {
-		set menu [Widget_AddMenuBDef .sedit$id.but $M {right padx 1 filly}]
-		#
-		# Here is another way to set context for the menu commands.
-		# Jam the draft and text widget name into a global that
-		# can be accessed by the menu-invoked commands.
-		#
-		$menu config -postcommand [list SeditSetContext $draft $t]
-		ButtonMenuInner $menu
+	        if {$exmh(nmh_dsn) || ($M != "dsn")} {
+		    set menu [Widget_AddMenuBDef .sedit$id.but $M {right padx 1 filly}]
+		    #
+		    # Here is another way to set context for the menu commands.
+		    # Jam the draft and text widget name into a global that
+		    # can be accessed by the menu-invoked commands.
+		    #
+		    $menu config -postcommand [list SeditSetContext $draft $t]
+		    ButtonMenuInner $menu
+		}
 	    }
 	}
 	SeditMsg $t $draft
@@ -208,6 +212,10 @@ proc Sedit_Start { draft } {
     }
     set sedit($t,keep) $sedit(keepDefault)
     set sedit($t,mhn) $sedit(mhnDefault)
+    set sedit($t,notifySuccess) $sedit(notifySuccess)
+    set sedit($t,notifyFailure) $sedit(notifyFailure)
+    set sedit($t,notifyDelay) $sedit(notifyDelay)
+    set sedit($t,notifyRet) $sedit(notifyRet)
     set sedit($t,format) $sedit(formatChoice)
     switch $sedit($t,format) {
 	OnType	{$t config -wrap char}
@@ -360,7 +368,7 @@ proc SeditAbortDirect { draft t } {
     global mhProfile
     set id [SeditId $draft]
     if [regexp -- $mhProfile(draft-folder)/\[0-9\]+$ $draft] {
-	Edit_Done abort $id	;# Nuke (rm) draft message
+	Edit_Done abort $id {}	;# Nuke (rm) draft message
     }
     SeditNuke $draft $t
 }
@@ -506,9 +514,33 @@ proc SeditSendOnly { draft t } {
 	    }
             set action $exmh($id,action)
 	}
+	# Delivery Status Notifications
+	set argu ""
+	set argsep " "
+	if {$sedit($t,notifySuccess) || $sedit($t,notifyFailure) \
+	    || $sedit($t,notifyDelay)} { 
+	    set argu "-notify"
+	}
+ 	if {$sedit($t,notifySuccess)} { 
+ 	    append argu $argsep "success" 
+	    set argsep ","
+ 	}
+ 	if {$sedit($t,notifyFailure)} { 
+ 	    append argu $argsep "failure"
+	    set argsep ","
+ 	}
+ 	if {$sedit($t,notifyDelay)} { 
+ 	    append argu $argsep "delay"
+ 	}
+ 	if {$sedit($t,notifyRet)} { 
+ 	    if {[info exists argu]} { 
+ 		append argu " -ret full" 
+ 	    } else { set argu "-ret full" }
+ 	}
+
 	SeditMsg $t "Sending message..."
 	SeditMarkSent $t
-	set time [time [list Edit_Done send $id]]
+	set time [time [list Edit_Done send $id $argu]]
 	Exmh_Debug Message sent $time
 	SeditMsg $t "Message sent $time"
 	global sedit
@@ -602,7 +634,7 @@ proc SeditSave { draft t {hook {}} {isigw 1} } {
 }
 proc SeditAlternate { draft t } {
     SeditSave $draft $t SeditNuke
-    Edit_Done alternate [SeditId $draft]
+    Edit_Done alternate [SeditId $draft] {}
 }
 proc SeditSaveBody { t outfile } {
     set out [open $outfile w 0600]

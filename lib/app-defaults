@@ -846,7 +846,7 @@ exmh.iconic:		0
 ! menus is for standard menus
 ! umenus is for extra user-specific menus
 !*Sedit.Menubar.menulist:	text mime more pgp
-*Sedit.Menubar.menulist:	repl text more pgp
+*Sedit.Menubar.menulist:	repl text more pgp dsn
 *Sedit.Menubar.umenulist:
 
 *Sedit.Menubar.text.text:	Text...
@@ -1019,6 +1019,21 @@ exmh.iconic:		0
 *Sedit.Menubar.mime.m.format.l_tags: Show Tags
 *Sedit.Menubar.mime.m.format.c_tags: SeditMimeShowTags {$t}
 
+*Sedit.Menubar.dsn.text:	DSN...
+*Sedit.Menubar.dsn.m.entrylist: notifySuccess notifyFailure notifyDelay notifyRet
+*Sedit.Menubar.dsn.m.l_notifySuccess: Notify on success
+*Sedit.Menubar.dsn.m.t_notifySuccess: check
+*Sedit.Menubar.dsn.m.v_notifySuccess: sedit($t,notifySuccess)
+*Sedit.Menubar.dsn.m.l_notifyFailure: Notify on failure
+*Sedit.Menubar.dsn.m.t_notifyFailure: check
+*Sedit.Menubar.dsn.m.v_notifyFailure: sedit($t,notifyFailure)
+*Sedit.Menubar.dsn.m.l_notifyDelay: Notify on delay
+*Sedit.Menubar.dsn.m.t_notifyDelay: check
+*Sedit.Menubar.dsn.m.v_notifyDelay: sedit($t,notifyDelay)
+*Sedit.Menubar.dsn.m.l_notifyRet: Return full message
+*Sedit.Menubar.dsn.m.t_notifyRet: check
+*Sedit.Menubar.dsn.m.v_notifyRet: sedit($t,notifyRet)
+  
 ! The following menu is special because it gets dynamically updated
 ! as parts are added to the message.
 *Sedit.Menubar.mime.m.l_delete: Delete Part

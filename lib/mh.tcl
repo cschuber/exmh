@@ -25,6 +25,14 @@ proc Mh_Init {} {
 	# 'repl -- version [compiled etc etc]' - catch version
 	catch {MhExec repl -version} d
 	regexp {.*-- *([^ ]*)[ ]} $d {} exmh(mh_vers) 
+	# See if it's an nmh patched to support setting info for rfc3461 DSNs
+	set exmh(nmh_dsn) 0
+	catch {MhExec send -help} d
+	set d1 [ split $d "\n"]
+	foreach line $d1 {
+	    regexp {envid} $line d2
+	    if [info exists d2] { set exmh(nmh_dsn) 1 }
+	}
     } else {
 	# UCI MH - 'version: .*'
 	# weirdness - 6.8 puts 'version (build on ...)', 6.6 (blech) doesnt.
@@ -104,6 +112,7 @@ proc MhBackup {} {
 proc MhExec { args } {
     global mhProfile
     Audit $args
+    set args [join $args]
     if {[catch {eval exec $args} result]} {
 	global errorInfo
 	if {[regexp {exmhcontext is poorly formatted} $result]} {
@@ -797,7 +806,7 @@ proc Mh_Rmm { folder msgids } {
 	eval {MhExec rmm +$folder} $chunk
     }
 }
-proc Mh_Send { msgid } {
+proc Mh_Send { msgid argu} {
     global mhProfile
     
     set path $mhProfile(path)/$mhProfile(draft-folder)/$msgid
@@ -806,16 +815,16 @@ proc Mh_Send { msgid } {
     switch -- $mhProfile(sendType) {
 	"async" {
 	    MhExec $mhProfile(sendproc) -draftf +$mhProfile(draft-folder) \
-		-draftm $dst -push -forward < /dev/null
+		-draftm $dst $argu -push -forward < /dev/null
 	}
 	"wait" {
 	    MhExec $mhProfile(sendproc) -draftf +$mhProfile(draft-folder) \
-		-draftm $dst < /dev/null
+		-draftm $dst $argu < /dev/null
 	}
 	"xterm" {
 	    eval exec $mhProfile(xtermcmd) { \
 		-title "Sending $mhProfile(draft-folder)/$msgid ..." \
-		-e sh -c "$mhProfile(sendproc) -draftf +$mhProfile(draft-folder) -draftm $dst || whatnow -draftf +$mhProfile(draft-folder) -draftm $dst" &}
+		-e sh -c "$mhProfile(sendproc) -draftf +$mhProfile(draft-folder) -draftm $dst $argu || whatnow -draftf +$mhProfile(draft-folder) -draftm $dst" &}
 	}
     }
     if {$msgid != $dst} {

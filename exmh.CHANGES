@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 08/07/2004 valdis.kletnieks@vt.edu
+  lib/app-defaults, lib/editor.tcl, lib/extrasInit.tcl, lib/mh.tcl, lib/sedit.tcl,
+  lib/mh.tcl, lib/html/DSN-MDN.html, misc/README.nmh-dsn
+  Oldie but goodie - merge in patch from Martin Hamilton <martin@mrrl.lut.ac.uk>
+  to allow setting RFC3461 DSN options (originally against 1.6.5).  Requires a
+  patched mh/nmh (I forwarded the nmh guys a patch for nmh 1.1rc3 and put a patch
+  for nmh 1.0.4 in misc/ for good measure).
+
 cvs repository 07/29/2004 welch@panasas.com
   lib/bogo.tcl - added Exmh_Status to Bogo_Filter because they take a while
 

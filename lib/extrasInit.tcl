@@ -493,6 +493,28 @@ is interactive, then run it from exmh-async:
 exmh-async xterm -e ispell
 (This is faked - exmh-async isn't really used.  Instead a temporary
 wish script is used.)"}
+    {sedit(notifySuccess) seditNotifySuccess OFF {Notify on sucessful delivery}
+"This lets you say whether you would like to be informed (via an email
+message) when your mail has been delivered.  For it to work you will
+need a hacked over version of MH, and an SMTP server which supports
+the IETF's Delivery Status Notification SMTP extension!"}
+    {sedit(notifyFailure) seditNotifyFailure OFF {Notify if delivery fails}
+"This lets you say whether you would like to be informed (via an email
+message) when your mail has been not been delivered because of an
+error.  For it to work you will need a hacked over version of MH, and
+an SMTP server which supports the IETF's Delivery Status Notification
+SMTP extension!"}
+    {sedit(notifyDelay) seditNotifyDelay OFF {Notify if delivery is delayed}
+"This lets you say whether you would like to be informed (via an email
+message) when delivery of your mail has been been delayed.  For it to
+work you will need a hacked over version of MH, and an SMTP server
+which supports the IETF's Delivery Status Notification SMTP extension!"}
+    {sedit(notifyRet) seditNotifyRet OFF {Return full message}
+"This lets you say whether you would like delivery status notifications
+to take the form of full copies of the original message, or just the
+headers - the default.  For it to work, you will need a hacked over
+version of MH, and an SMTP server which supports the IETF's Delivery
+Status Notification SMTP extension!"}
     {sedit(autosaveInterval)   seditAutosaveInterval 60 {Seconds between auto saves}
 "This is the interval, in seconds, between automatic saves of 
 the message being edited.  Set to 0 to disable autosaving."}

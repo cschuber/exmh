@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Delivery Status Notifications, Message Delivery Notifications, and you...</title>
+    <!-- Changed by: Valdis Kletnieks, 07-Aug-2004 -->
   </head>
 
   <body>
@@ -22,6 +23,9 @@
 	may have been asleep, on the phone, or just didn't want to act on your mail.</li>
       <li>Not all mail programs support MDNs.  If the recipient's software doesn't support it,
 	you won't get one back.</li>
+      <li>Even if the mail program supports MDNs, the site or user may have disabled
+	them for administrative or policy reasons.  Similarly, there is no guarantee
+	that a DSN will be returned if requested.</li>
     </ul>
     <h1>EXMH Support</h1>
     <p> EXMH is able to display both DSNs and MDNs without further configuration.
@@ -29,8 +33,8 @@
     <p>DSN options are located on the 'Preferences - Simple Editor' panel, and
       are also settable on a per-message basis via the 'DSN...' menu in Sedit.
       Note that for DSN support to work, you <em>must</em> have a version of
-      MH that supports it (which requires some patching).
-    <p>A patch is available <A HREF="http://black-ice.cc.vt.edu/~valdis/mh-dsn.patch">here</A>
+      MH that supports it (which may require some patching. A patch for nmh 1.0.4
+      is available in the Exmh distribution in misc/README.dsn-nmh
     <p>The EXMH MDN support is able to display a MDN without further configuration.
       However, to ask for a MDN on a given message, you need to select 'Ask for Receipt'
       in the Sedit 'More...' menu.  In addition, you must put the address to send the MDN
@@ -52,13 +56,9 @@
       <li> <A HREF="ftp://ftp.isi.edu/in-notes/rfc1893.txt">RFC1893 - Enhanced Mail System Status Codes</A>  </li>
       <li> <A HREF="ftp://ftp.isi.edu/in-notes/rfc1894.txt">RFC1894 - An Extensible Message Format for Delivery Status Notifications</A>  </li>
        <li> <A HREF="ftp://ftp.isi.edu/in-notes/rfc2298.txt">RFC2298 - An Extensible Message Format for Message Disposition Notifications</A>  </li>
-    </UL>
-
+    </UL> 
     <hr>
     <address><a href="mailto:valdis.kletnieks@vt.edu">Valdis Kletnieks</a></address>
-<!-- Created: Thu Jun 10 16:22:40 EDT 1999 -->
-<!-- hhmts start -->
-Last modified: Thu Jun 10 17:32:09 EDT 1999
-<!-- hhmts end -->
+  <EM>Modified: 07-Aug-2004</EM>
   </body>
 </html>

@@ -311,7 +311,7 @@ proc EditDialogDone {act id {hide hide}} {
     if [string match hide $hide] {
 	Exwin_Dismiss .edit$id nosize
     }
-    Edit_Done $act $id
+    Edit_Done $act $id {}
 }
 
 proc EditStart { draft {type prog} } {
@@ -421,10 +421,10 @@ proc Edit_Ident { interpName } {
 }
 
 # The following is invoked by remote editor interpreters
-proc EditDone {act msg} {
-    Edit_Done $act $msg
+proc EditDone {act msg argu} {
+    Edit_Done $act $msg $argu
 }
-proc Edit_Done {act {msg cur}} {
+proc Edit_Done {act {msg cur} argu} {
     # Commit or abort an edit session
     global mhProfile exmh env editor pgp
     if {$msg == "cur"} {
@@ -451,7 +451,7 @@ proc Edit_Done {act {msg cur}} {
 	    }
 	    set anno [Mh_AnnoEnviron $msg]
 	    Exmh_Debug Edit_Done send: anno=$anno
-	    Exmh_Debug "Mh_Send [time {set code [catch {Mh_Send $msg} err2]}]"
+	    Exmh_Debug "Mh_Send [time {set code [catch {Mh_Send $msg $argu} err2]}]"
 	    if $code {
 		# move the orig message back to the draft if it exists
 		Mhn_RenameOrig $msg
