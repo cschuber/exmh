@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 07/26/2004 welch@panasas.com
+  lib/pick.tcl: Applied patch from Bruce Mah to search over
+    sender or mailing-list headers
 
 cvs repository 07/26/2004 valdis.kletnieks@vt.edu
   catch CVS up to a weekend's worth of concentrated coding...
