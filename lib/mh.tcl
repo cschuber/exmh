@@ -765,6 +765,13 @@ proc MhParseProfile {} {
     while {![eof $input]} {
 	set numBytes [gets $input line]
 	if {$numBytes > 0} {
+	    if {[regexp {^\s+(.*)$} $line foo other]} {
+		 # handle continued lines
+		 if {[info exists key]} {
+		     append mhProfile($key) " [string trim $other]"
+		 }
+		 continue
+	    }
 	    set parts [split $line :]
 	    set key [string tolower [lindex $parts 0]]
 	    set other [lindex $parts 1]
