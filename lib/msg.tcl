@@ -40,24 +40,24 @@ proc Msg_Pick { line {show show} } {
 proc Msg_Show { {seq cur} {show show} } {
     global exmh msg
     Exmh_Debug Msg_Show $seq $show
-    if {$seq == "cur"} {
-	if {$msg(id) != {}} {
-	    set msg(dpy) {}	;# force redisplay
-	    Msg_Change $msg(id) $show
-	    return 1
-	} else {
-	    Msg_ClearCurrent
-	    Ftoc_Yview end
-	    return 0
-	}
-    } else {
+    if {$seq != "cur"} {
 	foreach id [Seq_Msgs $exmh(folder) $seq] {
 	    if {![Ftoc_Marked $id]} {
 		Msg_Change $id $show
 		return 1
 	    }
 	}
+	# If we can't find a message in $seq, then fall through to do
+	# what we would have done if we were going to 'cur'.
+    } 
+    if {$msg(id) != {}} {
+	set msg(dpy) {}	;# force redisplay
+	Msg_Change $msg(id) $show
+	return 1
+    } else {
 	Msg_ClearCurrent
+	Ftoc_Yview end
+	return 0
     }
     return 0
 }

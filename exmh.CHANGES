@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 10/29/2002 cwg-exmh@deepeddy.com
+    msg.tcl - In Msg_Show, if there are no messages in the sequence
+	we're trying to show, then show 'cur'.
+
 cvs repository 10/28/2002 cwg-exmh@deepeddy.com
     msg.tcl, editor.tcl, folder.tcl, ftoc.tcl, main.tcl, mh.tcl, 
 	sequences.tcl, thread.tcl  - Remove message checkpoint code
