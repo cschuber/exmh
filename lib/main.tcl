@@ -395,11 +395,12 @@ proc ExmhLog { stuff } {
                 if {[info exist exmh(logLastClicks)]} {
                     set delta [expr {$now - $exmh(logLastClicks)}]
                     set delta_sec [expr {$sec - $exmh(logLastSeconds)}]
-                    if {$delta < 0} {
+                    if {($delta < 1000) && ($delta_sec > 0)} {
                         incr delta_sec -1
-                        set delta [expr 1000000 - $delta]
+                        #set delta [expr 1000000 - $delta]
                     }
-                    $exmh(log) insert end "([format %d.%.06d $delta_sec $delta]) "
+                    set delta [expr { $delta % 1000 }]
+                    $exmh(log) insert end "([format %d.%.03d $delta_sec $delta]) "
                 }
                 set exmh(logLastClicks) $now
                 set exmh(logLastSeconds) $sec
