@@ -1109,7 +1109,7 @@ proc Deval {} {
 			C   {set ok 0}
 			?   {Dshow $level}
 			G	{
-				catch { uplevel #0 [llrange $line 1 end]} result
+				catch { uplevel #0 [lrange $line 1 end]} result
 				Stderr $result
 			}
 			W	{

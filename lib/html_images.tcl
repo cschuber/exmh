@@ -266,7 +266,7 @@ proc Image_EditMode {win edit} {
     foreach w $image(widgets) {
 	if ![winfo exists $w] {
 	    set ix [lsearch $image(widgets) $w]
-	    set $image(widgets) [lreplace $image(widgets) $ix $ix]
+	    set image(widgets) [lreplace $image(widgets) $ix $ix]
 	    continue
 	}
 	if {$edit} {

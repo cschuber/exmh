@@ -233,7 +233,7 @@ proc SeditLooksFromStack { t stack } {
 	    default { incr ignore }
 	    =* {
 		set paramval [string range $look 1 end]
-		set $needsParam $paramval
+		set needsParam $paramval
 	    }
 	    x-plain { SeditRichReset $t }
 	    x-color { set needsParam rich($t,color) }
