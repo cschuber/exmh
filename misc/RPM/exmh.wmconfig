@@ -1,0 +1,4 @@
+exmh name "exmh"
+exmh description "MH Mail Front End"
+exmh exec "exmh &"
+exmh group "Utilities/Mail"
