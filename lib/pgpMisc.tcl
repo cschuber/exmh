@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.9  1999/04/30 20:41:55  cwg
+# get pgpPass(cur) in Misc_PostProcess
+#
 # Revision 1.8  1999/04/15 23:41:59  cwg
 # Make the crypt menu values be per-window instead of global.
 #
@@ -302,6 +305,10 @@ proc Misc_PostProcess { srcfile } {
     # call the pgp postprocesing if necessary
     if {$pgp(enabled)} {
 	if {$pgp(encrypt,$id) || $pgp(sign,$id)} {
+	    if {[info exists pgpPass(cur)] && [info exists pgp(myname)]} {
+		set keyid [lindex $pgp(myname) 0]
+		set pgpPass($keyid) $pgpPass(cur)
+	    }
 	    if !$pgp(seditpgp) {
 		Pgp_GetPass $pgp(myname)
 	    } 
