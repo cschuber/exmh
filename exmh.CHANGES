@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 04/04/2003 welch@panasas.com
+  sequences.tcl - removed Exmh_Debug from Seq_Trace
+  fcache.tcl - removed Exmh_Debug
+  flag.tcl - restored variable trace on flist(totalCount,unseen)
+  exmh.install - bumped date on the release
+
 cvs repository 04/03/2003 haldevore@acm.org
   patch from Klaus Elsbernd elsbernd@dfki.uni-kl.de
     mh.tcl fix variable usage in sequences, corrects a problem

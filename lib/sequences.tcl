@@ -173,7 +173,6 @@ proc Seq_TraceInit {} {
 }
 proc Seq_Trace {array elem op} {
     global flist seqwin mhProfile
-Exmh_Debug "Seq_Trace $array $elem $op"
     set indices [split $elem ,]
     set var [lindex $indices 0]
     if {$var == {seqcount}} {

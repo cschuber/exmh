@@ -100,7 +100,6 @@ proc Fcache_RedisplayUnseen { array elem op } {
     global fcache mhProfile
     if {$fcache(unseenCount)} {
         set force [scan $elem "seqcount,%s,$mhProfile(unseen-sequence)" folder]
-        Exmh_Debug Fcache_RedisplayUnseen force=$force
 	Fcache_Display $force
     }
 }

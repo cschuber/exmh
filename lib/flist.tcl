@@ -239,7 +239,7 @@ proc Flist_FolderSet { {subfolder .} } {
 proc Flist_Done { {resetVisited 1} } {
     global flist exmh
 
-    Flag_Trace  ;# Used to be called via a variable trace
+    # Flag_Trace  ;# called via a variable trace
 
     Exmh_Debug Flist_Done
     if {$resetVisited} {
