@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.4  1999/06/10 16:59:18  cwg
+# Re-enabled the timeout of PGP passwords
+#
 # Revision 1.3  1999/05/04 06:35:38  cwg
 # Fixed crash when aborting out of PGP Password window
 #
@@ -433,21 +436,35 @@ proc Pgp_GetPass { key } {
 	} elseif {[PgpExec_CheckPassword $password $key]} {
 	    if $pgp(keeppass) {
 		set pgpPass($keyid) $password
-		after [expr $pgp(passtimeout) * 60 * 1000] \
-			[list Pgp_ClearPassword $keyid]
+		Pgp_SetPassTimeout $keyid
 	    }
 	    return $password
 	}
     }
 }
 
+proc Pgp_SetPassTimeout {keyid} {
+    global pgp pgpPass
+
+    if [info exists pgp(timeout,$keyid)] {
+	Exmh_Debug "Cancelling previous timeout for $keyid"
+	after cancel $pgp(timeout,$keyid)
+	unset pgp(timeout,$keyid)
+    }
+    Exmh_Debug "Setting timeout for $keyid in $pgp(passtimeout) minutes"
+    set pgp(timeout,$keyid) \
+	    [after [expr $pgp(passtimeout) * 60 * 1000] \
+	           [list Pgp_ClearPassword $keyid]]
+}
+
 proc Pgp_ClearPassword {{keyid {}}} {
     global pgpPass
+    Exmh_Debug "Clearing password for $keyid"
     if {[string length $keyid] == 0} {
 	catch {unset pgpPass}
 	set pgpPass() {}
     } else {
-	catch {unset pgpPass($keyid)}
+	set pgpPass($keyid) {}
     }
 }
 #

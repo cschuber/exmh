@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.11  1999/06/10 16:59:18  cwg
+# Re-enabled the timeout of PGP passwords
+#
 # Revision 1.10  1999/05/04 06:35:38  cwg
 # Fixed crash when aborting out of PGP Password window
 #
@@ -310,6 +313,7 @@ proc Misc_PostProcess { srcfile } {
 	if {$pgp(encrypt,$id) || $pgp(sign,$id)} {
 	    if {[info exists pgpPass(cur)] && [info exists pgp(myname)]} {
 		set keyid [lindex $pgp(myname) 0]
+		Pgp_SetPassTimeout cur
 		set pgpPass($keyid) $pgpPass(cur)
 	    }
 	    set keyid [lindex $pgp(myname) 0]
@@ -317,7 +321,8 @@ proc Misc_PostProcess { srcfile } {
 	    if !$pgp(seditpgp) {
 		set pgpPass($keyid) [Pgp_GetPass $pgp(myname)]
 	    } 
-	    Exmh_Debug pass=>$pgpPass($keyid)<
+	    Pgp_SetPassTimeout $keyid
+	    #Exmh_Debug pass=>$pgpPass($keyid)<
 	    if {[string length $pgpPass($keyid)] > 0} {
 		Pgp_Process $curfile $dstfile
 		set curfile $dstfile

@@ -2,23 +2,6 @@ These are known bugs in exmh, along with the release under which they
 were reported.
 
 ----------------------------------------------------------------------
-Number: 2
-Version: 2.0.3
-Priority: Medium
-Scope: Narrow
-Complexity: High
-Status: 
-
-With the new PGP composition code, the PGP password no longer times
-out.
-
-When I first wrote this code a year ago, I couldn't figure out why.
-It's probably worth a relook to see if it's easier than it seemed at
-the time.
-
-
-
-----------------------------------------------------------------------
 Number: 3
 Version: 2.0.3
 Priority: Low

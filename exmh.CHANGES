@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 6/10/1999
+    Re-enabled the timeout of PGP passwords -cwg
+    
 cvs repository 6/9/1999
     Changed $HOME/.exmhdisplay to $HOME/.exmh/.display in misc scripts -cwg
     Allow ispell preferences to work before sedit has been opened
