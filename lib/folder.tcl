@@ -130,7 +130,6 @@ proc FolderChange {folder msgShowProc} {
     foreach cmd [info commands Hook_FolderChange*] {
 	$cmd $folder
     }
-    Exmh_Debug oldFolder=$oldFolder
     foreach seq [option get . sequences {}] {
 	BgRPC Seq_Msgs $oldFolder $seq
     }
