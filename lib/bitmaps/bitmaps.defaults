@@ -1,0 +1,49 @@
+! All these icons are put in /usr/lib/exmh, which is 
+! a symlink to /usr/lib/exmh-<version>.
+!
+! This file should be added to the beginning of 
+! .exmh/exmh-defaults, or (global) app-defaults
+! for exmh.
+!
+! ----------------------
+!
+! Main view icons:
+!
+*Main.help.bitmap:	@/usr/lib/exmh/help.xbm
+*Main.addr.bitmap:	@/usr/lib/exmh/address.xbm
+*Main.pref.bitmap:	@/usr/lib/exmh/pref.xbm
+*Main.bind.bitmap:	@/usr/lib/exmh/bind.xbm
+*Mops.comp.bitmap:	@/usr/lib/exmh/compose.xbm
+*Mops.forward.bitmap:	@/usr/lib/exmh/forward.xbm
+*Mops.link.bitmap:	@/usr/lib/exmh/link.xbm
+*Mops.move.bitmap:	@/usr/lib/exmh/move.xbm
+*Mops.delete.bitmap:	@/usr/lib/exmh/delete.xbm
+*Mops.unmark.bitmap:	@/usr/lib/exmh/unmark.xbm
+*Fops.inc.bitmap:	@/usr/lib/exmh/getmail.xbm
+*Fops.new.bitmap:	@/usr/lib/exmh/new.xbm
+*Fops.commit.bitmap:	@/usr/lib/exmh/commit.xbm
+*Fops.flist.bitmap:	@/usr/lib/exmh/scan.xbm
+*Fops.search.bitmap:	@/usr/lib/exmh/search.xbm
+!
+! Message editor icons:
+!
+*Sedit.Menubar.send.bitmap:	@/usr/lib/exmh/send.xbm
+*Sedit.Menubar.abort.bitmap:	@/usr/lib/exmh/abort.xbm
+*Sedit.Menubar.sign.bitmap:	@/usr/lib/exmh/sign.xbm
+*Sedit.Menubar.repl.bitmap:	@/usr/lib/exmh/quote.xbm
+*Sedit.Menubar.help.bitmap:	@/usr/lib/exmh/help.xbm
+!
+! Throw "prev" and "next", as being superfluous
+!
+*Mops.buttonlist: forward comp link move delete unmark
+*Mops.g_current:        link move delete reply forward unmark
+*Mops.g_range:          link move delete forward unmark
+!
+! Colour scheme:
+! (I recommend other main view icons made blue)
+!
+*c_moved:       green
+*c_deleted:     orange
+*Mops.move.foreground:		green3
+*Mops.delete.foreground:        orange
+
