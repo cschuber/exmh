@@ -372,6 +372,24 @@ Ensure that all toplevel windows have handlers for WM_* messages.
 
 
 
+Number: 42
+Priority: Med
+Scope: 
+Complexity: 
+
+Apply horizontal scroll bar patch from Valdis Kletnieks
+
+
+
+Number: 43
+Priority: Med
+Scope: 
+Complexity: 
+
+Apply MDN patch from Valdis Kletnieks
+
+
+
 $Id$
 
 # Emacs stuff
