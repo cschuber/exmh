@@ -1,6 +1,10 @@
 HISTORY
 
-cvs repository 03/03/2002 cwg-exmh@deepeddy.com
+cvs repository 04/04/2002-04/17/2002 cwg-exmh@deepeddy.com
+    various files - some more code cleanup and a whole bunch of
+    sequence related code tuning.
+
+cvs repository 04/03/2002 cwg-exmh@deepeddy.com
     lib/app-defaults, lib/app-defaults-color, lib/buttons.tcl,
     lib/exwin.tcl, lib/ftoc.tcl, lib/msg.tcl, lib/pick.tcl -
     Added 'Sequences...' menu; some code cleanup and a few bug fixes
