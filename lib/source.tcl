@@ -3,7 +3,7 @@ if {$exmh(sourceHook) && [info command source-orig] ==  ""} {
     proc source {file} {
 	 global SourceHook
 	 set result [uplevel 1 [list source-orig $file]]
-	 set fn [file rootname $file]
+	 set fn [file rootname [file tail $file]]
 	 if [info exists SourceHook($fn)] {
 	    if [catch {uplevel 1 $SourceHook($fn)} err] {
 		Exmh_Status "Error in source hook for $fn: $err" red
@@ -25,7 +25,7 @@ proc SourceHook_Init {} {
     foreach file $patches {
 	set fn [file rootname [file tail $file]]
 	Exmh_Debug "Arm Patch $fn for $file "
-	set SourceHook($fn) [list source $file]
+	set SourceHook($fn) [list source-orig $file]
     }
 }
 
