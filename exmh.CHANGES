@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 07/29/2004 welch@panasas.com
+  lib/bogo.tcl - added Exmh_Status to Bogo_Filter because they take a while
+
 cvs repository 07/28/2004 welch@panasas.com
   lib/bogo.tcl - added catch around sa-learn pipe, as that can raise
     errors if sa-learn generates error output.

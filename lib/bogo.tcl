@@ -61,7 +61,9 @@ proc Bogo_Filter {{spam spam}} {
 	return
     }
     if {$spam == "spam"} {
-        Exmh_Debug Bogo spamprog="$bogo(spamprog)", message="[Ftoc_CurMsgs]", action="$bogo(spammessage)"
+        set msgs [Ftoc_CurMsgs]
+        Exmh_Status "Marking [llength $msgs] msg[expr {[llength $msgs] > 1 ? "s" : ""}] as SPAM"
+        Exmh_Debug Bogo spamprog="$bogo(spamprog)", message="$msgs", action="$bogo(spammessage)"
 	Ftoc_MsgIterate msgid {
 	    if [catch "exec $bogo(spamprog) <$mhProfile(path)/$exmh(folder)/$msgid" in] {
 	        Exmh_Status $in
@@ -80,7 +82,9 @@ proc Bogo_Filter {{spam spam}} {
 	}
 	return
     } elseif {$spam == "ham"} {
-        Exmh_Debug Bogo hamprog="$bogo(hamprog)", message="[Ftoc_CurMsgs]", action="$bogo(hammessage)"
+        set msgs [Ftoc_CurMsgs]
+        Exmh_Status "Marking [llength $msgs] msg[expr {[llength $msgs] > 1 ? "s" : ""}] as HAM"
+        Exmh_Debug Bogo hamprog="$bogo(hamprog)", message="$msgs", action="$bogo(hammessage)"
 	Ftoc_MsgIterate msgid {
 	    if [catch "exec $bogo(hamprog) <$mhProfile(path)/$exmh(folder)/$msgid" in] {
 	        Exmh_Status $in
