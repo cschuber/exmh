@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 08/22/1999
+    Fix a few bugs related to email PGP querying (queries now can go out).  
+	Use Exmh_Status to let user know what's happening during an 
+	email query.  --Kevin.Christian@lsil.com and bmah.
+
 cvs repository 08/19/1999
     Change address book expansion to NOT insert new header lines as this 
         broke the "continue lookup" feature.  Also changes to allow address

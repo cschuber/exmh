@@ -6,6 +6,10 @@
 #
 
 # $Log$
+# Revision 1.3  1999/08/22 18:17:08  bmah
+# Email PGP queries now go out correctly.  Use Exmh_Status to inform
+# user of state of an outgoing email key query.
+#
 # Revision 1.2  1999/08/03 04:05:54  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -93,7 +97,7 @@ set pgp(pgp,afterKeyGen) {
         set tmpfile [Mime_TempFile "pgp"]
         Exec_GetKeys pgp \
                [lindex [lindex $pgp(pgp,privatekeys) 0] 0] $tmpfile
-        Misc_Send $pgp(pgp,keyserver) ADD $tmpfile \
+        Pgp_Misc_Send $pgp(pgp,keyserver) ADD $tmpfile \
                "content-type: application/pgp; format=keys-only"
         File_Delete $tmpfile
     }
