@@ -277,6 +277,35 @@ look at the distributed app-defaults reveal that they seem
 to match Solaris' file. /Iko
 
 
+
+Number: 28
+Priority: Med
+Scope: Narrow
+Complexity: Medium?
+
+Always use "scan" to build or alter ftoc lines.
+
+
+
+Number: 29
+Priority: Med
+Scope: Medium
+Complexity: Medium
+
+Add John Klassa's "par" based quoter as a user option (should include
+user-specifiable path to par binary).
+
+
+
+Number: 30
+Priority: Med
+Scope: Narrow
+Complexity: Low
+
+Add multipart/alternative prioritization code as a user option
+
+
+
 $Id$
 
 # Emacs stuff
