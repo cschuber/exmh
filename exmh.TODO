@@ -398,6 +398,16 @@ Add support for RFC2646 'format=flowed'.  This will require
 work on both the display side and sedit/sending side.
 
 ----------------------------------------------------------------------
+Number: 51
+Priority:
+Scope:
+Complexity:
+Status:
+
+Look at GnuPG support in pgpGPG.tcl - can modulepath, siphermods, digestmods,
+and pubkeymods be passed as (null) rather than (deffault), so users who
+specify them in ~/.gnupg/options dont get a 'already loaded' error...
+----------------------------------------------------------------------
 
 $Id$
 
