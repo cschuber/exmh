@@ -1,5 +1,17 @@
 HISTORY
 
+cvs repository 03/23/2000
+    Some work on the FAQ
+    a)  Added new question 2c, dealing with RFC2047 encoded headers,
+        with a cross-reference under question 18 (FTOC).
+    b)  Did some minor markup changes to question list
+    c)  Did some markup revisions to 14 (mailing lists).  Also added
+        pointer to mailing list archive and info on digested exmh-user 
+        list.
+    d)  Markup revisions and additional info in question 15 (templates).
+        It noted 4 types of templates but only listed 3.  Now it has
+        info on 4 MH plus 1 new nmh template.  
+
 cvs repository 02/29/2000
     Applied patch to speed up pick  -Dick Wesseling via haldevore
     Applied patch to allow parentheses in address book entries
