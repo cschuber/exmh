@@ -157,7 +157,7 @@ proc Widget_AddMenuBDef {par b {where {left fill}} } {
 }
 proc Widget_AddMenuB {par b {label {}} {where {left fill}} } {
     # Create a button and a menu to go with it.  Return the menu pathname
-    set cmd [list menubutton $par.$b -menu $par.$b.m -text $label -highlightthickness 1
+    set cmd [list menubutton $par.$b -menu $par.$b.m -text $label -highlightthickness 1]
     if [catch $cmd t] {
 	catch {puts stderr "Widget_AddMenuB (warning) $t"}
 	eval $cmd {-font fixed}
