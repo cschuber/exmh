@@ -55,6 +55,7 @@ proc UrlGetCachedImageFileName { href } {
 proc UrlFaceGetNormalizedImage { filename } {
     global urlFace
 
+    set filename [glob $filename]
     set extension [file extension $filename]
     set rootname [file rootname $filename]
 
@@ -209,11 +210,11 @@ proc UrlFaceQueryDone { href filename msgPath pane } {
 	unset urlFace($href,urlFailed)
     } else {
 	UrlFaceLog "got image from $href in $data(file)"
-	set normalized [glob [UrlFaceGetNormalizedImage $data(file)]]
+	set normalized [UrlFaceGetNormalizedImage $data(file)]
 	UrlFaceLog "normalized file is $normalized"
 
-	UrlFaceLog "executing cp $normalized $filename"
-	if [catch {exec cp glob $normalized $filename} err] {
+	UrlFaceLog "executing cp [glob $normalized] $filename"
+	if [catch {exec cp [glob $normalized] $filename} err] {
 	    Exmh_Status "cannot create face file in ~/.exmh-images! ($err)" red
 	    UrlFaceLog "cannot create face file in ~/.exmh-images! ($err)"
 	    FaceShowFile $exmh(library)/loaderror.ppm $pane
