@@ -456,7 +456,6 @@ proc ExmhLogCreate {} {
     Widget_AddBut $exmh(logTop).but save "Save To File" ExmhLogSave
     set exmh(logYview) 1
     Widget_CheckBut $exmh(logTop).but yview "View Tail" exmh(logYview)
-    Widget_AddBut $exmh(logTop).but source "Source" ExmhSourceFile
     set exmh(log) [Widget_Text $exmh(logTop) 20 \
 	    -setgrid true -yscroll {.log.sv set} ]
     #
@@ -468,22 +467,13 @@ proc ExmhLogCreate {} {
     Widget_BeginEntries 4 80 Exmh_DoCommand
     Widget_LabeledEntry $exmh(logTop).cmd Tcl: exmh(command)
 }
+
 proc ExmhSourceFile {} {
     global exmh
     if ![info exists exmh(lastsource)] {
-	set exmh(lastsource) "~/sandbox/exmh/lib/"
+	set exmh(lastsource) $exmh(library)
     }
-    set types {
-	{{TCL Scripts} {.tcl}}
-	{{All Files} *}
-    }
-    set name [tk_getOpenFile \
-		  -defaultextension '.tcl' \
-		  -filetypes $types \
-		  -initialdir [file dirname $exmh(lastsource)] \
-		  -initialfile $exmh(lastsource) \
-		  -title "Source file" \
-		  -parent $exmh(logTop)]
+    set name [FSBox "Source File" $exmh(lastsource) read]
     if {$name != ""} {
 	Exmh_Debug source $name
 	source $name

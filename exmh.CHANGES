@@ -1,4 +1,18 @@
 HISTORY
+cvs repository 4/4/2005 welch@panasas.com
+  lib/fileselect.tcl: made use of the built-in tk file dialogs optional.
+    The setting is under the "FS Box" preferences panel.
+    my fingers have grown to know and love the fileselect behavior.
+  lib/fileselect.tcl
+  lib/html_content.tcl
+  lib/main.tcl
+  lib/mime.tcl
+  lib/msg.tcl
+  lib/seditExtras.tcl
+    Restored/updated calls to FSbox (aka fileselect)
+  lib/flist.tcl: fixed FlistUncache to properly clear the global variable in the bg interp
+  lib/mh.tcl: added calls to FlistUncache
+
 cvs repository 3/18/2005 welch@panasas.com channeling Alexander Zangerl
   lib/flist.tcl: Adding FlistUncache to unset flistcache when appropriate
   lib/folder.tcl: Call FlistUncache when we commit folder changes

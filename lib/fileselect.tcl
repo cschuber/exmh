@@ -22,7 +22,7 @@
 # names starting with "fileselect" are reserved by this module
 # no other names used.
 # Hack - FSBox is defined instead of fileselect for backwards compatibility
-
+# Hack2 - the ability to use tk_getOpenFile is also supported
 
 # this is the proc that creates the file selector box
 # purpose - comment string
@@ -57,10 +57,36 @@ you to display the dotfiles if you want."}
 	{fileselect(home) fileselectHome {} {Default startup directory}
 "Defines which directory is listed on startup.  If empty the directory
 exmh was started is used."}
+        {fileselect(useTkWidget) fileselectUseTk OFF {Use Tk file select widget}
+"Use the built-in Tk file selection widget instead of the Exmh custom
+file selection widget."}
     }
 }
 
-proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""} {smash 1}} {
+proc FSBox {{purpose "Select file:"} {defaultName ""} {how "write"}} {
+  global fileselect
+  if {$fileselect(useTkWidget)} {
+    set types {
+	{{All Files} *}
+    }
+    if {$how == "write"} {
+      return [tk_getSaveFile -filetypes $types -title $purpose -initialfile $defaultName]
+    } elseif {$defaultName != ""} {
+      return [tk_getOpenFile -filetypes $types -title $purpose -initialdir [file dirname $defaultName]]
+    } else {
+      return [tk_getOpenFile -filetypes $types -title $purpose]
+    }
+  } else {
+    if {$how == "write"} {
+      set smash 1
+    } else {
+      set smash 0
+    }
+    fileselect $purpose $defaultName "" "" $smash
+  }
+}
+
+proc fileselect {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""} {smash 1}} {
     global fileselect
     global exwin
 

@@ -2366,7 +2366,7 @@ proc MimeMenuDelete {part what} {
     }
 }
 proc Mime_SavePiece {part type} {
-    global mimeHdr mhProfile exwin
+    global mimeHdr mhProfile
 
     set fileName [Mime_GetUnencodedFile $part]
     if {[catch {set default $mimeHdr($part,param,name)}] && \
@@ -2378,15 +2378,7 @@ proc Mime_SavePiece {part type} {
 	return
     }
     Exmh_Status "Saving $type $fileName"
-    set types {
-	{{All Files} *}
-    }
-    set name [tk_getSaveFile \
-		  -title "Save $type to" \
-		  -initialfile $default \
-		  -defaultextension $type \
-		  -filetypes $types \
-		  -parent $exwin(mtext)]
+    set name [FSBox "Save $type to:" $default write]
     if {$name != {}} {
 	if [catch {
 	    file copy -- $fileName $name

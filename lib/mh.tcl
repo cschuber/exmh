@@ -440,6 +440,7 @@ proc MhReadSeqs {folder seqsvar} {
     if {![catch {set mtime [file mtime $filename]}]} {
 	if {![info exists mhPriv(privmtime)] || ($mtime != $mhPriv(privmtime))} {
             array unset mhPriv privseq,${folder},*
+            FlistUncacheLocal $folder
 	    if {[catch {open $filename r} in] == 0} {
 		Exmh_Debug MhReadSeqs Reading $filename
 		set old [read $in]
@@ -465,6 +466,7 @@ proc MhReadSeqs {folder seqsvar} {
     } elseif {[info exists mhPriv(privmtime)]} {
 	unset mhPriv(privmtime)
         array unset mhPriv privseq,${folder},*
+        FlistUncacheLocal $folder
     }
     # mhPriv(privseq,folder,sequence) contains list of message IDs
     foreach elem [array names mhPriv privseq,${folder},*] {
@@ -477,6 +479,7 @@ proc MhReadSeqs {folder seqsvar} {
     if {![catch {set mtime [file mtime $filename]}]} {
 	if {![info exists mhPriv(seqmtime,$folder)] || ($mtime != $mhPriv(seqmtime,$folder))} {
             array unset mhPriv pubseq,${folder},*
+            FlistUncacheLocal $folder
 	    if {[catch {open $filename r} in] == 0} {
 		Exmh_Debug MhReadSeq Reading $filename
 		set old [read $in]
@@ -504,6 +507,7 @@ proc MhReadSeqs {folder seqsvar} {
     } elseif {[info exists mhPriv(seqmtime,$folder)]} {
 	unset mhPriv(seqmtime,$folder)
         array unset mhPriv pubseq,${folder},*
+        FlistUncacheLocal $folder
     }
     foreach elem [array names mhPriv pubseq,${folder},*] {
 	set indices [split $elem ,]
@@ -605,6 +609,7 @@ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
     }
     if {$mhPriv(changed,public) == 1} {
 	set mhPriv(pubseq,$folder,$seq) [MhSeqExpand $folder $seqs($seq)]
+        FlistUncacheLocal $folder
 	set filename $mhProfile(path)/$folder/$mhProfile(mh-sequences)
 	if {[catch {open $filename.new w} out] == 0} {
 	    Exmh_Debug Writing $filename
@@ -636,6 +641,7 @@ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
     }
     if {$mhPriv(changed,private) == 1} {
 	set mhPriv(privseq,$folder,$seq) [MhSeqExpand $folder $seqs($seq)]
+        FlistUncacheLocal $folder
 	set filename $mhProfile(context)
 	if {[catch {open $filename.new w} out] == 0} {
 	    Exmh_Debug Writing $filename
