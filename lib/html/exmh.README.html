@@ -32,7 +32,7 @@
 </a>
 <li><a href="#mailing">Mailing Lists 
 </a>
-<li><a href="#acks">Acknowledgements 
+<li><a href="#acks">Acknowledgments 
 </a>
 <li><a href="#features">Features 
 </a>
@@ -139,7 +139,7 @@ There is a bug in TK &gt;= 3.3 in the text widget that <i>exmh</i>
 manages to tickle. It occurs when the <i>exmh</i> window is iconified,
 and it causes a core dump. However, there is a patch that fixes this
 in the <i>misc/tkText.patch</i> file. If you have TK 3.6 and have applied
-Ousterhout's first patch, then you are ok. 
+Ousterhout's first patch, then you are OK. 
 <h5>AIX BUG that results in no buttons or menus</h5>
 The Aix 3.2 compiler does not compile tkOption.c correctly when optimization
 is turned on. The symptom of this is a message like "exmh: Error in
@@ -291,7 +291,7 @@ the menu entries under Help, they format the message automatically.
 </pre>
 <hr>
 <h4><a NAME="acks">Acknowledgments</a></h4>
-Thanks go to Ed Oskiewicz for inspiring me with an initial verison,
+Thanks go to Ed Oskiewicz for inspiring me with an initial version,
 which is much modified by now. Thanks also go to many beta testers
 that put up with buggy versions and suggested many features that are
 now part of <i>exmh</i>. Feature requests that come with code diffs
@@ -357,7 +357,7 @@ background, and moved messages with stippled background.
 A <b>folder display</b> with one label per folder. Color highlights
 indicate the current folder (red), folders with unseen messages in
 them (blue), and the target folder for moves (yellow background). Nested
-folders are highlighted by a shadow box. A cache of recently visted
+folders are highlighted by a shadow box. A cache of recently visited
 folder buttons is also maintained. Monochrome highlights are reverse
 video for the current folder, bold box for folders with unseen messages,
 and stippled box for the target of move operations. 
@@ -472,7 +472,7 @@ not correct.
 READ THIS HERE :-)</font> 
 <p>
 <i>exmh</i> depends on the TK send facility for its background processing.
-With TK 3.3, send now uses <i>xauthority</i> mechanisms by default,
+With TK 3.3, send now uses <i>Xauthority</i> mechanisms by default,
 unless you compile TK with -DTK_NO_SECURITY. A manifestation of problems
 are that background processing doesn't work: new messages are not scanned
 into the current folder, the flag icon doesn't behave, and so on. Similarly,
@@ -502,7 +502,7 @@ an <font COLOR="#FFFFF0">.xserverrc</font> file:
       auth_args="-auth $authfname"
     fi ;
     ${OPENWINHOME}/bin/xnews $auth_args $server_args $xnews_config_args ;;
-</pre>The general picture of whats going on is this: 
+</pre>The general picture of what's going on is this: 
 <ul>
 <li>some program generates a magic cookie (arbitrary string) and writes
 this to a file. 
@@ -515,7 +515,7 @@ create a window, and passes the cookie value back to the X server.
 If you have the <i>xauth</i> program and your server doesn't like to
 be told about the intermediate file, then you can use <i>xauth</i>
 to write into the <font COLOR="#FFFFF0">~/.Xauthority</font> file for
-you, and apparenty the right thing will happen. If this sounds vague,
+you, and apparently the right thing will happen. If this sounds vague,
 it is. For precise details, do some experimentation or ask your local
 X guru. If you come up with particular solutions, feel free to post
 them to "comp.lang.tcl" so other folks with similar configurations

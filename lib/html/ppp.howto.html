@@ -1,10 +1,10 @@
 <html>
 <head>
-<title>Setting up mail on PPP-connected dialup machines</title>
+<title>Setting up mail on PPP-connected dial-up machines</title>
 </head>
 <body>
 <pre>
-ABOUT SETTING UP MAIL ON PPP-CONNECTED DIALUP MACHINES.
+ABOUT SETTING UP MAIL ON PPP-CONNECTED DIAL-UP MACHINES.
 =======================================================
 
 # This howto is distributed in the hope that it will be useful,        #
@@ -12,8 +12,8 @@ ABOUT SETTING UP MAIL ON PPP-CONNECTED DIALUP MACHINES.
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                 #
 
 This howto is for you if you have a Linux machine that does not have a
-permanent internet connection but rather uses dialup PPP to connect to
-your internet service provider. A common problem is how to masquerade as
+permanent Internet connection but rather uses dial-up PPP to connect to
+your Internet service provider. A common problem is how to masquerade as
 your ISP's mailhost to get
 
 From: me@myispprovider.com
@@ -74,7 +74,7 @@ MAILER(procmail)
 
 In many cases, myispmailhost.com and myispdomain are the same:
 
-Myispmailhost is the host that accepts SMTP connections on tcp port 25
+Myispmailhost is the host that accepts SMTP connections on TCP port 25
 and acts as a mail relay to the outer world (smart host). Very often
 the name of a PPP connected machine does not have a valid entry in
 DNS (domain name service), i.e. other machines that try to determine
@@ -129,10 +129,10 @@ Don't forget to set the file permissions to 600 using "chmod 600
 ~/.fetchmailrc" (otherwise other users can read your password).
 
 
-3.) Automatically sending the sendmail queue and fetching mail at dialup
+3.) Automatically sending the sendmail queue and fetching mail at dial-up
 ========================================================================
 
-If you're sending mail while not being connected to the internet,
+If you're sending mail while not being connected to the Internet,
 sendmail will append this mail to the mail queue. To automatically send
 all mail in the queue whenever you connect to the net using PPP, add
 this line to your /etc/ppp/ip-up:

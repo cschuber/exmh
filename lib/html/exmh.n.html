@@ -72,7 +72,7 @@ user settings for MH and exmh.
 <p>
 <i>Exmh</i> uses the regular MH programs to manipulate your mail folders
 and messages. This means it is compatible with command-line use of
-MH programs, and its actions should be familar if you are an experienced
+MH programs, and its actions should be familiar if you are an experienced
 MH user. If you are a new MH user, then the details of running MH programs
 is hidden behind the graphical interface. The MH programs used by exmh
 are described towards the end of this man page. 
@@ -107,7 +107,7 @@ their position once and then forget about it. There are more command
 line options described in the <a HREF="exmh-ref.n.html"><b>exmh-ref</b></a>
 man page. 
 <p>
-You can add the exmh command to your startup X environment by editting
+You can add the exmh command to your startup X environment by editing
 your startup file (like .xsession). You might also want to add it to
 the main menu of your window manager. The details about this vary from
 X system to X system, so ask your local X guru for help. <i>Exmh</i>
@@ -119,7 +119,7 @@ if you quit X when <i>exmh</i> is running.
 <p>
 This section describes the main parts of the <i>exmh</i> display. It
 probably makes sense to run exmh at this point so you can follow along.
-There are three sets of buttons in the interface, and three main subwindows.
+There are three sets of buttons in the interface, and three main sub-windows.
 
 <p>
 <b>Main Buttons</b>. Along the top of the window is a set of buttons
@@ -127,12 +127,12 @@ and menus that apply to <i>exmh</i> itself. Quit, for example, quits
 <i>exmh</i>. The Help button pops up a menu, and you can select the
 entries there to get more on-line information about <i>exmh</i>. Use
 the left mouse button to select the buttons and menus. A button will
-change its appearence when you press it, and it will be invoked when
+change its appearance when you press it, and it will be invoked when
 you release the mouse over the button. If you slide the mouse off the
 button before releasing it, nothing happens. 
 <p>
 <b>Folder Display</b>. Below the main buttons is the folder display
-subwindow. It has a special button for each of your top-level folders,
+sub-window. It has a special button for each of your top-level folders,
 and these are called <i>folder labels</i>. As a new user you will see
 two folder labels, one for inbox and drafts. The inbox folder is for
 your new messages, and the drafts folder is for messages you are writing.
@@ -162,9 +162,9 @@ man page.
 To the left of the folder buttons, summary information about the current
 folder is displayed. 
 <p>
-<b>Table of Contents</b>. The middle subwindow of the display shows
+<b>Table of Contents</b>. The middle sub-window of the display shows
 a summary of the messages in the folder. It shows the message number,
-the date of the mesage, the subject of the message, and, space permitting,
+the date of the message, the subject of the message, and, space permitting,
 the first few words of the message. Left click on a line in the table
 of contents to view the corresponding message. The mouse bindings for
 the table of contents are described in more detail in the <a HREF="exmh-use.n.html"><b>exmh-use</b></a>
@@ -190,7 +190,7 @@ and the message number for the current message, if any. The right part
 gives feedback about what <i>exmh</i> is doing. After it displays a
 message, the Subject component is displayed there. 
 <p>
-<b>Subwindow Resize Diamond.</b> The black diamond to the right of
+<b>Sub-window Resize Diamond.</b> The black diamond to the right of
 the status line is used to change the size of the internal windows.
 Press the first mouse button on this target and a horizontal line appears.
 Drag it up and down to adjust the window sizes. Try dragging it all
@@ -208,7 +208,7 @@ Some of the short-cuts are introduced in this man page, and all of
 them are listed in the <a HREF="exmh-use.n.html"><b>exmh-use</b></a>
 man page. 
 <p>
-<b>Message Display</b>. The bottom subwindow displays the current message,
+<b>Message Display</b>. The bottom sub-window displays the current message,
 if any. Some of the less interesting mail headers start out scrolled
 off the top of this window. 
 
@@ -261,7 +261,7 @@ message templates, this will be right after the line of all dashes.
 5. Type in your message. When you type in a long message, the lines
 will wrap automatically at word boundaries. To get a blank line for
 paragraph boundaries, press &lt;Return&gt;. The built-in editor supports
-several editting commands that are based on the GNU emacs key bindings.
+several editing commands that are based on the GNU emacs key bindings.
 If you select the <i>Simple Edit</i> menu entry under the main Bindings
 menu, you will bring up a dialog that lets you view and edit the key
 bindings. 
@@ -269,7 +269,7 @@ bindings.
 6. If you are happy with the message, you send it by pressing the Send
 button at the top-right corner of the window. The Send button will
 turn grey, and the window will disappear once the message has been
-sent succesfully. 
+sent successfully. 
 <p>
 If you do not want to send the message, press the Abort button instead.
 If you want to save the message draft and continue to work on it later,
@@ -342,7 +342,7 @@ a color screen), to indicate that you have not read them yet.
 <p>
 To view the new message, click on its line in the table of contents,
 or press the Next button in the bottom group of buttons. The message
-will be displayed in the bottom subwindow, and the line in the table
+will be displayed in the bottom sub-window, and the line in the table
 of contents will be highlighted to remind you which message is being
 displayed. 
 <p>
@@ -425,7 +425,7 @@ could also press the 'r' key to invoke this function.
 This time the built-in editor will open a window with a message that
 is partly filled in. All the headers are initialized based on the header
 components from the original message. The built-in editor will automatically
-position the cursor at the begining of the message body. You can enter
+position the cursor at the beginning of the message body. You can enter
 your reply message like you did with the previous messages. You should
 also double-check the header components. In this case, add yourself
 to the Cc: component so you will get a copy of the reply message. When
@@ -494,10 +494,10 @@ a message. This will run little slower because <i>pick</i> must read
 through all of your messages, not just their headers. 
 <p>
 If you select more than one attribute, <i>pick</i> finds messages that
-match all the criteria. In otherwords, it does the logical <i>and</i>
+match all the criteria. In other words, it does the logical <i>and</i>
 of the search criteria. If you want to search for this <i>or</i> that,
 then you need to press the Or button in the dialog. This adds another
-set of fields to the dialog, and pick will search for everthing that
+set of fields to the dialog, and pick will search for everything that
 matches the first set <i>or</i> matches the second set. 
 <p>
 The "Add to Sel" checkbutton should be set <i>before</i> you do the
@@ -612,7 +612,7 @@ saving.
 <p>
 Another useful preference item to set is under Background Processing.
 You can arrange for <i>exmh</i> to periodically run <i>inc</i> so your
-messages are automatcially transferred into your inbox. The advantage
+messages are automatically transferred into your inbox. The advantage
 of doing this is that the folder label highlighting works best this
 way. Unfortunately, <i>exmh</i> does not give you any visual clues
 when mail is only waiting in your system spool file. 
@@ -717,7 +717,7 @@ your system, <i>exmh</i> displays the bitmap face of the person that
 sent the current message (or their organization). 
 <p>
 <b>Background processing</b>. You can set <i>exmh</i> to run <i>inc</i>
-periodically, check for new mesages arriving asynchronously in folders,
+periodically, check for new messages arriving asynchronously in folders,
 run the MH <i>msgchk</i> program, or count up the messages in your
 mail spool file. 
 <p>

@@ -80,7 +80,7 @@ Log, Help..., Bindings..., Address..., Preferences, and Quit.
 info as the help.FAQ file. 
 <dt>Exmh Mailing Lists... 
 <dd>This is a sub-menu that lets you administer your membership in
-the exmh-related mailing lists. See the About menu entry for an explaination
+the exmh-related mailing lists. See the About menu entry for an explanation
 of the various mailing lists. The add/remove operations result in mail
 messages. You'll need to Send the draft messages. 
 <dt>Submit Bug Report 
@@ -93,8 +93,8 @@ positive and negative feedback about exmh.
 <dd>Get started with PGP. There is some help text and an interface
 to create your public key / private key pair. 
 <dt>Bindings... 
-<dd>Exmh has two sets of key bindings. One for simple editting, and
-another to invoke commands. The editting bindings are used in the simple
+<dd>Exmh has two sets of key bindings. One for simple editing, and
+another to invoke commands. The editing bindings are used in the simple
 editor and in the various text entry widgets. The command bindings
 are in effect otherwise, and they allow you to invoke various Exmh
 commands without using buttons or menus. This is a menu with three
@@ -108,7 +108,7 @@ or add key bindings. There are further directions in the dialog box.
 <dd>These bindings result in class definitions for the Entry and Text
 widget classes. The default bindings are Emacs-like. See the Tk man
 page on the bind command for details about the syntax, if you need
-to. In Tk versions 3.3 and later, "Meta" is an ok synonym for "Mod1".
+to. In Tk versions 3.3 and later, "Meta" is an OK synonym for "Mod1".
 To emulate Emacs, any keystroke that is defined to be &lt;Meta-<i>x</i>&gt;
 will also result in a binding for &lt;Escape&gt;<i>x</i>. 
 <dt>Compose Key 
@@ -171,7 +171,7 @@ your mail folders. This command is also bound to the keystroke 'i'.
 occur. This command is also bound to the keystroke &lt;Control-Return&gt;.
 Know that messages marked for deletion are removed by means of the
 MH <b>rmm</b> command. In most systems, <b>rmm</b> will rename the
-message to a name begining with either a comma (,) or pound sign (#).
+message to a name beginning with either a comma (,) or pound sign (#).
 Unlike <b>xmh</b>, exmh requires that you commit changes before changing
 folders and doing other operations that modify the scan listing (e.g.,
 Pack, Sort, Rescan). However, you can set Auto Commit under the Scan
@@ -192,7 +192,7 @@ so it only hits on the current folder scan output. Select the All button
 to select all matching messages. Use Pick for more general searching.
 <dt>All messages in current folder (pick) 
 <dd>This provides an interface to the MH <b>pick</b> command. Begin
-by chosing from the "pick attribute" menu in the dialog. These include
+by choosing from the "pick attribute" menu in the dialog. These include
 headers like Subject, From, To, and Cc, as well as date criteria like
 Before, and After. You can search for a string in the body of messages
 with the "Search" field. You can enter a pattern for any of these,
@@ -318,7 +318,7 @@ The last set of commands are message operations. Several of these work
 in a batch fashion on all the messages in a selected set. These include
 Delete, Move, Link, Forward, Unmark, and Print. Some of these buttons
 and menu entries are disabled if there is no current message. Disabled
-actions have their text greyed out. 
+actions have their text grayed out. 
 <dl>
 <dt>Forward 
 <dd>Forward the current message(s). Also keystroke 'f'. 
@@ -385,7 +385,7 @@ is printed, headers and all.
 <dt>Burst Digest 
 <dd>Use the MH <b>burst</b> command to split up a digest message into
 its individual messages. In addition, the new messages are added to
-the unseen sequence. You can control whether or not the orignal message
+the unseen sequence. You can control whether or not the original message
 is replaced with just the digest header by specifying burst options
 in your .mh_profile. (E.g., "burst: -inplace"). 
 <dt>Redistribute 
@@ -471,7 +471,7 @@ headers are stripped off, quoted-printable text is decoded so you get
 a short string to distinguish the inserted lines. You can set this
 prefix via an Xresource, replPrefix. The default prefix is "&gt; ".
 If you want to change this and still have trailing blanks, it turns
-out this works ok. The resource value seems to begin with the first
+out this works OK. The resource value seems to begin with the first
 non-blank character, but then extends all the way to the newline character.
 <dt>Sign 
 <dd>This appends your ~/.signature file to the draft. If this file
@@ -503,14 +503,14 @@ are:
 <dd>This is a checkbox menu item that is off (un-highlighted) by default.
 If selected it prevents the editor window from disappearing after you
 send or abort a message. This is useful if you'd like to compose a
-few similar messges. (I also use it to debug the enriched text formatter.)
+few similar messages. (I also use it to debug the enriched text formatter.)
 <br>
 
 
 <dt>Format mail 
-<dd>This is a submenu of formatting options.  The first three options
-are mutually eclusive and determine when and how the text in your message
-is formatted to fit into standard lenght lines.  The choices are:
+<dd>This is a sub-menu of formatting options.  The first three options
+are mutually exclusive and determine when and how the text in your message
+is formatted to fit into standard length lines.  The choices are:
 <dt>No Line Breaking
 <dd>Don't do any formatting at anytime.
 <dt>Line Break at Send
@@ -523,7 +523,7 @@ the "format" command that reformats a paragraph.  By default, that
 is bound to &lt;Meta-q&gt; 
 <dt>Attempt mhn 
 <dd>If this is selected, your message is run through <b>mhn</b> in
-order to expand any # directives that format a MIME mesage. See also
+order to expand any # directives that format a MIME message. See also
 the "Run mhn now" menu entry below, and see the <b>mhn</b> man page
 for details. 
 <dt>Quote Printable 
@@ -533,7 +533,7 @@ encoding. The Quoted Printable default preference setting under Simple
 Editor can be set to automatic, never, or always. In automatic mode,
 quoting is enabled when you enter a Compose key sequence to generate
 an 8-bit character. 
-<dt>Run mhn nowThis processes the message assuming you have mhn directives,
+<dt>Run mhn now. This processes the message assuming you have mhn directives,
 and then lets you edit the result.
 <br>
 
@@ -542,7 +542,7 @@ and then lets you edit the result.
 <dd>This formats and inserts the current selection. It is assumed to
 be in the currently displayed mail message, and the sender of that
 message is identified before the formatted text. Hint: this is the
-only useful way to include text from PGP encryped messages and text/enriched
+only useful way to include text from PGP encrypted messages and text/enriched
 messages. The formatting of text/enriched is lost, however. 
 <dt>Attachment
 <dd>This is a menu of attachment options.
@@ -579,10 +579,10 @@ spell then the output of spell is put into a second pane inside the
 editor window. That's all - nothing fancy. 
 <dt>Find SEL 
 <dd>This searches the draft for the current X selection. The intent
-is that you select mispelled words in the output of the spell command
+is that you select misspelled words in the output of the spell command
 and use this menu entry to locate them in the draft. (The find and
 keybinding mechanisms were stressed by this addition - expect a cleanup
-someday. There is no reasonable way to define keystroke accellerators
+someday. There is no reasonable way to define keystroke accelerators
 for the find and still be able to change them in the Bind dialog. -
 don't ask...). 
 <dt>Save Buffer 
@@ -602,7 +602,7 @@ Define the alternate under the Editor Support preferences..
 
 <dt><a NAME="crypt">Crypt...</a>
 <dd>This is a menu of options that use the Pretty Good Privacy package
-to to encryption and authentication. An explaination of pgp is beyond
+to to encryption and authentication. An explanation of pgp is beyond
 the scope of this manual. 
 <p>
 The options in the menu determine how your message will be encrypted
@@ -628,7 +628,7 @@ other non-PGP digital signature schemes.  Many minimally compliant
 mail programs see your signature as an attachment. 
 </dl>
 
-There are also four togglable values which may be used in various
+There are also four toggleable values which may be used in various
 combinations:
 
 <dl>
@@ -653,7 +653,7 @@ still read the text.
 <p>If PGP is enabled, and "sedit PGP password" is selected in the
 preferences, a field for entering a PGP password appears at
 the bottom of the SEDIT window.  If your password is provided in this
-field, then the values set in the Crypt... menu are envoked.  If no
+field, then the values set in the Crypt... menu are invoked.  If no
 password is provided, then encryption is not used.  This makes it easy
 to go between using PGP and not using it for particular messages.
 <p>
