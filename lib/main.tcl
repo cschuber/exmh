@@ -96,7 +96,6 @@ is displayed to debug the flist module."}
     Quote_Init
 
     wm protocol . WM_DELETE_WINDOW Exmh_Done
-    wm protocol . WM_SAVE_YOURSELF [list Exmh_Done 0]
     Exwin_Layout
     if [catch {User_Layout} err] {
 	global errorInfo
@@ -113,6 +112,13 @@ is displayed to debug the flist module."}
     bind . <Map> {ExmhMapped %W}
 
     Folder_Change $exmh(folder)
+
+    # Do this late because the WM seems to call the SAVE_YOURSELF hook
+    # and we want to make sure we are in the current folder before
+    # we checkpoint state.  Used to loose the current message because
+    # this was done too early.
+    wm protocol . WM_SAVE_YOURSELF [list Exmh_Done 0]
+
     busy ExmhJunk
 }
 proc ExmhJunk {} {
