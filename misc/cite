@@ -1,0 +1,440 @@
+#!/usr/bin/perl -w
+#
+#  If you are running perl version 4, please run:
+#
+#       & perl -p -i -e 's|chomp\;|s/\\n\$//\;|g; s/my\(/local\(/g;' cite
+#
+
+###########################################################################
+# @(#)cite      1.12 10/21/97
+# @(#) 97/06/05 klassa@ivc.com, klassa@ipass.net (John Klassa)
+# @(#) 97/10/01 steven@dante.org.uk (Steven Bakker)
+# @(#) 97/10/16 henrik@itb.biologie.hu-berlin.de (Henrik Seidel)
+#
+# cite -- A minimal "supercite.el" workalike.
+#
+# This is icky, icky code.  If some clueful person would care to
+# clean it up, I'd be most grateful! :-)
+#
+###########################################################################
+
+my($format, $attribution, $count, $arg, $date, $from, @files, $attr,
+   $fmt, $curr, $tmp, $tmp1, $tmp2, @tmp, $out, $use_raw, $erase,
+   $spcidx, @sline, $thisline, $linewidth, $tlw, %attribution_headers);
+
+$0 =~ s|.*/||g;
+
+$USAGE =<<EOF;
+
+usage: $0 [-f] [-nf] [-aATTR] [-h] [file1 [file2 [file...]]]
+
+    use -f  to force formatting (via "par"),
+        -nf to force no-formatting,
+        -a  to force a particular attribution (e.g. "-aScott"),
+        -w  to specify the width of the output (e.g. "-w80"),
+        -h  for this option summary
+        -v  to print version info
+
+May be run as a filter, or with one or more named input files.
+Note that no whitespace is allowed after the "-a" option.  To
+use whitespace, use quotes (as in "-a'Joe Smith'").
+
+EOF
+
+$VERSION =<<EOF2;
+
+This is \u$0, version \ualpha7
+
+Original written by John Klassa
+Modifications by Steven Bakker
+
+EOF2
+
+#
+# The default width of the lines you want in your final output (can be
+# overridden on the command line with the -w switch).
+#
+
+$linewidth = 80;
+
+#
+# Set the attribution to '', initally.  Formatting is on by default.
+#
+$attribution = '';
+$format      = 1;
+
+#
+# Shut the compiler up
+#
+
+$a = $b = '';
+
+#
+# Grab the command-line arguments.
+#
+
+$attribution    = '';
+$from           = '';
+
+while ($arg = shift @ARGV)
+{
+    SWITCH: {
+        $opt_done                       &&do{
+            push (@files, $arg);
+            last SWITCH};
+        $arg =~ /^-a(.*)/               &&do{
+            $attribution = $1;
+            last SWITCH};
+        $arg eq '-v'                    &&do{
+            die($VERSION);
+            last SWITCH};
+        $arg eq '-f'                    &&do{
+            $format = 1;
+            last SWITCH};
+        $arg eq '-nf'                   &&do{
+            $format = 0;
+            last SWITCH};
+        $arg =~ /^-[h\?]/               &&do{
+            die($USAGE);
+            last SWITCH};
+        $arg =~ /^-w(.*)/               &&do{
+            $linewidth = $1;
+            last SWITCH};
+        $arg eq '--'                    &&do{
+            $opt_done = 1;
+            last SWITCH};
+        $arg =~ /^-/                    &&do{
+            die("\n$arg: unkown option\n$USAGE");
+            last SWITCH};
+        1                               &&do{
+            push (@files, $arg);
+            last SWITCH};
+    }
+}
+
+#
+# This is what I use to reformat the text...  Par, with a whole lot of
+# weird-looking flags.
+#
+$fmt = 'par -w' . $linewidth . q* -r'TbgqR' -B'=.?_A_a' -Q='_s>|'*;
+
+#
+# Set ARGV so that the <> in the while loop (below) does the right
+# thing & doesn't attempt to process files named after our command line
+# switches. :-)
+#
+
+@ARGV = @files;
+
+#
+# Grab information out of the header.
+#
+
+# Initialise date.
+$date = localtime(time);
+
+# Some Perl versions (such as the 4.036 I'm running) don't do
+# localtime in the scalar version...
+chop($date = `date`) unless defined($date);
+
+while (<>)
+{
+    chomp;
+
+    #
+    # If we've hit the header/body separator, bail.
+    #
+
+    last if /^\s*$/;
+
+    #
+    # If we've got the "From" line, extract the relevant parts.
+    #
+
+    if (/^from:/i)
+    {
+        ($from, $attr) = &munge($_);
+        $attribution = $attr unless $attribution;
+    }
+
+    #
+    # Pick out the date, if on the "Date" line.
+    #
+
+    $date = $1 if /^date:\s*(.*\S)/i;
+}
+
+#
+# Get rid of the time at the end of the date, and replace days of the form
+# 01,02,03,... with the single-digit form.
+#
+
+$date =~ s/ [0-9:]*( ([\+-][0-9]*|[A-Z]*))?( \(.*\))?$//;
+$date =~ s/\b0([0-9])\b/$1/;
+
+#
+# Grab the body & do the attribution...  Work into a temporary variable
+# so that we can check return value from the use of "par" (and take
+# appropriate counter measures, if necessary), easily.
+#
+$ATTR_HDR_PREFIX = ">>>>>";
+#$ATTR_HDR_PREFIX = "==>";
+
+$attribution_headers{"$attribution==$from"} = 1;
+
+$out  = "\n$ATTR_HDR_PREFIX On $date,"
+      . "\n$ATTR_HDR_PREFIX \"$attribution\" == $from wrote:\n"
+      ;
+
+undef $curr;
+while (<>)
+{
+    #
+    # If this is a previous "attribution header", write it out as is:
+    #
+
+    # "Canonicalise" some well-known attribution header prefixes:
+    s/^>>>>>/$ATTR_HDR_PREFIX/g;
+    s/^==>/$ATTR_HDR_PREFIX/g;
+
+    chomp;
+
+    if (/^$ATTR_HDR_PREFIX/)
+    {
+        if (/^$ATTR_HDR_PREFIX\s*On[^"]*"(\S+)"\s*==\s*(.*\S)\s*wrote:\s*$/)
+        {
+            my $attr = "$1==$2";
+            next if defined($attribution_headers{$attr});
+            $attribution_headers{$attr} = 1;
+        }
+
+        if ((!defined($curr) || $curr ne $ATTR_HDR_PREFIX) && !$count)
+        {
+            $curr = $ATTR_HDR_PREFIX;
+            $out .= "\n";        # don't increment $count
+        }
+        $out .= $_."\n\n";      # Make sure there's an always an extra empty
+                                # line!
+        $count++;
+        next;
+    }
+
+    #
+    # If the line contains a >, assume it's from a previous attribution.
+    # Attempt to extract the relevant portion.  For example, in a line
+    # like "Bob> Tom> okay, go ahead", we want the attribution to be
+    # "Tom" and the text to be attributed to be "okay, go ahead" (i.e.
+    # the "Bob" part is irrelevant, since Bob was just quoting Tom; what
+    # we want to keep is the notion that Tom said something)...
+    #
+
+    $tmp = '';
+
+    if (/^\s*[A-Z\d\+]*>/i)
+    {
+        /^\s*(([A-Z\d\+]*>)*\s*)([A-Z\d\+]*>)(.*)$/i;
+        ($tmp1, $tmp2, $_) = ($1, $3, $4);
+        #
+        # If the attribution is blank, use a '+'.
+        #
+
+        if ("$tmp2" eq ">") {
+            $tmp = '+';
+            $tmp .= $tmp1 . " " unless "$tmp1" eq "";
+            $tmp =~ s/>>/> >/g;
+            $tmp =~ s/  / /g;
+        } else {
+            ($tmp) = $tmp2 =~ /(.+)>/;
+        }
+
+        #
+        # To make the -w and 'use strict' happy, make sure $_ has a
+        # value in the event that the earlier split caused it to become
+        # undefined.
+        #
+
+        $_ = '' unless defined($_);
+    }
+
+    #
+    # Clean up the line by removing leading/trailing space.
+    #
+
+    s/^\s+|\s+$//g;
+
+    #
+    # If the attribution has changed or there's a blank line in the
+    # text, and we haven't emitted a blank line already, do so.  The
+    # intent is to separate logical portions of the message without
+    # allowing double (or greater) spacing.
+    #
+
+    $out .= "\n" if ((!defined($curr) || $tmp ne $curr || $_ eq '')
+                     && !$count++);
+
+    #
+    # If the line isn't empty, spit it out.  We make sure that there aren't
+    # any lines with words too long for par to handle (by splitting them --
+    # no, it's not nice).
+    #
+
+    @sline = ();
+    $tlw = $linewidth - (length(($tmp) ? $tmp : $attribution) + 4);
+
+    while ($format && $tlw>0 && (length > $tlw))
+    {
+        $count = 0;
+        $spcidx = &max(rindex($_, " ", $tlw-1), rindex($_, "\t", $tlw-1),
+                       rindex($_, "-", $tlw-1));
+        if ($spcidx < 0) { $spcidx = $tlw-1; }
+        push(@sline, substr($_, 0, $spcidx+1));
+        $sline[$#sline] =~ s/\s+$//g;
+        $_ = substr($_, $spcidx+1);
+        s/^\s+//g;
+    }
+
+    if ($_ ne '')
+    {
+        $count = 0;
+        push(@sline, $_);
+    }
+
+    foreach $thisline (@sline)
+    {
+        $out .= sprintf("  %s> %s\n", ($tmp) ? $tmp : $attribution, $thisline);
+    }
+
+    #
+    # Remember the attribution, so that we've got something to compare
+    # against on the next pass.
+    #
+
+    $curr = $tmp;
+}
+
+#
+# Do the actual output...  If formatting is desired, use par.  If not,
+# or if par fails, just emit the text as it is.
+#
+
+$use_raw = 1;
+$erase = 0;
+
+$SIG{'PIPE'} = 'IGNORE';
+
+if ($format)
+{
+    open(PAR, "| $fmt > /tmp/$$");  # failure case checked later...
+    print PAR $out;
+    close(PAR);
+
+    $erase = 1;
+
+    unless ($?)
+    {
+        if (open(INP, "/tmp/$$"))
+        {
+            print (<INP>);
+            close(INP);
+            $use_raw = 0;
+        }
+    }
+}
+
+print $out if $use_raw;
+
+unlink "/tmp/$$" if ($erase && -e "/tmp/$$");
+
+###########################################################################
+# max - returns the greatest of its args
+###########################################################################
+
+sub max
+{
+    my(@sorted) = sort compare @_;
+    shift @sorted;
+}
+
+###########################################################################
+# compare - subroutine for the sort command above
+###########################################################################
+
+sub compare
+{
+    $b <=> $a;
+}
+
+###########################################################################
+# munge -- Rip out the good stuff & format the result.
+###########################################################################
+
+sub munge
+{
+    my($line) = @_;
+    my($attr, $addr, $name);
+
+    $line =~ s/^from:\s*//i;
+
+    $name = '';
+    $addr = $line;
+
+    if ($line =~ /</)
+    {
+        ($addr) = ($line =~ /<([^>]+)>/);
+        ($name = $line) =~ s/<[^>]+>//;
+    }
+    elsif ($line =~ /\(/)
+    {
+        ($name) = ($line =~ /\(([^\)]+)\)/);
+        ($addr = $line) =~ s/\([^\)]+\)//;
+    }
+
+    $addr =~ s/^\s+|\s+$//g;    $addr =~ s/[\(\)<>"]//g;
+    $name =~ s/^\s+|\s+$//g;    $name =~ s/[\(\)<>"]//g;
+
+    ($attr = $name || $addr) =~ s/@.*//;
+
+    if ($attr =~ /^(\S+), (\S+)/)
+    {
+	$attr = $2;
+    }
+    else
+    {
+	$attr =~ s/(\S+).*/$1/;
+    }
+
+    $attr =~ s/[^\w]//g;
+    $attr =~ s/\s+//g;
+
+    $name =~ s/^\s+|\s+$//g;
+    $name = length($name) ? $name : $addr;
+
+    # See if some other attribution is desired...  Hashes tied to dbm
+    # files don't seem to support the exists method, so I create a
+    # temporary hash that isn't tied and use it for the initial lookup.
+    # I guess a "defined" check on what's in the tied hash would have
+    # worked, but that may auto-vivify they key I'm looking up...  I
+    # suppose I could check it out, easily enough, but I'm too lazy at
+    # the moment.
+
+    my %lut;
+
+    dbmopen %lut, "$ENV{HOME}/.cite-lut", 0600;
+
+    my %local_lut = map { $_ => 1 } keys %lut;
+
+    my @result;
+
+    if (exists $local_lut{$addr})
+    {
+	@result = ($name, $lut{$addr});
+    }
+    else
+    {
+	@result = ($name, $attr);
+    }
+
+    dbmclose %lut;
+
+    return @result;
+}

@@ -1,0 +1,32 @@
+#!/usr/bin/perl -w
+
+##########################################################################
+# cite-update / v0.2
+#
+# Update the dbm file(s) that map email addresses to attribution
+# strings.
+#
+# John Klassa / March, 1999
+##########################################################################
+
+use strict;
+
+my %db;
+
+dbmopen %db, "$ENV{HOME}/.cite-lut", 0600 or
+  die "Couldn't tie to '$ENV{HOME}/.cite-lut': $!";
+
+while (<>)
+{
+    chomp;
+
+    die "Input must be in 'address=attribution' format!\n"
+	unless index($_, '=') >= 0;
+
+    my($key, $value) = split /\s*=\s*/, $_, 2;
+
+    die "Input must be in 'address=attribution' format!\n"
+	unless defined $key && defined $value;
+    
+    $db{$key} = $value;
+}

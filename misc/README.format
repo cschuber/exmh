@@ -1,0 +1,71 @@
+			     README.format
+	   Instructions for Adding a Text Formatter to Sedit
+		Time-stamp: <1999-05-07 13:09:38 klassa>
+
+
+Purpose of Hack
+---------------
+Allows you to filter a region of text, in your sedit window, through
+the "par" formatter for beautification.
+
+
+What You'll Need
+----------------
+You need a copy of "par", which is available from its authors web site at
+http://www.cs.berkeley.edu/~amc/Par/.
+
+
+Instructions
+------------
+In your file of exmh hacks[1] (which should reside in the directory
+named in Preferences->Hacking Support->User Library Directory), add
+the following.
+
+    proc jk-format {t} {
+        global sedit
+    
+	# the stuff after "-r" is options to "par"; change at will
+
+        set res [exec par -w$sedit(lineLength) -rTbgqR -B=.\?_A_a -Q=_s\>\| \
+                    << [selection get]]
+    
+        if {![catch "set tndx [$t index sel.first]"]} {
+            $t delete sel.first sel.last
+        } else {
+            set tndx [$t index insert]
+        }
+    
+        $t mark set insert $tndx
+        $t insert insert $res
+    }
+    
+    proc Hook_SeditInitFormat {d t} {
+        bind $t <Meta-q> "jk-format $t"
+    }
+    
+[1] This file can be called "user.tcl" (or whatever.tcl, really).  If
+you don't have one already, copy "user.tcl" from the exmh library
+directory and use it as a template for your own.
+
+After you do this, run a "tclsh" in this same directory.  From it, do
+"auto_mkindex . *.tcl" to update your "tclIndex", then restart exmh.
+
+
+Usage
+-----
+After you've restarted exmh, you can use the new binding for Meta-q
+(note that on a Sun keyboard, this "Meta" is actually the small, black
+"diamond" key next to the space bar; it is on my system, anyway).  In
+particular, you can select a region of text (in your sedit window), then
+hit Meta-q to send it through "par" and have the result put back into
+your sedit window, in place of the original text.
+
+
+To Do
+-----
+Some kind of an "undo" facility would be nice...
+
+
+Author
+------
+John Klassa <klassa@ipass.net>

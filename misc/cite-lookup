@@ -1,0 +1,35 @@
+#!/usr/bin/perl -w
+
+##########################################################################
+# cite-lookup / v0.1
+#
+# Do a look-up in the dbm file(s) that map email addresses to attribution
+# strings.
+#
+# John Klassa / March, 1999
+##########################################################################
+
+use strict;
+
+my %db;
+
+dbmopen %db, "$ENV{HOME}/.cite-lut", 0600 or
+  die "Couldn't tie to '$ENV{HOME}/.cite-lut': $!";
+
+my $did_output;
+
+for my $addr (@ARGV)
+{
+    if (defined $db{$addr})
+    {
+	print "$addr=$db{$addr}\n";
+    }
+    else
+    {
+	print "$addr=\n";
+    }
+
+    ++$did_output;
+}
+
+print "=\n" unless $did_output;

@@ -1,0 +1,144 @@
+			     README.cite
+	Instructions for Adding a Supercite-like Quoter to Sedit
+		Time-stamp: <1999-05-07 13:07:33 klassa>
+
+
+Purpose of Hack
+---------------
+Allows you to quote a message, in a reply, in the spirit of Emacs'
+supercite utility.  Example:
+
+	--snip--
+	>>>>> On Thu, 6 May 1999, "Hal" == Hal DeVore wrote:
+	
+	  Hal> *) cite Perl script and info on using it
+	  Hal> *) John Klassa's cite-lookup and cite-update and procs and
+	  Hal> doc to use 'em
+	
+        I, unfortunately, have been messing around with these and don't
+        think I have a "good" copy of any one of them any longer.  If
+        somebody can come up with good versions, I can try to write up
+        some instructions to go with 'em.
+	--snip--
+
+This hack adds the ">>>>> On Thu..." and "Hal>" text for you.  You can
+also specify arbitrary attributions for particular email addresses,
+which are stored persistently in DBM a file.
+
+
+What You'll Need
+----------------
+You need perl (which is available from http://www.perl.com, built with
+DBM support if you intend to use the arbitrary, persistent attribution
+mechanism) as well as the "cite", "cite-lookup" and "cite-update"
+scripts.
+
+
+Instructions
+------------
+Put the "cite", "cite-lookup" and "cite-update" scripts somewhere in
+your path, so that exmh will find them when it attempts to execute them.
+
+In your file of exmh hacks[1] (which should reside in the directory
+named in Preferences->Hacking Support->User Library Directory), add
+the following.
+
+    proc jk-cite {m t} {
+        global sedit
+        set res [exec cite -w$sedit(lineLength) $m [glob ~/@]]
+        $t insert end "$res"
+    }
+    
+    proc jk-attr-update {t c} {
+        catch { exec cite-update << $c } res
+        if {$res != ""} {
+    	tk_dialog .citeoops "Cite Update: Oops!" $res error 0 "Ack!"
+        }
+    }
+    
+    proc jk-add-attr {t} {
+        set w [winfo parent [winfo parent $t]]
+        if {![winfo exists $w.jka]} {
+            pack [frame $w.jka] -side top -fill x -ipady 2
+        }
+        if {![winfo exists $w.jka.l]} {
+            pack [label $w.jka.l -text "Cite Update"] -side left
+        }
+        if {![winfo exists $w.jka.e]} {
+            pack [entry $w.jka.e] -side left -expand yes -fill x -ipady 2
+        }
+        if {![winfo exists $w.jka.b]} {
+            pack [button $w.jka.b -text Update \
+                    -command "jk-attr-update $t \[$w.jka.e get\]"] \
+    		-side left -ipady 2
+        }
+        $w.jka.e delete 0 end
+        $w.jka.e insert end [exec cite-lookup $::address]
+    }
+    
+    proc Hook_SeditInitCite {d t} {
+        bind $t <Meta-c> "jk-cite -f $t"
+        bind $t <Meta-C> "jk-cite -nf $t"
+        jk-add-attr $t
+    }
+
+[1] This file can be called "user.tcl" (or whatever.tcl, really).  If
+you don't have one already, copy "user.tcl" from the exmh library
+directory and use it as a template for your own.
+
+Also, make sure that Preferences->Quoting->Enable Quoting is turned on,
+so that the message you're replying to, when you reply, is available by
+the name "~/@" (the "jk-cite" procedure looks for it there; the "To Do"
+section, below, touches on this).
+
+After you do this, run a "tclsh" in this same directory.  From it, do
+"auto_mkindex . *.tcl" to update your "tclIndex", then restart exmh.
+
+
+Usage
+-----
+After you've restarted exmh, you can use the new bindings for Meta-c and
+Meta-C (note that on a Sun keyboard, this "Meta" is actually the small,
+black "diamond" key next to the space bar; it is on my system, anyway).
+In particular, once you have exmh bring up a "reply" window, you can hit
+Meta-c to have the original message (now nicely quoted and formatted)
+inserted at the end of your sedit buffer.  If you use Meta-C (capital C)
+instead, you get the same result but without formatting (which is handy
+when the original contains text that you don't want to have wrapped, for
+example).
+
+You should also see a new region at the bottom of your sedit window,
+with a label that reads "Cite Update".  When you reply to a message,
+the address to which you're replying will appear in this region's entry
+widget.  If you put arbitrary attribution text after the equals sign,
+then hit the "Update" button, your attribution text will be permanently
+stored for the indicated address, and will be used whenever that address
+is encountered by cite.
+
+For example, if you replying to "John Doe <john.doe@nowhere.com>", the
+"Cite Update" box will contain:
+
+	john.doe@nowhere.com=
+
+If you put in "Uncle John", as in:
+
+	john.doe@nowhere.com=Uncle John
+
+hit "Update" and *then* hit Meta-c to bring in the original message's
+text, you should see something like:
+
+	>>>>> On Thu, 6 May 1999, "Uncle John" == John Doe wrote:
+	
+	  Uncle John> Hello, nephew!
+	  Uncle John> Hope you've been well...	
+
+
+To Do
+-----
+Some kind of an "undo" facility would be nice...  Also, using the
+preference setting in lieu of the hard-coded filename "~/@" would be
+nice.
+
+Author
+------
+John Klassa <klassa@ipass.net>

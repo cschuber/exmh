@@ -1,0 +1,91 @@
+			     README.format
+     Instructions for Adding an Arbitrary Filter Facility to Sedit
+		Time-stamp: <1999-05-07 13:08:17 klassa>
+
+
+Purpose of Hack
+---------------
+Allows you to filter a region of text, in your sedit window, through
+an arbitrary Unix command line.
+
+
+What You'll Need
+----------------
+Nonething in particular.
+
+
+Instructions
+------------
+In your file of exmh hacks[1] (which should reside in the directory
+named in Preferences->Hacking Support->User Library Directory), add
+the following.
+
+    proc jk-shell {t c} {
+        set res [exec -keepnewline sh -c "$c" << [selection get]]
+        if {![catch "set tndx [$t index sel.first]"]} {
+            $t delete sel.first sel.last
+        } else {
+            set tndx [$t index insert]
+        }
+        $t mark set insert $tndx
+        $t insert insert "$res"
+    }
+    
+    proc jk-add-shell {t} {
+        set w [winfo parent [winfo parent $t]]
+        if {![winfo exists $w.jkf]} {
+            pack [frame $w.jkf] -side top -fill x -ipady 2
+        }
+        if {![winfo exists $w.jkf.l]} {
+            pack [label $w.jkf.l -text Filter] -side left
+        }
+        if {![winfo exists $w.jkf.e]} {
+            pack [entry $w.jkf.e] -side left -expand yes -fill x -ipady 2
+            $w.jkf.e insert end {sed -e 's/^/> /'}
+        }
+        if {![winfo exists $w.jkf.b]} {
+            pack [button $w.jkf.b -text Filter \
+                    -command "jk-shell $t \[$w.jkf.e get\]"] -side left \
+                        -ipady 2
+        }
+    }
+
+    proc Hook_SeditInitFilter {d t} {
+        jk-add-shell $t
+    }
+    
+[1] This file can be called "user.tcl" (or whatever.tcl, really).  If
+you don't have one already, copy "user.tcl" from the exmh library
+directory and use it as a template for your own.
+
+After you do this, run a "tclsh" in this same directory.  From it, do
+"auto_mkindex . *.tcl" to update your "tclIndex", then restart exmh.
+
+
+Usage
+-----
+After you've restarted exmh, you should see a new region at the bottom
+of your sedit window, with a label that reads "Filter".  Put together an
+arbitrary Unix command line (one that'll act as a filter), and enter it
+into this new region's entry widget.  Select a region of text, in your
+sedit window, and hit the "Filter" button...  Your selected text will be
+run through the filter you've specified, and replaced with the result.
+
+By default, the entry widget should come up with "sed -e 's/^/> /'" in
+it.  I use this to put a leading "> " string on a range of lines, for
+example.
+
+
+To Do
+-----
+Some kind of an "undo" facility would be nice...  It would also be nice
+to add each command line, once executed by the "Filter" button, to a
+cascading or drop-down menu.  That way, you'd be able to go back and
+apply and earlier command line to a new region of text, without having
+to retype it.  The history of command lines could be made persistent, as
+well.
+
+
+Author
+------
+John Klassa <klassa@ipass.net>
