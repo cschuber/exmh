@@ -1,5 +1,11 @@
 HISTORY
 cvs repository 07/13/2001 Brent Welch <welch@panasas.com>
+    lib/exmh.install.tcl:  Changed release date to 7/13
+    lib/html/index.html:  Changed release date to 7/13
+
+    tagged and released exmh 2.5.  CVS tag exmh-2-5
+
+cvs repository 07/13/2001 Brent Welch <welch@panasas.com>
     lib/mime.tcl:  Fixed Mime_WithTextHiding to catch errors and
     returns from its uplevel call, fixing a file descriptor leak
     from Mime_ShowMsWord
