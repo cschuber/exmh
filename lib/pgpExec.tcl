@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.9  1999/08/22 18:57:36  bmah
+# Sanitize PGP debugging entries before writing via Exmh_Debug.
+#
 # Revision 1.8  1999/08/13 00:39:05  bmah
 # Fix a number of key/passphrase management problems:  pgpsedit now
 # manages PGP versions, keys, and passphrases on a per-window
@@ -128,7 +131,7 @@ proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
 	    if {[string length $p] == 0} {
 		return 0
 	    }
-            Exmh_Debug "<Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output $p"
+            Exmh_Debug "<Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output \(password\)"
 	    return [Pgp_Exec_Batch $v $exectype $arglist output $p]
 	}
     }
@@ -139,7 +142,7 @@ proc Pgp_Exec_Batch { v exectype arglist outvar {password {}} } {
     global pgp
     upvar $outvar output
 
-    Exmh_Debug "Pgp_Exec_Batch $v $exectype $arglist $outvar $password"
+    Exmh_Debug "Pgp_Exec_Batch $v $exectype $arglist $outvar \(password\)"
 
     set tclcmd [concat exec [set pgp($v,executable,$exectype)] \
                               [subst [set pgp($v,flags_batch)]] $arglist]
@@ -215,7 +218,7 @@ proc Pgp_Exec_Interactive { v exectype arglist outvar } {
 proc Pgp_Exec_CheckPassword { v password key } {
     global pgp
 
-    Exmh_Debug "Pgp_Exec_CheckPassword $v $password $key"
+    Exmh_Debug "Pgp_Exec_CheckPassword $v \(password\) $key"
 
     set in [Mime_TempFile "pwdin"]
     set out [Mime_TempFile "pwdout"]
