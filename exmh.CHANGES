@@ -1,4 +1,29 @@
 HISTORY
+cvs repository 05/11/2001 kchrist
+    A bunch of changes having to do with making sure exmh($id,action)
+    is there when we need it. Also... Replaced Sedit_Mailto with 
+    Msg_Mailto (extending Ovidiu's patch). Replaced exmh(ctype) 
+    with exmh($id,action).
+
+    lib/editor.tcl: Set exmh($id,action) in Sedit_DraftID.
+    lib/error.tcl: Call Edit_DraftID instead of EditWhatNow directly so
+      that exmh($id,action) gets set.
+    lib/html_links.tcl: Call Msg_Mailto instead of Sedit_Mailto.
+    lib/mh.tcl: Made sure exmh($id,action) is set when comp'osing and
+      reset when done.
+    lib/msg.tcl: Turned Msg_CompTo into Msg_Mailto as replacement for
+      Sedit_Mailto. Made new Msg_CompTo. Removed exmh(ctype). Set 
+      exmh($id,action) in MsgComp and Msg_Edit. Moved DecodeURL from
+      seditExtras into here and renamed it to MsgDecodeURL.
+    lib/sedit.tcl: Don't check if exmh($id,action) or pgp(version,$id)
+      exist before using them. If they don't it is a bug we should 
+      catch and fix. Modified call to SeditSetIsigHeaders.
+    lib/seditExtras.tcl: Modified parameters to SeditSetIsigHeader.
+      Replaced Sedit_Mailto with a stub that calls Msg_Mailto. Removed
+      DecodeURL.
+    lib/tclIndex: New one needed because functions were moved.
+    lib/uri.tcl: Call Msg_Mailto instead of Sedit_Mailto in URI_StartViewer.
+
 cvs repository 05/10/2001 Brent Welch <welch@panasas.com>
     exmh.MASTER:
     exmh-bg.MASTER: Removed auto_reset from auto_path_update and
