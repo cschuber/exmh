@@ -34,11 +34,12 @@ proc Env_Init {} {
     }
 
     # Init TMPDIR
-    if [info exists env(EXMHTMPDIR)] {
+
+    if {[info exists env(EXMHTMPDIR)]} {
 	set env(TMPDIR) $env(EXMHTMPDIR)
     }
-    if {![info exists env(TMPDIR)] || ![file isdirectory $env(TMPDIR)]} {
-	set env(TMPDIR) /tmp
+    if {![info exists env(TMPDIR)]} {
+	set env(TMPDIR) /tmp/$env(USER)
     }
 
     # Make sure MH is on the path
@@ -58,6 +59,20 @@ proc Env_Init {} {
 
 proc Env_Tmp {} {
     global env
+
+    # Doing this every time we use the temp file directory ensures
+    # no-one steals it without the user knowing it.
+
+    if {[catch {
+	file mkdir $env(TMPDIR)
+	file attributes $env(TMPDIR) -permissions 0700
+    } err]} {
+	puts $err
+	catch {puts stderr "WARNING: exmh using unsafe /tmp directory"}
+	Exmh_Status "WARNING: exmh using unsafe /tmp directory" red
+	set env(TMPDIR) /tmp
+    }
+
     return $env(TMPDIR)
 }
 

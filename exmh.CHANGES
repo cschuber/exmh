@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 01/12/2001 Brent Welch <brent.welch@interwoven.com>
+    lib/env.tcl - fix for symlink attack.  Exmh now chooses /tmp/<username>
+    as the default tmp directory.  You can also set TMPDIR or EXMHTMPDIR,
+    which was true in previous versions of exmh already.
+    lib/pop.tcl - improved the password prompting dialog.
+    inc.expect - fixed this to deal with the case where inc does *not*
+    prompt you for a password.
+
 cvs repository 01/03/2001 Bruce A. Mah <bmah@acm.org>
     lib/pgpPgp5.tcl - Add +force to correct a problem with verifying
     the signatures of PGP5 clearsigned messages.  From 

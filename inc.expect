@@ -1,0 +1,29 @@
+#!/usr/local/bin/expect
+#
+# Script to run inc and provide a password.
+#
+
+log_user 1
+set timeout 60
+gets stdin password
+eval spawn $argv
+expect {
+    -re "Password (.*):" {
+	exp_send $password\n
+    }
+    eof {
+	send_user "No Password Required"\n
+	exit 0
+    }
+}
+while {1} {
+expect {
+    -re ".*\n" {
+	send_user $expect_out(buffer)
+    }
+    eof {
+	send_user DONE\n
+	exit 0
+    }
+}
+}

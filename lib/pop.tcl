@@ -53,16 +53,22 @@ proc Pop_Dialog {host} {
     global pop
     set t .pop
     set but .pop.but
-    if {[Exwin_Toplevel $t "POP3 Mail Login" Pop]} {
+    if {[Exwin_Toplevel $t "POP3 Mail Login [tk appname]" Pop]} {
 	label $t.label -text "Enter your user ID and password for\nMail server $host"
 	pack $t.label -side top -fill x
 	Widget_BeginEntries
 	Widget_LabeledEntry $t.user UserID pop($host,login)
 	Widget_LabeledEntry $t.pass Password pop($host,password)
 	$t.pass.entry config -show *
-	focus $t.user.entry
+	# Focus on password as the common case, unless we don't know login
+	focus $t.pass.entry
+	if {[string length $pop($host,login)] == 0} {
+	    focus $t.user.entry
+	}
 	Widget_AddBut $but ok "OK" {PopOK} {left padx 1 filly}
 	bind $t <Destroy> {set pop(done) 0}
+	bind $t.user.entry <Return> "focus $t.pass.entry ; break"
+	bind $t.pass.entry <Return> "PopOK"
     }
     set pop(done) 0
     vwait pop(done)
