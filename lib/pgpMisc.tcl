@@ -8,6 +8,10 @@
 # todo:
 
 # $Log$
+# Revision 1.15  1999/08/03 21:18:16  bmah
+# Fix a bug that caused signing without a password to silently fail
+# (instead of generate an error message).
+#
 # Revision 1.14  1999/08/03 17:19:51  bmah
 # Fix some procedures that were mis-named.  Also retrieve
 # Pgp_Misc_RemovePgpActionHeader from multipgp branch.
@@ -343,10 +347,8 @@ proc Misc_PostProcess { srcfile } {
 	    Pgp_SetPassTimeout $pgp(version,$id) $keyid
 # Danger Wil Robinson!
 	    #Exmh_Debug pass=>$pgp($v,pass,$keyid)<
-	    if {[string length $pgp($v,pass,$keyid)] > 0} {
-		Pgp_Process $pgp(version,$id) $curfile $dstfile
-		set curfile $dstfile
-	    }
+	    Pgp_Process $pgp(version,$id) $curfile $dstfile
+	    set curfile $dstfile
 	}
     }
 
