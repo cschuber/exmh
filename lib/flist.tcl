@@ -306,7 +306,6 @@ proc FlistFindSeqsInner {} {
     if {[catch {
     FlistGetContext
     foreach folder $flist(unseenfolders) {
-Exmh_Debug FlistFindSeqsInner $folder
         foreach seq [Mh_Sequences $folder] {
             if {[lsearch $seqwin(nevershow) $seq] < 0} {
                 set seqlist [MhGetSeqCache $folder $seq]

@@ -3,7 +3,7 @@ welch@acm.org
  
 exmh is a TCL/TK based interface to the MH mail system.
 MH can be found at http://www.mhost.com/nmh/
-Version 2.6.2 requires Tcl/Tk 8.0 or higher - works with
+Version 2.6.3 requires Tcl/Tk 8.0 or higher - works with
 the latest (8.3.5 and 8.4.1)
 
 All the docs have moved into html and are viewable from within

@@ -397,7 +397,7 @@ exmh.iconic:		0
 *Mops.more.m.l_clip: 	Clip
 *Mops.more.m.c_clip:	Msg_Clip
 *Mops.more.m.l_xunseen: First Unseen
-*Mops.more.m.c_xunseen:	Msg_Show unseen
+*Mops.more.m.c_xunseen:	Msg_Show \$mhProfile(unseen-sequence)
 *Mops.more.m.l_burst: 	Burst Digest
 *Mops.more.m.c_burst:	Msg_BurstDigest
 *Mops.more.m.l_distrib: 	Redistribute
@@ -422,7 +422,7 @@ exmh.iconic:		0
 *Mops.more.m.l_apply2: 	Apply command to body
 *Mops.more.m.c_apply2:	Message_Apply body
 *Mops.more.m.l_munseen: Mark Unseen
-*Mops.more.m.c_munseen:	Msg_Mark unseen
+*Mops.more.m.c_munseen:	Msg_Mark \$mhProfile(unseen-sequence)
 *Mops.more.m.l_pgp:	old PGP...
 *Mops.more.m.t_pgp:	cascade
 *Mops.more.m.m_pgp:	pgp

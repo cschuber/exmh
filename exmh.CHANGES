@@ -5,6 +5,8 @@ cvs repostiory 3/30/2003 welch@panasas.com
     like it used to be in exmh-2.5
   select.tcl - fixed non-numeric typeing
   mh.tcl - added stubs for 2.5 APIs Mh_MarkSeen and Mh_MarkUnseen
+  app-defaults - removed hardwired "unseen"
+  exmh.install, etc, changed version to 2.6.3
 
 cvs repository 03/26/2003 haldevore@acm.org
     flag.tcl - Applied patch sent to exmh-users by dglo@ssec.wisc.edu

@@ -517,7 +517,6 @@ proc MhReadSeqs {folder seqsvar} {
 
 proc MhGetSeqCache {folder seq } {
     global mhPriv
-    Exmh_Debug "MhGetSeqCache $folder $seq"
     set seqlist ""
     if {[info exists mhPriv(pubseq,$folder,$seq)]} {
         set seqlist $mhPriv(pubseq,$folder,$seq)
