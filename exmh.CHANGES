@@ -1,4 +1,11 @@
 HISTORY
+cvs repository 08/03/2002 cwg-exmh@deepeddy.com
+    unseenwin.tcl - Reindent all code to be more standard.  I was
+	having a problem with emacs reindenting this as I worked on it
+	and making it hard to tell my real changes from the indents,
+	so I'm formatting the baseline more "correctly" so that "cvs
+	diff" can be useful.
+
 cvs repository 07/25/2002 welch@panasas.com
     lib/app-defaults-color: added "urgent" sequence so it shows up in the
       Sequences menu.  It has -foreground purple by default.
