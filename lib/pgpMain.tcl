@@ -413,6 +413,7 @@ proc Pgp_Process { v srcfile dstfile } {
 
     if {[lsearch -glob $mimeheaders "content-type:*"] < 0} {
 	lappend mimeheaders "content-type: text/plain; charset=us-ascii"
+        lappend mimeheaders "content-disposition: inline"
     }
 
     # if there is nothing to do, stop here
@@ -1022,6 +1023,10 @@ proc Pgp_ShowMessage { tkw part } {
 		    set action signbinary
 		    set mimeHdr($part,param,x-action) signbinary
 		}		    
+	    } elsif {"$action" == "pgp-signed"} {
+		# Mutt propagates yet another x-action type
+		set action signclear
+		set mimeHdr($part,param,x-action) signclear
 	    }
 	}
     } else {

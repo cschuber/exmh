@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 04/21/2003 valdis.kletnieks@vt.edu
+  patch from Kevin Oberman <oberman@es.net>
+    lib/pgpMain.tcl - add tweak to support Mutt-generated pgp-sign messages
+
 cvs repository 04/08/2003 haldevore@acm.org
   patch from Chris  Garrigues <cwg-exmh@DeepEddy.Com>
     thread.tcl Fix to prevent threading from erasing unseen sequence
