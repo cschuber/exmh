@@ -1,7 +1,7 @@
 HISTORY
 
 cvs repository 4/9/1999
-    Support for RFC2359.  If a message contains RFC2359 compliant
+    Support for RFC2369.  If a message contains RFC2369 compliant
 	headers, a "List..." menu will appear with List related items
 	on it.  [ Note that this makes visible a mailto url related
 	bug which you'll find described in exmh.BUGS ] -cwg
