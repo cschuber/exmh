@@ -561,7 +561,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
 			# If this was also in the private file, merge the two
 			# and move to the public file.
 			set changed(private) 1
-			set sequences($thisseqname) [MhSeq add $thisseq]
+			set sequences($thisseqname) [MhSeq add sequences($thisseqname) $thisseq]
 		    } else {
 			set sequences($thisseqname) $thisseq
 		    }
