@@ -24,6 +24,12 @@ exmh's icon.
 Note: doesn't work with all window managers."
     }
 
+    { seqwin(orientation) seqWinOrientation
+      {CHOICE Horizontal Vertical}
+      {Orientation}
+"The orientation of the sequence panels in the sequences window."
+    }
+
     { seqwin(minlines) seqWinMinLines 3 {Minimum Entry Lines}
 "The minimum number of entries that the sequence window will show.
 This controls the minimum height that the sequence window will adopt."
@@ -156,6 +162,8 @@ Compose:       Starts a mail composition"
     trace variable seqwin(on) w SeqWinToggle
     trace variable seqwin(nevershow) w SeqWinFixShowList
     trace variable seqwin(alwaysshow) w SeqWinFixShowList
+    trace variable seqwin(orientation) w SeqWinFixOrientation
+
     if {$seqwin(on)} {
       SeqWinToggle
     }

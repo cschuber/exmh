@@ -2,6 +2,8 @@ HISTORY
 cvs repository 08/21/2002 cwg-exmh@deepeddy.com
     mh.tcl - Cache sequences so we don't read the .sequences files
 	over and over and over.
+    seqwin.tcl, sequences.tcl - New preferences item for orientation
+	of sequences panes.
 
 cvs repository 08/21/2002 cwg-exmh@deepeddy.com
     flag.tcl - Don't die in Flag_MsgSeen if flist(totalcount,unseen)

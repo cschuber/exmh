@@ -98,7 +98,11 @@ proc SeqWinShowSeqPane {seq} {
 	if {[lsearch $seqwin(nevershow) $seq] < 0} {
 	    if {($num > 0) || ([lsearch $seqwin(alwaysshow) $seq] >= 0)} {
 		if {![winfo ismapped .sequences.$seq]} {
-		    pack .sequences.$seq -side left -anchor n -fill y
+		    if {$seqwin(orientation) == "Horizontal"} {
+			pack .sequences.$seq -side left -anchor n -fill y
+		    } else {
+			pack .sequences.$seq -side top -anchor n -fill y
+		    }
 		}
 	    }
 	}
@@ -129,7 +133,13 @@ proc SeqWinFixShowList {args} {
 	}
     }
 }
-
+proc SeqWinFixOrientation {args} {
+    global seqwin
+    foreach seq [option get . sequences {}] {
+	SeqWinHideSeqPane $seq
+    }
+    SeqWinFixShowList
+}
 proc SeqWinDeleted {} {
     wm iconify .sequences
     Exmh_Status "Sequences window closed, not destroyed"
