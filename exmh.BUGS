@@ -324,3 +324,15 @@ From: Chip Christian <chip@princetontele.com>
 
 The url-scanning code only looks for one url per line, but sometimes I get 
 messages with more.  
+
+
+----------------------------------------------------------------------
+Number: 21
+Version: 2.0.2
+Priority: Low
+Scope: Narrow
+Complexity: Doc only
+Status:
+
+The Hook_SeditInit predefined hooks are not mentioned in the html doc.
+There might be others, review the code and document any missing ones
