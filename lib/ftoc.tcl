@@ -666,7 +666,7 @@ proc Ftoc_ShowSequences { folder } {
     }
     foreach sequencename [Mh_Sequences $folder] {
 	$exwin(ftext) tag remove $sequencename 0.0 end
-	set sequence [Mh_Sequence $folder $sequencename]
+	set sequence [Seq_Msgs $folder $sequencename]
 	Exmh_Debug $sequencename: $sequence
 	foreach i $sequence {
 	    set line [Ftoc_FindMsg $i]
@@ -1102,7 +1102,7 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	    lappend delmsgs $msgid
 	    set delline 1
 	}
-	Flist_MsgSeen $msgid	;# in case deleted or moved w/out viewing
+	Seq_RemoveMsg unseen $msgid	;# in case deleted or moved w/out viewing
 	if {$delline} {
 	    Msg_UnSeen $msgid	;# avoid MH mark bug
 	    $exwin(ftext) delete $c0 "$ce + 1 chars"
@@ -1377,7 +1377,7 @@ proc FtocDragSelect {w x y wx wy} {
 proc FtocToggleSequence { sequencename } {
     global ftoc exmh
     set folder $exmh(folder)
-    set sequence [Mh_Sequence $folder $sequencename]
+    set sequence [Seq_Msgs $folder $sequencename]
     # If any selected message is not in the sequence, then add to the sequence.
     # If none are in the sequence, then remove from the sequence.
     set flag del

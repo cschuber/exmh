@@ -173,7 +173,7 @@ exmh.iconic:		0
 *iconUpBitmap:         flagup.bitmap
 *iconDownBitmap:       flagdown.bitmap
 *iconSpoolBitmap:      flagup.bitmap
-*iconUpLabel:          $flist(newMsgs) Unseen
+*iconUpLabel:          $flist(totalcount,unseen) Unseen
 *iconDownLabel:        exmh
 *iconSpoolLabel:       $exmh(numUnInced) Spooled
 

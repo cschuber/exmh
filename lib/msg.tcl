@@ -63,7 +63,7 @@ proc Msg_ShowCurrent { {show show} } {
 }
 proc Msg_ShowUnseen { {show show} } {
     global exmh
-    foreach id [Flist_UnseenMsgs $exmh(folder)] {
+    foreach id [Seq_Msgs $exmh(folder) unseen] {
 	if {![Ftoc_Marked $id]} {
 	    Msg_Change $id show
 	    return 1
@@ -151,7 +151,7 @@ proc MsgSeen { msgid } {
     if {[lsearch $msg(seen) $msgid] < 0} {
 	lappend msg(seen) $msgid
     }
-    Flist_MsgSeen $msgid
+    Seq_RemoveMsg unseen $msgid
     Flag_MsgSeen
 }
 proc Msg_UnSeen { msgid } {
@@ -661,7 +661,7 @@ proc Msg_MarkUnseen {} {
     }
     Msg_ClearCurrent
     Ftoc_ClearCurrent
-    Flist_ForgetUnseen $exmh(folder)
+    Seq_Forget $exmh(folder) unseen
     Ftoc_ShowSequences $exmh(folder)
 }
 

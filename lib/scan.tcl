@@ -123,7 +123,7 @@ proc Scan_FolderForce {{folder ""}} {
 	set ftoc(displayValid) 1
 	set ftoc(displayDirty) 1
 	Ftoc_Yview end
-	Flist_UnseenMsgs $folder
+	Seq_Msgs $folder unseen
 	Ftoc_ShowSequences $folder
 	Exmh_Status ok
     }

@@ -36,15 +36,21 @@ proc FlistResetVars {} {
     set flist(unvisited) {}	;# Unseen folders not yet visited
     Exmh_Debug FlistResetVars
     set flist(unvisitedNext) {}	;# Temporary copy (next iteration)
-    set flist(newMsgs) 0	;# Total count of unseen messages
 
-    # flist(new,$folder)	is the number of unseen in a folder
-    #				(Update with care; 'trace'd by UnseenWinTrace)
-    # flist(newseq,$folder)	is the message id's of unseen messages
-    # flist(mtime,$folder)	is modify time of .mh_sequences file
+    # flist(seqcount,$folder,$seq)
+    #	number of sequence elements in a folder
+    #	(Update with care; 'trace'd by UnseenWinTrace)
+    # flist(oldseqcount,$folder,$seq)
+    #	previous number of sequence elements in a folder
+    # flist(seq,$folder,$seq)
+    #	message id's of messages in $seq
+    # flist(mtime,$folder)
+    #	modification time of .mh_sequences file
+    # flist(totalcount,$seq)	;# Total count of unseen messages
+
     foreach x [array names flist] {
-	if [regexp {^(new|newseq|mtime),} $x] {
-	    # reset per-folder new and newseq state
+	if [regexp {^(seqcount|oldseqcount|seq|mtime|totalcount),} $x] {
+	    # reset state
 	    unset flist($x)
 	}
     }
@@ -52,14 +58,14 @@ proc FlistResetVars {} {
 	set flist(debug) 0
     }
     if {$flist(debug)} {
-	trace variable flist(newMsgs) w FlistTraceNewMsgs
+	trace variable flist(totalcount,unseen) w FlistTraceTotalUnseen
 	trace variable flist(unseen) w FlistTraceUnseen
 	trace variable flist(unvisited) w FlistTraceUnvisited
 	set flist(listbox) .flistbox
 	set f $flist(listbox)
 	if ![winfo exists $f] {
 	    Exwin_Toplevel $f "Flist Debug" Flist
-	    Widget_Label $f newMsgs {top fillx } -textvariable flist(newMsgs)
+	    Widget_Label $f newMsgs {top fillx } -textvariable flist(totalcount,unseen)
 	    Widget_Frame $f top Labels
 	    Widget_Label $f.top unseen {left fill expand} -text Unseen
 	    Widget_Label $f.top unvisited {left fill expand} -text Unvisited
@@ -69,11 +75,11 @@ proc FlistResetVars {} {
 	}
     }
 }
-proc FlistTraceNewMsgs {args} {
+proc FlistTraceTotalUnseen {args} {
     global flist
     set l [info level]
     incr l -1
-    Exmh_Debug flist(newMsgs) => $flist(newMsgs) : [info level $l] $args
+    Exmh_Debug flist(totalcount,unseen) => $flist(totalcount,unseen) : [info level $l] $args
 }
 proc FlistTraceUnseen {args} {
     global flist
@@ -256,164 +262,10 @@ proc Flist_FolderSet { {subfolder .} } {
 	return $result
     }
 }
-
-# The routines below here manage the unseen sequence state per folder.
-
-proc FlistSeq { folder sequence } {
-    global mhProfile
-    # Explode a sequence into a list of message numbers
-    set seq {}
-    set rseq {}
-    foreach range [split [string trim $sequence]] {
-	set parts [split [string trim $range] -]
-	if {[llength $parts] == 1} {
-	    lappend seq $parts
-	    set rseq [concat $parts $rseq]
-	} else {
-	    for {set m [lindex $parts 0]} {$m <= [lindex $parts 1]} {incr m} {
-		lappend seq $m
-		set rseq [concat $m $rseq]
-	    }
-	}
-    }
-    # Hack to weed out unseen sequence numbers for messages that don't exist
-    foreach m $rseq {
-	if ![file exists $mhProfile(path)/$folder/$m] {
-	    Exmh_Debug $mhProfile(path)/$folder/$m not found
-	    set ix [lsearch $seq $m]
-	    set seq [lreplace $seq $ix $ix]
-	} else {
-	    # Real hack
-	    break
-	}
-    }
-    return $seq
-}
-
-# Reset the cached state about unseen messages because the user
-# has just packed, sorted, or threaded the folder.
-# This should be followed shortly by a call to Flist_UnseenMsgs
-#
-# Don't call gratitiously because it confuses the exmhunseen window.
-
-proc Flist_ForgetUnseen {folder} {
-    global flist
-    set flist(newseq,$folder) {}
-    if {[info exists flist(new,$folder)]} {
-	set flist(newMsgs) [expr $flist(newMsgs) - $flist(new,$folder)]
-    }
-    set flist(new,$folder) 0
-    set ix [lsearch $flist(unseen) $folder]
-    if {$ix >= 0} {
-	set flist(unseen) [lreplace $flist(unseen) $ix $ix]
-    }
-}
-
-# Add unseen messages to the list for a given folder.
-# This has to be careful about already known unseen messages
-# and messages that have been read but not committed as read.
-proc Flist_AddUnseen {folder seq} {
-    global flist exmh
-
-    # Check overlap with already seen msgs and unseen messages already known
-    if [info exists flist(newseq,$folder)] {
-	if [info exists flist(new,$folder)] {
-	    set new $flist(new,$folder)
-	} else {
-	    set new 0
-	}
-    } else {
-	set flist(newseq,$folder) {}
-	set new 0
-    }
-    if {[string compare $folder $exmh(folder)] == 0} {
-	set known [concat [Msg_Seen] $flist(newseq,$folder)]
-    } else {
-	set known $flist(newseq,$folder)
-    }
-    # Subtract elements of $known from $seq
-    if {[llength $known] > [llength $seq]} {
-	set nseq {}
-	foreach id $seq {
-	    if {[lsearch $known $id] < 0} {
-		lappend nseq $id
-	    }
-	}
-	set seq $nseq
-    } else {
-	foreach id $known  {
-	    set ix [lsearch $seq $id]
-	    if {$ix >= 0} {
-		set seq [lreplace $seq $ix $ix]
-	    }
-	}
-    }
-    set num [llength $seq]
-    if {$num <= 0} {
-	return
-    }
-    incr flist(newMsgs) $num
-    set flist(new,$folder) [expr $new + $num]
-    set flist(newseq,$folder) [concat $flist(newseq,$folder) $seq]
-    if {[lsearch $flist(unseen) $folder] < 0} {
-	lappend flist(unseen) $folder
-    }
-    if {[string compare $folder $exmh(folder)] != 0 &&
-	[lsearch $flist(unvisited) $folder] < 0} {
-	lappend flist(unvisitedNext) $folder
-    }
-    Fdisp_HighlightUnseen $folder
-}
-# Set the Unseen list for a folder.
-proc Flist_SetUnseen {folder seq} {
-    global flist exmh
-
-    if [info exists flist(new,$folder)] {
-	set oldnum $flist(new,$folder)
-    } else {
-	set oldnum 0
-    }
-    set newnum [llength $seq]
-    if {$newnum <= 0} {
-	incr flist(newMsgs) -$oldnum
-	set flist(new,$folder) 0
-	set flist(newseq,$folder) {}
-	return
-    }
-    incr flist(newMsgs) [expr $newnum - $oldnum]
-    set flist(new,$folder) $newnum
-    set flist(newseq,$folder) $seq
-    if {[lsearch $flist(unseen) $folder] < 0} {
-	lappend flist(unseen) $folder
-    }
-    if {[string compare $folder $exmh(folder)] != 0 &&
-	[lsearch $flist(unvisited) $folder] < 0} {
-	lappend flist(unvisitedNext) $folder
-    }
-    Fdisp_HighlightUnseen $folder
-}
 proc Flist_Done {} {
     global flist exmh
 
     Exmh_Debug Flist_Done
-    if {$flist(newMsgs) > 0} {
-	if {$flist(newMsgs) == 1} {set msg "msg"} else {set msg "msgs"}
-	if {[llength $flist(unseen)] == 1} {set f "folder"} else {set f "folders"}
-	Exmh_Status "$flist(newMsgs) unread $msg in [llength $flist(unseen)] $f"
-	if ![info exists flist(lastNewMsgs)] {
-	    set flist(lastNewMsgs) 0
-	}
-	set delta [expr {$flist(newMsgs) - $flist(lastNewMsgs)}]
-	if {$delta > 0} {
-	    Flag_NewMail
-	    Sound_Feedback $delta
-	}
-    } else {
-	set flist(newMsgs) 0
-	Flag_NoUnseen
-	Exmh_Status "No unread msgs"
-    }
-    set flist(lastNewMsgs) $flist(newMsgs)
     set flist(unvisited) [FlistSort $flist(unvisitedNext)]
     set flist(active) 0
 }
@@ -425,10 +277,10 @@ proc Flist_Done {} {
 proc Flist_UnseenUpdate { folder } {
     global exmh flist ftoc
     Exmh_Debug Flist_UnseenUpdate $folder
-    Flist_UnseenMsgs $folder
+    Seq_Msgs $folder unseen
     if {[string compare $folder $exmh(folder)] == 0} {
 	if {$ftoc(autoSort)} {
-	    if [Flist_NumUnseen $folder] {
+	    if [Flist_NumUnseen $folder unseen] {
 		Ftoc_Sort
 	    }
 	}
@@ -439,19 +291,6 @@ proc Flist_UnseenUpdate { folder } {
     }
     # This wiggles the flag and sorts flist(unvisited)
     Flist_Done
-}
-proc Flist_UnseenMsgs { folder } {
-    global flist
-    Flist_SetUnseen $folder [Mh_Unseen $folder]
-    return $flist(newseq,$folder)
-}
-proc Flist_NumUnseen { folder } {
-    global flist
-    if [info exists flist(new,$folder)] {
-	return $flist(new,$folder)
-    } else {
-	return 0
-    }
 }
 proc Flist_UnseenFolders {} {
     global flist
@@ -490,33 +329,33 @@ proc FlistFindUnseen {reset} {
 	FlistGetContext
 	set result {}
 	set keep {}
-	foreach f $flist(unseenfolders) {
+	foreach folder $flist(unseenfolders) {
 	    set hit 0
 	    foreach line $flist(context) {
 		set line [split $line]
 		set key [lindex $line 0]
-		if {$key == "atr-$mhProfile(unseen-sequence)-$mhProfile(path)/$f:"} {
+		if {$key == "atr-$mhProfile(unseen-sequence)-$mhProfile(path)/$folder:"} {
 		    set seq [lindex [split $line :] 1]
-		    BgRPC Flist_AddUnseen $f [FlistSeq $f $seq]
+		    BgRPC Seq_Add $folder unseen $seq
 		    set hit 1
 		    break
 		}
 	    }
 	    if {! $hit} {
-		set path $mhProfile(path)/$f/$mhProfile(mh-sequences)
+		set path $mhProfile(path)/$folder/$mhProfile(mh-sequences)
 		if {![file exists $path] ||
-		    ([info exists flist(mtime,$f)] &&
-		     ([file mtime $path] <= $flist(mtime,$f)))} {
+		    ([info exists flist(mtime,$folder)] &&
+		     ([file mtime $path] <= $flist(mtime,$folder)))} {
 		    # No state to report
 		} else {
 		    if {[catch {open $path} in] == 0} {
 			set se \n[read $in]
 			if [regexp \n$mhProfile(unseen-sequence):\[^\n\]*\n $se line] {
 			    set seq [lindex [split $line :\n] 2]
-			    BgRPC Flist_AddUnseen $f [FlistSeq $f $seq]
+			    BgRPC Seq_Add $folder unseen $seq
 			}
 			close $in
-			set flist(mtime,$f) [file mtime $path]
+			set flist(mtime,$folder) [file mtime $path]
 		    }
 		}
 	    }
@@ -540,34 +379,14 @@ proc FlistGetContext {} {
 	}
     }
 }
-proc Flist_MsgSeen { msgid } {
-    global flist exmh
-    if [info exists flist(newseq,$exmh(folder))] {
-	set ix [lsearch $flist(newseq,$exmh(folder)) $msgid]
-	if {$ix >= 0} {
-	    set flist(newseq,$exmh(folder)) \
-		[lreplace $flist(newseq,$exmh(folder)) $ix $ix]
-	    incr flist(new,$exmh(folder)) -1
-	    incr flist(newMsgs) -1
-	    set flist(lastNewMsgs) $flist(newMsgs)
-	    if {$flist(new,$exmh(folder)) == 0} {
-		FlistUnseenFolder $exmh(folder)
-	    }
-	    if {$flist(newMsgs) <  0} {
-		Exmh_Status "$flist(newMsgs) unseen!"
-		set flist(newMsgs) 0
-	    }
-	}
-    }
-}
 proc Flist_SeenAll { folder } {
     FlistUnseenFolder $folder
 }
 proc FlistUnseenFolder { folder } {
     global flist
     Exmh_Debug FlistUnseenFolder $folder
-    catch {unset flist(new,$folder)}
-    catch {unset flist(newseq,$folder)}
+    catch {unset flist(seqcount,$folder,unseen)}
+    catch {unset flist(seq,$folder,unseen)}
     Fdisp_UnHighlightUnseen $folder
     set ix [lsearch $flist(unseen) $folder]
     if {$ix >= 0} {

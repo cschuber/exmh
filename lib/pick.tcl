@@ -206,7 +206,7 @@ proc PickMarkSeen {} {
     Mh_MarkSeen $exmh(folder) $pick(ids)
     Ftoc_MarkSeen $pick(ids)
     foreach id $pick(ids) {
-	Flist_MsgSeen $id
+	Seq_RemoveMsg unseen $id
     }
 }
 proc Pick_MarkSeen {} {

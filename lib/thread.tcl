@@ -252,7 +252,7 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
         Exmh_Status "folder incorrectly threaded. line number mismatch" warn
     }
 
-    Flist_ForgetUnseen $folder
+    Flist_ForgetSequence $folder unseen
     Ftoc_ShowSequences $folder
 
     if {$curmsg != {}} {

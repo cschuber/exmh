@@ -98,7 +98,7 @@ proc Fcache_Redisplay { args } {
 proc Fcache_RedisplayUnseen { array elem op } {
     global flist fcache
     if {$fcache(unseenCount)} {
-	Fcache_Display [scan $elem "new,%s" folder]
+	Fcache_Display [scan $elem "seqcount,%s,unseen" folder]
     }
 }
 
@@ -151,7 +151,7 @@ proc Fcache_FolderName { folder } {
 
     set fname [ Fcache_FolderNickName $folder ]
     if {$fcache(unseenCount)} {
-	set key "new,$folder"
+	set key "seqcount,$folder,unseen"
 	if [ info exists flist($key)] {
 	    set num $flist($key)
 	    set fname "$fname:$num"

@@ -65,7 +65,7 @@ proc UnseenWinToggle {args} {
 		UnseenWinEmptyMsg
 	    } else {
 		foreach f $flist(unseen) {
-		    UnseenWinAdd $f $flist(new,$f)
+		    UnseenWinAdd $f $flist(seqcount,$f,unseen)
 		}
 	    }
 	    trace variable flist wu UnseenWinTrace
@@ -88,11 +88,15 @@ proc UnseenWinTrace {array elem op} {
     global flist unseenwin
 
     if [catch {
-	if {[scan $elem "new,%s" folder] != 1} {
+	set indices [split $elem ,]
+	set var [lindex $indices 0]
+	if {$var != {seqcount}} {
 	    return
-	} else {
-	    regsub "new," $elem "" folder
-	    regsub "\n" $folder "" folder
+	}
+	set folder [lindex $indices 1]
+	set sequence [lindex $indices 2]
+	if {$sequence != {unseen}} {
+	    return
 	}
 	if [info exists flist($elem)] {
 	    set num $flist($elem)
@@ -112,7 +116,7 @@ proc UnseenWinTrace {array elem op} {
 		set old_digits $unseenwin(digits)
 		set unseenwin(digits) 1
 		foreach f $unseenwin(folders) {
-		    if {[catch {set digits [expr int(log10($flist(new,$f)) + 1)]}]} {
+		    if {[catch {set digits [expr int(log10($flist(seqcount,$f,unseen)) + 1)]}]} {
 			set digits 1
 		    }
 		    if {$digits > $unseenwin(digits)} {
@@ -124,7 +128,7 @@ proc UnseenWinTrace {array elem op} {
 		    UnseenWinSetGeom $unseenwin(curwidth) $unseenwin(curlines)
 		    set i 0
 		    foreach f $unseenwin(folders) {
-			UnseenWinShow $i 1 $f $flist(new,$f)
+			UnseenWinShow $i 1 $f $flist(seqcount,$f,unseen)
 			incr i
 		    }
 		} else {
@@ -219,7 +223,7 @@ proc UnseenWinAdd {folder num} {
     if $redisplay {
 	set i 0
 	foreach f $unseenwin(folders) {
-	    UnseenWinShow $i 1 $f $flist(new,$f)
+	    UnseenWinShow $i 1 $f $flist(seqcount,$f,unseen)
 	    incr i
 	}
     }
@@ -267,7 +271,7 @@ proc UnseenWinRemove {index folder} {
     set old_digits $unseenwin(digits)
     set unseenwin(digits) 1
     foreach f $unseenwin(folders) {
-	set digits [expr int(log10($flist(new,$f)) + 1)]
+	set digits [expr int(log10($flist(seqcount,$f,unseen)) + 1)]
 	if {$digits > $unseenwin(digits)} {
 	    set unseenwin(digits) $digits
 	}
@@ -291,7 +295,7 @@ proc UnseenWinRemove {index folder} {
 	if $redisplay {
 	    set i 0
 	    foreach f $unseenwin(folders) {
-		UnseenWinShow $i 1 $f $flist(new,$f)
+		UnseenWinShow $i 1 $f $flist(seqcount,$f,unseen)
 		incr i
 	    }
 	}

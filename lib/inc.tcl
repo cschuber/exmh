@@ -203,7 +203,7 @@ proc Inc_InboxFinish { f incout {hook {}} } {
 	Exmh_Status "No new messages in $f"
 	return
     }
-    Flist_AddUnseen $f $msgids
+    Seq_Add $f unseen $msgids
     if {$hook != {}} {
 	eval $hook
     }
@@ -313,8 +313,8 @@ proc Inc_Presort {{doinc 1}} {
 proc Inc_PresortFinish {} {
     global exmh ftoc
     LOG Inc_PresortFinish
-    Mh_Folder $exmh(folder)	;# prestort inc has changed this to MyIncTmp
-    if {$ftoc(displayValid) && [Flist_NumUnseen $exmh(folder)] > 0} {
+    Mh_Folder $exmh(folder)	;# presort inc has changed this to MyIncTmp
+    if {$ftoc(displayValid) && [Seq_Count $exmh(folder) unseen] > 0} {
 	Label_Folder $exmh(folder)
 	Scan_Folder $exmh(folder) $ftoc(showNew)
     }

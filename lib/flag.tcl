@@ -32,7 +32,7 @@ proc Flag_Init {} {
     Preferences_Resource flag(iconup) iconUpBitmap flagup.bitmap
     Preferences_Resource flag(icondown) iconDownBitmap flagdown.bitmap
     Preferences_Resource flag(iconspool) iconSpoolBitmap flagspool.bitmap
-    Preferences_Resource flag(labelup) iconUpLabel {$flist(newMsgs) Unseen}
+    Preferences_Resource flag(labelup) iconUpLabel {$flist(totalcount,unseen) Unseen}
     Preferences_Resource flag(labeldown) iconDownLabel exmh
     Preferences_Resource flag(labelspool) iconSpoolLabel {$exmh(numUnInced) Spooled}
     Preferences_Resource flag(iconupmask) iconUpMask flagup.mask
@@ -76,7 +76,7 @@ proc Flag_NewMail { {folder {}} } {
 # This is called after viewing a message
 proc Flag_MsgSeen { {folder {}} } {
     global flist
-    if {$flist(newMsgs) > 0} {
+    if {$flist(totalcount,unseen) > 0} {
 	FlagInner spool iconspool labelup
     } else {
 	FlagInner down icondown labeldown

@@ -143,7 +143,7 @@ proc Mh_CompSetup {} {
 	if {$indrafts} {
 	    # In drafts with no previously current message
 	    Scan_Folder $exmh(folder)
-	    Msg_Change [Mh_Sequence $exmh(folder) cur]
+	    Msg_Change [Seq_Msgs $exmh(folder) cur]
 	    if {[Mh_Cur $exmh(folder)] == {}} {
 		# Scan_Folder destroyed the cur sequence (drafts must
 		# have been empty). Restore it.
@@ -394,7 +394,7 @@ proc Mh_CurSafe { folder } {
 }
 proc Mh_Unseen { folder } {
     global mhProfile
-    return [Mh_Sequence $folder [lindex [split $mhProfile(unseen-sequence)] 0]]
+    return [Seq_Msgs $folder [lindex [split $mhProfile(unseen-sequence)] 0]]
 }
 proc Mh_MarkSeen { folder ids } {
     global mhProfile
@@ -444,7 +444,7 @@ proc MhCur { f } {
     if {$f == {}} {
 	return {}
     }
-    set cur [Mh_Sequence $f cur]
+    set cur [Seq_Msgs $f cur]
     if {[file exists $mhProfile(path)/$f/$cur]} {
 	return $cur
     } else {
@@ -479,11 +479,11 @@ proc Mh_Sequences { f } {
     }
     return $result
 }
-proc Mh_Sequence { f seq } {
+proc Mh_Sequence { folder seq } {
     # pick +folder cur changes the context, so we access the files directly
     global mhProfile mhPriv
     set result {}
-    if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences) r} in] == 0} {
+    if {[catch {open $mhProfile(path)/$folder/$mhProfile(mh-sequences) r} in] == 0} {
 	set old [read $in]
 	close $in
 	foreach line [split $old \n] {
@@ -498,39 +498,25 @@ proc Mh_Sequence { f seq } {
 	close $in
         # Turn off all special characters in folder name (e.g., c++)
         # Thanks to John Farrell
-        set pattern atr-$seq-$mhProfile(path)/$f
+        set pattern atr-$seq-$mhProfile(path)/$folder
         regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
 	foreach line [split $old \n] {
 	    if {[regexp "$pattern: (.*)" $line x msgs]} {
-		set result [MhSeq add $result $msgs]
+		set result [Seq_Modify $folder add $result $msgs]
 	    }
 	}
     }
-    return [MhSeqExpand $result]
+    return [Seq_Expand $folder $result]
 }
-proc MhSeqExpand { msgs } {
-    set result {}
-    foreach range [split [string trim $msgs]] {
-	set parts [split [string trim $range] -]
-	if {[llength $parts] == 1} {
-	    lappend result $parts
-	} else {
-	    for {set m [lindex $parts 0]} {$m <= [lindex $parts 1]} {incr m} {
-		lappend result $m
-	    }
-	}
-    }
-    return $result
-}	
 proc Mh_ClearCur { f } {
     Mh_SequenceUpdate $f clear cur
 }
 
 # Directly modify the context files to add/remove/clear messages
 # from a sequence
-proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
+proc Mh_SequenceUpdate { folder how seq {msgs {}} {which public}} {
     global mhProfile
-    Exmh_Debug Mh_SequenceUpdate $f $how $seq $msgs $which
+    Exmh_Debug Mh_SequenceUpdate $folder $how $seq $msgs $which
     array unset sequences
     array unset mode
     # First read the private sequence
@@ -538,7 +524,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
     if {[catch {open $mhProfile(context) r} in] == 0} {
 	set old [read $in]
 	close $in
-        set pattern $mhProfile(path)/$f
+        set pattern $mhProfile(path)/$folder
         regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
 	foreach line [split $old \n] {
 	    if {$line != {}} {
@@ -557,7 +543,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
     }
     # Then read the public sequence
     set changed(public) 0
-    if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences) r} in] == 0} {
+    if {[catch {open $mhProfile(path)/$folder/$mhProfile(mh-sequences) r} in] == 0} {
 	set old [read $in]
 	close $in
 	foreach line [split $old \n] {
@@ -567,13 +553,13 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
 			# If this was also in the private file, merge the two
 			# and move to the public file.
 			set changed(private) 1
-			set sequences($thisseqname) [MhSeq add $sequences($thisseqname) $thisseq]
+			set sequences($thisseqname) [Seq_Modify $folder add $sequences($thisseqname) $thisseq]
 		    } else {
 			set sequences($thisseqname) $thisseq
 		    }
 		    set mode($thisseqname) public
 		} else {
-		    Exmh_Status "Bad line in $mhProfile(path)/$f/$mhProfile(mh-sequences): $line"
+		    Exmh_Status "Bad line in $mhProfile(path)/$folder/$mhProfile(mh-sequences): $line"
 		}
 	    }
 	}
@@ -582,14 +568,14 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
     if [catch {set sequences($seq)} oldmsgs] {
 	set oldmsgs {}
     }
-    set sequences($seq) [MhSeq $how $oldmsgs $msgs]
+    set sequences($seq) [Seq_Modify $folder $how $oldmsgs $msgs]
     if {![catch {set mode($seq)}] && ($mode($seq) != $which)} {
 	set changed($mode($seq)) 1
     }
     set mode($seq) $which
     set changed($which) 1
     if {$changed(public) == 1} {
-	if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences).new w} out] == 0} {
+	if {[catch {open $mhProfile(path)/$folder/$mhProfile(mh-sequences).new w} out] == 0} {
 	    foreach sequence [array names sequences] {
 		if {[string compare $mode($sequence) "public"] == 0} {
 		    if {![regexp {^ *$} $sequences($sequence)]} {
@@ -598,10 +584,10 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
 		}
 	    }
 	    close $out
-	    Mh_Rename $mhProfile(path)/$f/$mhProfile(mh-sequences).new \
-		    $mhProfile(path)/$f/$mhProfile(mh-sequences)
+	    Mh_Rename $mhProfile(path)/$folder/$mhProfile(mh-sequences).new \
+		    $mhProfile(path)/$folder/$mhProfile(mh-sequences)
 	} else {
-	    Exmh_Status "Couldn't write to $mhProfile(path)/$f/$mhProfile(mh-sequences).new"
+	    Exmh_Status "Couldn't write to $mhProfile(path)/$folder/$mhProfile(mh-sequences).new"
 	    set changed(private) 1
 	    foreach sequence [array names sequences] {
 		set mode($sequence) "private"
@@ -614,7 +600,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
 	    foreach sequence [array names sequences] {
 		if {[string compare $mode($sequence) "private"] == 0} {
 		    if {![regexp {^ *$} $sequences($sequence)]} {
-			puts $out "atr-$sequence-$mhProfile(path)/$f: $sequences($sequence)"
+			puts $out "atr-$sequence-$mhProfile(path)/$folder: $sequences($sequence)"
 		    }
 		}
 	    }
@@ -622,67 +608,6 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
 	    Mh_Rename $mhProfile(context).new $mhProfile(context)
 	}
     }
-}
-proc MhSeq { how oldmsgs msgs } {
-    set new [MhSeqExpand $msgs]
-    set old [MhSeqExpand $oldmsgs]
-    if {[string compare $how "add"] == 0} {
-	set merge [lsort -integer -increasing [concat $old $new]]
-    } elseif {[string compare $how "del"] == 0} {
-	set ix 0
-	set new [lsort -integer -increasing $new]
-	set next [lindex $new 0]
-	set merge {}
-	foreach id [lsort -integer -increasing $old] {
-	    while {$id > $next} {
-		incr ix
-		set next [lindex $new $ix]
-		if {[string length $next] == 0} {
-		    incr ix -1
-		    set next [lindex $new $ix]
-		    break
-		}
-	    }
-	    if {$id == $next} {
-		incr ix
-		set next [lindex $new $ix]
-	    } else {
-		lappend merge $id
-	    }
-	}
-    } elseif {[string compare $how "replace"] == 0} {
-	# replace
-	return $msgs
-    } else {
-	return {}
-    }
-    set seq [MhSeqMake $merge]
-    Exmh_Debug $seq
-    return $seq
-}
-proc MhSeqMake { msgs } {
-    set result [lindex $msgs 0]
-    set first $result
-    set last $result
-    set id {}
-    foreach id [lrange $msgs 1 end] {
-	if {$id != $last} {
-	    if {$id == $last + 1} {
-		set last $id
-	    } else {
-		if {$last != $first} {
-		    append result -$last
-		}
-		set first $id
-		set last $id
-		append result " $first"
-	    }
-	}
-    }
-    if {$id == $last && [string length $msgs]} {
-	append result -$last
-    }
-    return $result
 }
 
 proc Mh_Path { folder msg } {

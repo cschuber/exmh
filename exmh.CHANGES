@@ -1,4 +1,23 @@
 HISTORY
+cvs repository 08/06/2002 cwg-exmh@deepeddy.com
+    app-defaults, fcache.tcl, flag.tcl, flist.tcl, ftoc.tcl, inc.tcl,
+    main.tcl, mh.tcl, msg.tcl, pick.tcl, scan.tcl, sequences.tcl
+    thread.tcl, unseenwin.tcl - 
+	1) Renamed flist(new,???) to flist(seqcount,???,unseen),
+	flist(newseq,???) to flist(seq,???,unseen), and flist(newMsgs)
+	to flist(totalcount,unseen) and generalized many of the
+	functions which referred to them to have a sequence argument.
+	2) Reorganized sequences code into its own file from mh.tcl and
+	flist.tcl; involved renaming of functions which is why so many
+	files are touched in this patch.
+	3) As a result of the above two items merged Mh_Sequence and
+	Flist_UnseenMsgs, which once generalized did almost exactly
+	the same thing into the single funciton Seq_Msgs.
+	4) Did most of the prep-work for generalization of the unseen
+	window to be a general sequences window so that now all the
+	needed data is tracked.  The next step will be to use that
+	data.
+
 cvs repository 08/03/2002 cwg-exmh@deepeddy.com
     unseenwin.tcl - Reindent all code to be more standard.  I was
 	having a problem with emacs reindenting this as I worked on it
