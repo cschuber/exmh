@@ -1,0 +1,38 @@
+<title>Exmh symlink attack</title>
+
+<h1>Exmh symlink attack</h1>
+Jan 10, 2001:
+Exmh made the security news via report to BUGTRAQ about the following:
+<blockquote>
+A problem in the bug reporting system for exmh, an X-based interface for the
+MH mail, can cause overwriting of arbitrary system files that are writable by
+the user running exmh.
+When exmh encounters a problem in its code, it opens a dialog
+that asks the user what happened and then allows them to send a bug report to
+the author. If the user chooses to e-mail the bug report, exmh creates the file
+/tmp/exmhErrorMsg. If the file is a symlink, it will follow the symlink,
+overwriting the file that it is linked to.
+</blockquote>
+<p>
+This vulnerability applies to all versions of exmh 2.2 and earlier.
+However,
+users of these versions
+can set the TMPDIR or EXMHTMPDIR environment variables to
+change the /tmp choice.  This feature already exists and you do not
+need to apply the patch to enable it.
+Any exmh user can avoid the attack by setting either of
+these environment variables to a directory they own.
+<p>
+The default of /tmp has been changed with a fix
+to the env.tcl file that decides
+which directory to use for temporary files.  Instead of using /tmp
+as the default, the program now uses /tmp/<i>username</i> and ensures
+that the directory is owned and write-only to the user.
+<p>
+This fix is in exmh-2.3.
+<p>
+Users can apply the
+<a href=http://www.beedub.com/exmh/patches/welch/env.patch>patch</a> to their env.tcl,
+or simply install a 
+<a href=http://www.beedub.com/exmh/patches/welch/env.tcl>new version of that file</a>.
+<p>
