@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 11/15/2001 Valdis Kletnieks <valdis.kletnieks@vt.edu>
+    lib/folders.tcl: Fix typo in function name
+
 cvs repository 08/23/2001 kchrist
     lib/pgpWWW.tcl: Comment in switch statement causing problems.
 

@@ -353,7 +353,7 @@ proc Folder_FindShared {} {
 	return
     }
     foreach f [split [read $in] \n] {
-	Foldler_IsShared $f
+	Folder_IsShared $f
     }
     close $in
 }
