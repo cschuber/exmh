@@ -1,4 +1,15 @@
 HISTORY
+cvs repository 07/28/2004 welch@panasas.com
+  lib/bogo.tcl - added catch around sa-learn pipe, as that can raise
+    errors if sa-learn generates error output.
+  lib/app-defaults - Added new key bindings
+    <Key-S> Bogo_Filter spam
+    <Key-H> Bogo_Filter ham
+  lib/html_images.tcl 
+  lib/html.tcl - added preference to disable image display in
+    a list of folder patterns.  Contributed by Jürgen Vollmer
+  lib/sequences.tcl - changed default for seqwin(show) to "unseen" from "cur"
+
 cvs repository 07/28/2004 valdis.kletnieks@vt.edu
   Clean up 2 bugs from the 07/26 'exec' hunt...
   lib/preferences.tcl - remove extraneous -p flag on 'file mkdir'

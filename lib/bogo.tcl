@@ -115,13 +115,14 @@ proc Bogo_FilterFolder {{spam spam}} {
     return
   }
   set pipe [open "|sa-learn --$spam $mhProfile(path)/$exmh(folder)"]
-  fileevent $pipe readable [list BogoFilterReader $pipe $spam]
+  fileevent $pipe readable [list BogoFilterReader $pipe $exmh(folder) $spam]
 }
-proc BogoFilterReader {pipe spam} {
-  global exmh
+proc BogoFilterReader {pipe folder spam} {
   if {[eof $pipe]} {
-    Exmh_Status "Learned $exmh(folder) as $spam"
-    close $pipe
+    Exmh_Status "Learned $folder as $spam"
+    if {[catch {close $pipe} err]} {
+      Exmh_Debug "sa-learn $folder: $err"
+    }
   } else {
     gets $pipe line
     Exmh_Debug "BogoFilterReader: $line"

@@ -53,6 +53,8 @@ proc BindingsReset { w } {
     Bind_Key $w <Control-r> {Find_It prev}
     Bind_Key $w <question> {Bind_Pref}
     Bind_Key $w <period> {Folder_AutoRefile}
+    Bind_Key $w <Key-S> {Bogo_Filter spam}
+    Bind_Key $w <Key-H> {Bogo_Filter ham}
     # Page message - the function keys are Sun4 keyboard specific
     Bind_Key $w <space>			{Msg_PageOrNext}
     Bind_Key $w {<BackSpace> <Prior> <F29>}	{Msg_PageUp}

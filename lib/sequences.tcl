@@ -73,7 +73,7 @@ folder width."
 "Sequences to never display in the sequences window."
     }
 
-    { seqwin(show) seqShow {cur} {Show Sequences}
+    { seqwin(show) seqShow {unseen} {Show Sequences}
 "Sequences to display in the sequences window."
     }
 

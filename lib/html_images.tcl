@@ -42,12 +42,19 @@ proc Image_Reset {win} {
 
 proc HMtag_img {win param text} {
 	upvar #0 HM$win var Head$win head
-	global window
+	global window exmh
 
 	if {!$window(imagesEnabled)} {
 	    Exmh_Debug Skipping image $param
 	    return
 	}
+        foreach pattern $window(skipImagesInFolder) {
+            Exmh_Debug check pattern=$pattern, current=$exmh(folder)
+            if [string match $pattern $exmh(folder)] {
+                Exmh_Debug Skipping image $param of folder $exmh(folder)
+                return
+            }
+        }
 
 	# set imagemap callbacks
 	set mark [Mark_Current $win]

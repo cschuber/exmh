@@ -391,9 +391,9 @@ exmh.iconic:		0
 
 *Mops.spam.text:	Spam...
 *Mops.spam.m.entrylist: yes no f_yes f_no
-*Mops.spam.m.l_yes:	Learn as Spam
+*Mops.spam.m.l_yes:	Learn as Spam <Key-S>
 *Mops.spam.m.c_yes:	Bogo_Filter spam
-*Mops.spam.m.l_no:	Learn as Ham
+*Mops.spam.m.l_no:	Learn as Ham <Key-H>
 *Mops.spam.m.c_no:	Bogo_Filter ham
 *Mops.spam.m.l_f_yes:	Learn Folder as Spam
 *Mops.spam.m.c_f_yes:	Bogo_FilterFolder spam

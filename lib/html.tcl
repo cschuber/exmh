@@ -24,6 +24,12 @@ caching, such as between runs of the browser."}
 A setting of 0 minimizes memory use."}
     {window(imagesEnabled) imageEnable ON {Enable display of in-line images}
 "Use this to enable or disable images in your HTML messages."}
+    {window(skipImagesInFolder) skipImagesInFolder spam {Disable display of in-line images in folder(s)}
+"Set this to the list of folders for which in-line images should not
+be fetched nor be displayed. Elements of the list don't have to be
+actual folders: they can be patterns, using *, ?, \[a-z] (and \\ to
+quote those special chars). For instance
+*/spam will disable images in foo/spam as well as bar/spam."}
 }
     HtmlInitVars
 }
@@ -261,7 +267,7 @@ proc Html_Forward {} {
 proc Window_SetMaster {win masterwin} {
     upvar #0 HM$masterwin var
     upvar #0 HM$win var2
-    if [info exists var(S_mainwin)] { 
+    if [info exists var(S_mainwin)] {
 	set var2(S_mainwin) $var(S_mainwin)
     } else {
 	set var2(S_mainwin) $masterwin
