@@ -1,10 +1,10 @@
-Last modified: Wed Jun  7 17:56:26 PDT 2000
-exmh version: 2.1.2
+Last modified: Wed Jun 14 10:09:34 PDT 2000
+exmh version: 2.2
 welch@acm.org
  
 exmh is a TCL/TK based interface to the MH mail system,
 which can be found at http://www.mhost.com/nmh/
-Version 2.1 requires Tk 8.0 or higher - works with
+Version 2.2 requires Tk 8.0 or higher - works with
 the latest (8.3.1 and 8.4a1)
 
 All the docs have moved into html and are viewable from within

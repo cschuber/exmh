@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 06/12/2000 Brent Welch <welch@ajubasolutions.com>
+
+    sedit.tcl: Fixed auto-sign bug having to do with {$t} in app-defaults.
+    Makefile, exmh.install, exmh.README, html/index.html, html/software.html
+	Rationalizing version number to 2.2
+
 Released exmh-2.1.2 6/8/2000 Brent Welch <welch@ajubasolutions.com>
 
 cvs repository 06/08/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
