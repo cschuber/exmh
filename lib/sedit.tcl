@@ -85,7 +85,7 @@ proc Sedit_Start { draft } {
 	if {[string length $cmd] == 0} {
 	    set cmd [list SeditQuit $draft $t]
 	} else {
-	    set cmd [eval list $cmd]
+	    set cmd [subst $cmd]
 	}
 	destroy $b.quit
 	wm protocol .sedit$id WM_DELETE_WINDOW $cmd
@@ -118,7 +118,8 @@ proc Sedit_Start { draft } {
 	    }
 	} else {
 	    set menu [Widget_AddMenuBDef $b sign {right padx 1 filly}]
-	    set cmd [option get $b.sign command {}]
+	    # Expand variables in the command
+	    set cmd [subst [option get $b.sign command {}]]
 	    set txt [option get $b.sign text {}]
 	    if ![string match *... $txt] {
 		$b.sign config -text $txt...
@@ -135,14 +136,11 @@ proc Sedit_Start { draft } {
 		if {$sedit(autoSign)} {
 		    incr i
 		    Widget_RadioMenuItem $menu [file tail $file] { } sedit($t,sigfile) $file
-#		    if {[string compare [file tail $file] [file tail $sedit(sigfileDefault)]] == 0} {
-#			$menu invoke $i
-#		    }
 		} else {
-		    # The eval-hairyness causes the variable references
-		    # in $cmd to be expanded at this point.
-			Widget_AddMenuItem $menu [file tail $file] \
-			[eval list $cmd $file]
+		    # Carefully add the signature file name to the command
+		    set newcmd $cmd
+		    lappend newcmd $file
+		    Widget_AddMenuItem $menu [file tail $file] $newcmd
 		}
 	    }
 	}

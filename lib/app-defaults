@@ -760,7 +760,8 @@ exmh.iconic:		0
 ! The following buttons and menus are special and always exist
 ! in a standard arrangement.  You can override their commands and labels.
 ! The variables $draft, $t, and $f are expanded when the button
-! or menu is defined.  If you want variables to be substitued when the
+! or menu is defined.  They are quoted with { } so those values can contain
+! spaces.  If you want variables to be substitued when the
 ! operation is invoked, escape the $ as in \$foo
 
 *Sedit.Menubar.builtin: 	quit send sign
@@ -874,11 +875,11 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.attach.l_keys:   Attach PGP Keys...
 *Sedit.Menubar.more.m.attach.c_keys:   Pgp_InsertKeys {$draft} {$t}
 *Sedit.Menubar.more.m.l_whom:	Whom
-*Sedit.Menubar.more.m.c_whom:	SeditWhom {$draft} {$f} {$t}
+*Sedit.Menubar.more.m.c_whom:	SeditWhom {$draft} $f {$t}
 *Sedit.Menubar.more.m.l_save: Save Buffer
 *Sedit.Menubar.more.m.c_save: SeditSave {$draft} {$t}
 *Sedit.Menubar.more.m.l_spell: Spell...
-*Sedit.Menubar.more.m.c_spell: SeditSpell {$draft} {$f} {$t}
+*Sedit.Menubar.more.m.c_spell: SeditSpell {$draft} $f {$t}
 *Sedit.Menubar.more.m.l_find: Find SEL
 *Sedit.Menubar.more.m.c_find: Sedit_Find {$draft} {$t}
 *Sedit.Menubar.more.m.l_preview: Mime Preview
@@ -965,9 +966,9 @@ exmh.iconic:		0
 *Sedit.Menubar.mime.m.format.entrylist: marks tags
 
 *Sedit.Menubar.mime.m.format.l_marks: Show Marks
-*Sedit.Menubar.mime.m.format.c_marks: SeditMimeShowMarks $t
+*Sedit.Menubar.mime.m.format.c_marks: SeditMimeShowMarks {$t}
 *Sedit.Menubar.mime.m.format.l_tags: Show Tags
-*Sedit.Menubar.mime.m.format.c_tags: SeditMimeShowTags $t
+*Sedit.Menubar.mime.m.format.c_tags: SeditMimeShowTags {$t}
 
 ! The following menu is special because it gets dynamically updated
 ! as parts are added to the message.

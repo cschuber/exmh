@@ -42,6 +42,12 @@ proc Image_Reset {win} {
 
 proc HMtag_img {win param text} {
 	upvar #0 HM$win var Head$win head
+	global window
+
+	if {!$window(imagesEnabled)} {
+	    Exmh_Debug Skipping image $param
+	    return
+	}
 
 	# set imagemap callbacks
 	set mark [Mark_Current $win]
