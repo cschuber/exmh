@@ -929,7 +929,7 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.version.c_pgp6:	Pgp_SetSeditPgpVersion pgp6 $id
 *Sedit.Menubar.pgp.m.version.t_pgp6:	radio
 *Sedit.Menubar.pgp.m.version.v_pgp6:	pgp(version,$id)
-*Sedit.Menubar.pgp.m.version.x_pgp6:	pgp
+*Sedit.Menubar.pgp.m.version.x_pgp6:	pgp6
 
 *Sedit.Menubar.pgp.m.l_pgpsign:		Sign
 *Sedit.Menubar.pgp.m.t_pgpsign:		cascade
