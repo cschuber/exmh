@@ -1,6 +1,9 @@
 # pgpPgp65.tcl
 
 # $Log$
+# Revision 1.2  2000/06/09 04:58:37  valdis
+# Fix stoopid confusion between two regexps - use right one..
+#
 # Revision 1.1  2000/06/09 03:45:23  valdis
 # Adding PGP 6.5 support - new file
 #
@@ -175,8 +178,7 @@ set pgp(pgp6,pat_Untrusted) {WARNING:.*confidence}
 set pgp(pgp6,pat_BadSignature) {WARNING:.*doesn't match.*}
 set pgp(pgp6,pat_UnknownError) {ERROR}
 # command that matches out the Originator
-set pgp(pgp6,cmd_User) {regexp  {KeyID: ("[0-9a-fA-F]*")} $in {} user}
-#set pgp(pgp6,cmd_User) {regexp  {user ("[^"]*")} $in {} user}
+set pgp(pgp6,cmd_User) {regexp  {user ("[^"]*")} $in {} user}
 
 ###
 }
