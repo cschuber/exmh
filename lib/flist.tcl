@@ -416,17 +416,6 @@ proc Flist_UnseenUpdate { folder } {
     # This wiggles the flag and sorts flist(unvisited)
     Flist_Done
 }
-
-# Don't call gratitiously because it confuses the exmhunseen window.
-proc Flist_ResetUnseen { folder } {
-    global flist
-    Exmh_Debug Flist_ResetUnseen $folder
-    if [Flist_NumUnseen $folder] {
-	incr flist(newMsgs) -$flist(new,$folder)
-	set flist(newseq,$folder) {}
-	set flist(new,$folder) 0
-    }
-}
 proc Flist_UnseenMsgs { folder } {
     global flist
     Flist_AddUnseen $folder [Mh_Unseen $folder]

@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 07/13/2002 cwg-exmh@deepeddy.com
+    flist.tcl,folder.tcl - Completely back out the fixpacksort patch
+	from two years ago that hal installed because of the
+	unseenwindow shuffling that occurs and besides the
+	Flist_ForgetUnseen proc is supposed to handle this case.  If
+	there is indeed a problem that occurs, we can fix it in a way
+	that won't shuffle the unseen window.
+
 cvs repository 07/12/2002 cwg-exmh@deepeddy.com
     flist.tcl - Remove call to Flist_ResetUnseen in Flist_UnseenUpdate
 	so that the unseen window won't get shuffled all the time.
