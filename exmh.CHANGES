@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 04/02/2003 valdis.kletnieks@vt.edu
+  exmh.MASTER, lib/widgets.tcl - set a default cursor of 'left_ptr' (otherwise
+  enlightenment 0.16.5 doesn't play nice with XFree86 4.3.0 cursors)
+
 cvs repository 04/02/2003 haldevore@acm.org
   flist.tcl - Only call Fcache_Redisplay if folders being cached
 

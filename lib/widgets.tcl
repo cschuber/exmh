@@ -26,6 +26,7 @@ proc Widget_Toplevel { path name {class Dialog} {x {}} {y {}} } {
     wm title $self $name
     wm iconname $self $name
     wm group $self .
+    $self configure -cursor left_ptr
     return $self
 }
 proc Widget_Vgeo { geo win } {
