@@ -281,7 +281,7 @@ proc Flist_UnseenUpdate { folder } {
     global exmh flist ftoc mhProfile
     Exmh_Debug Flist_UnseenUpdate $folder
     foreach seq [Mh_Sequences $folder] {
-	Seq_Msgs $folder $seq
+	Seq_Set $folder $seq [MhGetSeqCache $folder $seq]
     }
     if {[string compare $folder $exmh(folder)] == 0} {
 	if {$ftoc(autoSort)} {
@@ -324,21 +324,18 @@ proc FlistFindStart {reset} {
     }
     return 1
 }
-proc FlistFindSeqs {reset} {
-    global flist
-    if {![BgRPC FlistFindStart $reset]} {
-	# Flist active
-	return
-    }
+
+proc FlistFindSeqsInner {} {
+    global flist seqwin
     if {[catch {
-	FlistGetContext
-	set result {}
-	set keep {}
-	foreach folder $flist(unseenfolders) {
-	    foreach seq [Mh_Sequences $folder] {
-		BgRPC Seq_Msgs $folder $seq
-	    }
+    FlistGetContext
+    foreach folder $flist(unseenfolders) {
+        foreach seq [Mh_Sequences $folder] {
+            if {[lsearch $seqwin(nevershow) $seq] < 0} {
+                Seq_Set $folder $seq [MhGetSeqCache $folder $seq]
+            }
 	}
+    }
     } err]} {
 	# An error here is most likely a flakey NFS connection
 	# It is important to trap this so we can mark the
@@ -346,6 +343,15 @@ proc FlistFindSeqs {reset} {
 	# looking for new messages.
 	Exmh_Debug "FlistFindSeqs: $err"
     }
+}
+
+proc FlistFindSeqs {reset} {
+    global flist
+    if {![BgRPC FlistFindStart $reset]} {
+	# Flist active
+	return
+    }
+    BgRPC FlistFindSeqsInner
     BgRPC Flist_Done
 }
 proc FlistGetContext {} {

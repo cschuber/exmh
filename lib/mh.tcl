@@ -513,6 +513,20 @@ proc MhReadSeqs {folder seqsvar} {
 	}
     }
 }
+
+proc MhGetSeqCache {folder seq } {
+    global mhPriv
+    Exmh_Debug "MhGetSeqCache $folder $seq"
+    set seqlist ""
+    if {[info exists mhPriv(pubseq,$folder,$seq)]} {
+        set seqlist $mhPriv(pubseq,$folder,$seq)
+    }
+    if {[info exists mhPriv(privseq,$folder,$seq)]} {
+        lappend seqlist $mhPriv(privseq,$folder,$seq)
+    }
+    return $seqlist
+}
+
 proc Mh_Sequences { folder } {
     MhReadSeqs $folder seqs
     return [array names seqs]

@@ -1,4 +1,11 @@
 HISTORY
+cvs repository 11/07/2002 valdis.kletnieks@vt.edu
+    mh.tcl, flist.tcl, tclIndex - add new function MhGetSeqCache to
+	speed up flist/sequence handling.  We now only call MhReadSeqs
+	once per folder, and skip over sequences listing in $seqwin(nevershow).
+	Also, migrate some code into new function FlistFindSeqsInner so
+	that it can be called with BgRPC to make exmh-bg happier.
+
 cvs repository 11/1/2002 cwg-exmh@deepeddy.com
     seqwin.tcl - prepend sequence names with "pane" when using to name
 	panes because a pane can't start with a Capital letter.
