@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.8  1999/05/06 15:36:41  cwg
+# If there's a PGP error while processing the message, show the message raw.
+#
 # Revision 1.7  1999/05/05 14:58:10  cwg
 # Modifed Jan Peterson's code to make better use of screen real estate.
 #
@@ -809,6 +812,10 @@ proc Pgp_ShowMessage { tkw part } {
 		}
 		MimeShowPart $tkw $part=1 [MimeLabel $part part] 1
 		MimeClose $fileIO
+	    } else {
+		Mime_WithTextFile fileIO $tkw $part {
+		    $tkw insert insert [read $fileIO]
+		}
 	    }
 	    
 	} else {
@@ -917,6 +924,7 @@ proc Pgp_DisplayMsg { tkw part pgpresultvar } {
 
     Exmh_Debug "Pgp_DisplayMsg: $pgpresult(msg)"
     if {[info exists pgpresult(keyid)]} {
+	Exmh_Debug "pgpresult(keyid): $pgpresult(keyid)"
 	MimeMenuAdd $part command \
 	    -label "Query keyserver for key $pgpresult(keyid)" \
 	    -command "PgpQueryKey $pgpresult(keyid)"
