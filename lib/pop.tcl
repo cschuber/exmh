@@ -56,6 +56,7 @@ proc Pop_Dialog {host} {
     if {[Exwin_Toplevel $t "POP3 Mail Login" Pop]} {
 	label $t.label -text "Enter your user ID and password for\nMail server $host"
 	pack $t.label -side top -fill x
+	Widget_BeginEntries
 	Widget_LabeledEntry $t.user UserID pop($host,login)
 	Widget_LabeledEntry $t.pass Password pop($host,password)
 	$t.pass.entry config -show *
