@@ -1,0 +1,87 @@
+#!wish -f
+#
+# TK interface to the MH Mail utility
+# Brent Welch <welch@acm.org>
+# Original version by <Ed Oskiewicz (eo@ansa.co.uk)>
+#
+# Copyright (c) 1993-8 Brent Welch
+# Copyright (c) 1993-5 Xerox Corporation.
+# Copyright (c) 1996-8 Sun Microsystems
+# Use and copying of this software and preparation of derivative works based
+# upon this software are permitted. Any distribution of this software or
+# derivative works must comply with all applicable United States export
+# control laws. This software is made available AS IS, and Xerox Corporation
+# and Sun Microsystems
+# make no warranty about the software, its performance or its conformity to
+# any specification.
+
+# The following lines are patched by exmh.install
+#CONFIGURATION
+#END CONFIGURATION
+
+if [catch {file join a b}] {
+    if {$tk_version == 4.1} {
+	error "Tk 4.1 or higher required for exmh 2.0\nBeta versions of Tk 4.1 will not work."
+    } else {
+	error "Tk 4.1 (final release) or higher required."
+    }
+    exit 1
+}
+# Do this so popups related to user initialization
+# appear all alone.
+wm withdraw .
+
+proc auto_path_update { path } {
+    # Add library directories to the auto_path,
+    # ensuring that later paths have precedence
+    # and that function override works
+    global auto_path tk_version
+    if [file exists $path/tclIndex] {
+	if {[info tclversion] != 7.0} {
+	    set auto_path "$path $auto_path"
+	} else {
+	    lappend auto_path $path
+	}
+	catch {auto_reset} ;# Needed for function override
+    }
+}
+
+auto_path_update $exmh(library)
+
+if ![file exists $exmh(library)/tclIndex] {
+    if [file exists ./lib/tclIndex] {
+	puts stderr "Warning, using local script library, ./lib"
+	set exmh(library) ./lib
+    }
+}
+
+# Set up the environment
+Env_Init
+
+# For WindowMaker, http://www.inf.ufrgs.br/~kojima/wmaker/
+wm group . .
+
+# For session managers
+wm command . "$argv0 $argv"
+
+# modified by k.furukawa, jul.1994.  for kanji
+# this piece of code enables japanese kanji display if you use
+# tk-jp extension and JIS code.  if you use EUC for MH processing 
+# codes, you may replace JIS with EUC and you may need more works.
+
+if {[info commands kanji] == "kanji"} {
+    kanji internalCode JIS
+    option add *Text.Font a14
+}
+
+# Ensure the user is in a writable directory for @ links
+if {[string match /* $exmh(library)] &&
+    [string match /* $argv0]} {
+    # Don't go anywhere when testing
+    cd
+}
+
+# The rest of the application is defined by routines in the exmh library
+# The after 1 trick is to ensure we get the built-in error handler.
+
+after 1 {Exmh}

@@ -1,0 +1,21 @@
+Last modified: Tue Feb 24 14:35:27 PST 1998
+exmh version: 2.0.2
+welch@acm.org
+ 
+exmh is a TCL/TK based interface to the MH mail system.
+Version 2 requires Tk 4.1 or higher - works with Tk 8.0
+
+All the docs have moved into html and are viewable from within
+the installer as well as from within a running exmh.
+The exmh home page is
+http://www.beedub.com/exmh/
+
+To install, run
+
+wish exmh.install
+
+You can send me email with the word "exmh" in the subject,
+but you may get better response from the exmh-users mailing list.
+Subscribe via "exmh-users-request@redhat.com"
+Send a message whose subject line reads 'subscribe' and whos
+From or Reply-To line contains the email address to add.

@@ -1,0 +1,2489 @@
+HISTORY
+2.0.2 2/23/98	Brent joins Scriptics http://www.scriptics.com/
+    Exmh mailing lists move to @redhat.com
+    Brent's life-long email contact is <welch@acm.org>
+    Tuned call to Flist_ForgetUnseen.
+    Added Inc_PresortFinish to Flist button so current folder gets updated.
+    Added text/pgp synonym for PGP mail.
+    Fixed up backward compatibility with "other" browser preference
+	and old "netscape flags" pref item that led to a null browser setting.
+    Improved MsgParseFrom (John Beck)
+    Tweaked error handling in Ftoc_ClearCurrent
+    Added blue link color as "*Text.c_link" resource in app-defaults-color.
+    Eliminated lindex from audit processing in favor of regexp.
+    Changed disabling of MHN so it only turns off when you create a
+	multipart MIME message within Sedit.
+    Unseen window cleanup (Ben Escoto)
+    Fixed handling of [ ] and other special characters in saving of
+	address book data file.
+    Fixed getnews.tcl to use mhpath new to choose file names.
+    Fixed File_Delete to not use rm -rf on Tcl7.6 and earlier
+
+2.0.1 1/21/98	Happy New Year
+    Changed File_Delete so it does not delete directories.
+    Fixed folder delete
+    Fixed bug with initial mail headers with trailing blanks.
+    Added source hook and support for directory of patches.  source.tcl
+    Removed tabs from menu entries.
+    Added destroy binding the URL scanning button to avoid errors when
+	skipping through messages quickly.
+    Fixed top 10 preferences for inc.
+    Hack to use aixterm for PGP.
+    Fix to Msg_CompTo so it handles the case where to: is not first.
+    Fixed Pgp_Setup to use /dev/tty instead of /dev/console
+    Added home and end key bindings.
+    Fixed handling of PGP header to deal with 4.0 better
+    Added MhBackup to figure out the MH , or # character used with rmm.
+    Turn off mhn if a mime message is being created.
+	Note that "specify charset for text" always creates a MIME message
+	so this will turn off "attempt mhn"
+    Changed email contact to <welch@acm.org>
+    Fixed handling of bad regular expressions in find tool.
+    Fixed exec wrapper to not execute directories.
+    Added next, prior, home, end bindings to the HTML display.
+    Fixed http package to work with 1.1 servers.
+
+2.0.1 12/23/97	Ba Humbug
+    Fixed mime.tcl to delete temp files
+    Changed sedit.tcl so SeditFormatMail is called, even if you will do MHN
+    Folded in some patches from John Beck:
+	Enhanced sedit.tcl to add x-mailer headers in all cases.
+	Beefed up post.tcl to fix a bug and add Organization headers.
+
+2.0 12/22/97	Merry Christmas
+    Fixed geometry bug in installer.
+    Added PgpDecryptExpect to distribution.
+    Added "wm command ." for WindowMaker.
+    Added Flist_ForgetUnseen and Flist_SeenAll.  Call Flist_ForgetUnseen
+	after sorting, packing, a folder.
+    Use scanproc when generating cached scan output.
+    Added File_Delete, and replaced all uses of 'exec rm'
+    Minor tweaks to message parsing in mime.tcl.
+    Added wrapper around exec to cache pathnames lookups.
+    Fixed session manager protocol when saving state.
+    Added "Save From Address" menu item.
+    Fixed kio8 font definition.
+    Updated glimpse support to handle 3.0 flags.
+    Add check for 8-bit chars in Cite Selection.
+    Added call to SeditMimeParse after running mhnproc.
+    Added Msg_CompTo and Msg_CompSel - compose to specified address.
+	Added <Key-C> binding for "compose mail for selected address".
+    Added Inc_Custom support.
+    Fixed prefs to handle broken traces on variables.
+    Fix file select to deal with spaces in names better.
+    Added keepPlaces to Windows & Scrolling prefs.
+    Fixed auto-pack race condition.
+    Fixed BackgroundMsgChkInner,
+    fixed shutdown of exmh-bg process.
+    Added Ftoc_SelectAll, Ftoc_SelectAllToEnd, Ftoc_CatchUp, Ftoc_CatchUpToEnd.
+    Added SeditSetHeader
+    Minor intelligent sig patch.
+    Fixed bell sound choice.
+    Added tocc pick search option.
+    Fixed ispell startup code.
+    Fixed link hit handler in HTML
+    Fixed handling of relative links.
+    Fixed errors when opening image cache files.
+    News posting fixes.
+    Address book fixes.
+    Added color resources for sedit multipart colorization:
+	c_enrichedBg pink
+	c_textBg snow
+	c_audioBg gold
+	c_imageBg powderblue
+	c_messageBg seashell
+	c_applicationBg honeydew
+	c_videoBg lavenderblush
+	c_textFg black	(There are *Fg resources corresponding to all *Bg)
+
+2.0zeta 7/25/97
+    Overhaul of exmh-netscape interaction - support for netscape_remote.
+	changed netscapeFlags to netscapeCommand in upward compatible way.
+    Added "tclcmd" option for browser hookup,
+    Fixed pattern match to handle PGP 5.0 date format.
+    Fixed off-by-one error in unseen message count.
+    Trapped error messages from PGP xterms.
+    Added periodic (one minute) auto-save to Sedit
+    Tweaked "fullname_less_comma" pattern match in addr.tcl
+    Updated mime.types file
+
+2.0epsilon 7/12/97
+    Inverted read/update of messages to reduce the number of updates
+	for small messages, which eliminates most type-ahead bugs
+    Added Mime_Magic and Mime_ShowXApp (Tim Medley)
+    Added tclCmd option for URI viewer,
+	plus integrated netscape_remote package support
+    Revamped Intelligent Signature stuff (Chris Keane)
+    Added pref item for default MIME type (text/plain or application/octet-stream)
+    Fixed PGP key extraction from the web servers.
+    Fixed handling of failed signatures so you still see the message.
+    Added expecttk support for PGP handling.
+    Fixed recursive failures with some PGP messages.
+    Tweaked keyboard selection actions
+    Eliminated complaint from exmh-bg during shutdown.
+    Added autowhom to editor prefs.
+    Fixed threading to handle empty folders.
+    Fixed sticky folders in folder cache.
+    Sorted size options in font selection dialog.
+    Revamped Ispell stuff.  Defaults to OFF.
+    Fixed HTML form submission.
+    Support fcopy for new Tcl 8.0
+    Minor fixes to Post code.
+    Address Book cleanup (Hal DeVore)
+    Minor fixes to Getnews code.
+
+
+2.0delta 6/3/97
+    Fixed default color handling.
+    Added catch to redisplay part against unexpected part layout.
+    Beefed up handling of bogus boundary strings.
+    Added Ispell extension
+    Added -nofaces command-line switch.
+    Added koi8-r font definitions
+    Added more options to Sedit PGP menu
+    Added keyboard selection key bindings (see bindings dialog for keys)
+	selclear, selstart, selforw, selback, selextend
+    Added abort and quote key bindings: abortMsg, quoteMsg
+    Fixed handling of spaces in glimse search string.
+    Put netscape -remote into the background.
+    Fixed Whom and Spell for Tk 8.0 where destroy doesn't raise errors.
+    Make file type of @ message/rfc822
+    Default MIME type is text/plain instead of application/octet-stream
+    "Run MHN now" does header cleanup.
+    Changed quote-related resources to use standard form for names.
+    Added PGP grab-focus and use-expecttk options.
+    Removed +keepbinary=off flag from PGP uses.
+    PGP bin directory is added to the front of PATH, if necessary
+    Added doinc flag to Inc_Presort
+    More PGP cleanup to handle multipart/encrypted etc.
+    Destroy PGP password window (instead of withdraw) to avoid having
+	it display in the wrong virtual desktop during global grab.
+    Changed focus resetting during Exwin_Dismiss.
+    Fixed ancient bug with selecting current folder as destination for refile.
+    Added background news fetching.
+    Fixed extra blank lines additions in sedit.
+    Added key shortcuts to Abort dialogs.
+    Reconstruct MIME state after editor buffer is reloaded.
+    Added support for intelligentSign(domain)
+    Fixed handling of X-Mailer header.
+    Beefed up the quote.tcl code a bit.
+    Tweaked font dialog display of font sizes.
+    Added <Control-Right> binding to nested folder display.
+    Cleanup of Disposition-Notification code
+    Cleanup of Ispell code.
+    Fixed handling of HTML font size adjustment pref item.
+    Catch errors from .unseen window during pref adjustments.
+    Cleanup of news posting code.
+    Cleanup of address book code.
+    Fixed cache hash function and tk version handling.
+    Added compose keys for å and Å  (
+    New help files for the Address Book (Hal DeVore)
+
+2.0gamma 1/27/97
+    Added smart message quoting facility. Ben Escoto <bescoto@rice.edu>
+	See Quoting Preferences and try turning off "Symlink Only"
+    Added Max Message Size to mime preferences.  This affects read block
+	size and when a warning about large messages is displayed.
+    Fixed reset of Stop button.
+    Fixed dead hypertext links in in-line HTML
+    Fixed redisplay of subparts
+    Fixed conflict between fonts in encoded headers and fonts from
+	m_tagnames resources
+    Fixed glimpse search strings with spaces. 
+    Eliminated extra name= parameter on External Body parts
+    Fixed <format> operation in sedit on last para in buffer.
+    Fixed FormatMail Default preference.
+    Added colorization of PGP messages: (Escoto)
+	red - bad signature
+	blue - untrusted signature
+	green - trusted signature
+    Added "Echo *" and "Short PGP reports" preferences.
+    Tweaked PgpExec_KeyList that returns a list of keys.
+    Tweaked patterns on PGP output.
+    Added Pgp_ShortenOutput
+    Added Pgp_GetTextAttributes
+    Fixed Import dialog.
+    Added Html_Stop before message display
+    Trap errors on bindings for Dcircumflex_accent and Ddiaeresis
+    Fixed wrap mode in sedit
+    Added default msg-protect that is only used when saving files.
+    More tweaks to folder caching
+    Nuked X-Mailer header on Redistribution
+    Fixes to Message Disposition to use rawfile
+    Fixed HTML frame support
+    Added Content-Base header support
+    Added Html_Stop and Window_SetMaster
+    Avoid changing exmh title bar
+    Added form submit support.
+    Fixed get PGP key by mail
+    Fixed handling of folder names in Address book.
+    Address book now redisplays when you select it from themenu
+	and it is already displayed.
+
+
+2.0beta 12/23/96
+    Test button fixed to deal with alternate program names.
+    Put catch around all tkwait visibility calls.
+    Fixed undefined mime(stop) bug
+    Lower m_tagnames tags relative to character encoding tags
+    Added Addr_CheckPoint to finalization list (checkpoint addr db on quit)
+    Fixed support for Hook_CheckPoint* calls.  Any command name that matches
+	Hook_CheckPoint* will be called when exmh exits.
+    Added Thread to folder operations menu.
+	This does one-time threading.
+    Reorganized Sedit menus and buttons.
+    Changed sedit's format paragraph key binding to <Meta-q>
+    Moved glimpse to run in the background so Stop works better for
+	single-index searching.
+    Fixed confusion between editor and sedit custom spell program setting.
+    Fixed Sedits paragraph reformatting.
+    Changed Sedit's format mail option to three possibilities:
+	None - don't do anything, which also prevents text/enriched formatting.
+	OnSend - Do line breaking on send, which is the old behavior
+	OnType - Do line breaking as you type.
+    Added preference item for the MHN program to run.
+    Fixed use of "bell" sound when there is no audio play command.
+    Changed default PGP key server to pgp-public-keys@keys.pgp.net
+    Added Msg_Top and Msg_Bottom for Home and End bindings, and
+	Widget_TextTop and Widget_TextBottom
+    Fixed PGP menu to support both email and www key fetching.
+    Guard against missing signature parts in multipart/signed
+    Fix Import information logging.
+    Added support for Dcircumflex_accent and Ddiaeresis
+    Fixed hard line breaking in header section of messages.
+    Tweaked transemacs to not do it at line end.
+    Catch diagnostic output during Thread scanning.
+    Use file rename -force with Tk 4.2 or higher, instead of exec mv.
+    Cleanup of folder display code. (LoVerso)
+    More folder caching options (Monnier)
+	dontCache	- list of things to not cache
+	sortByName	- instead of by LRU
+	cacheUnseen	- move blue labels into the cache
+	cacheTarget	- move yellow label into the cache
+    Fixed fonselector to reset menus between runs.
+    Added support for non-standard HTML entities like &LT;
+    Fixed the scrollbars in the HttpQueue interface.
+    Added Http_Proxy procedure to determine if a proxy is necessary.
+	The default implementation returns Http(server) and Http(port)
+	if they are defined.  Override http_proxy.tcl if you want.
+    Fixed image map hits.
+    Fixed traces on unseenwin variables. Errors were showing up with
+	certain perferences combinations.
+    New Post implementation that uses Tcl sockets. (Gareth Owen)
+    Clean-up of PGP key fetching via the web.
+    Fixed Address Browser to handle zero or more selected items.
+    Trap errors from signature handlers.
+    Added Address menu to main interface that has MH aliases and
+	the address book.
+    Added Stop, Back, and Forward to HTML viewer.
+    Added support for in-line HTML display and
+	fixed handlign of Tcl special characters in URLs.
+    Added option to use built-in HTML viewer to display URLs.
+
+2.0alpha 12/3/96
+*** This version requires Tk 4.1 or higher.
+    The documentation has been converted to HTML and a HTML viewer
+	has been added to exmh.  You can even to HTTP fetches.
+    The installer uses a scrolled canvas to display all the options.
+  This release folds in many new features contributed by users:
+    Added Intellegent Signatures to choose signature based on recipient (Keane)
+    Added Unseen summary window (Olly Stephens)
+    Added new multipart/signature (Ben Escoto and Chris Garrigues)
+    Added address memorization (Berry Kercheval)
+    Added Glimpse option to use a single index file. (Ethan Miller)
+    Added Eudora Content-Disposition header option. 
+    Added Disposition Notification header for Return reciept. (Kjell Irgens)
+    Added in-line image display. (Chris Garrigues)
+    Added new mime option display (Chris Garrigues)
+    Added Mime_ShowUri to handle application/x-url parts.
+    Added per-folder message templates (Andrew Repton)
+    New threaded display code (Madrid)
+    Added single vertical column for detached folder display (de Silva?)
+    Added iconmask support for shaped icons. (Mark Rawling)
+    Added Post to post a message to a newsgroup. (Owen)
+    Added Auto Refile, bound this to key <period> (John Carroll)
+    Added MH sendproc support (Ringwald)
+    Features added by Brent:
+    Sedit does its own word wrapping with hard line breaks during input.
+    Re-did Cite Selection formatting and added
+	Format paragraph command to Sedit (<Control-q>
+    Changed Import to run inc in the background.
+    Added stop button for large messages.
+    PGP has a timeout on keeping passwords.
+    Added "Top Ten" preferences pane.
+  Bug Fixes:
+    Tweaked sort-by-subject settings (Alistair Crooks)
+    A full rescan is done after deletes or refiles when in the "New FTOC"
+	pseudo display. Do not display new messages when in pseudo-scan
+	listing display mode.(Ignacio Martinez)
+    Fixed bug that occured when you deleted the Log window.
+    Fixed MIME boundary generation.
+    Fixed interface to Surfit! browser.
+    Fixed regexp for URLs in <a> </a> tags. (Paris)
+    Updated content-type guessing (Medley)
+    Unified the two spell check program preference settings. 
+    Fixed "adding preferences to existing pane" bug.
+    Replace spaces in default file name with _ in filename selector.
+    Put bound on hack that adds blank lines to messages.
+    Eliminated unnecessary BgLostPid calls that caused lots
+	 of traffic to the ps command.
+    Fixed foreground of colorized multiparts
+    Added 8-bit character check to MimeParse
+    Added UTS system type
+    Changed /tmp file names to begin with unique part.
+    Added check against unknown fonts in font selector.
+    Tweaked color support in text/enriched
+    Fixed pop-up menus to work over embedded images.
+
+1.6.9 8/22/96
+    Fixed the cleanup to Sedit reformatting.
+    Fixed font dialog to work with Tk < 4.0
+    Fixed font dialog "Reset All" button, which broke lots of other stuff.
+
+1.6.8 8/21/96
+    Added Fonts setting dialog to preferences.
+    Tweaked mime parameter handling to deal with parameters that span lines
+    Fixed WM_SAVE_YOURSELF handling.
+    Fixed resize behavior of glimpse interface.
+    Added single quote as yet-another-url-terminator.
+    Increased the default "maximum matches" for glimpse because this
+	applies globally, not just on a single file.  From 10 to 50.
+    Beefed up calendar appointment handling.
+    Added Exmh_Focus to print dialog to restore focus.
+    Added tk_entryBackword emulation.
+    Hacked in a "Don't Wait" button to patch around races that
+	hang the UI waiting for background actions to complete.
+    Fixed type-in-kills selection so nothing happens to the selection
+	if the cursor is not in it.
+    Beefed up search to handle patterns that begin with -
+    Fixed up environment with re-edit for annotations.
+    Added selectColor resource
+    Sedit: Minor formatting cleanup so QP citations look better.
+    Fixed Mosaic back door to use Env_Tmp
+    Added *ptx* to ps.tcl
+
+1.6.7 5/3/96
+    Sedit Key Bindings:
+	Pasting with middle button does not stupidly clear the selection.
+	<Control-Button-1> sets insert w/out clearing selection.
+	New Paste Sets Insert option in Sedit Bindings dialog.
+	New Event helper that lets you see what keysyms are produced
+	    by your keyboard.
+	Fixed delete operations to properly save up multiple deletes
+	    a la emacs <Control-k> behavior.
+    Added support for X-Sun-Charset 
+    Added WM_SAVE_YOURSELF support
+    Guard against user deleting the Scanning for nested folder dialog.
+    Fixed <Return> from showing up in Command entries.
+    Guard against bogus MIME menu on text/plain messages.
+    Fixed glimpse to always insert at the end of its results buffer.
+    Direct netscape output to /dev/null to avoid bogus errors.
+    Fixed search for image pixmap type.
+    Sort the message IDS from burst digests so you visit the first one properly.
+    Fixed Multidrop Inc to detect input from POP servers better.
+    Changed MimeSunAttachment to MimeMapSunHeaders
+    Added error checking to .xmhcheck parser.
+    Added unix_system_v type to ps.tcl
+
+1.6.6 3/22/96
+  Feature additions:
+    Either mimencode or mmencode will be used.  Exmh looks around at startup.
+    Added webedit and surfit options for URL browser.  They are passed the
+	Url_DisplayNew $url
+	Tcl command to view the url.
+    Added simple (just diplay the parts) support for
+	multipart/report and multipart/signed
+    Guessing content types for Insert Part uses the file command for more
+	information when a file has no suffix.
+    Added Msg_PageOrNextCommit as an alternate command to bind to <space>.
+	This will do autocommit so you don't have to type 'n'.
+    Added integer value checking to Preferences.
+    Added FAQ #18 about modifying the folder table of contents display.
+    Added Folder_TargetClear and a <Control-Right> binding to clear the	
+	current target for moves.
+    Added Mh_Rename.  Added the global variable mh_mv_flag that
+	is set to "-f" by default.
+    Updated Exmh Color Legend.
+  Bug fixes:
+    Fixed presortmulti to avoid problems with scan listings.
+    Fixed Env_Tmp bug in Update scan caches.
+    Fixed Entry bindings to Tab doesn't get inserted under Tk 4.0
+    Cleaned up graphic separator with parts that have no trailing newline.
+	The raised relief used to bleed into subsequent parts.
+    Protect glimpse search from deleting window before search completes.
+    Removed -install from default list of netscape startup flags.
+    More cleanup of URL scanning regexps.
+    Added Mh_Rename to exec mv with the -f flag.
+    Tweaked Widget_TextPageOrNext interface to go with the new
+	Msg_PageOrNextCommit command.
+    Updated Ftoc_NextImplied to go with Msg_PageOrNextCommit
+    Changed graphic part separator size in PGP from 5 to 6 to avoid
+	downloading a new font for this case.
+    Fixed memory of last directory in file select dialog.
+    Beefed up handling of Sun Calendar Manager appointments.  Remember that
+	you can select one of these and type 'A' to get it added to your
+	calendar database.
+    Fixed typo in paste of CLIPBOARD selection.
+    Add deleted text to the CLIPBOARD.
+    Fixed c_uriAbfg typo to be c_uriAfg, for activeforground of URI buttons
+    Added protection againt zero or negative background periods.
+    Added fixup of bogus unseen sequences that can result from races.
+    Fixed "two edit drafts loose all contents of first
+	draft when drafts is current folder" bug.
+    Fixed header/body mark separator bug that moved this mark around
+	incorrectly under Tk 4.0
+    Fixed <space> binding in the Aliases Address entry.
+    Added crude, ineffective patch for lost part information in sedit.
+    Added bgerror definition
+    Fixed Env_Tmp problem with Mosaic startup interface.
+	May have to copy a file instead of linking to it, too.
+    Fixed pick so it doesn't insert <Tab> in the entries.
+    Tweaked name of preferences windows.
+
+1.6.5 12/7/95
+    Added support for TMPDIR or EXMHTMPDIR environment variables to map /tmp
+    Created env.tcl and Env_Init to collect envar hacking into a module
+    Major flist.tcl cleanup/rewrite.  This manages unseen folder state.
+    Removed tearoff ability from MIME popup menu
+    Trim spaces from MIME font sizes
+    Limit debug log size with preference item under Hacking Support.
+    Fixed <Unmap> and <Map> bindings to only fire on the main window.
+    Added multipart/fv-infohaus application/fv-infohaus MIME handlers
+    Added https: URL protocol type to URL scanning code.
+    Added preference item for netscape command line flags (e.g. -install)
+    Added 8-bit checks to signatures, cut/paste, insert file (SEDIT)
+    Fixed MIME preview for non-draft folder messages
+    Tweak faces init to delete image handling for Tk < 4.0
+    New PGP key name matching algorithm from Stefan Monnier
+    Fixed deadlock in presort-inc and pressing the Inc UI button.  The inc
+	causes a background operation that may trigger a rescan of the folder
+	that blocks waiting for the background inc to complete: deadlock.
+    Update fileselect to remember current directory
+    Fixed + bindings for keyboard folder selection (Tk 4.0)
+    Changed default scrollbar side to Left.
+    Eliminated black diamond resize error when no message is displayed.
+    Changed Commit to sync message sequence state before starting background
+	operations.
+    Eliminated rescan upon completion of background Rmm,
+	which seems to interfere with commit processing (refiles not done)
+    Fixed -bitmap typo in faces.tcl
+    Fixed "icon" busy style to display hourglass better in Tk 4.0
+    Append default domain to "simple" hostnames:
+	bwelch@sage maps to bwelch@sage.eng.sun.com before faces lookup
+	THIS MAY AFFECT LOCAL DATABASES
+    Sedit menu commands can now reference $exmh(...) variables
+    Use winfo width and height to save detached folder display size,
+	as opposed to asking the widget (-width)
+    Fixed bug with enabling/disabling folder cache display.
+    Fixed sedit behavior after deleting entire body of message.
+    Fixed undefined exmh(library) bug in Sound_Error
+    Fixed reparsing of multi-line Content-Type headers
+    Tmp file for Mosaic backdoor changed from softlink to hardlink
+    Trim spaces from Pick field values
+    Limit PS flags to only find processes under the same USER
+    Added CLIPBOARD selection support (helps OpenWindows)
+    Added operations to the Help menu that let you subscribe and unsubscribe
+	from the various exmh-related mailing lists.
+
+1.6.4 10/10/95
+    Fixed Report Bug use of tk_version
+    Added 'binary' to the '7bit' and '8bit' MIME type checks to avoid decoding
+    Fixed handling of % in URL button feedback
+    Changed faces graphics file suffixes to be an install-time setting.
+    Fixed FSBox to remember the previous directory
+    Fixed FAQ table of contents.  FAQ #9 now has three parts:
+	9a. How do I get POP to work with exmh?
+	9b. What's the difference between presort and multidrop inc-styles?
+	9c. How do I set up my .maildelivery file to filter mail?
+    Fixed black diamond resize widget.
+    Fixed text buttons for Tk 3.6.  The problem shows up in PGP messages.
+    Fixed undefined faces(rowbg)
+
+1.6.3 10/3/95
+    Fixed Flist_Done to work better with the Flist_UnseenUpdate routine.
+    Moved FlistUnseenFoldersInit into the background process.
+    Fixed Widget_ReEvalCmd to use subst, which works better with
+	[incr Tcl] 2.0 namespace-qualified values.
+    Added Mime_Uudecode to take output file name.
+    Beefed up grab problems with MIME Stop button.
+    Added Folder Sort submenu's for date, subject, from.
+    Added arguments for Folder_Sort procedure to support this.
+    Added auto sort option to folders.
+    Fixed glimpse display to handle numbers better.
+    Added "add -- before sig file" option to Sedit.
+    Fixed uuencoding to list just the tail of a filename, not the full name.
+    Integrated Ispell support into sedit.
+    Improved file name suffix choice when inserting a part.
+    Fixed multidrop-presort to create MyIncTmp folder if needed.
+    Fixed "hasfcc" check in PGP.
+    Cleaned up preferences code.
+    Fixed "save shell script" MIME menu
+    Added "Command" bindtag for exmh command bindings so they
+	can be shared among other widgets (like the folder display)
+    Fixed bindings for keyboard selection of folders and messages.
+    Added FAQ about POP and .maildelivery files
+    Fixed potential loop in diamond resizer
+    Yet another try at padding short messages (Harvey Thompson, John Haxby)
+    Fixed active text buttons that didn't get the last character right.
+    Fixed race between background request action and background
+	action complete.
+    Fixed uninitialized tk_priv(selectMode) bug.
+    New faces code from John LoVerso that can display multiple faces.
+    Fix to clear Tk application registry properly.
+    Added color resources for selected ranges in FTOC
+	*c_selectedFg:        black
+	*c_selectedBg:        #ececec
+    Updated Search help text.
+    Added SeditReplaceBody
+    Fixed SeditSetHeader to handle multi-line headers
+    Fixed retrieval of stats from exmh-bg
+    Protect against bogus fdisp(maxLines) values
+    Folder cache now displays minimal unique names ("nicknames")
+    Fixed bindings for Tk 4.0 in aliases interface
+    Fixed "0 Unseen" icon label
+    Fixed reparsing of MIME drafts to pick up correct boundaries and
+	fix other problems with setting text looks (Text...) menu
+    Added Tcl/Tk version info to bug reports.
+    Fixed PGP from What Now dialog to compute proper pgpaction
+    tkerror filters out grab errors.
+    Added "run mhn now" to the Sedit More... menu
+    Added "use terminal bell" option to Sound preferences.
+	Also - sound files can be named relative to the script library.
+
+
+1.6.2 7/13/95
+    Fixed backspace in install.tcl to deal with Tk 4.0 correctly
+    Refined the "cd" done by exmh so it only happens if $argv0 is an
+	absolute pathname.  This ensures it can find $argv0-bg (exmh-bg) OK.
+    Added ! syntax to Folder-Unseen MH profile patterns.  If a pattern
+	begins with !, then the rest of the pattern indicates folders to
+	ignore for the purpose of discovering folders with new messages.
+    Added Background_Wait to synchronize with commits done
+	during scan cache recovery.
+    Folder New/Delete dialogs guard against null names.
+    Added catch around nested subpart display to avoid leaving the STOP
+	button up (and the grab in force) during MIME display
+    Fixed regular expression with bad performance characteristics used
+	in processing RFC1522 mail headers (=?charset?encoding?stuff?=)
+    Fixed Log key bindings
+    Tweaked tk colormodel emulation 
+    Added Thread_Display to Search... menu
+    Moved text widget wrap attributes into app-defaults
+    Fixed WhatNow dialogs alternate editor menu entry
+    More cleanup of URL regexps
+    Added Msg_Trash that moves the current message to the TRASH folder.
+    Fixed "remembering bogus current message" problem
+    Tweaked status feedback during Inbox inc
+    Upcase PGP mail headers
+    Added <Key-A> binding to use selected text as Calendar Manager entry.
+    Beefed up Calendar Entry processing
+    Added FAQ 6.c  How do you create an X-Face: header line?
+    Fixed MsgParseFrom to not always stomp on global address variable.
+    Move Folder_Pack that is part of folder change into the background.
+    Undid smooth-scroll-on-scrollbar-arrow bug 
+    Fixed ancient binding bug for Entry class that was
+	not clearing old bindings properly
+    Fixed active text buttons for 4.0 (last character wrong)
+    Added Hook_Bg$action (e.g., Hook_BgInc)
+    Added Hook_Background for periodic processing
+    Fixed Commit to clear current message when it is deleted (reliablly)
+    Generalized Help to allow display of absolute pathnames
+    Moved default Sedit key bindings to app-defaults
+	(The $exmh(libary)/sedit.bindings file is still supported, but no
+	 longer necessary.)
+    Added a new editting function, the emacs-style transpose.  This is
+	labeled "transemacs" in the Simple Edit Bindings dialog.
+    Fixed the Entry transpose edit function to match the Text transpose function
+    Fixed Listbox app-defaults geometry settings
+    Added multipart/report message/x-delivery-status-05 for new sendmail
+    Glimpse checks against no files to index.
+    Major cleanup of URL pattern matching.
+    Added more Faces preferences to control color faces.
+    Automatically set "Attempt MHN" with -mime on Msg_Forward.
+    Support -noedit flag in Msg_Reply that just sends the message.
+    Added <space> bindings to file select dialog (just like <Tab>)
+    Run Sun shell-script attachments in the background.
+    Major overhaul of faces.tcl from LoVerso for speed and color
+    Adopted Tk 4.0 color scheme.
+    Fixed bindtags for FTOC to avoid selection weirdness under 4.0
+    Fixed middle-button scrolling for FTOC
+    Cleaned up asynchronous Exwin_Dismiss of what now dialog (under 4.0)
+	This affects the "reedit" step after What Now.
+    Added new version of Tk send command that clears out the xhost list
+	if you get an "X server insecure" error.
+    Eliminated use of "uudecode -p"  by writing a temp file with a
+	different begin line instead.
+
+1.6.1 5/23/95
+    Find all folders and New folder correctly update the folder display.
+    Flist_UnseenUpdate, for use by external sorting agents, updates the icon
+	state and maintains the sorting order of unvisited folders.
+    Incremental scan will not loose delete/refile marks if it cannot
+	preserve the cache and must resort to a rescan.  The user is prompted
+	for a commit, or an auto-commit is done instead.
+    Labeled Entries updated to reflect new Tk bindtags order (Tk4.0b4)
+    Convert Sun Attachments to MIME format on the fly.
+	Added direct support for audio clips, calendar entries.
+	Added support for Sun uuencoded parts.
+    Added Tcl command entry to log window.
+    Added Cite Selection to sedit that formats and inserts selected text.
+	It is assumed to be from the current message, and the sender is
+	identified before the selected text.
+    Added "Change Default Key" to sedit PGP menu.
+    Added check against glimpseindex failing.
+    Added Sedit_Mailto to support mailto: URLs directly.
+    Added interface to "hippo" Tcl/Tk web browser (bug Steve Uhler about it)
+    Adopted Achim Bohnet's new look to preferences Help information
+	You can get the old interface with
+	*helpInOneWindow: 0
+    PGP (from Stefan Monnier)
+	New key choosing algorithm and associated preference settings.
+	Added Pgp_SetMyName to choose private key name
+    Improved Msg_UUdecode to let the user choose a file name.
+    If you use "multidrop" inc, an initial Flist_FindUnseen is done to
+	properly initialize your folder label state.
+    Added Subject line to presort inc feedback (Fred Douglis)
+    Added Widget_BindEntryCmd to deal with 4.0 bindings properly.
+    Cleaned up the Search... menu entry labels
+
+1.6 4/21/95
+    Changed maintainer address to Brent.Welch@eng.sun.com
+    Installer window resizable.
+    Properly update scan listing & folder summary after delete-commit
+    Typing any key when the MIME and URI Stop buttons are up halts display.
+    More guards against funny aliases databases.
+    Fixed path bug in print.tcl (Message_Apply)
+    Added SeditSetHeader to define/alter mail headers.
+    Fixed Flist button - removed old, unused code (Flist_Update)
+    Moved initialization around to avoid errors after switching
+	between detached folder display.
+    Added requirement for mimencode when doing Quoted-Printable.
+	(avoids empty mail messages if metamail is not installed...)
+    Allow "URL " in embedded URLs (as opposed to "URL:"
+    Added Peppar's netscape error check
+    Added Msg_CheckPoint to Folder_Changes (commit-check) so unseen
+	state and current message is saved properly.
+    Leave environment set for annotations after switching to alternate editor.
+    Cleaned up reading .xmhcheck to allow multiple drop boxes into same folder.
+    Cleaned up multidrop to deal with new exdrops format.
+    Added presortmulti Inc style that is multidrop+presort.
+    *helpInOneWindow resource selects a new preference interface
+	by Achim Bohnet.  Try "*helpInOneWindow: 1" in ~/.exmh-defaults
+
+
+1.6epsilon 4/17/95
+    Installer correctly chmod a+rx the programs installed in bin.
+    Installer will create intermediate directories as needed.
+    Moved exmh-async and exmh-bg back into the bin directory ;-)
+	Multiple versions are supported, if exmh is run as
+	exmh1.6, then it will look for exmh1.6-bg and exmh1.6-async,
+	and so on.  You'll have to set these names up yourself;
+	the installer always put them into exmh, exmh-bg, and exmh-async
+	Changed to wish -f ${argv0}-async instead of just exmh-async
+	Changed to wish -f ${argv0}-bg instead of just exmh-bg
+    Button and Menu changes
+	Added Search... menu that has all the Find, Pick, and Glimpse stuff,
+	    as well as a Help that explains them all.  This includes
+	    instructions for doing your own glimpse indexing.
+	Added "View selected URL" that uses the current X selection as a URL
+	    and passes this to the HTML viewer.
+	Added Audit cascade menu with "Statistics" and "View Log" operations.
+	Duplicatd the Pick dialogs "New FTOC" in a Fops More... menu entry
+	    labeled "List only selected messages"
+    Preserve current message across sort and pack operations.
+    Fixed auto-pack plus auto-commit
+    Introduced $msg(path) to replace $mhProfile(path)/$exmh(folder)/$msg(id)
+    Fixed a few bugs in Find.
+	Added Find_Msg and Find_Ftoc commands
+	Added Ftoc_FindAll to allow FTOC Find to be like pick.
+    Generalized button and menu resources to allow for:
+	buttonlist	system defined buttons
+	lbuttonlist	local site defined buttons
+	ubuttonlist	user defined buttons
+	l-buttonlist	local deleted buttons
+	u-buttonlist	user deleted buttons
+	This works for buttonlist, menulist, entrylist, and the group
+	    related resources g_* (button groups) and gm_* (menu groups)
+	Thanks to Achim Bohnet for this.
+    Fixed bugs in folder summary line.
+    Added Stop button to MIME display when there are lots                      
+	of parts to a message, like big digests.                 
+    Added support for $exmh(library)/local.mime.types and 
+	$exmh(userLibrary)/user.mime.types
+    Fixed MHN $path bug.
+    Fixed Mime Redisplay menu bug (there were double bindings in TK 4.0)      
+    Beefed up faces to allow weird from lines.
+    Allow for "bell" sound special case.
+    Added preferences for FS Box: size of directory threashold to
+	limit listing.  Ability to list . files.
+    Retweaked flist.tcl to avoid interrupting the UI for too long at
+	the end of presort inc or during an background Flist.
+    Updated mailcap search path to be:
+	$exmh(userLibrary)/user.mailcap
+	$env(HOME)/.mailcap
+	$exmh(library)/local.mailcap
+	$exmh(library)/mailcap/
+	$mailcap_default	(This is set by the installer)
+    Fixed handling of Shift key in PGP password entry. (Tk 4.0 problem)
+    Fixed update of Content-type header when promoting to text/enriched.
+    Fixed pick focus initialization. 
+    Fixed Exmh_Status so that "warn", "error", and "background" messages
+	now appear in the color they should (not "normal" blue)
+    Tweaked user feedback in Compose Key dialog
+    Eliminated troublesome Button-2 and Button-3 bindings on resize diamond.  
+    Fixed saving of current message when multiple messages selected.
+    Fixed Burst Digest and auto-commit
+    Added Stop button to URL scan when the message is bigger
+	than the "Stop button max lines" preference setting.
+    Fixed selection error in highlighting URLs.
+    Added "hyperUsed" look to followed glimpse hypertext buttons.
+    If "Separate background process" is OFF, then Glimpse Indexing is
+	not done in the background.
+    Added Audit_View to view audit files
+    Streamlined new user setup.
+    Added tuning of fcache(lines) for new users.
+    Added tuning of fdisp(maxLines) for new users.
+    Fixed resize diamond to work without folder cache.
+    Updated man pages.
+
+1.6delta 4/7/95
+    Installer does chmod a+x (not just +x) on files in bin.
+    Installer uses a text widget, not message, to display help text.
+    Fixed seldelete to use the kill buffer.
+    Fixed Supressed-Header position in Tk 4.0
+	Added Widget_TextPad
+    Moved exmh-async and exmh-bg back into the library,
+	these are executed with
+	    $wish -f $exmh(library)/exmh-bg
+    Nuked sound file install time settings.
+    This can all be done with regular user preferences.
+    Fixed faces on monochrome,  was missing *Face*Canvas.foreground
+    Fixed summary display (1- ) problem
+    Fixed sequence updates to properly clear sequence line and to
+	handle missing sequence line.
+    Fixed bindings on textButtons for Tk 4.0
+    More optimization of Flist processing.
+    Added install-time "System Mailcap File" setting
+    Updated PGP key selection listbox to handle Tk 4.0
+    Cleaned up multipart content-type header line.
+	The long boundary is now on the next line.
+    Fixed "no pick fields" bug.
+    Implemented a single-interpreter replacement for cutbuffer so that
+	the emacs-like kill buffer in sedit works better
+    Added highlightBackground setting, which is new in Tk 4.0b3
+    Fixed sedit "send" binding for Tk 4.0
+    Hack to detect SYS V systems with bogus uname output (ps.tcl)
+    Glimpse - handles missing folders, indexer ignores deleted messages.
+    Fixed import to guard against no directory specified.
+
+1.6gamma 3/31/94
+*   Optimized Flist_FindUnseen
+*   added ps.tcl that os UNIX-specific ps invocations: PsByID and PsByName.
+    Fixed Test button in installer.
+    Fixed grab bugs in FtocDialog
+    Beefed up fdispPopup error handling
+*   Moved exmh-bg and exmh-async back into bin directory
+    Fixed editor preferences botch.
+    Fixed return of help text widget pathname.
+    Fixed keep-on-send in sedit.
+    Beefed up new user initialization;
+	Handles non-existent Mail directory better.
+    Fixed ++ file check in Inc_Presort
+*   Fixed ---- in multipart bug.
+*   Changed boundary string to something more unique.
+*   Fixed spacing before multipart boundaries.
+    Check against numbers as folder names in New folder dialog.
+    Minor fix to pick dialog.
+    Cleaned up ".." check to handle bitmap case.
+    Added tk colormodel replacement
+*   Fixed Quoted Printable header handling of funky continuation lines.
+    Added provision for local.sedit-bindings
+    Changed "URI" preference title to "WWW"
+*   Beefed up interface to Mosaic and netscape.
+	Still limited to viewers running on the same host as exmh.
+    Fixed bug in URL feedback.
+    Added text button for text/html that lets you start the viewer,
+	or you have the viewer always started.
+    Fixed fetch of background audit stats.
+    Fixed typo in Import procedure.
+
+1.6beta 3/22/95
+*   Drag and Drop repaired.
+	Added FtocDragSelection handler
+*   GLIMPSE
+	Indexing is done in the background.
+	Search can be stopped.
+	CHANGE - the .glimpse files are kept in a shadow directory
+	    tree rooted at ~/Mail/.glimpse.  They are not in the folders.
+	Original contributed by Tom Phelps.
+*   AUDIT
+	Added audit log of exmh actions.  These are saved into
+	    ~/Mail/.exmhaudit at the end of each session.
+	Audit Statistics added to Fops.more menu       
+    BASIC EXMH STUFF
+*	Added icon feedback for spooled messages.  Works if you do
+	    background "count" or "msgchk" operations.  Icon label
+	    shows number of unread messages, or number of spooled messages.
+	    See exmh-custom man page for related resource settings.
+*	Change to folder with unseen messages also displays the            
+	    first unread message in the folder.  This happens with <Key-F>
+	    (Folder_Unseen) and implied change to folder with unseen,
+	    but not with explicit folder change.
+	ExwinFtocMsgBoundary and friends added to resize internal window sizes.
+*	    The black diamond in the interface is the target for this.
+*	Re-Read MH Profile added to Fops.more menu 
+*	Highlighting of parent folders in folder cache and ".." label
+	    is turned off (unseen state only).
+*	fixed infinite loop in Ftoc_FindMsg
+*	fixed popdown removal with "remove on navbutton"
+	Background rescan uses $wish instead of plain wish to avoid
+	    path problems.
+	iconic resources can have "true" "false" values.
+	Added msgShowProc hook to Folder_Change    
+	WhatNow dialog is hidden during a re-edit.                           
+	Cursors set via resources 
+	Sticky raised relief of faces fixed.
+	Tweaked Widget_CascadeMenuItem so it creates the submenu.
+	Added args to Widget_CheckMenuItem
+	Guard against mysterious undefined widgetText(.msg.t,view) bug
+	Added Preferences_Tweak to change a single variable
+	    from outside the Preferences UI
+	Replaced tk_dialog with FtocDialog
+    PGP - more new code from Stefan Monnier
+*	Added PGP options to WhatNow dialog                 
+    MIME
+	Run external programs under sh -c for metamail compatibility.
+	Fix problem with font families that have spaces in their name.
+	Mosaic_ShowPart added to handle text/html and text/x-html
+*	Added Moasic_Load and Moasic_Find to hook up to running mosaic.
+	Added support for multipart/x-tioga
+    MIME Composition
+	Encoding guessed based on mime content-type.
+	Personal .mime.types file also supported.
+	x-uuencode format supported, although never recommended.
+	Make sure to turn on formatting if text/enriched is used.
+    Tk 4.0 
+	canvas yview bug fixed in fdispPopup.tcl
+	pack info bug fixed in Command Binding dialog.
+    HELP
+	Help files and help display used throughout instead of
+	    silly message widgets that don't support scrolling or selection.
+	Help files are named help.*
+    MESSAGE COMPOSIITON
+*	Added alternate editor preference item.  You can switch from sedit
+	    to this editor via a More... menu entry.  You can also get
+	    to this via the WhatNowDialog.
+	Beefed up message composition while in the drafts folder.
+	    This includes sending bug reports and registration messages.
+	Retry Send button added to Send error handler.
+    PRINT
+	Added $address to the set of variables available to print command.
+	Added reference to FAQ #17 to the Print preferences text.
+	    This is a pointer to the mailp package.
+    SEDIT
+	Fixed PositionCursor bugs with strange drafts
+	Fixed cursors in dialogs.
+	QP encoding of headers beefed up.  No space required after
+	    headers, for example, and "specials" are not quoted
+*	Compose key binding fixed.
+    BASIC MH STUFF
+	Added "Concatenate partial messages" to handle
+	    message/partial MIME.  This is under the Mops.more menu.
+	    Contributed by Sven-Ove Westberg
+	Added background wait before rescan folder, sort, and pack.
+	Added third type of MH send processing: xterm.
+	    The send is done in a detached xterm so you can interact with it.
+	    Preference resource changes from sendAsync to sendType
+	 Added Inc_Show, which inbox-folks can use for the Inc button.
+	    It incs, chagnes to inbox (if needed) and shows the first
+	    unseen message.
+	Flist_FindUnseen uses pre-determined set of folders to look at
+	    instead of recomputing them each time. (John LoVerso)
+	Flist_Update is now Flist_UpdateOld, which is has not been used.
+	Flist debug window added for unseen and unvisited folders.
+   URL
+	TextButton returns item ID so URL feedback works better
+*	Added line limit to URL scanning.  Default is 1000.
+	Added more options for URL viewer.  Mosaic_Load is used to
+	    hook up to running mosaic.  netscape -remote is used,
+	    but this depends on what verison of netscape you use.
+    File selection:
+	Fixed <Control-c> binding in File Select.
+	Guard against anti-Tcl file names like ~$foobar
+    IMPORT
+	Some general beef up.
+	Added log of inc actions.
+	Added SelectAll and UnselectAll, Added log.
+
+1.6alpha 2/16/95
+    Tk4.0 and TK3.6 Compatible.
+	Text widget end mark changed.
+    Added resources to install.tcl to improve layout.
+    Moved exmh-bg and exmh-async into the script library.
+    Added MhExec that recovers from damanged context files.
+ *  Re-wrote scan cache management based on suggestion by Fred Douglis
+ *  Commits are now done fully in the background.
+    Added FAQ #17 about Printing
+    Added (crude) gnuclient support (just like emacsclient)
+    Faces:
+	Cleanup to use faces array, not exwin.
+	Added support for pixmap image types (face.xpm).
+    Added Flist_UnseenUpdate to notify exmh of new messages in a folder
+    PGP update from Stefan Monnier
+    Drag and Drop from John Robert LoVerso:
+	Shift-Middle drags a folder label, in/out of the folder cache,
+	into the Fcc: line of a sedit buffer.
+    .mh_sequence files updated directly instead of using MH mark command.
+    Cleaned up Background handling.
+    Added "smoothScroll" option for last partial page.
+    Added fcacheStickyOff option to handle no permanently cached folders
+    Added binary search for message in a folder.
+    Added scanSize option to determine how many messages to scan.
+    Streamlined Ftoc_Next code.
+    Inc is now always done by the background process
+    An error during presort moves the message into MyIncErrors
+    New Pick interface from John Robert LoVerso
+    Japanese font (iso-2022-jp) fixes.
+    Resource settings for the old, cramped 3.6 appearance
+    MIME:
+	No quotes around "charset"
+	No formatting in richtext of included text (Insert @ text)
+	application/pgp support
+    Spell temp file fix.
+    Updated URI code
+    Improved error message when background process cannot rendez-vous
+    Split Misc_PostProcess into Misc_CheckAction and Misc_PostProcess
+
+
+1.5.3 12/28/94
+    Fixed Edit Message to honor the sedit override setting.
+    Fixed disabled buttons after a commit.
+    Fixed shift extends selection.
+    (This is *not* compatible with Tk 4.0 - wait for 1.6alpha)
+    Tweaked FAQs.
+
+1.5.2 12/21/94
+    New FAQs
+	15. How do I set up the templates for mail messages.
+	16. How do I get a copy of mail I sent saved into a folder (easily).
+    SEDIT
+	If Attempt MHN is set, MIME headers are stripped out
+	If 8-bit characters are detected, content-transfer-encoding
+	    is either quoted-printable or 8bit
+	8bit is no longer a character set choice in preferences
+	Added kinput special case bindings as well as Hook_TextBind
+	   bind Text <Control-backslash> {kinput_start %W over}
+	   bind Text <Control-Kanji> {kinput_start %W over}
+	   bind Text <Control-Shift_R> {kinput_start %W over}
+	Fixed sedit($t,part) initialization bug
+	Fixed ancient bug with Cancel on Insert Part
+	Fixed abort problem after Mime Preview
+    PGP
+	env(PATH) initialization is fixed.
+	Tweaked Pgp_View to allow viewing arbitrary files.
+    MIME
+	Fixed missing font case so you only suffer one horrible
+	    search through the server's font library.
+	Added URI Tool as FTP transfer mechanism (Achim Bohnet)
+	"Print as text" option is only in the menu if there
+	    is not already a mailcap rule that knows better.
+    URI - from Martin Hamilton and friends:
+	Updated text buttons (LoVerso)
+	<Key-z> calls URI_ScanMsg
+	Uri_ => URI_
+	more kinds of URI are recognised, e.g. HTML anchors
+	recognition is a little better, e.g. trailing dots, quotes
+	URIs behave more like regular buttons
+	copy/paste URIs without launching Internet infobrowser
+	face canvas raised and clickable only if X-URI: header present
+    Added NAME and SEE ALSO sections to the man pages
+    Preference booleans say either "On" or "Off" instead of always "On"
+    Error dialog is resizable and has a scrollbar.
+    Fixed to support editor commands like "mxedit -geometry 66x30"
+    Nuked puts from <Tab> completion in fileselect
+    Help text is read-only
+    Nuked debugs from WidgetTextLineDown WidgetTextLineUp
+    Added comments to fdispPopup.tcl (John LoVerso)
+    Fixed accurately spelling
+    Help returns pathname of text widget (Achim Bohnet)
+    Added tk_entrySeeCaret calls so cursor motion in Entry works better.
+--- (below here fixed after prerelease of 1.5.2)
+    Fixed Next Unseen to skip marked messages.
+    Fixed "old range bug" where a commit would unhighlight a range of
+	messages but the range would still be there.
+    Buttons and menus that apply to ranges are disabled in this case, too.
+    Guard against bad value for ftextLines (scan listing lines)
+    Fixed sizing of Color Legend.
+*** Attempt to preallocate colors used for MIME display and URI buttons.
+    Fixed tag bug with font families that have spaces in them.
+    URI text buttons have several color resources associated with them:
+	c_uri - background, default is thistle.
+	c_uriFg - foreground (text).  default is black.
+	c_uriAbg - active background. default is white. (when mouse is over it)
+	c_uriAfg - active foreground. default is black.
+    Changed faces foreground color to be set by the
+	*Face*Canvas.foreground resource
+	(you get a gold star if you figured out what the resource used to be.)
+    Fixed O'reilly typo in the man page.
+
+1.5.1 12/2/94  Bug fix/minor tweaks over 1.5
+    Fixed cursor in message display area. 
+    Made Command Binding interface resizable.
+    Commit Links before Refiles so you can link and refile the                 
+	same message and the right thing happens.
+    Fixed drafts folder name used in bug report/registration mailings
+	(REMEMBER TO REGISTER YOUR USERS with the item under Help... :-)
+    Fixed scrollbar colors for black and white.
+    Beefed up new user initialization of aliases file.
+    Eliminated complaint if new user doesn't have ~/.exmh-defaults
+    Fast path of message display now honors charset specifications
+    SEDIT
+	Nuked <Mod2> from compose key binding.
+	Implemented paste-with-middle button that works with scroll binding.
+***	    Click with middle button always pastes (unless you move the mouse)
+	<Button-2> is automatically cleared from selpaste binding.
+	Added Mime Preview to Sedit More... menu (Achim Bohnet)
+	Fixed <bigger><bigger> looks in Sedit (Anders Klemets)
+	Eliminated iso-2022-jp from list of 8-bit character sets.
+	If you manually set the charset for a text part, that is honored.
+	Fixed addition of new headers after Content-Type.
+    Fixed bug in entry word select
+    MIME
+	Added Print part MIME menu
+	Handle encoded headers with Show-full-headers
+	Fixed MIME button binding (John LoVerso)
+	Get default name from Content-Description (Stefan Monnier)
+	Added Mime_PrintPiece
+	Added another special case for "standard" iso font. (Stefan Monnier)
+	Fixed blank line rendering in text/enriched (Anders Klements)
+    Removed grab from file select box, which caused focus problems.
+    PGP (Stefan Monnier)
+	Fixed Fcc handling.
+	Fixed header separator parsing
+	Replaced hostname with uname -n
+	Made grab global during pass phrase entry
+	Sedit bindings are honored during password typein
+	Improved error handling to detect missing PGP install.
+	Added "enable PGP" preference item to turn it off.
+	Key selector box is resizable.
+	Added Pgp_ShowMessage as handler for text/pgp types
+    Generalized Msg_Clip to handle Sedit MIME Preview
+    Added URI hook to allow for parsing of X-URI headers and
+	scanning through messages to look for URL and URN. (Martin Hamilton)
+    Added <Key-C> binding to force exmh back into color mode.
+    Added confirmation dialog when there are pending changes
+	and you need to commit (Ben Johnson).  The use of this dialog
+	is controlled with the new commitDialog Scan Listing preference.
+    Cleaned up window position saving to eliminate junk entries.
+    Fixed Reply All to use -cc cc -cc to instead of -cc all
+
+1.5 11/22/94
+    Please register as an exmh user with the Register entry under Help.
+    Fixed Entry class bindings to do word select and honor the
+	type-kills-selection setting.
+    Added
+	Msg_LineDown, which is bound to the up arrow
+	Msg_LineUp, which is bound to the down arrow
+    Simplified error handler unique window name choice.
+    SEDIT
+	Added SeditMimeParse to read MIME structure in drafts messages.
+	Fixed up detection of 8-bit typein.
+	Moved X-Mailer header up to the top.
+	Added 8-bit encoding in headers (=?iso-8859-1?Q?=C6?=)
+	Fixed character set typing so 7-bit messages are us-ascii while
+	    8-bit characters are the chosen iso encoding.  This is done
+	    wholesale, so if a multipart message has any 8-bit characters,
+	    then all the text/* types are promoted to the same 8-bit
+	    character set.  Similarly, 8-bit info in the headers will
+	    promote all the text parts to an 8-bit charset.
+    Cleaned up new command binding interface so it really works.
+    Changed MH Tweaks "Send in background" to default to OFF
+	so that (new) users get error messages right when they send.
+    Changed Send button so that in the Drafts folder you open the
+	current message as the draft.
+    Added Exwin_ToplevelFocus, ExwinSetFocus, and ExwinSaveFocus to
+	cleanly handle the new focus policy, which honors the users
+	main focus model.  Focus within an exmh window is still
+	click to type, but you can shift focus among the various
+	top-level exmh windows in your "normal" way 
+	(i.e., focus-follows-mouse works ok)
+    Added Pgp_ShowMessage as the handler for application/pgp MIME type
+    Simple Edit bindings:
+	Now Entry widgets drag-scroll with the same button as Text widgets.
+    Fixed up bogus message in File Select dialog.
+    More cleanup of PGP from Stefan Monnier.
+    The PGP bin path is now part of the install process.
+    Added Aliases_CheckPoint to send path so that you don't have to
+	remember to save aliases before sending a message.
+
+1.5minus 11/14/94
+    Fixed Entry edit bindings for delbol, delwordback, transpose
+    Added several convenience Tcl procedures to avoid specifying
+	lots of parameters to the more general procedures
+	Msg_First - go to first message in the folder
+	Msg_Last - go to the last message in the folder
+	Msg_CompUse - use current message as draft
+	Msg_RemoveNoshow - remote, advance, but don't show next message
+	Msg_MoveNoshow - refile, advance, but don't show next message
+	Msg_PageOrNext - scroll or advance (space binding)
+	Msg_PageDown
+	Msg_PageUp
+	Msg_CopySelection
+	Folder_Unseen - change to next folder with unseen messages
+	Ftoc_PageUp
+	Ftoc_PageDown
+	Ftoc_NewFtoc - replace scan listing with the selected messages
+    Depreciated Msg_Send in favor of Msg_Compose
+    Spiffed up error dialog a little bit.
+    Updated the FAQ file
+    Added Edit_Dialog for external interface to editors.
+    Fixed environment (un)settings after a re-edit from WhatNow.
+    Nuked Unseen Folders preferences, combined with Scan Listing section
+    Trap folders -fast -recurse errors (too many folders)
+    Tweaked focus handling to better honor 'focus-follows-mouse' for
+	most top-level windows: main, sedit, preferences, bindings, aliases,
+	fileselect..  Added Exwin_ToplevelFocus procedure.
+    Fixed Redistribute (again)
+    SEDIT -
+	Added Hook_SeditInit
+	Added Compose Key sequences to generate 8-bit characters.
+	    See the Compose Key menu entry under the main Bindings... menu
+	Added automatic Quoted-Printable encoding (sedit only)
+	Added automatic text/plain; charset=  MIME types for plain messages
+	    Control these via Preference settings
+		Quote Default: automatic always never
+		Specify Charset: ON/OFF
+		Default charset: us-ascii iso-8859-1 iso-8859-2 iso-2022-jp
+	Reorganized buttons and menus a bit to save menubar space.
+	Default send keybinding is <Control-c><Control-c>
+	Added quoted-printable hack to Insert @ - it will decode
+	    the message you are replying to so it inserts 8-bit characters.
+    Bindings Dialog -
+	Now only non-system-default settings are saved to ~/.exmhbindings
+	Pressing Return in a keybinding entry changes the binding right away.
+    Default Folder-Order is now
+	inbox *
+	so that inbox will appear first in your folder labels (by default)
+    Pgp_Process is called on all out-going mail messages so any editor can
+	insert the pgp-action: pseudo-header to get PGP wrapping
+	    pgp-action: encrypt
+	    pgp-action: signclear
+	    pgp-action: signbinary
+	    pgp-action: encryptsign
+    Expanded PGP preferences.
+    Combined all text and scrolling preferences into one section
+    Fixed Flist highlight clearing that caused parent folders to get
+	highlighted incorrectly in some cases.
+    New Folder dialog adds the new folder to the folder cache.
+    Changed FTOC to jump when you get to the top or bottom of the screen.  
+    Added Ftoc_NewFtoc and overhauled ftoc(lineset) management.
+    Nuked *c_label resource - use *Label.foreground instead.
+	If you don't like all the blue labels, set this to black.
+    Changed Pick "New FTOC" checkbutton to a regular button.  It works at
+	any time to replace the scan listing with only those messages
+	that have been selected.
+    Fixed old bug where pick "add to sel" didn't really work.
+    Cleaned up color resources.  Now you can get reverse video in monochrome:
+	*Background: black
+	*Foreground: white
+	*c_background: black
+	*c_foreround: white
+    Added watch cursor when displaying MIME messages
+    Fixed glitches in multipart composition
+    Fixed line breaking so it only happens on text/ parts,
+	this should eliminate most needs to disable Format Mail
+    MIME
+	Switched to mime.types file (away from nametemplate)
+	Fixed xterm use for metamail "needsterminal" rules.
+	Fixed header looks when "Show Full Headers" is turned on.
+	Fixed "hidden" header look.
+	Handle empty body parts.
+	Added new PrintBase64 routine (LoVerso)
+    Added Text_CutRotate to guard against empty cutbuffer ring.
+    Added <Tab> file completion to fileselection box (Christian Javet)
+    Cleanup of PGP code:
+	Prompts for pass phrase and runs PGP in batchmode.
+	Can optionally remember your pass phrase, or you can type it in
+	    each time.
+	PGP in an xterm runs it interactively over a message, which is
+	    useful to extract key blocks.
+    All labels are blue.  Set
+	*Label.foreground: black
+	to restore old looks in dialogs, etc.
+    Aliases:
+	Handles : or ;
+	- still broken with respect to commas inside quotes.
+	<space> will define a new alias if what you have typed
+	    does not match an existing alias.
+	<Control-c> will delete the matching alias.
+
+1.5omega 10/6/94	(definitely last development release before 1.5)
+    Added install-time setting of the ps command used by BgLostPid so that
+	routine doesn't have to heuristically determine the right incantation
+	of ps that determines the existence of a process.
+    Changed exmh-bg to use the same context as exmh so that
+	private sequences work.
+    Change /tmp/FACE to be /tmp/FACE.[pid] to avoid inter-user conflicts
+    Fixed SeditID to work for folders with periods in their name
+    Fixed Mh_MarkSeen and Mh_MarkUnseen to handle multiple unseen sequence names
+    Changed Exwin_SetIconPosition to not do anything if no resource exists.
+    Moved Xns stuff to xns.tcl
+    Changed Fdisp_ClearHighlights to actually reset folder label looks,
+	not just their tags
+    Changed FTP script to say "type $mode", not just "$mode"
+    Added "Insert External..." sedit menu entry (Anders Klemets)
+    Fixed Aliases_CheckPoint so it doesn't always write the aliases file.
+    Cleaned out most hardwired widget looks attributes and specify everything
+	in app-defaults.  This allows users to override things via their
+	own resources.  (Thanks to Jay Sekora)
+    Made preferences panes resizable.
+    Print out any exit-time errors.
+    Fixes sedit abort dialog.
+    Updated the interface to Msg_Reply, Msg_Compose, Msg_Forward, Msg_Dist
+	so they take *either* the name of a Tcl command, or a set of
+	arguments to be passed through to the underlying MH command.
+	Now you can call Msg_Reply, for example, like this:
+	Msg_Reply -nocc cc -nocc to -filter /tilde/welch/Mail/mhl.replbugfix
+	Called with no arguments, these routines default to using the
+	original Hook proc (Mh_CompSetup, Mh_ReplySetup, Mh_ForwSetup, etc.)
+    Moved Reply buttons into a Reply menu so it is easier to add several
+	variations on Reply to this menu.
+    Added smarts about -anno -inplace to set mhinplace env-var (John Farrell)
+    Fixed private sequences regexp to handle folders named c++ (John Farrell)
+    Changed Pick dialog to use Widget_BeginEntries et. al.
+    Added Import Mailboxes Folder More... menu entry that copies mailbox
+	format files into MH folders.
+    PGP:
+	Includes fairly decent PGP code, thanks to Stefan Monnier, Anders
+	    Kelmets, and William Sproule, who all enhanced the original
+	    exmh PGP code contributed by Allen Downey.
+	Message More... menu has
+	    PGP Decrypt that replaces encrypted message with plaintext.
+	    PGP View Message More... menu entry that decrypts a message but
+		does not save the plaintext version in your mailbox.
+	Sedit PGP menu has
+	    Sign Text, Sign Binary, Sign & Encrypt, Encrypt options.
+    Added "tkwait visibility" to tkerror dialog so it always manages to
+	display itself.  (Vanishing dialog bug.)
+    Support hacky Print command definitions that access exmh(folder) and msg(id)
+	variables.  For example, you can have a print command like:
+	show +$exmh(folder) $msd(id) | enscript
+    Fixed handling of bogus Multipart (with no boundary line).
+    Fixed handling of bogus MIME subpart with no headers and no header
+	separator.
+    Added aliases.tcl fix to support "< includefile" syntax (Axel Belinfante)
+    Fixed installer so it really exits when you click Quit during Install.
+
+1.5phi 9/15/94
+    Fixed background inc for inbox and multidrop by adding Ftoc_Init
+	to exmh-bg so that ftoc(scanWidth) gets defined.
+    Tweaked Position cursor to avoid continuation lines and X- headers
+    Tweaked folder label bindings for <enter> style popups
+    Added app-defaults listbox geometries for aliases
+	*Alias*alias.listbox.geometry:  20x10
+	*Alias*addr.listbox.geometry:	30x10
+    Fixed WhatNow Dismiss button so it hides the dialog
+    Fixed WhatNow Spell menu entry so it does not hide the dialog
+    Added WM_DELETE_WINDOW protocol to aliases dialog
+
+1.5zeta 9/13/94
+    Fixed the alias file handling so comments are preserved, order is preserved,
+	and long lines continued with backslashes are handled properly.
+    Added an Import button to aliases to import things from .mailrc files
+    Added searching through alias lists by typing into the entry below the list
+    Plugged a file descriptor leak in MimeDecode
+    Fixed a typo in the man page.
+    Added Default scan width to Scan Listing Preferences.
+    Fixed Whom-after-Redistribute with external editor problem.
+	(MH whom still barfs, but a subsequent send works ok.)
+  * Using private contexts for exmh (.exmhcontext) and exmh-bg (.exmhbgcontext)
+	This means that background inc should not interfere with tty MH
+    Added private context for background Scan_AllFolders
+  * Support MH environment variable to name alternate profile
+    Fixed MimeMakeMenu so it is robust to font failures
+    Fixed Preferences so it correctly saves items in entries.
+    Added Prev button to preference section dialogs
+    Added -sedit command line switch to override default editor
+	Preference command.  This toggle is also visible in the editor
+	Preferences section, but is always reset upon startup.
+    Tweaked new user setup to deal with missing profile.
+
+1.5epsilon 9/12/94
+    Fixed Exmh_Status bug with number-like status messages
+    Fixed Redistribute (really)
+    Patched around auto-sign null command resource bug.
+    Fixed default command bindings for PageDown and PageUp -
+	However - if you've saved bindings you still won't have multiple
+	bindings for these.  You might hand-edit ~/.exmhbindings to
+	remove everything but the things you've customized.
+    Changed main buttons - introduced Help and Bindings as menus.
+    Added Aliases button that brings up an interface that lets you
+	edit your MH aliases file.  Thanks to Scott Stanton!
+    Finally upgraded to the new version of BgLostPid from Scott Hammond.
+	This works on SunOS 4.1.3, and his Solaris 2.* machines.
+	Don't hesitate to let me know if it does not work for your system.
+    Added sedit(colorize) preference item so you can enable/disable the
+	colored backgrounds when composing MIME messages.
+    Added bindings to boxes in folder label display.
+	Previously the bindings were just on the text.
+    widgetText($t,geo) initialization patch from LoVerso
+    Added Double-Tab binding in Sedit that takes you to the begining
+	of the message body.
+    Overall cleanup of MIME structure composition.
+	If you have ----------- header/body separators, multipart
+	structure will be created better.
+    NOTE: Format Mail can still screw you over if you include files with
+	delicate formatting.  Remember to disable it from the Sedit More...
+	menu if you have important formatting.
+    Tweaked popup menu placement to avoid Tk text tag binding bug. (LoVerso)
+
+1.5delta 8/30/94
+    Patches for tk-jp extension and JIS code (k. furukawa)
+    Cleanup of preferences.tcl code
+    Added <Return> binding for Message_Apply dialog.
+    Generalized editor to allow different types, such as
+    sedit, mhn, spell, etc. (Neil Weisenfeld)
+    Changed WhatNowDialog to be configured via X resources.
+    Patched main to deal with USER and LOGNAME envvar.
+    The code elsewhere can assue env(USER) is set.
+    Fixed Sedit dependency on ~/.signature file
+    Updated the Bind dialog help text.
+    Added Mhn_RenameOrig and Mhn_DeleteOrig to deal with errors after
+    mhn frobs a message.  (Colm Buckley)
+    Tweaked xnsgetmail to handle XNS login requirement.
+    Added binding for Folder_TargetCopy to popups (Fred Douglis)
+    Tweaked Tab-in-headers binding for Sedit.
+    Fixed Redistribute
+    Changed text/enriched so it uses the MIME fontsize set via Preferences.
+	(WARNING for those still using rich_InitSize)
+
+1.5gamma 8/14/94
+    Added wm command for session managers
+    Tweaked pause times during initial rendez-vous so that 'inc-on-startup'
+	has less chance of foiling the link between exmh-bg and the front end.
+    Added Msg_MarkUnseen and More... menu entry for it (Fred Douglis)
+    Added Folder_Purge and Folder_PurgeAll
+    Fixed bogus use of Mh_Path where 'file isdirectory' would do, which caused
+	bugs if you had subfolders named "new", "cur", "last", etc.
+    Fixed signature file to handle blank prefernece entry for default.
+    Added Mh_Sequence to read files directly instead of running pick.
+    Sped up Ftoc_MarkUnseen (Catch-up Unseen bottleneck)
+    Trimmed extra Folder_Summary call out of Folder_Change path.
+    Tweaked labels in pick interface.
+    Added Find_Reset to Msg_Show (Fred Douglis)
+    Fixed multipart/alternative to consider mailcap rules.
+
+1.5beta 8/10/94
+    Fixed management of unvisited folder list
+    Fixed bug that occurred during refiles when target had subfolders named
+	"new", "last", "cur", or other special MH message number ids.
+    Fixed curLine == 0 problem in ftoc.tcl
+    Fixed "Print via mailcap" menu entry
+    Added executable signature file hack.  If the .signature file is
+	executable then it is run instead of read in order to get the sig.
+
+1.5alpha 8/8/94
+    Last minor release (modulo bug fixes) before massive changes.
+    New features:
+    Sped up fast path of message display.  text/plain message display is
+	now just about as fast as it was in 1.3.  For the last ounce of
+	speed, disable the Graphic Part Separator under MIME preferences.
+    Unseen Folders preferences section.  "Cycle back to first" controls
+	what happens when you get to the end of the last folder and you
+	type next.  If set, you go to the first folder in Folder-Order.
+    Added Flist_NextUnseen which returns the next folder that has unseen
+	messages in it.  At the same time, there is a small amount of
+	memory about what folders you have visited in the unseen set so
+	that you won't automatically revisit a folder even if it had
+	unseen messages when you left.  The memory is reset after
+	an Flist_FindUnseen, which happens after an Inc_Presort.
+	This is not perfect, however, as it should really reset only
+	when new messages have arrived in a particular folder.  This requires
+	deeper changes that will appear in 1.5*.
+    The keystroke capital F will take you to the next folder with unseen
+	messages in it.
+    Added a user interface to the various accelerator keystrokes so you
+	can see what is defined, change the key bindings, and even add new
+	commands with keybinding equivalents.  Type ? or click Bind.
+    Changed Commit binding to <Control-Return> instead of <Return>, which
+	can be dangerous if you accidentally type into exmh.
+    Added Folder-Unseen to .mh_profile that defines a set of patterns (glob)
+	for folders to check for new mail.  Use this to trim down the search
+	through your folders for new mail.
+    Changed the Folder Cache size to be line-oriented so that there are
+	never phantom cached folders that are displayed off screen.
+    Added Sticky folders to Folder Cache preferences so you can lock down
+	folders into the cache line.
+    Nuked the EDIT button - now when you are in the drafts folder you
+	can just Use Message as Draft under the message More... menu.
+    Bug Fixes:
+    Fixed Re-edit of WhatNowDialog so the dialog box stays up and
+	you can actually send/abort after re-editing.
+    Nuked the Msg_ShowCurrent call from Folder_Commit to avoid an extra
+	message display after a commit.
+    Added a Hook_SeditSave hook point after the buffer is saved to disk
+	but before it has been sent.
+    Fixed annotation setup so annotations are not always made.  Now you really
+	need to have -annotate in your .mh_profile entries for repl and forw.
+    Added the -zero flag to the MH call that defines the current sequence to
+	avoid multiple current messages.
+    Changed default Folder-Ignore pattern to {.* */.* */*/.* */*/*/.*}
+    Fixed Folder New dialog to reset its message about what @ maps to.
+    Dinked with colors in FTOC so that current red foreground mixes with
+	range, deleted, and moved looks better.
+    Changed SeditFormatMail to not reformat lines that have been included
+	from other message bodies using Insert @.  (Irving Reid)
+
+1.4.1 7/21/94
+    This is a bug-fix release, plus I added some more hooks (see below).
+    Fixed Burst Digest so it works with auto commit.
+    Fixed preferences to watch for window deletion.
+    Fixed apply-to-message to honor Cancel button.
+    Changed default print command from "enscript" to "lpr"
+    Added Face_FlushCache for use with Tk send when you change
+	your faces database.
+    Fixed -iconic startup.
+    Added autoPack on folder change (but its too slow to be useful)
+    Fixed default signature file handling for autoSign.
+    Added confirmation box for Abort on modified drafts.
+    Fixed abort so it marks draft clean so they are not auto saved later.
+    Nuked error message that is triggered by user-defined menus.
+    Fixed background Count so it might actually work.
+    Moved skipMarked into Scan Listing Preferences.
+    Fixed "Unmarked -1 messages" status report.
+    Added hooks that are called if you have defined them.
+    See the man page for more details.
+	Hook_FolderChange $folder
+	Hook_CheckPoint		(called at quit time)
+	Hook_SeditSend $draft
+	Hook_MsgShow $pathname mimeHdr
+    Fixed promotion of MIME parts to multiparts.
+    Fixed typo in mimeNoteSize preferences.
+
+1.4 6/24/94
+    While the change log is still long, I've decided this is good
+	enough for a stable release.  I've swept my mail log for easy
+	feature requests and simple bug fixes.
+	Internal guinea pigs have been testing this.
+    New feature - Next changes to the first folder in your Folder-Order
+	if you are at the end of the current folder and there are no
+	folders with unseen messages in them.  You might want to ensure
+	that your .mh_profile has at least the following:
+	Folder-Order: inbox *
+    Added Print Postscript menu entry and associated Postscript Print
+	command to Preferences.  This is for when you receive a non-MIME
+	message that contains a postscript file.
+    Added more general Apply to body & Apply to message commands that will run
+	a UNIX command on the message or on a temp file containing 
+	the message body.
+    Cleaned up scan listing scroll behavior during background incs.
+    ftocShowNew resource controls whether the scan listing is scrolled
+	automatically when new messages arrive.
+    Added optional-advance Preference item for Link operation.  That is,
+	if you link a message to another folder you can set a preference
+	option to control whether or not you automatically go to next msg.
+    Fixed Edit Message if you have exmh-async editor command with clever
+	{-geometry 80x50} options.
+    Updated the Help text.
+    Added an FAQ button that displays the exmh.FAQ file.
+    Added catches to background Update Scan Cache script.
+    Fixed startup of TK-aware editors.  They get two arguments, the name
+	 of the exmh interpreter and the name of the draft file.
+    Clicking on a folder label deiconifies the main window if you
+	have a detached folder display and iconified main window.
+    Quit button catches errors.
+    Sedit resets default signature file used with auto-signature.
+    Sedit catches errors from Attempt Mhn.
+    Fixed color specification of nested folder popup for monochrome displays.
+    Fixed focus for Find popup.
+    Fixed focus for New Folder popup.
+    Cleaned up conflict between current looks and moved/deleted looks.
+    Added -width 100 to inc calls.
+    Changed Presort Inc to remove messages from temporary folder as
+	they are refiled instead of once at the very end.  This has
+	better fail-stop semantics (no duplicates later on.)
+    Fixed focusing in pick window
+    Added Sequence entry to Pick to add results to a sequence.
+    Added fontSize, titleSize, and noteSize MIME preferences to control
+	font sizes.  
+    Fixed display of message parts with no headers.
+    Fixed bugs with other borderline message formats.
+    (Look for a pre-release version of PGP support in misc/exmh_pgp.tcl)
+
+1.4zeta 6/10/94
+    This should be quite close to the "stable" 1.4 release, but
+	enough code changed to keep me from taking that leap.
+    Added a call to User_Init to exmh-bg so that users can tweak
+	the behavior of the background process, which does incs.
+    Fixed Edit message so that it doesn't invoke the What Now dialog
+	if you have an external editor.  It still isn't perfect because
+	the message display is not updated after the edit is complete.
+    Added support for an editor command of "emacsclient &", which will get
+	transformed into "emacsclient $filename &". exmh assumes
+	that you can send the message directly from your emacsclient
+	and you avoid the WhatNow dialog.
+    Fixed ancient bug with Exmh_Status call for POP .xmhcheck entries.
+    Fixed interaction between unseen and delete/moved looks in
+	the ftoc display.
+    MIME:
+	Made the direct showing of images a settable option in Preferences.
+	Fixed the "view via mailcap command" menu entry.
+	Added catches against errors that happen when you close the
+	    pipeline from an exmhshowproc
+	Added support for ----- header/body separators
+	Handle empty body parts and non-existent messges.
+	Handle lack of headers in message parts.
+    Changed "textKillsSel" behavior so that setting the insert point
+	clears the current selection.  This seems safer, but I'm open
+	to feedback.
+    Tweaked the color current message FTOC highlight to have a white background
+	(c_currentBg default value)
+
+1.4epsilon 6/7/94
+    Added Msg_UUdecode that simply runs uudecode over the message.
+	(This is a stop-gap and is still rather lame.)
+    Fixed a bug in Preferences that would forget the color Xresources
+	after a save, resulting in a mixture of colored windows.
+    Fixed Preferences to better handle deletion of its windows.
+    Added support for TK-aware editors.
+	Specify your editor command with a trailing & and it will get
+	invoked in the background with two arguments:
+	the first is the name of the exmh interpreter,
+	the second is the name of the draft message file.
+    Fixed to handle -mono correctly and ignore other -arguments
+    Added autoSign option for the built-in editor.
+    Added default signature file preferences entry.
+    SeditSign will append a part to a multipart message, if appropriate.
+    Added error checking to button and menu creation.
+    Added catch around Find regexp call.
+    Added more Xresources to help folks with greylevel displays
+    The following are honored in the scan listing (folder display not done yet)
+	c_currentBg
+	c_unseenBg
+	c_deletedFg
+	c_movedFg
+    Exposed the time period used when dragging a selection off the screen
+	as a Preference item under the Text Widget section.
+    Fixed handling of header lines that were continued on multiple lines.
+    Added showSeparator MIME preference entry.
+    Added mailcap_checkrule
+    Changed default Part type to: "text/plain; name=\"[file tail $name]\""
+    Nuked uuencode encoding option.
+    Updated app-defaults to properly disable things in the More... menu
+    Changed the Copy button to Link to better reflect its function.
+    Fixed the "unknown command "blue"" bug with First Unseen.
+    Nuked hardwired -bg white from install entries
+
+1.4delta 6/3/94
+    Added Msg_Send to use the current message as a draft template.
+    Added Msg_Edit to edit the current message.
+    scan.tcl will use the mh_profile scan-proc, if it is defined (else scan)
+    Added Send_Error to deal with Mh_Send erorrs (thanks to Jim Fulton)
+    Added Copy - (refile -link).  <Shift-Button-3> on the folder label
+	or use the Copy button.
+    Tweaked sedit for use on non-drafts folder messages.
+    Added two MH preferences
+	asyncSend - by default this is enabled and is the old behavior.
+	    If you disable asyncSend, then MH send is done in the foreground
+	    and errors are trapped, giving you a chance to re-edit the draft.
+	scan-proc - set here or in your .mh_profile - oriented towards
+	    a new threaded scan (tscan) by Jim Fulton
+    Added Mh_CompUseSetup and Mh_Copy
+    Fixed handling of duplicate header lines.
+    Fixed text/plain in multiparts.
+    Added Mime_ShowImage for image/gif in order to optimize dilbert newsgroup.
+    Fixed Rich_TagClear bug
+
+1.4gamma 6/2/94
+    Fixed scan caching after Rescan Folder (old bug)
+    Fixed editor What Now dialog if you have multiple ones up (LoVerso)
+    Added option to disable the faces alias facility. (people.tab)
+    Added Insert Part... sedit menu entry to insert files as
+	parts of a multipart message.
+    Changed preferences help text for ftextLines
+    Fixed plain iso-8859 font family in app-defaults
+    Restored inline header display (scroll-off-top)
+    Optimize font choice for vanilla messages to be whatever the
+	Xresource setting for the message display text widget is.
+    Nuked white background of rim in fileselect box
+    Tweaked Entry foreground and background in app-defaults-color
+    Added cursor changing to popup menus (Josh Littlefield)
+
+1.4beta 6/2/94
+    Split app-defaults-color out of main app-defaults.
+    Also support ~/.exmh-defaults-color and ~/.exmh-defaults-mono
+    Fixed fdispPopup bug with folder names that were numbers
+    Added $env(METAMAIL_HOME)/mailcap to set of files
+    MIME:
+	Fixed header look tags
+	Fixed external-body accessMethods
+	Fixed display of drafts with ---- header separator
+	Added fastpath for text/plain to ParseSingle
+    Improved Insert File multipart dialog message
+    Eliminated stray "Multidrop needs .xmhcheck mapping file" message.
+
+1.4alpha 5/26/94
+    New mime.tcl and msgShow.tcl thanks to Chris Garrigues (cwg@mcc.com)
+    mailcap.tcl thanks to Marc VanHeyningen <mvanheyn@cs.indiana.edu>
+    Updated editor.tcl to deal with mxedit 2.4
+    Ignore folders -fast -recurse error output.
+    Force cache rescan after Pack and Sort
+    Disable quit button during final checkpoint
+    Sedit updated to use Xresources-based buttons and menus
+    Fixed the background color of the EXMH logo
+    Fixed string comparisons to allow funny folder names
+    Fixed Find button to raise find dialog
+    Fixed @ substitution to only work on leading @ character
+    Fixed looping problem in scrolling selection
+    Added xnsgetmail hook for XNS mail users
+    Added use of env(LOGNAME) along with env(USER) for sys V folks
+    Fixed busy.tcl cursor and bitmap specifications
+    Fixed sedit to better honor typein-kills-selection
+    Added multipart composition - only manifest via File Insert dialog
+
+1.3 4/7/94
+    Added .TH to exmh.l so appropos database entry gets generated
+    Fixed infinite recursion bug related to auto-commit.
+    Fixed undefined ftoc(pickend) bug caused by unexpected event ordering.
+    Fixed color parsing bug in MIME color shading.
+    Fixed ftp message bug after MIME file transfer.
+    Fixed regsub bug due to TCL 7.0
+    Improved handling of default text and multipart MIME types - Chris Garrigues
+
+1.3delta 3/31/94
+    Beefed up initial rendez-vous between front and back-end.
+    MIME User Interface Change:
+	In-line text buttons have been replaced with a popup menu
+	that is obtained with the right mouse button (Chris Garrigues).
+	In fact, all MIME messages have a menu defined, and you'll get
+	it by clicking anywhere on a message.  The menu changes with
+	multi-part messages, allowing to you save or process different
+	parts of the message.
+    Fixed $ (last) and ^ (first) keystroke bindings.
+    Clear message display if you select a message without displaying it
+	(right mouse button, typing a number, or $ or ^)
+    Fixed typo in error handler that botched scrolling in error popup.
+    Added synchronization to folder-change in order to preserve scan caching.
+	Background folder operations are nice, but they were resulting in
+	scan cache invalidations.  This is a quick and sure fix pending
+	a more complete rewrite of folder operation handling in 1.4
+    Added User_Bindings hook to user.tcl. (John LoVerso)
+    Added scroll acceleration preferences (John LoVerso)
+    Fixed folder delete of just "@"
+    Added folder push and pop to Inc_Presort in order to preserve
+	the current folder context.
+    Added Search: field to Pick dialog.
+    Added synchronization to "New FTOC" feature of Pick so pending folder
+	operations are not lost.
+    Added Busy Inidicator preference item so you can dink the cursor or
+	choose to display a bitmap in the logo area instead. (John LoVerso)
+    Changed font sizes in richtext from pixels to points (Sjoerd Mullender)
+
+1.3gamma 3/18/94
+    Added warning against versions of TK earlier than 3.3
+    Updated the exmh.FAQ
+    exmh-async - added extra eval so you can pass arguments through wish:
+	exmh-async xterm {-geo +0+0} -e {vi -horrible pattern}
+    Added Msg_ShowWhat, and ~ (first) and $ (last) keybindings
+    Fixed booleans to allow True, TRUE, or true Xresource values.
+	(ditto for False, FALSE, false)
+    Update Folder summary info after scans better.
+    Fixed typo that broke srolling in error dialog stack traceback
+    Added per-draft WhatNowDialog
+    Moved X-Face up to highest priority face display.
+    Nuked Fdisp_ClearHighlights so blue labels don't blink.
+    Added inc-on-map (open icon)
+    Auto-commit now occurs when you iconify (unmap).
+    Added Sedit_CheckPoint to save dirty drafts when you quit exmh.
+    Added delbol to delete-to-beginning-of-line.
+    Added "Attempt mhn" option under the sedit More.. menu so you
+    can run your message through mhn to expand MIME directives.
+    Added preferences to control the default values for Format Mail and
+	Attempt mhn check menu items.
+    Nuked MAILDROP warning.
+    Beefed up error handling during startup.
+    Added BgAction to run things in the background interpreter (Flist)
+    Added various Simple Editor preferences for the built-in editor.
+    Added scrollSpeed and placeToplevel preferences.
+    Fixed size problem with WhatNowDialog and Whom.
+    Save detached folder display width and height.
+    Nuked drop-shadow and folder labels in the cache line.
+    Fixed Find.
+    Disallow spaces in folder name.
+    Fixed reordering bug in bulk refiles
+    Added push/pop to eliminate MyIncTmp as current folder (Inc_Presort)
+    Added (optional) feedback to Inc_Presort.
+    Added -list to pick calls
+    Moved MIME handler definitions into app-defaults
+    Tweaked Header-Display and Header-Supress handling.  The algorithm is
+	show by default
+	if header matches a pattern in Header-Supress - don't show.
+	    Default pattern is .* (everything)
+	if header matches a pattern in Header-Display - show it.
+	    Default pattern is {subject from date to cc}
+    Added <Key-Left> <Key-Right> <Key-Up> <Key-Down> bindings
+    Allow empty bindings (disables feature)
+    Correctly handle prefix bindings - <Control-x><Key-Delete>, etc.
+	I have to make <Control-x> harmless because of the way TK works.
+    Re-enabled 8-bit character input
+    Fixed Plain look in Text... menu
+    Properly support RFC822 types (and multipart/digest)
+    Added ISO font Preference option, and automatically use this
+    in Text messages with ISO-8859-1 character set.
+    Run metamail handler in the background.
+    Disable input to status entry widget.
+    Fixed fileselection to restore the cwd of the exmh process after
+	the selection is made.  You can no longer select directories, either.
+
+1.3beta 2/17/94
+    Update face search path to look for
+	1: first non-unknown face
+	2: X-Face header
+	3: first unknown face
+    Added Fdisp_ClearHighlights to Flist_FindUnseen
+    Added Widget_TextInitText to SimpleText widgets (e.g., color key)
+    Added check for env(MAILDROP)
+    Fixed BgLostPid to handle Sys V ps.
+	Tested on IRIX, OSF/1, SunOS
+    Fixed Folder Delete
+    Changed Inc_Presort to handle variants of inc that exit non-zero
+	when they have actually done some useful work.
+    Fixed Pick dialog - extra Dismiss button, botched Clear.
+    Added MIME Preferences: enabled, showType, showPrelude
+    Display Content-Description for multiparts.
+    Fixed space/quote problem on Content-Type parameters (e.g., boundary)
+    Built-in editor, sedit
+	Moved Sign button/menu back to be next to the Send button.
+	Clear Whom display after Dismiss
+	Added <Tab> binding that moves through mail headers.
+
+1.3alpha 2/10/94
+    Mainly due to the use of [pwd], exmh requires TCL 7.0 or greater.
+    The installation procedure has the notion of different configurations.
+	Upon startup in a fresh directory, it will look for ../*/.exmhinstall
+	so you should be able to latch onto your 1.2 config info.  There is
+	also a Conf button that lets you manage .exmhinstall.* if you
+	need to configure exmh differently for different architectures,
+	for example.
+    Added startup dialog for new users that have no MH environment.
+    Added message annotation for Replied:, Forwarded:, Resent:
+	You enable these by -annotate flags in your ~/.mh_profile
+    Added pid-based error checking between front-end and background process.
+    Changed to two-level Preferences scheme so each module has its own
+	sub-dialog for its own settings.  This is done to get more screen
+	real-estate so I can expose more knobs and dials.
+    New preference items exposed:
+	autoCommit, impliedDirection, nextGuard, constraintedTextScroll
+	constrainFtoc, scrollContext
+    Added Scan_AllFolders, which  forks a wish process to rescan all folders,
+	or just folders that are out-of-date.
+    Added "uname -a" output to error report.
+    Added synchronization between background rmm/refile and
+	folder operations like sort, pack, and quit. (Background_Wait)
+    Introduced Xresources for more colors:
+	c_label - for main, folder, and message labels.
+	c_st_normal - color of normal status messages.
+	c_st_error - color of error status messages.
+	c_st_warn - color of warning status messages.
+	c_st_background - color of status messages from background process.
+	    CHANGE - this used to be bgMsgColor.
+    Introduced ubuttonlist and umenulist Xresources to make it easier
+	to add buttons to the default set.
+    Sedit - reorganized buttons.  Insert file uses file selection box.
+	Improved keystroke bindings and selection handling thanks to
+	some code from Dave Nichols.  You can choose what button, if any,
+	to use for drag-scrolling, and can use <Button-2> for selpaste.
+    Switched from FSBox to fileselect, based on something from Mario Silva.
+    Added sound(multifile) option in case your play command can handle
+	multiple sound files.  Results in one exec done in the background.
+    Added Fdisp_ResetHighlights so the Flist button should reset all highlights
+	in case things have changed out from under it.
+    Added Exwin_Toplevel so that toplevel windows can have their locations
+	remembered between exmh sessions.  There is no need to adjust
+	the *position resources by hand.
+    Added support for --- header separator for viewing draft messges.
+
+
+1.2 1/14/94
+    This release includes changes to the installation procedure to make testing
+	simpler.  The Test button automatically takes care of setting the
+	Script library to ./lib.  The Save button has been removed, and
+	the save is done for you automatically when you Patch the script.
+    New features:
+	Save to file - save the selected message(s) to a file - dead simple.
+	Spell... and Find SEL in the built-in editor.  Also rather simple.
+	    Spell runs the UNIX spell program and displays the output in
+	    a second pane (like the Whom output).  You can select words
+	    here and then use the Find SEL operation to locate them.
+	    There are obvious deficiencies like to keybindings for this
+	    search and no integration with the Find popup - this is due
+	    to structural deficiencies that will be fixed in 1.3
+    Bug fixes:
+	MIME FTP access.  I'm taking a multi-pronged approach.  In Preferences
+	you can select four different ways to try this:
+	    expect: use the ftp.expect script - best, but requires expect
+	    ftp -n: use ftp with the no-auto-login flag
+	    ftp: use ftp and pipe the user and password info at it.
+	    metamail: let metamail try to handle it.
+	You can also set the name of the ftp command in Preferences if it
+	    needs to be something other than "ftp".
+	Metamail windows - I let metamail pop up xterm on its own, and this
+	    behaves better - the window stays there so you can see its contents
+	Fixed SeditMsg to use an entry widget, not a label, so I do not have
+	    to call "update" to get the change to display in a timely way.
+	    The update call is dangerous and led to some errors when folks
+	    clicked twice on the Send button.
+	Fixed Mh_Rmm and Mh_Refile to make multiple calls to exec with
+	    a limited number of message numbers so as not to overwhelm
+	    the argc, argv array of the invoked program.  This should
+	    fix bugs reported when refiling and deleting large numbers of msgs.
+	Added bombproofing against folders with + in their name.
+	Guard against missing scan listing entries in MarkSeen.
+	Fixed use of mh_profile Inbox: entry
+	Fixed up optimization of text/plain MIME display.
+	For MIME multipart/alternative, display all choices if exmh
+	    cannot directly handle any of them.
+	Added support for message/rfc822 - treat like text/plain for now.
+	Trimmed .signature*~ out of the signature set
+
+1.2delta 1/6/94
+    This release is several minor bug fixes, and a few minor feature additions:
+    Set Xresource *autoCommit to get Exmh to commit changes as needed.
+    Added binding for <minus> that will show the previous message
+	even if it is marked for move or delete.
+    Added "Catchup Unseen" menu item to mark all unseen messages in a
+	folder as seen.
+    Added support for @-relative names in folder create/delete dialogs.
+    Bug fixes:
+    Added MISC to faces search path so root and deamon look cuter.
+    Fixed X-Face handling so these compressed faces to not "stick".  This only
+	happened if you did not have a facesaver database.
+    Beefed up Folder_Summary and Folder_Change to handle non-existent dirs.
+    Fixed class definitions for some frames to not be "Entry".
+    Fixed Mh_Unseen to split things so the return value doesn't
+	have newlines, this broke "Mark Seen".
+    Guard against folks that have directories named "@"
+    Beefed up Mh_Cur against folders that have + in them,
+	falling back to Mh_CurSafe if needed.
+    Guard against folks that have empty Mh-Sequences: profile entires.
+    For procmail users: added Inc_PresortFinish to background flist so that
+	scan listing is updated, as well as folder labels getting highlighted.
+    Added -nocase to message body search.
+    Allow deleting non-existing folders so the display gets cleaned up.
+    Decoupled Help and Color Code display.
+    Added support for mhProfile(inbox) specifications.
+    Added [string trim] to remove blanks from Content-Type specifications.
+    Optimized MIME text/plain display.
+    Fixed initialization state of the icont flag.
+    Added Widget_TextLineDown and Widget_TextLineUp, but there are still
+	no keybindings for those yet.
+    Patched around fdisp(maxy,canvas) undefined bug.
+    Fixed a typo in the MIME FTP transfer.
+    Catch the Password prompt from some FTPs that TCL thinks is an error msg.
+    Fixed header mark that separates body and header in sedit so you can
+	create text/enriched as you expect.
+    Fixed Exwin_IconPosition to properly handle "-0" coordinates
+
+1.2gamma 12/21/93
+    Install tweaks suffix of man page file to match directory.
+    INCOMPATIBILITY - changed button and menu definitions to be completely
+	driven by Xresource specifications in app-defaults.
+    Added folder and message selection via type-in:
+	+ changes focus to the status entry (a hack)
+	Subsequent +'s toggle you between choosing Target and Change folder.
+	<space> does folder name completion.  Keep hitting space to get more.
+	<Return> sets the folder choice.
+	<Control-u> clears your type-in.
+	<Control-c> bails out of the operation
+	For message selection, just typing digits warps focus to the
+	    status entry and selects message
+	Hit <Return> to view the selected message.
+    Find over FTOC and Message body warns you when it will wrap.
+    Fixed Folder_Summary, the replacement for running the MH folder command.
+    Added header mark so seditMime can disallow enriched text in headers.
+    Fixed bug in the abort button of sedit's buffer-dirty dialog.
+    Eliminated fcache enabled toggle switch.  Just set the folder cache
+	size to 0 to eliminate the folder cache display.  Works dynamically
+	when you change the size in Preferences.
+    Guard against ++ files in presort inc.
+    Hacked busy to just set watch cursor in big widgets.
+	this cuts its time in half compared with traversing all widgets.
+    Fixed Header-Suppression in message display.
+    Icon is no longer redisplayed unless it changes appearance.
+    Fixed enriched text type-in to display properly in boundary cases.
+    Various MIME fixes, mainly from John LoVerso (thanks!)
+	MIME text buttons replaced with TextButton
+	FTP transfer pays attention to FSBox name result.
+	Complete MIME header information is displayed.
+	Postscript and Images are displayed without prompting.
+	FSBox lets you choose non-existent files
+
+1.2beta 12/17/93
+    MIME fixes:
+	Moved Mime_Init call to main.tcl
+	Properly clean up mime-related temp files.
+	Rewrote multipart message handling.
+	    mimeHdr() has complete state about multipart message.
+	    Temp files are not deleted too soon.
+	    Multipart alternative supported.
+	images passed to metamail properly.
+	audio files are played directory with showaudio
+	message/external anon-ftp supported directly.
+	postscript passed to metamail without prompting in an xterm.
+    Other fixes:
+	Added Msg_Dist (from Eric Muller) and Redistribute menu entry.
+	Added folder message count feedback (Folder_Summary)
+	Changed Print to submit a single job if multiple messages
+	    are printed (Ed Gould)
+	Allow X-Face handling even if the facesaver database is not present.
+	Honor the mh_profile Context and Mh-Sequences entries.
+	Fixed folder highlight bug caused by unseen message numbers that
+	    correspond to non-existent messages.
+	Added -bgAction and -bgPeriod command line arguments.
+	Added bgMsgColor Xresource for messages arriving from exmh-bg.
+	Preferences fixes in Sound_Init and Faces_Init.
+	Properly handle fcache size of 0 => disable fcache.
+	Replaced Ftoc_Color with Preferences_Resource.
+	Changed Delete Folder to use MH rmf program.
+	Added two Resources to control Next behavior:
+	    *implied: 1 => direction after Move/Delete is the last direction,
+		    0 => direction after Move/Delete is always Next.
+	    *nextGuard: 0 => automatic chain to next folder after last msg.
+		    1 => extra Next required to chain to next folder
+
+1.2alpha 12/2/93
+    MIME support!
+	Simple composition support in sedit.  There are some looks bugs in
+	the composition window, but the outgoing message is formatted ok.
+	Doesn't generate multipart messages, either nothing or text/enriched.
+	Viewing MIME: richtext and enriched (subsets, but with x-color!)
+	Multipart bodies (recursively) supported.
+	application/octet-stream maps to a FSBox file transfer.
+	Everthing else is punted to metamail.
+    Added -mono to force startup in monochrome color model (for 8bit gray folks)
+    Tweaked <space> binding to go to the next message if at end of current one.
+    Fixed hidden/unhidden display of long header lines.
+    Warning - MIME message display may invoke the metamail programs
+	mimencode and metamail.  I forgot to put in something to disable MIME.
+    Default installation paths are now /usr/local oriented (not PARC'ish)
+
+1.1 11/29/93
+    Bug fixes only - no new features over 1.0
+    editor.tcl checks against no drafts folder before starting editor.
+    faces.tcl checks against no face(path) better.
+    flist.tcl uses $mhProfile(unseen-sequence) instead of "unseen" when looking
+	at private sequence information (in the context file).
+    Fixed typo in mh.tcl that kicks in during an error condition.
+    Ftoc_FindMsg guards against {} msgid that lead to
+	ftoc(curLine) getting set to 0, which leads to a later error
+	about bad text index "0.end".
+    Pick dialog "Mark Unseen" doesn't die if there is nothing selected.
+    Added Exmh_Debug message when running exmhshowproc (msgShow.tcl)
+
+1.0 11/23/93
+    Key bindings for Text and Entry widgets are now global and not
+	buried inside the built-in editor.  This is manifest as a "Bind"
+	button between Preferences and Color/B&W. It also means your
+	keystrokes are understood in the error dialog box.
+    PageUp <Meta-v> and PageDown <Control-v> added to bindings.
+    Changed the "Key" button name to "Color" or "B&W" depending on colormodel.
+    Added "Burst Digest" to the messages More... menu.  If you know MH burst,
+	the default is not to burst -inplace, but you can get that behavior
+	with an mh_profile entry (burst: -inplace).
+    Changed "Next Unseen" menu entry to "First Unseen" to match its behavior.
+    Built in editor, sedit:
+	Changed "FileMenu" to "More..."
+	Changed its "Prefs" button to "Bind"
+	Nuked replPrefix from that dialog.  Instead you have to set an
+	    Xresource, *replPrefix, in your ~/.exmh-defaults.
+	    Trailing spaces in the prefix are ok, leading are impossible.
+	    The replPrefix is used with "Insert @", by the way.
+	Split binding stuff out into seditBind.tcl
+    Fixed code that writes .mh_sequences to use rename (mv) in order
+	to avoid trashed sequences files.
+    Fixed mis-feature that changed your folder to one with unseen messages
+	if you right click on a folder label (to choose a target) and
+	there is no current message.
+    Auto bug reports now include TCL and TK version numbers
+    Nuked hardwired position for WhatNow dialog, which now has the
+	Xresource class WhatNow.  Ditto for New folder dialog.
+    Added support for Fltop.iconposition resource.
+    Fixed -iconic command line arg so that Fltop starts iconic to.
+    Added "bad key" binding to undefined keys in message window.
+    Added *position and *Pick.position definitions to app-defaults.
+    Fixed sound preferences so you can override sound files and command.
+    Added Flist_MsgSeen call during Commit do deleting unseen messages
+	still lets the flist module (and folder display) keep up to date
+
+1.0epsilon 11/19/93
+    Forward now handles multiple messages (just like MH forw)
+    Folder Rescan now checks against pending changes before going for it.
+    "no messages" error is no longer inserted into the scan listing.
+    faces.tcl overhauled to support FACEPATH, people.tab, and machine.tab
+    Added ability to delete folders.
+    In sedit:
+	Changed "Keys" to "Prefs" because you can now set the prefix
+	used when inserting @, the message to which you are replying.
+	Inserting @ also strips the headers.
+    Changes to the Folder More... menu:
+	Added Msg_ShowSomething to Rescan, Pack, and Sort folder menu commands.
+	For Pack and Sort this results in the last message of the folder being
+	displayed.  For Rescan it results in either the first unseen message
+	or the current message being displayed.
+	Added "Delete folder" menu entry
+    Subtle change to highlighting current and target nested folders:
+	These highlights no longer propogate up the hierachy like the
+	unseen highlights do.  This is to avoid a highlighting bug when
+	in the "redisplay" mode (as opposed to using pop-ups).
+    Bug fix for the undefined "leaf" variable.
+    Fixed bug with ftoc(curLine) after you remove everything from a folder.
+    Fixed the no-highlight-of-unseen message bug.
+    Fixed sound feedback on inbox and multidrop incs.
+    app-defaults no longer specifies iconpositions
+
+1.0delta - 11/17/93
+    (My announcemnt of 1.0delta was delayed by our mail gateway. 
+    I fixed two bugs this morning and reinstalled the tar file.)
+    Fixed the -iconic and iconic: Xresource specification.
+    Optimized the Ftoc_PickMsgs routine so that marking messages after
+	a pick completes the same day you make the pick O(N^2) => O(N)
+1.0delta - 11/16/93
+    Added Msg_Seen to return list of seen messages in the current folder
+    Moved MsgParseFrom to msgShow.tcl
+    Fixed MsgShowInText to pass complete (continued) from line to MsgParseFrom
+    Moved Mh_ClearCur call from Msg_CheckPoint to Msg_ClearCurrent
+    Nuked Xresources headerfont and headertags, replaced them with more
+	general Xresources m_tagnames, which lists tag names, and then
+	for each tag name, m_tagname that has header line looks.  The
+	m_tagnames correspond to mail headers (m_subject, m_to, etc.)
+    Fixed Scan_ProjectSelection to set up display state correctly.
+    Added ftoc(displayDirty) to optimize cache saving.
+    Restored ExmhDone for compatibility with mxedit
+    Fixed Flist_UnseenMsgs to pay attention to Msg_Seen results
+    Fixed Flist_Update to properly merge unseen results into the current display
+    Changed right-click on target folder to also move the current messages.
+    Moved Fcache_CheckPoint from Exmh_CheckPoint to Exmh_Done in an effort
+	to speed folder change times.
+    Fixed .seditDirty dialog
+    Split out support routines from buttons.tcl into widgetBut.tcl in order
+	to keep the buttons.tcl file simpler.  Changed the way button groups
+	are managed and generalized them to support menu entries too.
+    Added More... menus for extra Fops and Mops buttons
+    Optimized Mh_SetCur so it doesn't exec mark if the current message
+	has not changed.
+    Fixed nested folder unseen highlight/unhighlight problems.
+    Added Ftoc_Init
+    Moved Msg_UnSeen call to commit-time from mark time.
+    Added support for exmhshowproc mh_profile entry.
+    Generalized x-face header stuff so that all header lines, including
+	their continuations, and stored into the msgHdr array.  For example,
+	msgHdr(subject) has the subject, msgHdr(x-face) has the X-Face.
+	msgHdrs is a list of all headers found.
+    Realized that Text widgets do not grok geometry resources, so app-defaults
+	now has entries for width and height.
+    Added support for iconic Xresource (plus *Fltop.iconic resource)
+    Added support for the cutbuffer command.  Paste will try and fall back
+	to cutbuffer get.  The precedence is X PRIMARY selection, cutbuffer,
+	and then $sedit(killbuf), which is set by deletions.
+    Added <Key-U> binding to Msg_ShowUnseen to see the next unseen message
+    Fixed raise calls for Pick and Find dialogs.
+
+1.0gamma - 11/11/93 	;-)
+    Fixed argv0 bug in install.tcl
+    Added key binding interface to install dialog
+    Fixed help text in install dialog so that users know how to test properly
+	before installing.
+    Fixed exmh.MASTER to fall back to ./lib if exmh(library) doesn't exist
+    Added -iconposition command line argument and Xresource.
+    Added -iconic command line argument to start up iconic.
+    Changed all "placement" Xresource names to "position".
+    Added headertags Xresource to support futher tweaking of the appearance
+	of header lines in the message display
+    Rewrote Mh_Cur to read the context files directly to eliminate the side
+	effect of changing the folder context that using MH pick had done.
+    Added Scan_ProjectSelection to allow pick results to replace scan output.
+    Added Scan_Iterate to iterate over inc output
+    Moved ScanShowUnseen to Ftoc_ShowUnseen
+    Added Flist_UnseenMsgs, Flist_NumUnseen, and Flist_UnseenFolders to avoid
+	accessing the flist array outside of flist.tcl
+    Changed FlistAddUnseen to Flist_AddUnseen because it gets exported.
+    Pack and Sort now clear the current message.
+    Stubbed out all calls to Flist_Update.
+    Added Sign... menu to Sedit if you have multiple ~/.signature* files
+    Added "Format Mail" checkbox to the FileMenu to enable formatting.
+    Clicking on Whom toggles the whom display.
+    Added support for ----- headers/body separator in SeditFormatMail
+    Moved WidgetText routines into widgetText.tcl
+    Moved text bindings into bindings.tcl
+    Added <Control-w> binding to msg body that copies selection
+    Added <BackSpace> binding to msg body that pages back (up)
+    Added catch phrase to Mh_Unseen
+    Added Exwin_FullFtoc that expands the ftoc display to take up
+    the space of the message display.  Not expored by any button, yet.tcl
+    Re-wrote the way fdisp labels are highlighted.  All the looks definitions
+	are extracted into fdispColor.tcl
+    Added Preferences toggle for detached top-level fdisp display.
+    Added notion of a current direction to ftoc, so after Move or Delete you
+	keep going the same direction as the last Next or Prev
+    Added FtocHackCurrentHighlight to handle glitch on monochrome displays
+	when you select a deleted or moved message
+    Moved ftoc color configuration into ftocColor.tcl
+    Unified Inc_InboxFinish and Inc_AllFinish
+    Inc_Inbox no longer calls Flist_FindUnseen
+    Pick dialog has "New FTOC" to results in result replacing scan display.
+    Pick "Mark Seen" message now works *after* you make a selection,
+	and this properly updates the highlight;s and state about unseen msgs.
+    Added FdispPopupResetView from Loverso, that unshifts the fdisp canvas
+	 after a popup goes down.
+
+1.0beta - 11/4/93	(last beta, really)
+    Moved MsgShowIn text into msgShow.tcl
+    Add message header highlighting, controlled by exmh.headerfont resource
+	By default this is off, but if you define this resource, you get it.
+    Added flag.tcl module to control icon feedback
+    Fixed expanding menubar bug in the log window
+    Fixed sedit Whom button so you can click on it more than once.
+    Nuked sound(dir) and just have complete pathnames in
+	sound(error) and sound(newMsg)
+    Moved popup code to fdispPopup.tcl
+    Fixed fdisp layout to handle icons with variable size.
+    Added popdownRemove Preference item to control what takes away a popup.
+    Scroll canvas so popup fits in the window.
+    Fixed Pick's MarkSeen so it cleans up the display highlights.
+    Fixed cursor-changing and restored this as the default busy behavior.
+    Nuked Pick's "PickArgs" and added "Messages" instead.  You can specify a
+	sequence name in the Messages field (or any valid message spec) and
+	limit pick to those messages.  Most useful with "unseen".
+    Fixed bug that forget the current message on startup.
+    Fixed handling of -geometry command line argument.
+    Removed Inc button if inc(style) is "none"
+    Fixed un-highlighting bug after reading the last message in a folder.
+
+1.0b15 - 11/2/93	(final beta?)
+    Changed exmh-bg to die if it cannot communicate with the front end.
+    Added feedback when you click on a message marked for move.
+    Msg_Commit now does a Mh_ClearCur to erase knowledge of the current
+	message (sequence "cur") when there is no longer a current message.
+    Added output of folder command as feedback after a scan.
+    Position FTOC to first unread message, if applicable.
+    Faces now supports alternate syntax (dotted domain name) in dir tree
+    Added call to Msg_CheckPoint before Flist_FindUnseen
+    Added WM_DELETE_WINDOW handler (Exmh_Done)
+    Added call to user hook User_Init
+    Fixed missing .exmhsedit open bug
+    Fixed sedit packing bug (from Whom button)
+    Sedit Insert File no longer adds an extra newline
+    SeditFormatMail works better
+    bug fix to WidgetTextSelExtend if there is no selection (off the end bug)
+    Changed bindings for keyboard scrolling:
+	<space> <Next> <Down> <Prior> <Up> all apply to the message body
+	<Control-n> and <Control-p> apply to the scan listing
+    Changed busy to display hourglass bitmap, not change the cursor
+    Added Background_Refile and Background_Rmm so these operations can
+	by the background interpreter.
+    Folder display changes: allow for iconic labels.  Popdown displays now
+	go away more readily.  See user.tcl for the way to define icons.
+    The find popup remembers its geometry when you dismiss it.
+    New folder operation will create intermediate directories if needed.
+    Added Ftoc_LinesHighlight to support pick'ed ranges
+    Pick dialog vastly improved (Loverso)
+
+1.0b14 - 10/29/93
+    Fixed MsgParseFrom (some more) to handle " "
+    Tweak icon bitmap when you read the last unseen message
+    Tweak folder display when you read the last unseen message in a folder.
+    Changed app-defaults to have *resourceName instead of exmh.resourceName
+	to allow for "exmh #2" as well as "exmh-bg".
+    Nuked + from scan cache files
+    Added catch around Mh_Whom call in WhatNowDialog
+    Changed leftyScroll resource to scrollbarSide (value left or right)
+    Added Whom button to sedit
+    Added SeditFormatMail to insert newlines into long lines at word breaks
+    Fixed eof and bof in Sedit to change yview -pickplace
+    Changed Flist button to just run Flist_FindUnseen
+    added Folders button that runs folders -fast -recurse
+    Added background flist
+    Enabled buttons when range is selected
+    Make clicking in a window grab focus.
+    Added "none" to types of Inc
+    Tweaked message and folder labels to truncate long ones
+
+1.0b13 - 10/27/93
+    Fixed MsgParseFrom
+    Enable/disable message buttons if there is no current message
+    Change Send to EDIT when you are in the drafts folder so you can
+	edit old drafts and then send them from within exmh.
+    Added user input area to edit dialog box.
+    Beefed up Print button to handle common errors better.
+    Added change-folder hook to implement draft mode change.
+    WhatNow dialog now has Whom and Dismiss buttons.
+    Changing the user library directory name via Preferences now works.
+    Added -pickplace support to WidgetTextYview
+    Added Buttons_Current and Buttons_DraftMode to
+	handle changing button behavior when there is no
+	current message and when you are in the drafts folder.
+    Added Mh_Whom
+    Protected against <Control-s> before Find dialog initialized.
+    Added Ftoc_Delete to delete lines from the scan listing
+
+1.0b12 - 10/25/93
+    Fixed bugs in the installation process.
+    Fixed text widget scrolling (TCL 7 math changes)
+    Fixed double-click binding bug in FTOC
+    Fixed support for exmh.geometry resource
+    Fixed inbox-style inc
+
+1.0b11 - 10/22/93
+    Major overhaul in preparation for general release.
+    Split into even more modules, nuked exmh_ from .tcl filenames.
+    Upgraded to 7.0 and 3.3, although in a backwards-compatible way.
+    Fixed auto_path updating to deal with bug in 7.0
+    Added per-user library to support overriding modules.
+    Converted .exmh to .exmh-defaults, an Xresource-style file.
+    Moved the background processing into another process, exmh-bg.
+    Added simple Pick dialog box that uses MH pick.
+    Upgraded Find to a dialog that works on message body or FTOC.
+    Added color key.
+    Added programming hooks to Reply, Forward, Compose, Move, and Delete.
+    Added Reply and ReplyAll buttons.
+    Command line -geometry supported.
+    Fixed double-current highlight bug after inc.
+    Added full Xresources support.
+    Change icon to reflect unseen messages.
+    Tweaked Sedit cursor position upon startup.
+    Clear message display when there is no current message.
+    Eliminated interference between scan update and pending changes
+
+1.0b10 - 9/29/93
+    Added Exmh_Focus proc that warps focus back to the message window.
+    Nuked focus change on <Enter> so that focus can be aimed at
+    dialog boxes and the find entry.
+    Added scroll bindings for <space> <Up> and <Down>
+    Fixed constrained text scrolling to deal with lines that wrap.
+    Improved catch against grep failure in BackgroundCounter.
+    Added catch against repl or comp failure.
+    Fixed looping bug in face path search.
+    Added cache of face path lookup.
+    Added hook to uncompress X-face headers.
+    Fixed flist row reconfiguration from Preferences.
+    Added FlistAllLabels so parents of highlighted nested folders
+    will get highlighted.  Also added highlighting to popups.
+    Added Msg_Update so that Scan_Inc can update the number of
+    messages in a folder.  (This had broken Next and Prev in some cases.)
+    Unbroke regexp expressions that had \t - need a real tab instead.
+    Added catch against unwritable .xmhcache file.
+    Beefed up sound command invocation.  Now you can define a command
+    but leave the sound(dir) empty, in which case the sound file
+    argument is not appened to your command.
+    Added Flist call from Folder_IncInbox
+    Reworked the buttons in sedit a bit.
+    Added Help to sedit.
+    Added crude killbuffer to sedit.
+    Added Insert File... dialog to sedit.
+    Added selection-scrolling to Text widgets.
+    Fixed the funky resize bug! Stemmed from a stray -setgrid.
+
+1.0b9 - 9/24/93
+    Changed exmh.MASTER to only add mhpath to env(PATH) if it was missing.
+    Fixed exmh.install - unbroke Sed, added faces(defaultPath), fixed
+	{{}} bug in saved configuration.
+    Added "New" folder button that lets you create a new folder directory.
+    Added "Save to file" button for the log.
+    Added constrained scrolling to Text widgets, plus bindings for
+	<Next>, <space>, and <Prior> to keyboard scrolling.
+    Added mh_profile entry Folder-Ignore that defaults to .*
+    Fixed {{}} bug in preferences.
+    Faces fixes: better path searching, better fallbacks.  (LoVerso - thanks.)
+    Added FlistForceRedisplay and Flist_AddFolder.
+    Fixed target unhighlighting for monochrome.
+	(Still a bug if target has nested folders.)
+    Fixed message counting with private sequences.
+    Fixed range selection so you can add to the current message.
+    Added Folder_New dialog to create a folder.
+    Fixed MsgParseFrom to have better fallbacks.
+    Tweaked Msg_Next regarding highlighting.  Improved error messages.
+
+1.0b8 - 9/22/93
+    Removed update idletasks from Exmh proc.
+    Fixed exmh.install to patch the wish line of exmh-async as it is installed.
+    Added catch against mal-formed print command, plus a little notifier.
+    Added mkdir of the drafts directory if it doesn't exist upon startup.
+	(Our site initialization sets the profile entry, but doesn't make
+	the folder directory.)
+    Fixed Preferences to properly save entries that have multiword values.
+    Fixed background msgchk so it actually works.
+    More flist hacking, primarily due to John LoVerso:
+	(Optional) popdown display of nested folders.
+	Performace improvements in basic display.
+	(Optional) top-level display as opposed to embedded frame.
+	Note - button assignments are temporarily out of the preference
+	    items to save space and until a better Xresources/Preferences
+	    arrangement is worked out.  You can manually set
+	    flist(curbutton), flist(navbutton), flist(tarbutton) in
+	    the initial section of your .exmh file.
+    Added Msg_CheckPoint calls to Folder_IncInbox and Folder_IncAll so
+	that unseen sequence is properly updated.
+    Fixed message range selection.
+    Fixed ScanMerge to deal with no new messages to scan in.
+    I believe this caused aborted Folder_Changes, that in turn
+    caused corrupted scan caches.
+    In Sedit, protect [selection get] with catch phrases.
+
+1.0b7 - 9/17/93
+    Added highlighting support for B&W displays
+    Moved ExmhFolderBindings to Folder_Bindings
+    Changed Tear button to "Clip"
+    Change Exmh_Status to use an entry widget (not message), and changed
+	its update to "update idletasks" to avoid mouse-ahead bugs.
+    Added initialization of mhProfile(folder-order) to *
+    Fixed Widget_Frame call in Preferences Help
+    Added trace to Background to catch changes in background processing
+    from Preferences Dialog.
+    Added background msgchk in addition to background counting.
+    Added support for exmh-async script.
+    More flist hacking:
+	Implemented FlistSort that honors the mh_profile Folder-Order patterns.
+	Added support for private sequences (not really tested here)
+	No longer rely on external flist program - all in TCL now.
+	Added B&W highlighting.
+	Added flistSetCache and flistParents that cache the results
+	    of figuring out what folders have nested children.
+	If you recompute the .folders file , the flist will be updated.
+    Added Range selections to folder display.
+    Fixed bug in management of unseen sequence that was tickled by deletes.
+    Folder_Change no longer changes to first unseen message.
+    @ file is removed after you finish your reply.
+    Move and Remove operate on ranges of messages.
+    Changed number of sounds for new messages to O(log4) from O(log2)
+    sedit catches errors from non-existant selections.
+
+
+1.0b6 - 9/11/93
+    Fixed initial call to mhpath to use exec.
+    Fixed toplevel windows so resizing doesn't obscure menubar.
+    Made .* the default header-suppress pattern.
+    Make what-now dialog pop up in the same place.
+    Fixed flist:
+	No resizing upon startup
+	Proper LRU management of cached folder labels
+    Added batch refile commands.  Refiles also are done in the right
+    order (used to be done in reverse order.)
+    Added Scan_Move that updates scan cache of refile target.
+    Simple editor changes:
+	Text bindings are (mostly) reflected into Entry bindings.
+	Unused drafts are aborted so you don't pollute your drafts folder.
+
+1.0b5 - 9/9/93
+    Converted all the Widget_foo procedures that guard against font failures.
+    First they try without an explicit font spec so that Xresources can
+    take effect, but they trap errors and then supply -font fixed.
+    Fixed log so it can be turned on an off after startup.
+    Added app-defaults file
+    Added traces to ftextLines and mtextLines so preference size changes
+    happen right away without a restart.
+    Added Msg_Tear button that puts the current message in a toplevel.
+    Added Lefty scrollbar placement option (still requires restart)
+    Reordered startup so Inc (or Flist) is done after folder change.
+    Added Widget_FrameNew that defines frame class (for option stuff)
+    Support mh_profile entries Header-Suppress and Header-Display that
+    control which headers are shown in message display.  Suppressed
+    headers are scrolled off the top.
+    Preferences fixed to pick up entry values at Save and Dismiss.
+    Changed default editor to sedit (or mxedit) instead of mh_profile
+    value, which is almost always wrong.  You can still set your editor cmd.
+    More flist overhaul.  Fixed display routines to handle re-entry that
+    occurs because of nested <Configure> events.  Nuked old code.
+    Added flist(font) preference option.
+    Trace ftextLines, flistFont and cacheSize and redisplay when they change.
+    Fixed Flist_Direct so folders with unread msgs are highlighted.
+    Pack the folder labels a little tighter to save screen space (gap = 8)
+    Moved .exmhflistcache to $mhProfile(path) directory from homedir.
+    Added Msg_CheckPoint calls to Folder_Sort and Folder_Pack to
+    preserve message sequence info.
+    Fixed scan update at inc-time:
+	Added use of Scan_Inc to optimize Folder_IncInbox and scan update.
+	Dinked with Scan_Folder call in Folder_IncAll and Folder_IncNew.
+    Introduced MsgShowInText that implements Header-Suppress and Header-Display.
+    Added support for "@" symlink during replies.
+    Improved error messages for Move errors (no target selected)
+    Improved error messages from Msg_Find.
+    Changed sound preference item to the whole sound command.
+    Beefed up error checking against no sound program.
+    Fixed up built-in editor:
+	<Control-Return> sends the current draft.
+	Window is reused, if possible.
+	Button with @ label inserts current message (during replies only)
+	Added feedback in title bar.
+    Changed "Dismiss" button in preferences to "OK for now"
+
+
+1.0b4 - 9/3/93
+    Added Flist_SetLabels and nuked Flist_Display call from exmh_main.tcl.
+    More fixing to the flist display.
+	Middle button is the only thing that changes view.  The
+	Left and Right buttons only set the current and target buttons,
+	respectively.  The display can be resized and it will lay itself out.
+    Added Msg_CheckPoint call to the Folder Inc routines so you don't
+    loose your updates to the unseen sequence.
+    Changed ScanHighlightUnseen to use MsgNumber.
+    Added Msg_ShowCurrent to the Folder Inc routines so the current
+    message is properly highlighted after an Inc.  Also fixed a
+    bug in Msg_CheckPoint in which it didn't clear msg(seen)
+1.0b3 - 9/3/93
+    Major cleanup of the nested folder display impl:
+	Middle click navigates without changing folders.
+	Things are properly highlighted in the folder cache.
+	The folder display stays at a fixed size.
+	(Still not constraining the scrolling.)
+    Ensure that all widgets with fonts use the Widget_Font proc to
+    choose the font using the TCL option command.
+    Down-cased the .mh_profile keys so that Draft-Folder and draft-folder
+    are both ok.  Affects code that references the mhProfile array.
+    Fixed a bug when MsgNumber returned 0.
+    Fixed a bug in ScanMerge if the .xmhcache file didn't exist.
+    Added a popup when running folders -fast -recurse, but
+    haven't yet replaced that with something faster.
+    Fixed Flist so if you don't have the flist C program it
+    properly uses the Flist_Direct impl.
+    Now can deal with absolute pathnames for the current folder
+    (the result of running xmh.)
+    Folder_IncAll (multidrop mode) now rescans the current folder.
+    Nuked MsgNumber error message.
+    Took Msg_Show out of the Scan procedures and moved it into
+    Folder_Change so that the above change doesn't gobble unseen messages.
+1.0b2 9/2/93
+    This has my first attempt at displaying nested folders.
+    Fixed Exmh_Status so it can be called before windows are created.
+    In that case, things just go do stderr.
+    Made things more robust with respect to the drafts folder.  One
+    will be created if you don't already have one.  Understands syntax:
+    Draft-Folder: +drafts
+    Relaxed requirement dependency on the MAIL envar, and supplies
+    a default (/usr/spool/mail/$env(USER)) if it isn't there.
+    Will create an Unseen-Sequence mh_profile entry for you via
+    a dialog at startup.
+    Added more keybindings to the built-in editor, sedit.
+    Fixed inbox-style incing so vanilla inc users should be ok.
+    Changed over to .xmhcheck (from .exmhdrop).  Also souped that up
+    so it understand either pathnames or POP hostnames.  Fixed
+    Folder_IncAll accordingly, but haven't tested it.
+    Right click on the folder listing selects msg, doesn't display it.
+    Added Xresource option support for fonts.  Grep calls to Widget_Font
+    to see what resources are queried.  Defaults to fixed.
+    Changed Msg_Show to select the last message in a folder if there
+    is no unseen and no cur.
+    Fixed to use Unseen-Sequence value instead of hardwired "unseen".
+    Fixed the repacking redisplay bug.
+1.0b1 8/31/93
+    Fixed a bug with the unseen message sequence.  If you visited
+    a message multiple times it might get erroneously stuck onto
+    the unseen sequence (by the mark command, thanks.)
+1.0b 8/31/93
+    Added preference items for Editor and Print commands.
+    Added log to record status and debug messages.
+    Guard against glob failures.
+    Added Save button to exmh.install so you can save settings.
+    Split exmh.install into two windows.
+    Turned off incOnStartup as the default.
+    Added support for .xmhcheck (it is the same as .exmhdrop)
+    exmh.install guards against {cp -p} and {ps -axwww} errors
