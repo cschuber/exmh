@@ -195,10 +195,9 @@ to be safe you should set this up properly.
 <a NAME="4a">Tk "send" lets two TCL interpreters issue commands to
 each other, and it uses the X server for communication. Beginning with
 TK 3.3, this also honors the Xauthority protocol, unless you compile
-TK with -DTK_NO_SECURITY. You can test this by running "wish" and trying
-out the following command: </a> 
+TK with -DTK_NO_SECURITY. You can test this by running the following command: </a> 
 <p>
-<a NAME="4a"><code>send exmh {Exmh_Status "Hello, world!"} </code></a>
+<a NAME="4a"><code>echo 'send exmh {Exmh_Status "Hello, world!"}; exit' | wish </code></a>
 
 <p>
 <a NAME="4a">If this fails you need to recompile or learn how to start
