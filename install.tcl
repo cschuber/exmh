@@ -163,14 +163,14 @@ proc installGuessDir { defpath file } {
     global env
     set tmp $defpath
 
-    #puts "installGuessDir: def=$defpath, file=$file..."
+    puts "installGuessDir: def=$defpath, file=$file..."
     foreach dir [split $env(PATH) :] {
 	if {[file exists $dir/$file]} {
 	    set tmp $dir
 	    break
 	}
     }
-    #puts "returning $tmp\n"
+    puts "returning $tmp\n"
     return $tmp
 }
 

@@ -22,7 +22,7 @@
   # Brent Welch <welch@acm.org>
 ***************
 *** 17,22 ****
---- 17,47 ----
+--- 17,49 ----
   
   # The following lines are patched by exmh.install
   #CONFIGURATION
@@ -43,7 +43,9 @@
 + set faces(set,news) news
 + set faces(defaultDomain) eng.sun.com
 + set faces(suffix) {xpm gif xbm}
-+ set pgp(path) /usr/local/bin
++ set pgp(pgp,path) /usr/bin
++ set pgp(pgp5,path) /usr/bin
++ set pgp(gpg,path) /usr/bin
 + set glimpse(path) /usr/local/bin
 + set sound(cmd) {/usr/demo/SOUND/play -v 38}
 + set exmh(library) /usr/lib/exmh-2.1.0
@@ -71,7 +73,7 @@ child process exited abnormally
   # This does stuff and then sends messages to the background module
 ***************
 *** 17,22 ****
---- 17,47 ----
+--- 17,49 ----
   
   #CONFIGURATION
 + set wish /usr/bin/wish
@@ -91,7 +93,9 @@ child process exited abnormally
 + set faces(set,news) news
 + set faces(defaultDomain) eng.sun.com
 + set faces(suffix) {xpm gif xbm}
-+ set pgp(path) /usr/local/bin
++ set pgp(pgp, path) /usr/bin
++ set pgp(pgp5, path) /usr/bin
++ set pgp(gpg, path) /usr/bin
 + set glimpse(path) /usr/local/bin
 + set sound(cmd) {/usr/demo/SOUND/play -v 38}
 + set exmh(library) /usr/lib/exmh-2.1.0

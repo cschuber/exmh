@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 09/17/1999
+    Fixed RPM build, and added spanish support to the RPM,  thanks to 
+    Francisco Monserrat <francisco.monserrat@rediris.es>
+       -slipcon
+
 cvs repository 09/15/1999
     Typos in getnews.tcl - cwg
 

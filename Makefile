@@ -10,6 +10,7 @@ srctar: version htmltar
 	echo lib/CVS >> Tar.exclude
 	echo lib/html/CVS >> Tar.exclude
 	echo lib/html/Tar.exclude >> Tar.exclude
+	echo .exmhinstall >> Tar.exclude
 	echo Tar.exclude >> Tar.exclude
 	echo html-$(VERSION).tar.gz >> Tar.exclude
 	rm -rf /tmp/exmh-$(VERSION)

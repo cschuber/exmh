@@ -14,11 +14,18 @@ BuildRoot: /var/tmp/exmh-root
 Summary(de): EXMH-Mail-Programm
 Summary(fr): Programme de courrier EXMH
 Summary(tr): e-posta yazýlýmý
+Summary(es): Pograma lector de correo exmh
 
 %description
 exmh is a graphical interface to the MH mail system.  It includes
 MIME support, faces, glimpse indexing, color highlighting, PGP
 interface, and more.  Requires sox (or play) for sound support.
+
+%description -l es
+exmh es un interface grafico para el sistema de correo MH. Incluye
+soporte para tipos MIME, faces, indexacion mediante glimpse, 
+marcado en colores de las cabeceras, PGP y GPGP, enlaces URL, y 
+muchas mas cosas. Necesita sox (o play) para el sonido
 
 %description -l de
 exmh ist eine grafische Oberfläche für das MH-Mail-System. Zu den
@@ -79,6 +86,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/man/man1/exmh.1
 
 %changelog
+* Fri Sep 17 1999 Scott Lipcon <slipcon@acm.jhu.edu>
+- Added Spanish translation, courtesy of Francisco 
+  Monserrat <francisco.monserrat@rediris.es>
+  
 * Thu Jul 29 1999 Scott Lipcon <slipcon@acm.jhu.edu>
 - update to exmh 2.1.0, add spec file to distribution, and 
   added a 'rpm' target to the Makefile
