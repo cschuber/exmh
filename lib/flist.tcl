@@ -340,7 +340,7 @@ proc FlistUncache {folder} {
     global flistcache
     # Clear it from both processes because the FlistFindSeqInner
     # can run in either place
-    FlistUncacheLocal
+    FlistUncacheLocal $folder
     BgAction FlistUncache FlistUncacheLocal $folder
 }
 proc FlistUncacheLocal {folder} {
