@@ -58,6 +58,15 @@ inc on startup on."}
 	{inc(pophost) popHost {}	  {Mail host for POP3 protocol}
 "If this is set, inc will try to use the POP3 protocol to
 fetch your mail from a mail server."}
+	{exmh(incfilter) incfilter {CHOICE slocal procmail other} {Method used to filter incoming mail}
+"Choose here between using slocal (and .maildelivery),
+procmail (and procmailrc) and some other method" }
+        {exmh(slocalArgs) slocalArgs {-verbose -maildelivery $env(HOME)/.maildelivery} {Additional arguments to slocal}
+"Add any additional slocal arguments here." }
+        {exmh(procmailArgs) procmailArgs {$env(HOME)/.procmailrc} {Additional arguments to procmail}
+"Add any additional procmail arguments here."}
+        {exmh(incfilterArgs) incfilterArgs {} {Generic incfilter arguments}
+"Specify a command line for a generic inbox filter here." }
     }
 }
 proc Inc_Startup {} {
@@ -207,7 +216,7 @@ proc Inc_Presort {{doinc 1}} {
 	}
     }
     if {[catch {glob $mhProfile(path)/MyIncTmp/*} files] == 0} {
-	Exmh_Status "presort inc ..."
+	Exmh_Status "incfilter ..."
 	foreach file $files {
 	    if {[string compare [file tail $file] "++"] == 0} {
 		File_Delete $file
@@ -219,9 +228,26 @@ proc Inc_Presort {{doinc 1}} {
 		    set subject ""
 		}
 	    }
-		
-	    # now use slocal to (presumably) shift things to a folder
-	    if [catch {exec $exmh(slocal) -user $user < $file} err] {
+
+	    #
+	    # build up the pipe def based on the delivery agent:
+	    #
+
+	    switch $exmh(incfilter) {
+		slocal {
+		    set cmd [subst "$exmh(slocal) $exmh(slocalArgs)"]
+		}
+		procmail {
+		    set cmd [subst "procmail $exmh(procmailArgs)"]
+		}
+		other {
+		    set cmd [subst $exmh(incfilterArgs)]
+		}
+	    }
+
+	    Exmh_Debug Inc_Presort: $cmd
+	    set code [catch { exec sh -c "$cmd < $file 2>&1" } err]
+	    if {$code} {
 		# Move it out of MyIncTmp in case it really did
 		# get filed somewhere.  Certain file system errors
 		# (can't stat .) lead to this behavior
@@ -231,6 +257,14 @@ proc Inc_Presort {{doinc 1}} {
 		}
 		Mh_Refile MyIncTmp [file tail $file] MyIncErrors 
 	    } else {
+		#
+		# print the messages we got (Brent, delete if you don't like)
+		#
+
+		foreach line [split $err "\n"] {
+		    Exmh_Status "incfilter: $line"
+		}
+
 		File_Delete $file
 		if {$inc(presortFeedback)} {
 		    if {[string length $subject] > 0} {

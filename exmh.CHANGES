@@ -1,5 +1,11 @@
 HISTORY
 
+cvs respository 09/15/2000 Hal DeVore <haldevore@earthling.net>
+    lib/inc.tcl Added code to allow the use of procmail or any
+    other mail-fetching-and-filtering tool directly from exmh.
+    Original patch developed by Carl D. Roth, code updated and
+    merged into current exmh by Chris Keane.
+ 
 cvs respository 09/13/2000 Hal DeVore <haldevore@earthling.net>
     lib/html.tcl Fixed preferences item spelling mismatch
     problem and solution pointed out by Ben Escoto
