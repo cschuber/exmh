@@ -1,5 +1,21 @@
 HISTORY
 
+cvs repository 12/06/2001 kchrist
+    lib/mime.tcl: Do not call viewer if mailcap rule has needsterminal
+        attribute. When using Mime_Magic to replace application/octet-stream
+        make sure to replace entire content-type and not just the
+        "octet-stream" subtype.
+    lib/seditExtras.tcl: Fixed a bug in SeditInsertFile that caused text
+        to be lost when quoting. Previous code assumed headers were always
+        present and had to be removed.
+    lib/pgpMain.tcl: Fixed the "Always choose the sign key." option. Fixed
+        a clearsigning bug. Modified interpretation of app/pgp header to
+        avoid hang.
+    lib/pgpExec.tcl : Exmh can now parse the GnuPG options file and 
+    lib/pgpGpg.tcl  : identify the "default-key" (same as "myname" in PGP).
+        Added "--status-fd 2" to args_decrypt so that the output can
+        be parsed with Pgp_InterpretOutput.
+
 cvs repository 11/21/2001 Brent Welch <welch@panasas.com>
     lib/main.tcl: Moved WM_SAVE_YOURSELF registration a bit later
     	because it has an Exmh_Checkpoint side-effect that causes
