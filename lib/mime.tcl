@@ -1329,8 +1329,7 @@ proc MimeFTPTransfer {tkw part} {
 		metamail {
 		    MimeMetaMail $mimeHdr($part,hdr,content-type) \
 			   $mimeHdr($part,encoding) \
-			   $mimeHdr($part,file) \
-			   -d
+			   $mimeHdr($part,file)
 		}
 		default {
 		    error "Unknown ftpMethod $mime(ftpMethod)"
