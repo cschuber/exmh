@@ -1,9 +1,34 @@
 HISTORY
+cvs repository 1/1/2005 welch@panasas.com (for Alexander Zangerl)
+  lib/pgpGpg.tcl:
+  lib/pgpPgp5.tcl:
+    fix of an old pgp problem where recipients were duplicated when
+    pgp is run in interactive mode
+  lib/extrasInit.tcl: a small documentation improvement for the
+    pgp(getextcmd) functionality.
+    faces(xfaceProg) gains a default (uncompface -X)
+  lib/pgpExec.tcl: fix for http://bugs.debian.org/164210: multiple gpg
+    subkeys and passphrases.  exmh would not ask for the right passphrase.
+  lib/addr.tcl: ldap options gain defaults that are compatible with
+    debian's openldap config
+  lib/mh.tcl: add Msg-Protect and Folder-Protect to the default .mh_profile
+    that is generated when setting up new users.
+  (These changes are inspired by a patch from Alexander, but not the same)
+  lib/inc.tcl: use $install(dir,bin) to specify an absolute path to
+    the inc.expect script
+  lib/seditExtras.tcl: use $install(dir,bin) to specify an absolute path to 
+    the exmh-async script
+  lib/mime.tcl: use $install(dir,bin) to specify an absolute path to 
+    the ftp.expect script.
+    Also changed MimeMakeBoundary to use [clock seconds] instead of
+    re-writing the output of [exec date].
+
 cvs repository 12/31/2004 welch@panasas.com
   lib/exwin.tcl: removed code that explicitly set ftoc and msg window
     heights that had been added as part of the detatched msg and ftoc
     changes.  This isn't necessary and causes misinterpretation of the
-    preferences ftoc lines value.
+    preferences ftoc lines value. (reportedly, this change doesn't fix
+    anything.)
 
 cvs repository 12/29/2004 welch@panasas.com
   lib/mh.tcl: Optimized MhReadSeq to not loop through the mhPriv array in Tcl,

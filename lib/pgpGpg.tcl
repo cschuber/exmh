@@ -1,6 +1,32 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.14  2005/01/01 20:16:20  welch
+# Based on patches from Alexander Zangerl
+# lib/pgpGpg.tcl:
+# lib/pgpPgp5.tcl:
+#   fix of an old pgp problem where recipients were duplicated when
+#   pgp is run in interactive mode
+# lib/extrasInit.tcl: a small documentation improvement for the
+#   pgp(getextcmd) functionality.
+#   faces(xfaceProg) gains a default (uncompface -X)
+# lib/pgpExec.tcl: fix for http://bugs.debian.org/164210: multiple gpg
+#   subkeys and passphrases.  exmh would not ask for the right passphrase.
+# lib/addr.tcl: ldap options gain defaults that are compatible with
+#   debian's openldap config
+# lib/mh.tcl: add Msg-Protect and Folder-Protect to the default .mh_profile
+#   that is generated when setting up new users.
+#
+# (These changes are inspired by a patch from Alexander, but not the same)
+# lib/inc.tcl: use $install(dir,bin) to specify an absolute path to
+#   the inc.expect script
+# lib/seditExtras.tcl: use $install(dir,bin) to specify an absolute path to
+#   the exmh-async script
+# lib/mime.tcl: use $install(dir,bin) to specify an absolute path to
+#   the ftp.expect script.
+#   Also changed MimeMakeBoundary to use [clock seconds] instead of
+#   re-writing the output of [exec date].
+#
 # Revision 1.13  2001/12/06 16:39:13  kchrist
 # Exmh can now parse the GnuPG options file and identify the
 # "default-key" (same as "myname" in PGP).  Added "--status-fd 2" to
@@ -374,11 +400,11 @@ set pgp(gpg,args_exportKey) {--export --armor --textmode -o $file $keyid}
 
 ###############
 # Exec_Encrypt
-set pgp(gpg,args_encrypt) {[concat -eat -o $out [foreach id [Pgp_Misc_Map key {lindex $key 0} $tokeys] {lappend recips -r $id}; set recips] $in]}
+set pgp(gpg,args_encrypt) {[concat -eat -o $out [set recips {}; foreach id [Pgp_Misc_Map key {lindex $key 0} $tokeys] {lappend recips -r $id}; set recips] $in]}
 
 ###################
 # Exec_EncryptSign
-set pgp(gpg,args_encryptSign) {[concat -east -o $out -u $keyid [foreach id [Pgp_Misc_Map key {lindex $key 0} $tokeys] {lappend recips -r $id}; set recips] $in]}
+set pgp(gpg,args_encryptSign) {[concat -east -o $out -u $keyid [set recips {}; foreach id [Pgp_Misc_Map key {lindex $key 0} $tokeys] {lappend recips -r $id}; set recips] $in]}
 
 ############
 # Exec_Sign

@@ -187,7 +187,7 @@ Any given mail address can match a range of face images, from most specific (suc
         {faces(xFaceEnabled) xFaceEnabled ON {Use X-Face headers}
 	"If a message contains an X-Face header, display the image encoded into the header."}
 
-	{faces(xfaceProg) xfaceProg {} {X-Face command}
+	{faces(xfaceProg) xfaceProg {uncompface -X} {X-Face command}
 "A command to convert an X-Face: header line into a displayable X11 bitmap.
 
 If you've patch uncompface, this can be:	uncompface -X
@@ -652,7 +652,8 @@ Here you can select, which version to use in these cases.
     Preferences_Add "General PGP Interface" "" {
     {pgp(keeppass) pgpKeepPass ON {Keep PGP passphrase}
 "Exmh tries to remember your passphrase between PGP
-invocations. But the passphrase is then kept in a global
+invocations. If pgpExtPass is on, exmh will use an external passphrase
+cache program; otherwise the passphrase is then kept in a global
 variable, which is not safe, because of \"send\"'s power.
 If you turn this feature off, exmh will use xterm to run
 pgp so that it doesn't have to deal with the passphrase at all." }
@@ -671,7 +672,7 @@ this time period, in minutes, has elapsed." }
 {pgp(extpass) pgpExtPass OFF {Use external passphrase cache}
 "If this is enabled, then exmh will use an external program to retrieve 
 your passphrase when needed. pgpKeepPass and pgpPassTimeout will 
-be ignored."}
+be ignored. pgpExtPass has no effect if pgpKeepPass is not active. "}
 {pgp(getextcmd) pgpGetExtCmd {/usr/bin/q-client get %s} {Method to query external passphrase cache}
 "This external program is used to retrieve the passphrase for your key,
 if pgpExtPass is active. The passphrase is expected on stdout.

@@ -674,7 +674,7 @@ proc SeditFormatNewPart { t f {doit 0} } {
     destroy $f
 }
 proc SeditSpell { draft f t } {
-    global sedit editor wish
+    global sedit editor wish install
     set parent [file root $f]
     if {[winfo exists $parent.spell]} {
 	destroy $parent.spell
@@ -685,7 +685,7 @@ proc SeditSpell { draft f t } {
     SeditSaveBody $t $path
 
     switch -- $sedit(spell) {
-	ispell {set prog {exmh-async xterm -e ispell}}
+	ispell {set prog "$install(dir,bin)/exmh-async xterm -e ispell"}
 	custom {set prog $editor(spell)}
 	default {set prog spell}
     }

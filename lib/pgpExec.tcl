@@ -6,6 +6,32 @@
 # 
 
 # $Log$
+# Revision 1.21  2005/01/01 20:16:20  welch
+# Based on patches from Alexander Zangerl
+# lib/pgpGpg.tcl:
+# lib/pgpPgp5.tcl:
+#   fix of an old pgp problem where recipients were duplicated when
+#   pgp is run in interactive mode
+# lib/extrasInit.tcl: a small documentation improvement for the
+#   pgp(getextcmd) functionality.
+#   faces(xfaceProg) gains a default (uncompface -X)
+# lib/pgpExec.tcl: fix for http://bugs.debian.org/164210: multiple gpg
+#   subkeys and passphrases.  exmh would not ask for the right passphrase.
+# lib/addr.tcl: ldap options gain defaults that are compatible with
+#   debian's openldap config
+# lib/mh.tcl: add Msg-Protect and Folder-Protect to the default .mh_profile
+#   that is generated when setting up new users.
+#
+# (These changes are inspired by a patch from Alexander, but not the same)
+# lib/inc.tcl: use $install(dir,bin) to specify an absolute path to
+#   the inc.expect script
+# lib/seditExtras.tcl: use $install(dir,bin) to specify an absolute path to
+#   the exmh-async script
+# lib/mime.tcl: use $install(dir,bin) to specify an absolute path to
+#   the ftp.expect script.
+#   Also changed MimeMakeBoundary to use [clock seconds] instead of
+#   re-writing the output of [exec date].
+#
 # Revision 1.20  2003/02/18 06:50:43  welch
 #     extrasInit.tcl, pgp.tcl - picked up pgp(extpass) patch from Alexander Zangerl
 #     flist.tcl - FlistFindSeqsInner added check to eliminate calls to
@@ -545,13 +571,15 @@ proc Pgp_Exec_GetDecryptKey {v in recipients} {
         set key [list SYM {} {} {} "symmetrically encrypted message"]
       } else {
 	  # One of user's private keys?  If so, than use it.
+	  # make sure that we look at *all* subkeys
         foreach key [set pgp($v,privatekeys)] {
-          if {[regexp $keyid [lindex $key 0]]} {
-            return $key
-          } elseif {[regexp $keyid [lindex $key 2]]} {
+	    for {set i 0} {$i<[expr [llength $key]-1]} {incr i 2} {
+		if {[regexp $keyid [lindex $key $i]]} {
             return $key
           }
         }
+	}
+	return {}
       }
     } else {
       set recipients [string tolower $recipients]

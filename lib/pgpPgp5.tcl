@@ -1,6 +1,41 @@
 # pgpPgp5.tcl
 
 # $Log$
+# Revision 1.8  2005/01/01 20:16:20  welch
+# Based on patches from Alexander Zangerl
+# lib/pgpGpg.tcl:
+# lib/pgpPgp5.tcl:
+#   fix of an old pgp problem where recipients were duplicated when
+#   pgp is run in interactive mode
+# lib/extrasInit.tcl: a small documentation improvement for the
+#   pgp(getextcmd) functionality.
+#   faces(xfaceProg) gains a default (uncompface -X)
+# lib/pgpExec.tcl: fix for http://bugs.debian.org/164210: multiple gpg
+#   subkeys and passphrases.  exmh would not ask for the right passphrase.
+# lib/addr.tcl: ldap options gain defaults that are compatible with
+#   debian's openldap config
+# lib/mh.tcl: add Msg-Protect and Folder-Protect to the default .mh_profile
+#   that is generated when setting up new users.
+#
+# (These changes are inspired by a patch from Alexander, but not the same)
+# lib/inc.tcl: use $install(dir,bin) to specify an absolute path to
+#   the inc.expect script
+# lib/seditExtras.tcl: use $install(dir,bin) to specify an absolute path to
+#   the exmh-async script
+# lib/mime.tcl: use $install(dir,bin) to specify an absolute path to
+#   the ftp.expect script.
+#   Also changed MimeMakeBoundary to use [clock seconds] instead of
+#   re-writing the output of [exec date].
+#
+# Revision 1.5  2001/02/04 15:45:40  iko
+# gpg fixes + icon position
+#
+# Revision 1.4  2001/02/01 23:01:32  iko
+# Misc. fixes
+#
+# Revision 1.1.1.3  2001/02/01 15:02:58  iko
+# upstream 2.3.1
+#
 # Revision 1.7  2001/01/04 02:24:46  bmah
 # Add +force to PGP5 flags.  This fixes
 # a bug where PGP5 couldn't verify clearsigned messages under some
@@ -153,11 +188,11 @@ set pgp(pgp5,args_exportKey) {-x $keyid -o $file}
 
 ###############
 # Exec_Encrypt
-set pgp(pgp5,args_encrypt) {[concat -at $in -o $out [foreach id [Pgp_Misc_Map key {lindex $key 0} $tokeys] {lappend recips -r $id}; set recips]]}
+set pgp(pgp5,args_encrypt) {[concat -at $in -o $out [set recips {}; foreach id [Pgp_Misc_Map key {lindex $key 0} $tokeys] {lappend recips -r $id}; set recips]]}
 
 ###################
 # Exec_EncryptSign
-set pgp(pgp5,args_encryptSign) {[concat -ast $in -o $out -u $keyid [foreach id [Pgp_Misc_Map key {lindex $key 0} $tokeys] {lappend recips -r $id}; set recips]]}
+set pgp(pgp5,args_encryptSign) {[concat -ast $in -o $out -u $keyid [set recips {}; foreach id [Pgp_Misc_Map key {lindex $key 0} $tokeys] {lappend recips -r $id}; set recips]]}
 
 ############
 # Exec_Sign

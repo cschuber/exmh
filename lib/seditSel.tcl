@@ -130,7 +130,7 @@ proc SeditSelFmtArg {t} {
 
 
 proc SeditSelSpell { f t } {
-    global sedit editor wish
+    global sedit editor wish install
 
     set parent [file root $f]
     catch {[destroy $parent.spell]}
@@ -146,7 +146,7 @@ proc SeditSelSpell { f t } {
     close $out
 
     switch -- $sedit(spell) {
-	ispell {set prog {exmh-async xterm -e ispell}}
+	ispell {set prog "$install(dir,bin)/exmh-async xterm -e ispell"}
 	custom {set prog $editor(spell)}
 	default {set prog spell}
     }

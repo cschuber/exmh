@@ -1010,7 +1010,7 @@ proc MhSetupNewUserInner {} {
     catch {file mkdir [glob ~]/Mail}
     if {![file exists $mhProfile(profile)]} {
 	set out [open $mhProfile(profile) w]
-	puts $out "Path: Mail"
+	puts $out "Path: Mail\nMsg-Protect: 600\nFolder-Protect: 700"
 	close $out
     }
     catch {MhExec inc < /dev/null} result

@@ -167,7 +167,7 @@ proc Inc_Inbox {} {
     BgRPC Inc_InboxFinish $inbox $incout Flist_Done
 }
 proc Inc_Expect {cmd} {
-    global inc exmh pop
+    global inc exmh pop install
     if {![info exist pop(password)]} {
 	# No password implies no POP host
 	return $cmd
@@ -176,7 +176,7 @@ proc Inc_Expect {cmd} {
     # Drop the leading "exec", and splice in the -host argument
 
     set cmd [lrange $cmd 1 end]
-    set cmd [concat [list exec inc.expect] $cmd]
+    set cmd [concat [list exec $install(dir,bin)/inc.expect] $cmd]
     if {[lsearch -exact $cmd -host] < 0} {
 	lappend cmd -host $inc(pophost)
     }

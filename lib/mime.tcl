@@ -1591,7 +1591,7 @@ proc MimeLocalFileTransfer {tkw part} {
     set mimeHdr($part=1,file) [file join $dir $name]
 }
 proc MimeFTPTransfer {tkw part} {
-    global mime mimeHdr
+    global mime mimeHdr install
 
     set site $mimeHdr($part,param,site)
     set directory $mimeHdr($part,param,directory)
@@ -1614,7 +1614,7 @@ proc MimeFTPTransfer {tkw part} {
 	    case $mime(ftpMethod) {
 		expect {
 		    Exmh_Status "ftp.expect $site ..."
-		    busy exec ftp.expect $site $directory $theirname $myname $mode
+		    busy exec $install(dir,bin)/ftp.expect $site $directory $theirname $myname $mode
 		}
 		ftp* {
 		    Exmh_Status "$mime(ftpCommand) -n $site ..."
@@ -2847,14 +2847,7 @@ proc Mime_EudoraFilename {name} {
 }
 
 proc Mime_MakeBoundary { end } {
-
-    # Old boundary was made by
-    # regsub -all "\[ \x7f-\xff\]" [exec date] _ date
-    # This way works at least with GNU date.
-
-    regsub -all {[^0-9]|[0-9][0-9][0-9][0-9]} [exec date] {} boundary
-    regsub {^0*} $boundary {} boundary	;# No octal interpretation, please
-    set boundary [expr $boundary*[pid]]
+    set boundary [clock seconds]_[pid]
     return "==_Exmh_$boundary$end"
 }
 proc Mime_Magic { fileName } {

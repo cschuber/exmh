@@ -113,16 +113,16 @@ proc Addr_Init {} {
         {
             addr_db(ldap_server)
             addressdbLDAPServer
-            {}
+            {-h localhost}
             "LDAP Server"
-            "The server to send LDAP queries to, prefixed with any necessary command-line option flags."
+            "The server to send LDAP queries to, prefixed with any necessary command-line option flags for the LDAP search program."
         }
         {
             addr_db(ldap_searchbase)
             addressdbLDAPSearchBase
             {}
             "LDAP Search Root"
-	    "The root under which to conduct LDAP searches. Prefixed with any necessary command-line option flags."
+	    "The root DN under which to conduct LDAP searches, prefixed with any necessary command-line option flags (usually -b)."
 	}
 	{
 	    addr_db(ldap_encoding)
@@ -134,9 +134,9 @@ proc Addr_Init {} {
 	{
 	    addr_db(ldap_searchprog)
 	    addressdbLDAPSearchprog
-	    {ldapsearch -B}
+	    {ldapsearch -x}
 	    "LDAP search program"
-	    "The command-line LDAP search program, with arguments"
+	    "The command-line LDAP search program, with arguments."
 	}
 	{
 	    addr_db(filter_regexp)
