@@ -146,19 +146,7 @@ proc Exwin_Layout {} {
     Msg_Setup $exwin(mtext)
     Bindings_Main $exwin(mtext)
 
-    #
-    # Focus handling.  The message display is the default focus
-    # because all the command keys are bound there.
-    # The <FocusIn> binding is for when the user has "focus-follows-mouse"
-    # and moves the mouse into the main window from, say, the sedit window.
-
-    global tk_version
-    if {$tk_version < 4.0} {
-	focus default $exwin(mtext)
-	bind . <FocusIn> [list focus $exwin(mtext)]
-    } else {
-	focus $exwin(mtext)
-    }
+    focus $exwin(mtext)
 }
 proc ExwinFtocMsgBoundary {frame} {
     global exwin
@@ -330,30 +318,19 @@ proc ExwinLineHeight {w} {
 }
 proc Exwin_FullFtoc {} {
     global exwin
-    global tk_version
     if ![info exists exwin(fullFtoc)] {
 	set exwin(fullFtoc) notFullScreen
     }
     if {$exwin(fullFtoc) == "notFullScreen"} {
 	set exwin(fullFtoc) fullScreen
-	if {$tk_version >= 3.3} {
-	    set exwin(ftocPack) [pack newinfo .msg]
-	    pack forget .msg
-	    $exwin(ftext) configure -height \
+	set exwin(ftocPack) [pack newinfo .msg]
+	pack forget .msg
+	$exwin(ftext) configure -height \
 		[expr $exwin(ftextLines)+$exwin(mtextLines)]
-	} else {
-	    set exwin(ftocPack) {top fill expand}
-	    pack unpack .msg
-	}
     } else {
 	set exwin(fullFtoc) notFullScreen
 	$exwin(ftext) configure -height $exwin(ftextLines)
-	if {$tk_version >= 3.3} {
-	    eval pack .msg $exwin(ftocPack)
-	} else {
-	    pack append . .msg $exwin(ftocPack)
-	}
-
+	eval pack .msg $exwin(ftocPack)
     }
 }
 
@@ -460,12 +437,6 @@ proc Exwin_ToplevelFocus { toplevel {default none} } {
     global exwin
     if {[string compare $default none] != 0} {
 	focus $default
-    }
-    global tk_version
-    if {$tk_version < 4.0} {
-	set exwin(focus,$toplevel) $default
-	bind $toplevel <FocusIn> {ExwinSetFocus %W}
-	bind $toplevel <FocusOut> {ExwinSaveFocus %W}
     }
 }
 proc ExwinSetFocus { w } {

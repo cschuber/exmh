@@ -106,12 +106,7 @@ proc Widget_AddButDef {par but {where {right padx 1}} } {
     return $par.$but
 }
 proc Widget_ReEvalCmd { but } {
-    global tk_version
-    if {$tk_version >= 4.0} {
-	uplevel "$but config -command \[subst \[$but cget -command]]"
-    } else {
-	uplevel "$but config -command \[eval list \[lindex \[$but config -command] 4]]"
-    }
+    uplevel "$but config -command \[subst \[$but cget -command]]"
 }
 
 proc Widget_AddBut {par but txt cmd {where {right padx 1}} } {
@@ -312,7 +307,7 @@ proc Widget_BeginEntries { {lwidth 10} {ewidth 20} {okCmd {}} {link {}}} {
     }
 }
 proc Widget_LabeledEntry { w name textvar args} {
-    global widgetEntry tk_version
+    global widgetEntry
     set f [frame $w -class LabeledEntry]
     Widget_Label $f label {left} -text $name -width $widgetEntry(lwidth)
     eval {Widget_Entry $f entry {left fillx} \
@@ -329,15 +324,10 @@ proc Widget_LabeledEntry { w name textvar args} {
     return $f
 }
 proc Widget_BindEntryCmd {entry  sequence cmd} {
-    global tk_version
-    if {$tk_version >= 4.0} {
-	bind $entry $sequence "$cmd ; break"
-    } else {
-	bind $entry $sequence $cmd
-    }
+    bind $entry $sequence "$cmd ; break"
     # toplevel bindings before Entry so that <Tab>, <Shift-Tab>, <Return>
     # all can break
-    Widget_Bindtags $entry [list $entry [winfo toplevel $entry] Entry all]
+    bindtags $entry [list $entry [winfo toplevel $entry] Entry all]
 }
 proc Widget_EntryEntry { w labelvar textvar} {
     global widgetEntry
@@ -373,7 +363,7 @@ proc Widget_LabeledEntryOr { f iter textvar} {
     Widget_Entry $f entry$iter {top fillx} -textvariable $textvar \
     	-width [lindex [$pe config -width] 4]
     set me $f.entry$iter
-    Widget_Bindtags $me [list $me [winfo toplevel $me] Entry]
+    bindtags $me [list $me [winfo toplevel $me] Entry]
     bind $me <Return> [bind $pe <Return>]
     bind $me <Tab> [bind $pe <Tab>]
     bind $pe <Tab> [list focus $me]
@@ -384,26 +374,17 @@ proc Widget_LabeledEntryOr { f iter textvar} {
 }
 proc Widget_EndEntries {} {
     global widgetEntry
-    global tk_version
     if [info exists widgetEntry(first)] {
-	if {$tk_version >= 4.0} {
-	    # So <Return> <Tab> and <Shift-Tab> bindings skip the
-	    # default action to enter the character
-	    set w $widgetEntry(first)
-	    bind [winfo toplevel $w] <Return> break
-	    bind [winfo toplevel $w] <Tab> break
-	    bind [winfo toplevel $w] <Shift-Tab> break
-	}
+	# So <Return> <Tab> and <Shift-Tab> bindings skip the
+	# default action to enter the character
+	set w $widgetEntry(first)
+	bind [winfo toplevel $w] <Return> break
+	bind [winfo toplevel $w] <Tab> break
+	bind [winfo toplevel $w] <Shift-Tab> break
 	bind $widgetEntry(last) <Tab> [list focus $widgetEntry(first)]
 	bind $widgetEntry(first) <Shift-Tab> [list focus $widgetEntry(last)]
 	focus $widgetEntry(first)
 	return $widgetEntry(last)
-    }
-}
-proc Widget_Bindtags { w tags } {
-    global tk_version
-    if {$tk_version >= 4.0} {
-	bindtags $w $tags
     }
 }
 # Widget_ListEditor
@@ -437,41 +418,38 @@ proc Widget_ListEditor {frame title entryvar {insert {}} {change {}} {delete {}}
 	-yscrollcommand "$frame.scrollbar set"
 
     scrollbar $frame.scrollbar \
-	-command "$frame.listbox yview" \
-	-relief {sunken}
+	    -command "$frame.listbox yview" \
+	    -relief {sunken}
 
     FontWidget entry $frame.entry \
-	-textvariable $entryvar
-
+	    -textvariable $entryvar
+    
     frame $frame.buttons
-
+    
     FontWidget button $frame.buttons.insert \
-	-text {Insert} \
-	-command $insert
-
+	    -text {Insert} \
+	    -command $insert
+    
     FontWidget button $frame.buttons.change \
-	-text {Change} \
-	-command $change
-
+	    -text {Change} \
+	    -command $change
+    
     FontWidget button $frame.buttons.delete \
-	-text {Delete} \
-	-command $delete
-
+	    -text {Delete} \
+	    -command $delete
+    
     # pack button frame
     pack $frame.buttons.insert \
-	$frame.buttons.change \
-	$frame.buttons.delete \
-	-side left -padx 10
-
+	    $frame.buttons.change \
+	    $frame.buttons.delete \
+	    -side left -padx 10
+    
     # bindings
-    global tk_version
-    if {$tk_version >= 4.0} {
-	$frame.listbox config -selectmode browse
-    }
+    $frame.listbox config -selectmode browse
     bind $frame.listbox <Any-B1-Motion> \
-	[list WidgetListSelect %W %y $entryvar $select]
+	    [list WidgetListSelect %W %y $entryvar $select]
     bind $frame.listbox <Any-Button-1> \
-	[list WidgetListSelect %W %y $entryvar $select]
+	    [list WidgetListSelect %W %y $entryvar $select]
 
     bind $frame.entry <Any-Return> $insert
 
@@ -493,7 +471,7 @@ proc FontWidget { args } {
 proc WidgetListSelect { w y varName selCmd } {
     upvar #0 $varName entryvar
     set i [$w nearest $y]
-    Widget_ListboxSelect $w $i
+    $w select set $i
     set entryvar [$w get $i]
     eval $selCmd
 }
@@ -505,42 +483,15 @@ proc Widget_ListSearch { frame } {
     }
     set l $frame.listbox
     set size [$l size]
-    Widget_ListboxClear $l
+    $l select clear 0 end
     for {set i 0} {$i < $size} {incr i} {
 	if {[string match ${str}* [$l get $i]]} {
-	    Widget_ListboxSelect $l $i
-	    Widget_ListboxYview $l $i
+	    $l select set $i
+	    $l see $i
 	    return
 	}
     }
 }
-
-proc Widget_ListboxYview { list i } {
-    global tk_version
-    if {$tk_version < 4.0} {
-	set height [lindex [split [lindex [$list config -geometry] 4] x] 1]
-	$list yview [expr $i - $height/2]
-    } else {
-	$list see $i
-    }
-}
-proc Widget_ListboxSelect { list i } {
-    global tk_version
-    if {$tk_version < 4.0} {
-	$list select from $i
-    } else {
-	$list select set $i
-    }
-}
-proc Widget_ListboxClear { list } {
-    global tk_version
-    if {$tk_version < 4.0} {
-	$list select clear
-    } else {
-	$list select clear 0 end
-    }
-}
-
 
 #
 # Procedures hiding the configuration resource hierarchy

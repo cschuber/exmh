@@ -22,11 +22,6 @@ proc Widget_TextInitText {t} {
     set widgetText($t,geo) {}
     global TextType		;# Text bindings module
     set TextType($t) text
-    global tk_version
-    if {$tk_version < 4.0} {
-	selection handle $t [list Text_HandleSelRequest $t]
-    }
-
 }
 proc Widget_Text {frame height args} {
     # Create the text widget used to display messages
@@ -61,18 +56,10 @@ proc Widget_Text {frame height args} {
     return $t
 }
 proc Widget_TextPageOrNext {t {implied implied}} {
-    global widgetText tk_version
+    global widgetText
     set next 0
-    if {$tk_version >= 4.0} {
-	set bottom [lindex [$t yview] 1]
-	set next [expr $bottom >= 1]
-    } else {
-	if [info exists widgetText($t,view)] {
-	    set bottom [lindex $widgetText($t,view) 3]
-	    set end [expr [$t index end]-1]
-	    set next [expr $bottom >= $end]
-	}
-    }
+    set bottom [lindex [$t yview] 1]
+    set next [expr $bottom >= 1]
     if {$next} {
 	Ftoc_NextImplied show $implied
     } else {
@@ -80,51 +67,22 @@ proc Widget_TextPageOrNext {t {implied implied}} {
     }
 }
 proc Widget_TextPageDown {t} {
-    global widgetText tk_version
-    if {$tk_version >= 4.0} {
-	WidgetTextYview $t scroll 1 pages
-    } else {
-	if [info exists widgetText($t,view)] {
-	    set bottom [lindex $widgetText($t,view) 3]
-	    WidgetTextYview $t [expr $bottom-$widgetText(scrollContext)]
-	}
-    }
+    global widgetText
+    WidgetTextYview $t scroll 1 pages
     $t mark set insert @1,1
 }
 proc Widget_TextPageUp {t} {
-    global widgetText tk_version
-    if {$tk_version >= 4.0} {
-	WidgetTextYview $t scroll -1 pages
-    } else {
-	if [info exists widgetText($t,view)] {
-	    set top [lindex $widgetText($t,view) 2]
-	    set hei [lindex $widgetText($t,view) 1]
-	    WidgetTextYview $t [expr $top-$hei+$widgetText(scrollContext)]
-	}
-    }
+    global widgetText
+    WidgetTextYview $t scroll -1 pages
     $t mark set insert @1,1
 }
 proc Widget_TextLineDown {t} {
-    global widgetText tk_version
-    if {$tk_version >= 4.0} {
-	$t yview scroll 1 units
-    } else {
-	if [info exists widgetText($t,view)] {
-	    set top [lindex $widgetText($t,view) 2]
-	    WidgetTextYview $t [expr $top+1]
-	}
-    }
+    global widgetText
+    $t yview scroll 1 units
 }
 proc Widget_TextLineUp {t} {
-    global widgetText tk_version
-    if {$tk_version >= 4.0} {
-	$t yview scroll -1 units
-    } else {
-	if [info exists widgetText($t,view)] {
-	    set top [lindex $widgetText($t,view) 2]
-	    WidgetTextYview $t [expr $top-1]
-	}
-    }
+    global widgetText
+    $t yview scroll -1 units
 }
 proc Widget_TextTop {t} {
     $t see 1.0
@@ -159,10 +117,8 @@ proc WidgetTextYview4.0 {w args} {
     }
 }
 proc WidgetTextYview {t args} {
-    global widgetText tk_version
-    if {$tk_version >= 4.0} {
-	return [eval WidgetTextYview4.0 $t $args]
-    }
+    global widgetText
+    return [eval WidgetTextYview4.0 $t $args]
     if {!$widgetText(constrained) &&
 	 !($widgetText(constrainFtoc) && [string match *.ftoc.* $t])} {
 	eval {$t yview} $args
@@ -236,12 +192,8 @@ proc WidgetTextDragto {t y speed} {
     set dlines [expr $dy/$gridy]
     set rem [expr $dy%$gridy]
     if {$dy < 0} {
-	# observe that -3/12 = -1 under the new rounding rules...
-	global tk_version
-	if {$tk_version >= 3.3} {
-	    incr dlines
-	    set rem [expr $rem-$gridy]
-	}
+	incr dlines
+	set rem [expr $rem-$gridy]
     }
     if {$dlines >= 1.0 || $dlines <= -1.0} {
 	set widgetText($t,mark) [expr $y+$rem]
@@ -342,25 +294,17 @@ proc WidgetTextSelDone {w} {
     Text_SelectionEnd $w 1
 }
 proc Widget_TextEnd {w} {
-    global tk_version
     scan [$w index end] %d i
-    if {$tk_version >= 4.0} {
-	incr i -2
-    } else {
-	incr i -1
-    }
+    incr i -2
 }
 
-if {$tk_version >= 4.0} {
-    proc tk_textResetAnchor {args} {eval tkTextResetAnchor $args}
+proc tk_textResetAnchor {args} {
+    eval tkTextResetAnchor $args
 }
+
 # Fill out the text widget with enough blanks to allow the
 # given line to appear at the top.
 proc Widget_TextPad {w top} {
-    global tk_version
-    if {$tk_version < 4.0} {
-	return
-    }
     # Assume -height is ok, even though can be wrong after resize
     # set height [$w cget -height]
     #

@@ -11,7 +11,7 @@
 # any specification.
 
 proc FolderDialogInner {path label cancelProc okProc message} {
-    global mhProfile exwin exmh tk_version
+    global mhProfile exwin exmh
 
    set t $path
    if [Exwin_Toplevel $path $label FolderDialog nomenu] {

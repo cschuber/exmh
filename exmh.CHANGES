@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 4/4/1999
+    Code cleanup:  Removed dead code which only ran in pre tk-4.1 versions.
+	Also, removed the -mono flag since it hasn't actually worked since 
+	tk-4.0b3. -cwg
+
 cvs repository 4/2/1999
     Change ordering of mime type guessing. It used to be
 	mailcap, mime.types, magic, now it is mime.types,

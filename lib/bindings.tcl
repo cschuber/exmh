@@ -168,10 +168,6 @@ proc Bind_Pref {} {
 	canvas $f.can -width 500 -height 300 \
 	    -yscrollcommand [list $f.scroll set] \
 	    -scrollregion "0 0 500 300"
-	global tk_version
-	if {$tk_version < 4.0} {
-	    $f.can config -scrollincrement 8m
-	}
 	wm minsize .bindpref 300 200
 	scrollbar $f.scroll -command [list $f.can yview] -orient vertical
 	pack $f.scroll -side right -fill y
@@ -209,19 +205,9 @@ proc BindPrefDisplay { canvas } {
 	    pack forget $canvas.f.action$size
 	}
     }
-    global tk_version
-    if {$tk_version >= 4.0} {
-	set child [lindex [pack slaves $canvas.f] 0]
-    } else {
-	set child [lindex [pack info $canvas.f] 0]
-    }
+    set child [lindex [pack slaves $canvas.f] 0]
     Visibility_Wait $child
     $canvas config -scrollregion "0 0 [winfo width $canvas.f] [winfo height $canvas.f]"
-    global tk_version
-    if {$tk_version < 4.0} {
-	$canvas config -scrollincrement [winfo height $child] \
-	    -width [expr [winfo width $canvas.f]+10]
-    }
 }
 proc BindPrefSort {s1 s2} {
     string compare [string tolower $s1] [string tolower $s2]

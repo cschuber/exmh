@@ -54,7 +54,7 @@ proc PreferencesReadFile { basename level } {
 	}
     }
 
-    if {[tk colormodel .] == "color"} {
+    if {[winfo depth .] > 4} {
 	if [file exists $basename-color] {
 	    if [catch {option readfile $basename-color $level} err] {
 		Exmh_Status "Error in $basename-color: $err"
@@ -558,7 +558,7 @@ proc Preferences_Resource { _varName _rname _default } {
 }
 
 proc PreferencesPaneHelp { id {gotoxres {}} } {
-    global pref tk_version
+    global pref
     set ix [lsearch $pref(panes) $id]
     set top .prefhelplong$ix
     set t $top.t
@@ -580,14 +580,9 @@ proc PreferencesPaneHelp { id {gotoxres {}} } {
 	$t configure -state disabled
     }
 
-    if {$tk_version >= 4.0} {
-	# make as much help text visible
-	$t see end
-        $t see help4_$gotoxres
-    } else {
-	$t yview end
-        $t yview help4_$gotoxres
-    }
+    # make as much help text visible
+    $t see end
+    $t see help4_$gotoxres
 }
 proc PreferencesPaneHelpText { t item } {
     set res [PrefXres $item] 

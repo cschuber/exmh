@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.3  1999/04/04 20:34:57  cwg
+# Removed dead code which only ran in pre tk-4.1 versions.
+#
 # Revision 1.2  1999/03/26 08:41:55  cwg
 # Changes to PGP interface to use preferences variables instead of
 # message headers.  Also, reorganize the "PGP..." menu and rename it
@@ -298,12 +301,7 @@ proc Pgp_KeyBox { label keyring keylist } {
 		-command [list $w.key.sframe.list yview]
 	FontWidget listbox $w.key.sframe.list -relief sunken \
 		-yscroll [list $w.key.sframe.yscroll set] -setgrid 1
-	global tk_version
-	if {$tk_version >= 4.0} {
-	    $w.key.sframe.list config -width 48 -height 16
-	} else {
-	    $w.key.sframe.list config -geometry 48x16
-	}
+	$w.key.sframe.list config -width 48 -height 16
 	pack append $w.key.sframe \
 		$w.key.sframe.yscroll {right filly} \
 		$w.key.sframe.list {left expand fill}
@@ -321,7 +319,7 @@ proc Pgp_KeyBox { label keyring keylist } {
 	$keybox(list) insert end [lindex $i 1]
     }
     bind $keybox(list) <Double-ButtonPress-1> {
-	Widget_ListboxSelect %W [%W nearest %y]
+	%W select set [%W nearest %y]
 	$keybox(ok) invoke
     }
     Widget_BindEntryCmd $keybox(sel) <Key-Return> [list $keybox(listbut) invoke]

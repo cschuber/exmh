@@ -86,12 +86,7 @@ proc Font_Dialog {} {
 	set font(list) [listbox $t.body.list \
 		-setgrid true  \
 		-yscrollcommand "$t.body.scroll set"]
-	global tk_version
-	if {$tk_version < 4.0} {
-	    tk_listboxSingleSelect $font(list)
-	} else {
-	    $font(list) config -selectmode browse
-	}
+	$font(list) config -selectmode browse
 	scrollbar $t.body.scroll -command "$t.body.list yview"
 	pack $t.body.scroll -side right -fill y
 	pack $t.body.list -side left -fill both -expand true
@@ -288,8 +283,8 @@ proc FontSet {} {
 			}] {
 			    catch {$font(list) select clear \
 				    [$font(list) curselection]}
-			    Widget_ListboxSelect $font(list) $n
-			    Widget_ListboxYview $font(list) $n
+			    $font(list) select set $n
+			    $font(list) see $n
 			    return
 			}
 		}

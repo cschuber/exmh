@@ -272,12 +272,7 @@ proc Scan_CacheUpdate {} {
     } elseif [catch {
 	set cacheIO [open $cacheFile w]
 	set curLine [Ftoc_ClearCurrent]			;# Clear +
-	global tk_version
-	if {$tk_version < 4.0} {
-	    set display [$exwin(ftext) get 1.0 end]
-	} else {
-	    set display [$exwin(ftext) get 1.0 "end -1 char"]
-	}
+	set display [$exwin(ftext) get 1.0 "end -1 char"]
 	Ftoc_Change [Ftoc_MsgNumber $curLine] $curLine	;# Restore it
 	puts $cacheIO $display nonewline
 	close $cacheIO

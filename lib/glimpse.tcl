@@ -55,7 +55,7 @@
 
 proc Glimpse_Startup {} {
 # tmp: no need for $exwin when 'text' is replaced by 'Widget_Text'
-    global glimpse exwin tk_version
+    global glimpse exwin
 
     if ![info exists glimpse(init)] {
 	Exmh_Status "Glimpse not initialized" error
@@ -162,9 +162,8 @@ proc Glimpse_Startup {} {
     Widget_Frame $w results
     set t [Widget_Text $w.results 20 \
 	    -relief raised -borderwidth 2]
-    global tk_version
     # Set up tag for hyper link
-    if {[tk colormodel .] == "color"} {
+    if {[winfo depth .] > 4} {
 	# Colors as in Mosaic: blue3 and ?violetred3?
         Preferences_Resource glimpse(anchorColor) anchorColor blue
         Preferences_Resource glimpse(visitedAnchorColor) visitedAnchorColor "violet red"
@@ -176,11 +175,9 @@ proc Glimpse_Startup {} {
 	set glimpse(hyper) [list -foreground $bg -background $fg]
 	set glimpse(hyperUsed) $glimpse(hyper)
     }
-    if {$tk_version >= 4.0} {
-	append glimpse(hyper) " -lmargin2 1i"	;# wrap indent
-	append glimpse(hyperUsed) " -lmargin2 1i"	;# wrap indent
-	$t tag configure indent -lmargin2 10m -lmargin1 5m
-    }
+    append glimpse(hyper) " -lmargin2 1i"	;# wrap indent
+    append glimpse(hyperUsed) " -lmargin2 1i"	;# wrap indent
+    $t tag configure indent -lmargin2 10m -lmargin1 5m
     eval {$t tag configure hyper} $glimpse(hyper)
     eval {$t tag configure hyperUsed} $glimpse(hyperUsed)
     $t tag bind hyper <ButtonRelease-1> {
@@ -202,11 +199,11 @@ proc Glimpse_Startup {} {
 
 
 proc Glimpse_Search {} {
-    global glimpse mhProfile flist exmh env tk_version
+    global glimpse mhProfile flist exmh env
 
     if [regexp -- "^\[ 	\]*\$" $glimpse(search)] {
 	set glimpse(info) "Empty search string specified"
-	if {$tk_version >= 4.0} { bell } else { catch {blt_bell} }
+	bell
 	return
     }
     set state [$glimpse(searchButton) cget -text]
@@ -227,7 +224,7 @@ proc Glimpse_Stop {} {
     $glimpse(searchButton) config -text Search -command Glimpse_Search
 }
 proc Glimpse_Start {} {
-    global glimpse mhProfile flist exmh env tk_version
+    global glimpse mhProfile flist exmh env
     set glimpse(stop) 0
     $glimpse(searchButton) config -text Stop -command Glimpse_Stop
 
@@ -410,26 +407,18 @@ proc Glimpse_Start {} {
 
 		    set start [$t index insert]
 		    $t insert end "$from / $date / $subject\n"
-		    if {$tk_version >= 4.0} {
-			$t tag add indent $start insert
-		    }
+		    $t tag add indent $start insert
 		    catch {close $fid}
 		}
 	    }
 	    foreach c $context {
 		set start [$t index insert]
 		$t insert end "$c\n"
-		if {$tk_version >= 4.0} {
-		    $t tag add indent $start insert
-		}
+		$t tag add indent $start insert
 	    }
 	}
 	$t configure -state disabled
-	if {$tk_version >= 4.0} {
-	    $t see end
-	} else {
-	    $t yview -pickplace end
-	}
+	$t see end
     }
     $glimpse(searchButton) config -text Search -command Glimpse_Search
 
@@ -484,7 +473,7 @@ proc Glimpse_Hyper {hyper} {
 }
 
 proc Glimpse_Index { } {
-    global glimpse mhProfile flist exmh tk_version
+    global glimpse mhProfile flist exmh
 
     #Glimpse toplevel never created
     if [info exists glimpse(results)] {
@@ -639,11 +628,7 @@ proc Glimpse_Index { } {
 
     set glimpse(info) "Indexing completed"
     if [info exists t] {
-	if {$tk_version >= 4.0} {
-	    $t see 1.0
-	} else {
-	    $t yview 1.0
-	}
+	$t see 1.0
     }
 }
 proc MakeDir { path } {
@@ -695,7 +680,7 @@ proc Glimpse_BatchDone { out } {
 
 
 proc Glimpse_Unindex {} {
-    global glimpse mhProfile flist exmh tk_version
+    global glimpse mhProfile flist exmh
 
     set t $glimpse(results)
     $t configure -state normal
@@ -716,11 +701,7 @@ proc Glimpse_Unindex {} {
     }
 
     set glimpse(info) "Unindexing completed"
-    if {$tk_version >= 4.0} {
-	$t see 1.0
-    } else {
-	$t yview 1.0
-    }
+    $t see 1.0
 }
 proc Glimpse_Delete { f } {
     global glimpse mhProfile
@@ -743,14 +724,9 @@ proc Glimpse_Delete { f } {
     return $rmsg
 }
 proc GlimpseLog {t string} {
-    global tk_version
     $t config -state normal
     $t insert end $string
-    if {$tk_version >= 4.0} {
-	$t see end
-    } else {
-	$t yview -pickplace end
-    }
+    $t see end
     $t config -state disabled
     update idletasks
 }

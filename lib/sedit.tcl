@@ -243,7 +243,7 @@ proc SeditSetContext { draft t } {
     Exmh_Status "Sedit $t [file tail $draft]"
 }
 proc SeditPositionCursor { t } {
-    global sedit tk_version
+    global sedit
     # Position cursor when the draft is first open.
     # Either on the first blank header line, or the first line of the message.
     # Body tag is assigned to the body and is used later when/if
@@ -260,9 +260,7 @@ proc SeditPositionCursor { t } {
 	    }
 	    if {! $header} {
 		$t mark set hlimit $l.end
-		if {$tk_version >= 4.0} {
-		    $t mark gravity hlimit left
-		}
+		$t mark gravity hlimit left
 		if {$l > 1} {incr l -1}
 		$t mark set header $l.end
 	    }
@@ -284,9 +282,7 @@ proc SeditPositionCursor { t } {
 	    # hlimit is used for <Tab> control
 	    # header is used to insert new header information
 	    $t mark set hlimit $l.end
-	    if {$tk_version >= 4.0} {
-		$t mark gravity hlimit left
-	    }
+	    $t mark gravity hlimit left
 	    if {$l > 1} {incr l -1}
 	    $t mark set header $l.end
 	    if {! $insert} {

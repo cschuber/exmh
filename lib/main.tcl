@@ -14,35 +14,9 @@
 proc Exmh {} {
     global exmh argv
 
-    global tk_version
-
-    # Tk 4.0b3 bogosity
-    if [catch {tk colormodel .}] {
-	rename tk tk-orig
-	proc tk { option args } {
-	    switch -- $option {
-		colormodel {
-		    if {[winfo depth [lindex $args 0]] > 4} {
-			return color
-		    } else {
-			return monochrome
-		    }
-		}
-		default {
-		    return [eval {tk-orig $option} $args]
-		}
-	    }
-	}
-    }
-
     Mh_Init		;# Defines mhProfile
 
-    if {[lsearch $argv -mono] >= 0} {
-	# Do this early because it affects what X resources are used
-	tk colormodel . monochrome
-    }
     Preferences_Init ~/.exmh-defaults $exmh(library)/app-defaults
-
 
     TopTenPreferences
 
@@ -174,9 +148,6 @@ proc ExmhArgv {} {
 		set iconic 1
 		option add *Fltop.iconic 1
 	    }
-	    "-mono" {
-		tk colormodel . monochrome
-	    }
 	    "-bgAction" {
 		incr i
 		set exmh(background) [lindex $argv $i]
@@ -239,7 +210,7 @@ proc Exmh_Focus {} {
 }
 proc ExmhResources {} {
     global exmh
-    if {[tk colormodel .] == "color"} {
+    if {[winfo depth .] > 4} {
 	Preferences_Resource exmh(c_st_normal) c_st_normal blue
 	Preferences_Resource exmh(c_st_error) c_st_error purple
 	Preferences_Resource exmh(c_st_warn) c_st_warn red
@@ -386,7 +357,7 @@ proc ExmhLogInit {} {
     set exmh(logWindow) 0
 }
 proc ExmhLog { stuff } {
-    global exmh tk_version
+    global exmh
     if {![info exists exmh(logInit)]} {
 	return
     }
@@ -436,7 +407,7 @@ proc ExmhLogCreate {} {
     #
     Widget_BindEntryCmd $exmh(log) <Control-c>  \
 	"focus $exmh(logTop).cmd.entry"
-    Widget_Bindtags $exmh(log) [list $exmh(log) Text $exmh(logTop) all]
+    bindtags $exmh(log) [list $exmh(log) Text $exmh(logTop) all]
     Widget_BeginEntries 4 80 Exmh_DoCommand
     Widget_LabeledEntry $exmh(logTop).cmd Tcl: exmh(command)
 }
@@ -495,10 +466,5 @@ proc Exmh_DoCommand {} {
     } else {
 	$t insert end $result\n\n
     }
-    global tk_version
-    if {$tk_version >= 4.0} {
-	$t see end
-    } else {
-	$t yview -pickplace end
-    }
+    $t see end
 }

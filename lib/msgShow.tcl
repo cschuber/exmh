@@ -34,7 +34,7 @@ proc Msg_Setup { t } {
 	}
     }
     # More tags to pre-allocate darker mime backgrounds.
-    if {[tk colormodel .] == "color"} {
+    if {[winfo depth .] > 4} {
 	set color default
 	foreach level {1 2 3 4 5 6} {
 	    set color [MimeDarkerColor $t $color]

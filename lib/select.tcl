@@ -46,7 +46,7 @@ proc SelectDigit {w digit} {
 proc Select_EntryBind { w } {
     global select
     set select(entry) $w
-    Widget_Bindtags $w [list $w Entry]
+    bindtags $w [list $w Entry]
     bind $w <Any-Key>	{SelectTypein %W %A}
     bind $w <Key-plus>	{SelectToggle %W }
     bind $w <space>	{SelectComplete %W}

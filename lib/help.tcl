@@ -18,7 +18,7 @@ proc Help_KeyDisplay {} {
 	set b .key.but
 
 	set l [Widget_Label $b]
-	$l configure -text "[tk colormodel .]"
+	$l configure -text [if {[winfo depth .] > 4} "color" "monochrome"]
 
 	set font $fdisp(font)
 

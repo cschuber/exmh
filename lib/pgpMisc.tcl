@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.4  1999/04/04 20:34:57  cwg
+# Removed dead code which only ran in pre tk-4.1 versions.
+#
 # Revision 1.3  1999/04/01 15:38:10  cwg
 # Bug fix.  Wasn't working for people with PGP disabled.
 #
@@ -186,11 +189,8 @@ proc Misc_GetPass { title label } {
     Widget_BindEntryCmd $getpass(entry) <Return> {
 	set getpass(state) "ok"
     }
-    global tk_version
-    if {$tk_version >= 4.0} {
-	# Override bindtags done by Widget_BindEntryCmd
-	bindtags $getpass(entry) $getpass(entry)
-    }
+    # Override bindtags done by Widget_BindEntryCmd
+    bindtags $getpass(entry) $getpass(entry)
     SeditBind $getpass(entry) backspace {
 	global getpass
 	if $pgp(echopass) {

@@ -160,23 +160,6 @@ in-line graphics.
 
 
 
-Number: 18
-Priority: 
-Scope: 
-Complexity: 
-
-Since exmh is already documented as requiring at least TK 4.1, take a
-pass through the code removing all tests for versions older than that
-to get rid of dead code.  Since this is gratuitous, it should probably
-happen fairly soon.  Probably just after integrating all the current
-patches.
-
-For that matter, is it time to raise the minimal TK version?  Some
-cool things that exmh can do won't happen with earlier versions (such
-as in-lining graphics).
-
-
-
 Number: 19
 Priority: 
 Scope: 

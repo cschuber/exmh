@@ -20,11 +20,7 @@
 #END CONFIGURATION
 
 if [catch {file join a b}] {
-    if {$tk_version == 4.1} {
-	error "Tk 4.1 or higher required for exmh 2.0\nBeta versions of Tk 4.1 will not work."
-    } else {
-	error "Tk 4.1 (final release) or higher required."
-    }
+    error "Tk 4.1 (final release) or higher required."
     exit 1
 }
 # Do this so popups related to user initialization

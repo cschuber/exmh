@@ -633,7 +633,7 @@ proc installFake {} {
     installInner log
 }
 proc install_dialog {} {
-    global install tk_version
+    global install
 
     wm title . "Exmh Install"
     wm iconname . "Exmh Install"
@@ -743,7 +743,7 @@ proc installBindInit {} {
 
 }
 proc installBindKeys {} {
-    global install tk_version
+    global install
     toplevel .keys
     wm title .keys "Install Edit Preferences"
     wm iconname .keys "Install Edit Preferences"
@@ -814,7 +814,7 @@ proc installBindEntry { {list {}} } {
     }
 }
 proc installBindEntryInner { what } {
-    global install tk_version
+    global install
 
     # Modification bindings
 
@@ -830,11 +830,7 @@ proc installBindEntryInner { what } {
 	catch {%W delete sel.first sel.last}
     }
 
-    if {$tk_version >= 4.0} {
-	set bsProc tkEntryBackspace
-    } else {
-	set bsProc tk_entryBackspace
-    }
+    set bsProc tkEntryBackspace
     foreach bs {backspace backspace2 backspace3} {
 	bind $what $install(key,$bs) "$bsProc %W"
     }

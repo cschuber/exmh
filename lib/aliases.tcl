@@ -28,72 +28,50 @@ proc Aliases_Pref { {nalias {}} } {
 	.aliaspref.but.quit config -command {AliasesDismiss}
 	wm protocol .aliaspref WM_DELETE_WINDOW AliasesDismiss
 	Widget_AddBut .aliaspref.but save "Save" \
-	    {Aliases_Save; Exwin_Dismiss .aliaspref}
+		{Aliases_Save; Exwin_Dismiss .aliaspref}
 	Widget_AddBut .aliaspref.but import "Import" \
-	    {Aliases_Import}
+		{Aliases_Import}
 	Widget_AddBut .aliaspref.but help "Help" \
-	    {Aliases_Help}
-	Widget_Label .aliaspref.but label {left fill} -text \
-"MH Alias Definitions"
+		{Aliases_Help}
+	Widget_Label .aliaspref.but label {left fill} \
+		-text "MH Alias Definitions"
 	frame .aliaspref.alias
 	frame .aliaspref.addr
-	pack .aliaspref.alias .aliaspref.addr -side left -fill both -padx 5 -pady 5
+	pack .aliaspref.alias .aliaspref.addr -side left -fill both \
+		-padx 5 -pady 5
 	pack .aliaspref.addr -expand 1 
 	Widget_ListEditor .aliaspref.alias Aliases alias \
-	    Aliases_Insert Aliases_Change Aliases_Delete Address_Rebuild
+		Aliases_Insert Aliases_Change Aliases_Delete Address_Rebuild
 	Widget_ListEditor .aliaspref.addr Addresses address \
-	    Address_Insert Address_Change Address_Delete
+		Address_Insert Address_Change Address_Delete
 
 	# Asymetric, but users can paste out of the Alias list,
 	# and paste into the Address entry.
 	.aliaspref.addr.listbox config -exportselection 0
-
+	
 	# Create search bindings in the entries.
-	global tk_version
-	if {$tk_version < 4.0} {
-	    # Need to suck up the class bindings for Entry first
-	    foreach seq [bind Entry] {
-		bind .aliaspref.alias.entry $seq [bind Entry $seq]
-		bind .aliaspref.addr.entry $seq [bind Entry $seq]
-	    }
-	    bind .aliaspref.alias.entry <Any-Tab> { focus .aliaspref.addr.entry }
-	    bind .aliaspref.alias.entry <Any-Key> \
-		"[bind Entry <Any-Key>] ; Widget_ListSearch .aliaspref.alias"
-	    bind .aliaspref.alias.entry <Any-space> \
-		{set alias [AliasesComplete .aliaspref.alias]
-		 Aliases_Insert}
-	    bind .aliaspref.alias.entry <Control-c> \
-		{Aliases_Delete}
-	    bind .aliaspref.addr.entry <Any-Tab> { focus .aliaspref.alias.entry }
-	    bind .aliaspref.addr.entry <Any-Key>\
-		"[bind Entry <Any-Key>] ; Widget_ListSearch .aliaspref.addr"
-	    bind .aliaspref.addr.entry <Control-space> {
-		set address [AliasesComplete .aliaspref.addr]
-	    }
-	} else {
-	    bindtags .aliaspref.alias.entry \
+	bindtags .aliaspref.alias.entry \
 		[list .aliaspref.alias.entry Entry SearchAlias]
-	    bind SearchAlias <KeyPress> \
-		 {Widget_ListSearch .aliaspref.alias}
-	    bind .aliaspref.alias.entry <space> {
-		set alias [AliasesComplete .aliaspref.alias]
-		Aliases_Insert
-		break
-	    }
-	    bind .aliaspref.alias.entry <Control-c> \
+	bind SearchAlias <KeyPress> \
+		{Widget_ListSearch .aliaspref.alias}
+	bind .aliaspref.alias.entry <space> {
+	    set alias [AliasesComplete .aliaspref.alias]
+	    Aliases_Insert
+	    break
+	}
+	bind .aliaspref.alias.entry <Control-c> \
 		{Aliases_Delete ; break}
-
-	    bindtags .aliaspref.addr.entry \
+	
+	bindtags .aliaspref.addr.entry \
 		[list .aliaspref.addr.entry Entry SearchAddress]
-	    bind SearchAddress <KeyPress> \
-		 {Widget_ListSearch .aliaspref.addr}
-	    bind .aliaspref.addr.entry <Control-space> {
-		set address [AliasesComplete .aliaspref.addr]
-		break
-	    }
-	    foreach e {.aliaspref.alias.entry .aliaspref.addr.entry} {
-		Exmh_Debug bindtags $e [bindtags $e]
-	    }
+	bind SearchAddress <KeyPress> \
+		{Widget_ListSearch .aliaspref.addr}
+	bind .aliaspref.addr.entry <Control-space> {
+	    set address [AliasesComplete .aliaspref.addr]
+	    break
+	}
+	foreach e {.aliaspref.alias.entry .aliaspref.addr.entry} {
+	    Exmh_Debug bindtags $e [bindtags $e]
 	}
 	wm minsize .aliaspref 1 1
 
@@ -194,13 +172,13 @@ proc Aliases_Rebuild {{item {}}} {
     set names [AliasesList]
     eval .aliaspref.alias.listbox insert end $names
     if {$item == {}} {
-	Widget_ListboxClear .aliaspref.alias.listbox
-	Widget_ListboxYview .aliaspref.alias.listbox $top
+	.aliaspref.alias.listbox clear 0 end
+	.aliaspref.alias.listbox see $top
 	set alias {}
     } else {
 	set index [lsearch -exact $names $item]
-	Widget_ListboxSelect .aliaspref.alias.listbox  $index
-	Widget_ListboxYview .aliaspref.alias.listbox $index
+	.aliaspref.alias.listbox select set $index
+	.aliaspref.alias.listbox see $index
 	set alias $item
     }
     Address_Rebuild
@@ -244,11 +222,11 @@ proc Address_Rebuild {{item {}}} {
 
     # now select appropriate item from the list
     if {$item == {}} {
-	Widget_ListboxClear .aliaspref.addr.listbox
+	.aliaspref.addr.listbox clear 0 end
     } else {
 	set index [lsearch -exact $names $item]
-	Widget_ListboxSelect .aliaspref.addr.listbox $index
-	Widget_ListboxYview .aliaspref.addr.listbox $index
+	.aliaspref.addr.listbox select set $index
+	.aliaspref.addr.listbox see $index
 	set address [.aliaspref.addr.listbox get $index]
     }
 }

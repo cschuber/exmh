@@ -64,7 +64,7 @@ I don't really like...
     Edit_DraftID [file tail $draft]
 }
 proc Report_Subscribe {list what} {
-    global mhProfile exmh tk_version
+    global mhProfile exmh
 
     set draft [Mh_Path $mhProfile(draft-folder) new]
     if [catch {open $draft w} out] {

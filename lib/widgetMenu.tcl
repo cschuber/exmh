@@ -87,10 +87,7 @@ proc menu_invoke {menu w} {
 # setup the bindings for a local widget menu
 
 proc menu_bind {menu w} {
-    global tk_version
-    if {$tk_version >= 4.0} {
-	bindtags $menu $menu
-    }
+    bindtags $menu $menu
     bind $menu <Any-ButtonPress> {}
     bind $menu <Any-ButtonRelease> "menu_invoke $menu $w"
     bind $menu <2> { }

@@ -48,25 +48,8 @@ proc ldelete {varList value} {
     }
 }
 
-# Recursive make directory
-if {$tk_version < 4.2} {
-proc makedir { pathname } {
-    if {[file isdirectory $pathname]} {
-	return [glob $pathname]	;# Handle ~
-    } elseif {[file exists $pathname]} {
-	error "Non-directory $pathname already exists."
-    } else {
-	# Recurse to create intermediate directories
-	set parent [makedir [file dirname $pathname]]
-	set pathname [file join $parent [file tail $pathname]]
-	exec mkdir $pathname
-	return $pathname
-    }
-}
-} else {
 proc makedir { pathname } {
     file mkdir $pathname
-}
 }
 
 proc Visibility_Wait {win} {

@@ -46,7 +46,7 @@ proc Fdisp_LabelConfigure { canvas } {
     # (more so on color displays)
     # 
     Fdisp_FixupSpecials $canvas
-    if {[tk colormodel .] == "monochrome"} {
+    if {[winfo depth .] <= 4} {
 	set fg [option get . c_foreground {}]
 	set bg [option get . c_background {}]
 	$canvas itemconfigure text -fill $fg
@@ -104,7 +104,7 @@ proc FdispClearHighlights { can } {
 
     # Deleting tags does not undo looks (like text widget!)
     # So we manually reset looks on the labels here.
-    if {[tk colormodel .] == "monochrome"} {
+    if {[winfo depth .] <= 4} {
 	$canvas itemconfigure text -fill black
 	$canvas itemconfigure box -fill white -width 1 -stipple {}
 	$canvas itemconfigure bitmap -foreground black -background white

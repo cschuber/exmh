@@ -101,22 +101,19 @@ folders without committing moves and delete operations.
 }
 
 proc Faces_Init {} {
-    global faces tk_version
+    global faces
     if {$faces(dir) == {}} {
 	set faces(enabled) 0
     }
     # faces(suffix) starts out (by default) with {xpm gif xbm}
-    if {![info exists faces(suffix)] || ([llength $faces(suffix)] == 0) ||
-	($tk_version < 4.0)} {
+    if {![info exists faces(suffix)] || ([llength $faces(suffix)] == 0)} {
 	set faces(suffix) xbm
     }
-    if {$tk_version >= 4.0} {
-	# Double check the non-standard pixmap image type to avoid file stat
-	if {[lsearch [image types] pixmap] < 0} {
-	    set ix [lsearch $faces(suffix) xpm]
-	    if {$ix >= 0} {
-		set faces(suffix) [lreplace $faces(suffix) $ix $ix]
-	    }
+    # Double check the non-standard pixmap image type to avoid file stat
+    if {[lsearch [image types] pixmap] < 0} {
+	set ix [lsearch $faces(suffix) xpm]
+	if {$ix >= 0} {
+	    set faces(suffix) [lreplace $faces(suffix) $ix $ix]
 	}
     }
 
@@ -459,7 +456,7 @@ proc Pgp_Init {} {
     set miscRE(beginpgpclear) {^-+BEGIN PGP SIGNED MESSAGE-+$}
 
     # Set pgp message colors
-    if {[tk colormodel .] == "color"} {
+    if {[winfo depth .] > 4} {
 	Preferences_Resource pgp(BadSig) m_pgpBadSig \
 	    "-foreground red"
 	Preferences_Resource pgp(GoodUntrustedSig) \

@@ -1102,7 +1102,7 @@ proc MimeShowTime { tkw time } {
 }
 
 proc MimeShowMinHeaders {tkw part inlin} {
-    global mimeHdr mhProfile msg mime tk_version
+    global mimeHdr mhProfile msg mime
     
     if ![info exists mimeHdr($part,hdrs)] {
 	return
@@ -1158,11 +1158,7 @@ proc MimeShowMinHeaders {tkw part inlin} {
 	}
 	if {! $show} {
 	    set hideMark [$tkw index insert]
-	    if {$tk_version >= 4.0} {
-		$tkw mark set insert "end -1c"
-	    } else {
-		$tkw mark set insert end
-	    }
+	    $tkw mark set insert "end -1c"
 	}
     }
     if {$inlin} {
@@ -1748,7 +1744,7 @@ proc MimeParseMulti {tkw part fileIO boundary defType} {
     return $subpart
 }
 proc MimeParseSingle {tkw part fileIO } {
-    global mimeHdr mime miscRE tk_version msg
+    global mimeHdr mime miscRE msg
 
     set mimeHdr($part=1,color) $mimeHdr($part,color)
     set part $part=1
@@ -1930,10 +1926,7 @@ proc MimeMakeMenu {tkw tag part menuLabel} {
 	}
     }
 
-    global tk_version
-    if {$tk_version >= 4.0} {
-	$mimeHdr($part,menu) config -tearoff 0
-    }   
+    $mimeHdr($part,menu) config -tearoff 0
     $mimeHdr($part,menu) configure -disabledforeground Black
     MimeMenuAdd $part command \
 	-label $menuLabel \

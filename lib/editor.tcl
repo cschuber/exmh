@@ -190,15 +190,10 @@ proc EditShowDialog {id text} {
     }
 }
 proc EditDialogMsg {id msg} {
-    global tk_version
     set d .edit$id
     catch {destroy $d.f}
     Widget_Frame $d f
-    if {$tk_version >= 3.3} {
-	pack $d.f -before [lindex [pack slaves $d] 0] -side bottom
-    } else {
-	pack before [lindex [pack info $d] 0] $d.f {bottom}
-    }
+    pack $d.f -before [lindex [pack slaves $d] 0] -side bottom
     set lines [llength [split $msg \n]]
     Widget_Text $d.f [expr {$lines > 8 ? 8 : $lines}]
     $d.f.t insert 1.0 $msg

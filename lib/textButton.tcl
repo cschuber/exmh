@@ -8,7 +8,7 @@ proc TextButton_Init { {t {}} } {
     global tkPriv
 
     set tkPriv(seed) 0
-    if {[tk colormodel .] == "color"} {
+    if {[winfo depth .] > 4} {
 	Preferences_Resource tkPriv(background)	c_uri thistle
 	Preferences_Resource tkPriv(foreground)	c_uriFg black
 	Preferences_Resource tkPriv(activebackground)	c_uriAbg white
@@ -39,15 +39,10 @@ proc TextButton { w text cmd } {
     $w insert insert { }
 
     set tag [TextButtonRange $w $start $end $cmd]
-    global tk_version
-    if {$tk_version < 4.0} {
-	$w insert insert { }
-	$w tag remove $tag $end insert
-    }
 }
 
 proc TextButtonRange { w start end cmd } {
-    global tkPriv tk_version
+    global tkPriv
 
     incr tkPriv(seed)
     set id tkPriv$tkPriv(seed)
@@ -56,9 +51,6 @@ proc TextButtonRange { w start end cmd } {
     $w tag bind $id <Any-Leave> [concat TextButtonLeave $w $id]
     $w tag bind $id <1> [concat TextButtonDown $w $id]
     $w tag bind $id <ButtonRelease-1> [concat TextButtonUp $w $id [list $cmd]]
-    if {$tk_version < 4.0} {
-	$w tag bind $id <Any-ButtonRelease-1> [concat TextButtonUp $w $id]
-    }
     $w tag configure $id -relief raised -borderwidth 2 \
 	     -background $tkPriv(background) -foreground $tkPriv(foreground)
     return $id

@@ -114,11 +114,8 @@ proc Find_It { {dir _default_} } {
 	return
     }
     if {$find(choice) == "Msg"} {
-	global exwin tk_version
 	set last [lindex [split [$exwin(mtext) index end] .] 0]
-	if {$tk_version >= 4.0} {
-	    incr last -1
-	}
+	incr last -1
 	Find_Inner [$find(entry) get] $dir $find(line) $last Msg_FindMatch
 	return
     }

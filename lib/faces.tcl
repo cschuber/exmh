@@ -480,7 +480,6 @@ proc Face_FlushCache {} {
 # Defer work to an after handler [this code should be elsewhere]
 #
 
-if {$tk_version >= 4.0} {
 proc DeferWork {name work {cancel {}}} {
     upvar #0 $name queue
 
@@ -509,49 +508,4 @@ proc DeferWorkProc name {
     if [llength $queue] {
 	after 20 DeferWorkProc $name
     }
-}
-
-
-} else {
-
-
-proc DeferWork {name work {cancel {}}} {
-    upvar #0 $name queue
-    global serial
-
-    lappend queue [list $work $cancel]
-    if {[llength $queue] == 1} {
-	if [catch {incr serial($name)}] {
-	    set serial($name) 0
-	}
-	after 50 DeferWorkProc $name $serial($name)
-    }
-}
-proc DeferWorkCancel name {
-    upvar #0 $name queue
-    global serial
-
-    if [info exists queue] {
-	if [catch {incr serial($name)}] {
-	    set serial($name) 0
-	}
-	foreach w $queue {
-	    catch [lindex $w 1]
-	}
-	unset queue
-    }
-}
-proc DeferWorkProc {name incarnation} {
-    upvar #0 $name queue
-    global serial
-
-    if {$serial($name) != $incarnation} return
-
-    set this [lindex $queue 0]
-    set queue [lrange $queue 1 end]
-    catch [lindex $this 0]
-    if [llength $queue] {
-	after 20 DeferWorkProc $name $serial($name)
-    }
-}
 }

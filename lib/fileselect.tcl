@@ -91,7 +91,7 @@ proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""}
 	set fileselect(msg) $w.label
 	
 	set fileselect(result) ""	;# value to return if no callback procedures
-
+	
 	# widgets
 	Widget_Label $w label {top fillx pady 10 padx 20} -anchor w -width 24
 	Widget_Frame $w file Dialog {left expand fill} -bd 10
@@ -101,19 +101,19 @@ proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""}
 	Widget_Entry $w.file.f1 direntry {right fillx expand}  -width 30
 	
 	Widget_Frame $w.file sframe
-
+	
 	scrollbar $w.file.sframe.yscroll -relief sunken \
 		-command [list $w.file.sframe.list yview]
 	FontWidget listbox $w.file.sframe.list -relief sunken \
 		-yscroll [list $w.file.sframe.yscroll set] -setgrid 1
         if {$exwin(scrollbarSide) == "left"} {
 	    pack append $w.file.sframe \
-		$w.file.sframe.yscroll {left filly} \
-		$w.file.sframe.list {right expand fill} 
+		    $w.file.sframe.yscroll {left filly} \
+		    $w.file.sframe.list {right expand fill} 
         } else {
 	    pack append $w.file.sframe \
-		$w.file.sframe.yscroll {right filly} \
-		$w.file.sframe.list {left expand fill} 
+		    $w.file.sframe.yscroll {right filly} \
+		    $w.file.sframe.list {left expand fill} 
 	}
 	Widget_Frame $w.file f2 Exmh {top fillx}
 	Widget_Label $w.file.f2 label {left} -text Name
@@ -130,9 +130,9 @@ proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""}
 		[list fileselect.list.cmd $w] {left padx 1}    
 	Widget_CheckBut $w.but listall "List all" fileselect(pattern)
 	$w.but.listall configure -onvalue "{*,.*}" -offvalue "*" \
-	    -command {fileselect.list.cmd $fileselect(direntry)}
+		-command {fileselect.list.cmd $fileselect(direntry)}
 	$w.but.listall deselect
-
+	
 	# Set up bindings for the browser.
 	Widget_BindEntryCmd $fileselect(entry) <Return> \
 		"$fileselect(ok) invoke"
@@ -140,44 +140,39 @@ proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""}
 		"$fileselect(cancel) invoke"
 	Widget_BindEntryCmd $fileselect(direntry) <Return> \
 		"fileselect.list.cmd %W"
-	Widget_BindEntryCmd $fileselect(direntry) <space>    \
+	Widget_BindEntryCmd $fileselect(direntry) <space> \
 		"fileselect.tab.dircmd"
-	Widget_BindEntryCmd $fileselect(entry) <space>       \
+	Widget_BindEntryCmd $fileselect(entry) <space> \
 		"fileselect.tab.filecmd"
-	Widget_BindEntryCmd $fileselect(direntry) <Tab>    \
+	Widget_BindEntryCmd $fileselect(direntry) <Tab> \
 		"fileselect.tab.dircmd"
-	Widget_BindEntryCmd $fileselect(entry) <Tab>       \
+	Widget_BindEntryCmd $fileselect(entry) <Tab> \
 		"fileselect.tab.filecmd"
-	global tk_version
-	if {$tk_version < 4.0} { 
-	    tk_listboxSingleSelect $fileselect(list)
-	} else {
-	    $fileselect(list) config -selectmode browse
-	}
-
+	$fileselect(list) config -selectmode browse
+	
 	bind $fileselect(list) <Button-1> {
 	    # puts stderr "button 1 release"
-	    Widget_ListboxSelect %W [%W nearest %y]
+	    %W select set [%W nearest %y]
 	    $fileselect(entry) delete 0 end
 	    $fileselect(entry) insert 0 [%W get [%W nearest %y]]
 	}
     
 	bind $fileselect(list) <Key> {
-	    Widget_ListboxSelect %W [%W nearest %y]
+	    %W select set [%W nearest %y]
 	    $fileselect(entry) delete 0 end
 	    $fileselect(entry) insert 0 [%W get [%W nearest %y]]
 	}
     
 	bind $fileselect(list) <Double-ButtonPress-1> {
 	    # puts stderr "double button 1"
-	    Widget_ListboxSelect %W [%W nearest %y]
+	    %W select set [%W nearest %y]
 	    $fileselect(entry) delete 0 end
 	    $fileselect(entry) insert 0 [%W get [%W nearest %y]]
 	    $fileselect(ok) invoke
 	}
     
 	bind $fileselect(list) <Return> {
-	    Widget_ListboxSelect %W [%W nearest %y]
+	    %W select set [%W nearest %y]
 	    $fileselect(entry) delete 0 end
 	    $fileselect(entry) insert 0 [%W get [%W nearest %y]]
 	    $fileselect(ok) invoke

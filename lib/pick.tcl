@@ -55,7 +55,6 @@ proc PickSetup {} {
 }
 proc PickOr {} {
     global pick
-    global tk_version
 
     Widget_Label .pick.rim$pick(panes) or {fill bottom} -text "- Or -"
     PickNewPane

@@ -111,7 +111,7 @@ proc ImportSelectAll {button} {
 }
 
 proc ImportIt {} {
-    global _importlist tk_version
+    global _importlist
     set t [Help Import "Log of Import Actions"]
     $t config -state normal -height 20
     $t tag configure fixed -font fixed

@@ -120,7 +120,7 @@ proc Cache_SetFile {url file} {
     }
 }
 proc CacheDeleteOne {} {
-    global tk_version cache cachesize
+    global cache cachesize
     set urls [array names cache]	;# Random hash
     set url [lindex $urls 0]
     set file $cache($url)

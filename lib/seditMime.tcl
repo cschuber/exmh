@@ -237,9 +237,7 @@ proc SeditMimeFirstPart { t type promote keep} {
 	$t mark set header end
     }
     $t insert header "\nMime-Version: 1.0"
-    global tk_version
-    if {(($tk_version >= 4.0) && [$t compare header == "end -1c"]) ||
-	(($tk_version < 4.0) && [$t compare header == "end"])} {
+    if [$t compare header == "end -1c"] {
 	# Nothing left after deleting the body
 	$t insert header "\n"
     } else {
@@ -402,9 +400,8 @@ proc SeditMultiInner {t type level mark mark2} {
     # Insert the terminating --boundary-- line and set multiN.next to be
     # just before that --boundary-- line.
 
-    global tk_version
     $t insert $mark2 \n
-    if {$tk_version >= 4.0 && ([string compare $mark2 end] == 0)} {
+    if {[string compare $mark2 end] == 0} {
 	set save [$t index "end -1 line"]
     } else {
 	set save [$t index $mark2]
@@ -484,7 +481,7 @@ proc SeditContentType { t type level mark {mark2 {}} } {
 	set mark addpart
     }
     set save [$t index $mark]
-    if {$sedit(colorize) && ([tk colormodel .] == "color")} {
+    if {$sedit(colorize) && ([winfo depth .] > 4)} {
 	catch {
 	    switch -glob -- $type {
 		text/enriched* {

@@ -8,12 +8,7 @@
 
 proc GetNews {} {
 
-    global NNTP tk_version
-
-    if {$tk_version < 4.1} {
-	Exmh_Status "Need tk4.1 for NNTP client" warn
-	return
-    }
+    global NNTP
 
     if {![llength $NNTP(groups)]} {
 	Exmh_Status "No groups specified to retrieve"

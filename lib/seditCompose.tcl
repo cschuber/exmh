@@ -12,7 +12,7 @@
 # any specification.
 
 proc SeditComposedKey { w a1 a2 } {
-    global composedkey sedit tk_version
+    global composedkey sedit
 
     if [info exists composedkey($a1$a2)] {
 	SeditInsert $w "$composedkey($a1$a2)"
@@ -27,11 +27,7 @@ proc SeditComposedKey { w a1 a2 } {
     } else {
 	SeditInsert $w "$a1$a2"
     }
-    if {$tk_version >= 4.0} {
-	bind SeditText <Any-Key> { SeditInsert %W %A }
-    } else {
-	bind Text <Any-Key> { SeditInsert %W %A }
-    }
+    bind SeditText <Any-Key> { SeditInsert %W %A }
 }
 
 proc SeditComposedKeyBindings {} {

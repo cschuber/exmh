@@ -8,11 +8,7 @@
 
 proc Post_Init {} {
 
-    global NNTP tk_version
-
-    if {$tk_version < 4.1} { # Needs socket support
-	return
-    }
+    global NNTP
 
     Preferences_Add "NNTP Support" \
 "Post a mail message to a Usenet news server via NNTP

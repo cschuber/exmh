@@ -15,7 +15,7 @@ proc Ftoc_Init {} {
     global ftoc
     set ftoc(displayValid) 0		;# 1 => pick results, not full scan
     set ftoc(displayDirty) 0		;# 1 => display differs from cache
-    set ftoc(mono) [string match mono* [tk colormodel .]]
+    set ftoc(mono) [expr {[winfo depth .] <= 4}]
     # Parameters to the Next button
     Preferences_Add "Scan Listing" \
 "These settings affect the behavior of Exmh as you move through the scan listing to view and mark messages.
@@ -94,12 +94,10 @@ proc Ftoc_Update { numMsgs folder } {
 
 proc Ftoc_Bindings { w } {
     # Bindings for the ftoc text widget
-    global tk_version
-    if {$tk_version >= 4.0} {
-	# The TScroll binding to too general.
-	# We'll do our own scroll bindings here.
-	bindtags $w [list $w]
-    }
+
+    # The TScroll binding to too general.
+    # We'll do our own scroll bindings here.
+    bindtags $w [list $w]
 
     # Button-1 starts selection range
     bind $w <Button-1> {

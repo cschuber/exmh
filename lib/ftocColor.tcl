@@ -14,7 +14,7 @@
 proc Ftoc_ColorConfigure { text } {
     global exmh ftoc
     if [catch {
-	if {[tk colormodel .] == "monochrome"} {
+	if {[winfo depth .] <= 4} {
 	    set fg [option get $text foreground Foreground]
 	    set bg [option get $text background Background]
 	    $text tag configure currentBg \

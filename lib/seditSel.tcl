@@ -130,7 +130,7 @@ proc SeditSelFmtArg {t} {
 
 
 proc SeditSelSpell { f t } {
-    global tk_version sedit editor wish
+    global sedit editor wish
 
     set parent [file root $f]
     catch {[destroy $parent.spell]}
@@ -183,11 +183,7 @@ proc SeditSelSpell { f t } {
     $t2 configure -height $height	;# Widget_Text broken
     $t2 insert 1.0 $result
     $t2 config -state disabled
-    if {$tk_version >= 3.3} {
-	pack $f2 -before $f -side top
-    } else {
-	pack before $f $f2 top
-    }
+    pack $f2 -before $f -side top
 }
 
 proc SeditReplaceSel { t infile } {

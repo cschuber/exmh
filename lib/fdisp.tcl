@@ -225,7 +225,7 @@ proc FdispMakeCanvas { frame } {
     pack $fdisp(canvas) -side $exwin(scrollbarSide) -fill both -expand 1
 
     # fdisp popup color hack
-    if {[tk colormodel $fdisp(canvas)] != "color"} {
+    if {[winfo depth $fdisp(canvas)] <= 4} {
 	if {! [regexp {black|white} $fdisp(c_popup)]} {
 	    set fdisp(c_popup) [$fdisp(canvas) cget -bg]
 	}
