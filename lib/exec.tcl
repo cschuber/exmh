@@ -28,7 +28,9 @@ proc exec {args} {
 
     if {[info exists ExecCache($cmd)]} {
 	if [catch {eval {exec-orig $ExecCache($cmd)} $rest} x] {
-	    unset ExecCache($cmd)
+	    if {[info exist ExecCache($cmd)]} {
+		unset ExecCache($cmd)
+	    }
 	    return -code error $x
 	}
 	return $x
@@ -49,5 +51,7 @@ proc exec {args} {
 
 proc ExecCacheReset {args} {
     global ExecCache env
-    unset ExecCache
+    if {[info exist ExecCache]} {
+	unset ExecCache
+    }
 }
