@@ -443,7 +443,6 @@ proc Ftoc_RangeUnHighlight { } {
 	    }
 	}
     }
-    Ftoc_ShowSequences $exmh(folder)
 }
 
 # For user programming
@@ -1390,7 +1389,6 @@ proc FtocDragSelect {w x y wx wy} {
 }
 proc FtocToggleSequence { sequencename } {
     global ftoc exmh
-
     set folder $exmh(folder)
     set sequence [Mh_Sequence $folder $sequencename]
     # If any selected message is not in the sequence, then add to the sequence.
