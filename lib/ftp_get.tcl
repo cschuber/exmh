@@ -188,7 +188,7 @@ proc Ftp_event {url} {
 	    catch {close $ftp(cmdSock)}
 	    set ftp(cmdSock) -1
 	    catch {close $data(fd)}
-	    unset data(fd)
+	    catch {unset data(fd)}
 	    Http_kill $url
 	    return
 	} else {
