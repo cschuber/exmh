@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 04/19/2000
+    lib/html/software.html
+    nmh 1.0.4 is out - vkletnieks
+
 cvs repository 04/18/2000
     lib/seditExtras.tcl
     Add better support for composing RFC2017 URL external-references 
