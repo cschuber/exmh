@@ -14,7 +14,7 @@ It's written in perl and uses mh/nmh.
 
 Instructions
 ------------
-Take a lok at the script and make sure the MHPATH and MHLIB variables
+Take a look at the script and make sure the MHPATH and MHLIB variables
 are correct for your environmment.  There is a hardcoded "60" which
 says that any messages more than 60 days old will be moved.  That can
 be changed.  The naming of the subfolders is done using a -format
