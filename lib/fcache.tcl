@@ -154,7 +154,9 @@ proc Fcache_FolderName { folder } {
 	set key "seqcount,$folder,$mhProfile(unseen-sequence)"
 	if [ info exists flist($key)] {
 	    set num $flist($key)
-	    set fname "$fname:$num"
+            if { $num > 0} {
+	      set fname "$fname:$num"
+           }
 	}
     }
     return $fname

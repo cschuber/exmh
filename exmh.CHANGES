@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 02/10/2003 valdis.kletnieks@vt.edu
+    lib/fcache.tcl - Put in John Beck's fix for extraneous 'folder:0'
+    in the fdisp
+
 cvs repository 02/10/2003 welch@panasas.com
     scan.tcl - fix lineVar and line references to linenoVar and lineno.
 
