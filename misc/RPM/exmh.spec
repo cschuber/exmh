@@ -77,7 +77,7 @@ mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man1}
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/exmh-%{version}
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/exmh-%{version}/misc
 
-for i in exmh exmh-bg exmh-async ftp.expect; do
+for i in exmh exmh-bg exmh-async ftp.expect inc.expect; do
 	install -m755 $i $RPM_BUILD_ROOT/%{_bindir}
 done
 for i in *.l; do
@@ -110,6 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/exmh-bg
 %{_bindir}/exmh-async
 %{_bindir}/ftp.expect
+%{_bindir}/inc.expect
 #%{_libdir}/exmh-%{version}
 %{_mandir}/man1/exmh.1*
 
