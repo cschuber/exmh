@@ -26,6 +26,18 @@ interactively, but not if stdin is not a tty.
 
 I call it from a cronjob which runs at the start of each month.
 
+Limitations
+-----------
+At present the code for telling exmh to rescan the folders seems to
+behave a little strangely.
+
+Suggestions
+-----------
+You may also want to add this line to your .mh_defaults:
+
+Folder-Unseen: !*/old* *
+
+
 Author
 ------
 Chris Garrigues <cwg-exmh@DeepEddy.Com>
