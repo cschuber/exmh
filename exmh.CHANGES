@@ -3,6 +3,7 @@ HISTORY
 cvs repository 5/4/1999
     Fixed Help...>Color Legend crash -cwg
     Fixed crash when aborting out of PGP Password window -cwg
+    Made menubuttons and regular buttons the same size when using tkstep -cwg
 
 cvs repository 5/3/1999
     Added code and doc for "New" button in address database browser
