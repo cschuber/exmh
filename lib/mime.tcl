@@ -1427,6 +1427,7 @@ proc MimeDecode {fileName name encoding text} {
     }
     if [catch {
 	set out [open $name w 0600]
+        fconfigure $out -encoding binary        ;# No CRLF translations, please
 	switch -regexp -- $encoding {
 	    (8|7)bit {
 		Exmh_Debug "cat > $name"
@@ -2349,7 +2350,8 @@ proc Mime_SavePiece {part type} {
     if {$name != {}} {
 	if [catch {
 	    file copy -- $fileName $name
-	    file attributes $name -permissions $mhProfile(msg-protect)
+            # Leading zero to ensure octal interpretation
+	    file attributes $name -permissions 0$mhProfile(msg-protect)
 	} err] {
 	    Exmh_Status $err
 	}

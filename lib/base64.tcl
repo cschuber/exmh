@@ -15,7 +15,6 @@ proc Base64_Encode {string} {
     return $result
 }
 proc Base64_EncodeInit {stateVar oldVar lengthVar} {
-    set result {}
     upvar 1 $stateVar state
     upvar 1 $oldVar old
     upvar 1 $lengthVar length
@@ -36,7 +35,9 @@ proc Base64_EncodeBlock {string stateVar oldVar lengthVar} {
 	    2 { append result $base64_en([expr {(($old << 4) & 0x30) | (($x >> 4) & 0xF)}]) }
 	    3 { append result $base64_en([expr {(($old << 2) & 0x3C) | (($x >> 6) & 0x3)}])
 		append result $base64_en([expr {($x & 0x3F)}])
-		set state 0}
+                incr length
+		set state 0
+              }
 	}
 	set old $x
 	incr length
@@ -52,6 +53,7 @@ proc Base64_EncodeTail {stateVar oldVar lengthVar} {
     upvar 1 $stateVar state
     upvar 1 $oldVar old
     upvar 1 $lengthVar length
+    set result ""
     switch $state {
 	0 { # OK }
 	1 { append result $base64_en([expr {(($old << 4) & 0x30)}])== }

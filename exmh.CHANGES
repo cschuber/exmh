@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 08/23/2004 welch@panasas.com
+   lib/base64.tcl: fix two bugs, one with perfectly aligned blocks
+     where there was an "undefined result" error.  The other was that
+     lines were not properly split at 72 chars.
+   lib/mime.tcl: properly set binary encoding on decoded files.
+
 cvs repository 08/07/2004 valdis.kletnieks@vt.edu
   lib/app-defaults, lib/editor.tcl, lib/extrasInit.tcl, lib/mh.tcl, lib/sedit.tcl,
   lib/mh.tcl, lib/html/DSN-MDN.html, misc/README.nmh-dsn
