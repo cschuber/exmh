@@ -224,7 +224,7 @@ proc Send_Error { msg draftID } {
     button $name.buttons.edit -text "Re-edit draft" -command "
 	    destroy $name
             unset $name
-	    EditWhatNow $draftID
+	    Edit_DraftID $draftID
 	"
     pack append $name.buttons $name.buttons.edit {right}
 

@@ -87,7 +87,10 @@ proc Edit_Draft {} {
     EditWhatNow $draftID prog
 }
 proc Edit_DraftID { id } {
-    # No mucking with context
+    global exmh
+    # No mucking with context. We normally get here by-passing the
+    # standard draft creation process. Hence we need to set exmh($id,action)
+    set exmh($id,action) auto
     EditWhatNow $id prog
 }
 

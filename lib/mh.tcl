@@ -122,8 +122,14 @@ proc Mh_CompSetup {} {
 	    # In drafts with no previously current message
 	    Scan_Folder $exmh(folder)
 	    Msg_Change [Mh_Sequence $exmh(folder) cur]
+	    if {[Mh_Cur $exmh(folder)] == {}} {
+		# Scan_Folder destroyed the cur sequence (drafts must
+		# have been empty). Restore it.
+		Msg_CheckPoint
+	    }
 	}
     }
+    set exmh([Mh_Cur $mhProfile(draft-folder)],action) comp
 }
 proc Mh_CompUseSetup {} {
     global exmh msg
@@ -133,6 +139,7 @@ proc Mh_CompUseSetup {} {
     } else {
 	Exmh_Status "No current message" warn
     }
+    set exmh([Mh_Cur $mhProfile(draft-folder)],action) comp
 }
 proc Mh_ReplySetup { folder msg } {
     global mhProfile exmh
@@ -284,7 +291,7 @@ proc Mh_AnnoEnviron { draftID } {
 proc Mh_AnnoCleanup { draftID } {
     global exmh env
     foreach key {mhannoforw mhannorepl mhannodist mhannotate mhdist
-		 mhaltmsg mhfolder mhmessages mhinplace folder} {
+		 mhaltmsg mhfolder mhmessages mhinplace folder action} {
 	catch {unset exmh($draftID,$key)}
 	if {[regexp ^mh $key]} {
 	    catch {unset env($key)}
