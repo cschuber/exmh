@@ -228,6 +228,7 @@ Is there anything useful we can do with these text/x-vcard's that
 people have been attaching to their messages?  At minimum, we should
 display them with the triangle pointing right 'cause they're ugly.
 
+Handle "Content-Disposition: Ancillary" in the same way. 
 
 
 Number: 21
@@ -284,7 +285,7 @@ Incorporate patches from the New Features section of the Patch page
   8.String From lines before posting. 
 
 
-Number: 25
+Number: 26
 Priority: Med
 Scope: Narrow
 Complexity: trivial
@@ -299,9 +300,14 @@ ftp://playground.sun.com/pub/jbeck/exmh/flag-bitmaps.tar
 
 
 
+
 $Id$
 
 $Log$
+Revision 1.3  1999/04/01 01:34:45  haldevore
+More todo list updates.  Corrected duplicate number 25, added more
+info to item 20.
+
 Revision 1.2  1999/04/01 01:28:23  haldevore
 Added items to the todo list.
 
