@@ -110,6 +110,14 @@ Status:
 A URL of the form "http://host.dom" without a trailing slash doesn't
 work.
 
+Subject: Re: exmh built in browser bug?
+Date: Wed, 14 Apr 1999 11:17:20 -0700 (13:17 CDT)
+From: Brent Welch <welch@scriptics.com>
+
+We should fix it to use the http:: package, if available.
+I also noticed there is no timeout on Http_get.
+
+
 
 Number: 10
 Version: 2.0.3
