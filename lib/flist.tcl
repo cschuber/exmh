@@ -30,6 +30,7 @@ proc Flist_Init {} {
     set flist(cacheFileMtime) 0
     set flist(active) 0
     Flist_FindAllFolders
+    # NOTE the flist variable is traced by Seq_Trace
 }
 proc FlistResetVars {} {
     global flist mhProfile flistcache

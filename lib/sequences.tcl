@@ -162,13 +162,14 @@ Compose:       Starts a mail composition"
 proc Seq_TraceInit {} {
     global flist seqwin
 
-    trace variable flist wu Seq_Trace
     trace variable seqwin(on) w SeqWinToggle
     trace variable seqwin(nevershow) w SeqWinFixShowList
     trace variable seqwin(alwaysshow) w SeqWinFixShowList
     trace variable seqwin(orientation) w SeqWinFixOrientation
 
     SeqWin_Init
+
+    trace variable flist wu Seq_Trace
 }
 proc Seq_Trace {array elem op} {
     global flist seqwin
@@ -215,6 +216,8 @@ Exmh_Debug "Seq_Trace $array $elem $op"
 	    }
 	}
 	if {$delta != 0} {
+            # Sequence information changed, so update the fcache
+            Fcache_RedisplayUnseen $folder
 	    if {[info exists flist(totalcount,$seq)]} {
 		incr flist(totalcount,$seq) $delta
 	    } else {

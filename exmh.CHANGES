@@ -1,4 +1,8 @@
 HISTORY
+cvs repostiory 4/1/2003 welch@panasas.com
+  flist.tcl, sequences.tcl - Fix to call Fcache_Redisplay from
+  the trace on flist.
+
 cvs repository 04/01/2003 haldevore@acm.org
   Multiple fixes from Robert Elz (kre@munnari.OZ.AU)
   select.tcl, html/guide.html - Select message by typing now allows 
