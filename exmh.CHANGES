@@ -13,7 +13,7 @@ cvs repository 4/1/1999
     Forward Subject patch that optionally adds (fwd) to the
         subject of forwarded messages. 
         -Chris Keane via haldevore
-    Support for color icons on main window -cwg
+    Support for color icons on main window -cwg w/ help from jbeck@eng.sun.com
     New black&white and color icons -jbeck@eng.sun.com  via cwg
     Trivial change to extrasInit.tcl to make address database
         setting consistent between "top ten" and "address

@@ -40,7 +40,7 @@ proc Flag_Init {} {
     Preferences_Resource flag(iconspoolmask) iconSpoolMask flagspool.mask
     Preferences_Resource flag(iconupglyph) iconUpGlyph flagup.gif
     Preferences_Resource flag(icondownglyph) iconDownGlyph flagdown.gif
-    Preferences_Resource flag(iconspoolglyph) iconSpoolGlyph flagup.gif
+    Preferences_Resource flag(iconspoolglyph) iconSpoolGlyph flagspool.gif
 
     foreach i {iconup icondown iconspool iconupmask icondownmask iconspoolmask iconupglyph icondownglyph iconspoolglyph} {
 	if ![string match /* $flag($i)] {
@@ -74,7 +74,7 @@ proc Flag_NewMail { {folder {}} } {
 # This is called after viewing a message
 proc Flag_MsgSeen { {folder {}} } {
     global flist
-    FlagInner down icondown \
+    FlagInner spool icondown \
 	[expr { ($flist(newMsgs) > 0) ? "labelup" : "labeldown" }]
 }
 proc Flag_NoUnseen {} {
