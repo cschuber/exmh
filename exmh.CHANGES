@@ -1,4 +1,19 @@
 HISTORY
+cvs repository 12/29/2004 welch@panasas.com
+  lib/mh.tcl: Optimized MhReadSeq to not loop through the mhPriv array in Tcl,
+    but instead use the array command's ability to work on subsets of an
+    array by using patters.  This really speeds up Flist.
+  NOTE: THIS DEPENDS ON A TCL 8.3 FEATURE FOR THE "array unset" COMMAND
+  lib/flag.tcl: cleaned out some Exmh_Debug calls
+  lib/folder.tcl: removed unnecessary calls to Seq_Msgs for sequences listed
+    in the sequences resource.  I can't figure out what good that was supposed to do.
+  lib/sequences.tcl: Replaced Seq_Trace with SeqCount, and call it explicitly
+    instead of from a trace.
+  lib/seqwin.tcl: added error checking because it gets called earlier than
+    before because of the explicit SeqCount calls
+  lib/seditExtras.tcl: Also allow for "7bit" and "8bit" encodings.
+  lib/utils.tcl: FileDelete adds a log message now
+
 cvs repository 10/18/2004 welch@panasas.com
   lib/seditExtras.tcl: patch from George Ross to fix attachments of plain files
     with no encoding.

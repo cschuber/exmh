@@ -131,9 +131,15 @@ proc FolderChange {folder msgShowProc} {
     foreach cmd [info commands Hook_FolderChange*] {
 	$cmd $folder
     }
-    foreach seq [option get . sequences {}] {
-	BgRPC Seq_Msgs $oldFolder $seq
-    }
+
+    # Code deleted 12/29/04 - the effect is to synchronize the
+    # in-memory and in filesystem sequence state for the old folder,
+    # but I'm pretty sure this is redundant.  Plus, the sequences resource
+    # lists things like "mrange" and "moved" that are part of the ftoc
+    # implementation, and not really sequences.
+    # foreach seq [option get . sequences {}] {
+    #	BgRPC Seq_Msgs $oldFolder $seq
+    # }
 }
 
 proc Folder_Target {folder} {

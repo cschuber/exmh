@@ -70,6 +70,7 @@ proc Visibility_Wait {win} {
 }
 
 proc File_Delete {args} {
+    Exmh_Debug "file delete $args"
     foreach f $args {
         if [file isdirectory $f] {
     	error "Should not delete directories this way"

@@ -274,6 +274,10 @@ proc SeqWinAdd {seq folder num} {
 proc SeqWinUpdate {seq folder num} {
     global seqwin flist
     
+    if {![winfo exist .sequences.pane$seq.lb]} {
+        # This happens when we are called early in initialization
+        return
+    }
     if {![info exist seqwin(folders,$seq)]} {
         set seqwin(folders,$seq) {}
     }

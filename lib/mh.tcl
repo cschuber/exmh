@@ -439,14 +439,7 @@ proc MhReadSeqs {folder seqsvar} {
     set filename $mhProfile(context)
     if {![catch {set mtime [file mtime $filename]}]} {
 	if {![info exists mhPriv(privmtime)] || ($mtime != $mhPriv(privmtime))} {
-	    foreach elem [array names mhPriv] {
-		set indices [split $elem ,]
-		if {[lindex $indices 0] == {privseq}} {
-		    if {[lindex $indices 1] == $folder} {
-			unset mhPriv($elem)
-		    }
-		}
-	    }
+            array unset mhPriv privseq,${folder},*
 	    if {[catch {open $filename r} in] == 0} {
 		Exmh_Debug MhReadSeqs Reading $filename
 		set old [read $in]
@@ -471,36 +464,19 @@ proc MhReadSeqs {folder seqsvar} {
 	}
     } elseif {[info exists mhPriv(privmtime)]} {
 	unset mhPriv(privmtime)
-	foreach elem [array names mhPriv] {
-	    set indices [split $elem ,]
-	    if {[lindex $indices 0] == {privseq}} {
-	        if {[lindex $indices 1] == $folder} {
-		    unset mhPriv($elem)
-		}
-	    }
-	}
+        array unset mhPriv privseq,${folder},*
     }
-    foreach elem [array names mhPriv] {
+    # mhPriv(privseq,folder,sequence) contains list of message IDs
+    foreach elem [array names mhPriv privseq,${folder},*] {
 	set indices [split $elem ,]
-	if {[lindex $indices 0] == {privseq}} {
-	    if {[lindex $indices 1] == $folder} {
-		set seqs([lindex $indices 2]) $mhPriv($elem)
-	    }
-	}
+        set seqs([lindex $indices 2]) $mhPriv($elem)
     }
     # Then read the public sequence
     set mhPriv(changed,public) 0
     set filename "$mhProfile(path)/$folder/$mhProfile(mh-sequences)"
     if {![catch {set mtime [file mtime $filename]}]} {
 	if {![info exists mhPriv(seqmtime,$folder)] || ($mtime != $mhPriv(seqmtime,$folder))} {
-	    foreach elem [array names mhPriv] {
-		set indices [split $elem ,]
-		if {[lindex $indices 0] == {pubseq}} {
-		    if {[lindex $indices 1] == $folder} {
-			unset mhPriv($elem)
-		    }
-		}
-	    }
+            array unset mhPriv pubseq,${folder},*
 	    if {[catch {open $filename r} in] == 0} {
 		Exmh_Debug MhReadSeq Reading $filename
 		set old [read $in]
@@ -527,22 +503,11 @@ proc MhReadSeqs {folder seqsvar} {
 	}
     } elseif {[info exists mhPriv(seqmtime,$folder)]} {
 	unset mhPriv(seqmtime,$folder)
-	foreach elem [array names mhPriv] {
-	    set indices [split $elem ,]
-	    if {[lindex $indices 0] == {pubseq}} {
-	        if {[lindex $indices 1] == $folder} {
-		    unset mhPriv($elem)
-		}
-	    }
-        }
+        array unset mhPriv pubseq,${folder},*
     }
-    foreach elem [array names mhPriv] {
+    foreach elem [array names mhPriv pubseq,${folder},*] {
 	set indices [split $elem ,]
-	if {[lindex $indices 0] == {pubseq}} {
-	    if {[lindex $indices 1] == $folder} {
-		set seqs([lindex $indices 2]) $mhPriv($elem)
-	    }
-	}
+        set seqs([lindex $indices 2]) $mhPriv($elem)
     }
 }
 
@@ -620,14 +585,7 @@ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
     if {[info exist seqs]} {
       unset seqs
     }
-    foreach elem [array names mhPriv] {
-	set indices [split $elem ,]
-	if {[lindex $indices 0] == {mode}} {
-	    if {[lindex $indices 1] == $folder} {
-		unset mhPriv($elem)
-	    }
-	}
-    }
+    array unset mhPriv(mode,$folder)    ;# array unset is ok if already unset
     MhReadSeqs $folder seqs
     # Set the value for the sequence we're updating
     if [catch {set seqs($seq)} oldmsgids] {

@@ -174,75 +174,47 @@ proc Seq_TraceInit {} {
 
     SeqWin_Init
 
-    trace variable flist wu Seq_Trace
+    # This trace is crude, and now we do all the updating in
+    # procedures in this file, so the calls are made explicitly.
+    # trace variable flist wu Seq_Trace
+    # Seq_Trace is now SeqCount
+    # See also the Flag_Trace on the flist(totalcount,unseen) variable
 }
-proc Seq_Trace {array elem op} {
-    global flist seqwin mhProfile
-    set indices [split $elem ,]
-    set var [lindex $indices 0]
-    if {$var == {seqcount}} {
-	set folder [lindex $indices 1]
-	set seq [lindex $indices 2]
-	if {![info exists flist(seqcount,$folder,$seq)]} {
-	    set flist(seqcount,$folder,$seq) 0
-	}
-	if [info exists flist($elem)] {
-	    set num $flist($elem)
-	} else {
-	    set num 0
-	}
-	if [info exists flist(oldseqcount,$folder,$seq)] {
-	    set oldnum $flist(oldseqcount,$folder,$seq)
-	} else {
-	    set oldnum 0
-	}
-	set flist(oldseqcount,$folder,$seq) $num
-	set delta [expr {$num - $oldnum}]
-	if {$delta != 0} {
-	    Exmh_Debug $folder has $num msgs in $seq (delta: $delta)
-	}
-	if {$num > 0} {
-	    if [info exists flist($seq)] {
-		if {[lsearch $flist($seq) $folder] < 0} {
-		    lappend flist($seq) $folder
-		}
-	    } else {
-		set flist($seq) $folder
-	    }
-	} else {
-	    if [info exists flist($seq)] {
-		set ix [lsearch $flist($seq) $folder]
-		if {$ix >= 0} {
-		    set flist($seq) [lreplace $flist($seq) $ix $ix]
-		}
-	    } else {
-		set flist($seq) {}
-	    }
-	}
-	if {$delta != 0} {
-	    if {[info exists flist(totalcount,$seq)]} {
-		incr flist(totalcount,$seq) $delta
-	    } else {
-		set flist(totalcount,$seq) $delta
-	    }
-	}
-	if {$seqwin(on)} {
-	    BgRPC SeqWinUpdate $seq $folder $num
-	}
-    } elseif {$var == {totalcount}} {
-	set seq [lindex $indices 1]
-#	if [info exists flist($seq)] {
-#	    Exmh_Debug "$flist(totalcount,$seq) $seq msgs in [llength $flist($seq)] folders ($flist($seq))"
-#	} else {
-#	    Exmh_Debug "$flist(totalcount,$seq) $seq msgs in no folders"
-#	}
-	if {$flist(totalcount,$seq) <  0} {
-	    Exmh_Status "$flist(totalcount,$seq) $seq!"
-	    set flist(totalcount,$seq) 0
-	}
-	if {$seqwin(on)} {
-	    BgRPC SeqWinShowSeqPane $seq
-	}
+proc SeqCount {folder seq} {
+    global flist seqwin
+
+    # flist($seq) is the list of folders that have messages
+    # in that sequence.  Here we ensure that invariant.
+    set num $flist(seqcount,$folder,$seq)
+    ldelete flist($seq) $folder
+    if {$num > 0} {
+        lappend flist($seq) $folder
+    } elseif {![info exist flist($seq)]} {
+        set flist($seq) {}
+    }
+    # Now tally up any changes
+    if [info exists flist(oldseqcount,$folder,$seq)] {
+        set oldnum $flist(oldseqcount,$folder,$seq)
+    } else {
+        set oldnum 0
+    }
+    set flist(oldseqcount,$folder,$seq) $num
+    set delta [expr {$num - $oldnum}]
+    if {$delta != 0} {
+        Exmh_Debug $folder has $num msgs in $seq (delta: $delta)
+        if {[info exists flist(totalcount,$seq)]} {
+            incr flist(totalcount,$seq) $delta
+        } else {
+            set flist(totalcount,$seq) $delta
+        }
+        if {$flist(totalcount,$seq) <  0} {
+            Exmh_Status "$flist(totalcount,$seq) $seq!"
+            set flist(totalcount,$seq) 0
+        }
+    }
+    if {$seqwin(on)} {
+        BgRPC SeqWinUpdate $seq $folder $num
+        BgRPC SeqWinShowSeqPane $seq
     }
 }
 
@@ -257,10 +229,7 @@ proc Seq_Forget {folder seq} {
     Mh_SequenceUpdate $folder clear $seq
     set flist(seq,$folder,$seq) {}
     set flist(seqcount,$folder,$seq) 0
-    set ix [lsearch $flist($seq) $folder]
-    if {$ix >= 0} {
-	set flist($seq) [lreplace $flist($seq) $ix $ix]
-    }
+    ldelete flist($seq) $folder
 }
 
 # Add messages to the list for a given folder.
@@ -309,7 +278,7 @@ proc Seq_Add {folder seq msgids} {
     }
     set flist(seqcount,$folder,$seq) [expr $new + $num]
     set flist(seq,$folder,$seq) [concat $flist(seq,$folder,$seq) $msgids]
-    if {[lsearch $flist($seq) $folder] < 0} {
+    if {![info exist flist($seq)] || ([lsearch $flist($seq) $folder] < 0)} {
 	lappend flist($seq) $folder
     }
     if {$seq == $mhProfile(unseen-sequence)} {
@@ -327,24 +296,22 @@ proc Seq_Add {folder seq msgids} {
 
 proc Seq_Set {folder seq msgids} {
     global flist exmh mhProfile
+if {[catch {
 #    catch {MhExec mark +$folder $msgids -seq $seq -zero}
 #    Mh_SequenceUpdate $folder replace $seq $msgids
-    if [info exists flist(seqcount,$folder,$seq)] {
-	set oldnum $flist(seqcount,$folder,$seq)
-    } else {
-	set oldnum 0
-    }
     set newnum [llength $msgids]
     if {$newnum <= 0} {
 	set flist(seqcount,$folder,$seq) 0
 	set flist(seq,$folder,$seq) {}
+        SeqCount $folder $seq
 	return
     }
     set flist(seqcount,$folder,$seq) $newnum
     set flist(seq,$folder,$seq) $msgids
-    if {[lsearch $flist($seq) $folder] < 0} {
+    if {![info exist flist($seq)] || ([lsearch $flist($seq) $folder] < 0)} {
 	lappend flist($seq) $folder
     }
+    SeqCount $folder $seq
     if {$seq == $mhProfile(unseen-sequence)} {
 	if {[string compare $folder $exmh(folder)] != 0 &&
 	    [lsearch $flist(unvisited) $folder] < 0} {
@@ -352,11 +319,17 @@ proc Seq_Set {folder seq msgids} {
 	}
 	Fdisp_HighlightUnseen $folder
     }
+} err]} {
+  Exmh_Debug Seq_Set $folder $seq [lrange $msgids 0 3] ERROR\n$::errorInfo
+} else {
+  Exmh_Debug Seq_Set $folder $seq [lrange $msgids 0 3] OK
+}
 }
 # Deletes messages from a sequence
 proc Seq_Del {folder seq msgids} {
     global flist mhProfile
 #   eval {MhExec mark +$folder -seq $seq -delete} $msgids
+    Exmh_Debug Seq_Del $folder $seq [lrange $msgids 0 3] ...
     Mh_SequenceUpdate $folder del $seq $msgids
     set delta 0
     foreach msgid $msgids {
@@ -371,6 +344,7 @@ proc Seq_Del {folder seq msgids} {
     }
     if {$delta != 0} {
 	incr flist(seqcount,$folder,$seq) $delta
+        SeqCount $folder $seq
 	if {$seq == $mhProfile(unseen-sequence)} {
 	    if {$flist(seqcount,$folder,$seq) == 0} {
 		FlistUnseenFolder $folder

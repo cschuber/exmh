@@ -83,7 +83,7 @@ proc Flag_Trace args {
     } else {
 	set newtotal 0
     }
-Exmh_Debug oldtotal $oldtotal newtotal $newtotal
+Exmh_Debug Flag_Trace oldtotal $oldtotal newtotal $newtotal
     set delta [expr {$newtotal - $oldtotal}]
     set flist(oldtotalcount,$mhProfile(unseen-sequence)) $newtotal
     if {($delta > 0) && ($newtotal > 0)} {
@@ -125,21 +125,21 @@ proc Flag_NoSpooled {} {
 }
 proc FlagInner {state icon label} {
     global exmh flag
-    Exmh_Debug "In FlagInner $state $icon $label"
+    # Exmh_Debug "In FlagInner $state $icon $label"
     if {$flag(state) != $state} {
 	if [winfo exists .icon.c] {
-	    Exmh_Debug "Setting flag glyph to $icon"
+	    # Exmh_Debug "Setting flag glyph to $icon"
 	    .icon.c delete image -tag icon
 	    .icon.c create image 0 0 -anchor nw -image $icon -tag icon
 	} else {
-	    Exmh_Debug "Setting flag bitmap to $icon"
+	    # Exmh_Debug "Setting flag bitmap to $icon"
 	    wm iconbitmap . @$flag($icon)
 	    if {$flag(${icon}mask) != 0} {
 		wm iconmask . @$flag(${icon}mask)
 	    }
 	}
 	set flag(state) $state
-	Exmh_Debug "Set flag state to $state"
+	# Exmh_Debug "Set flag state to $state"
     }
     set l [uplevel #0 list $flag($label)]
     if {[info exists flag(lastLabel)] &&

@@ -268,13 +268,14 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
                     $t insert $mark [::mime::qp_encode $buffer]
                   }
                 }
-                "" -
-                none {
-                  set in [open $file]
-                  $t insert $mark [read $in]
-                }
                 x-uuencode {
                   $t insert $mark "Error: x-uuencode attachments not supported\n"
+                }
+                "" -
+                none -
+                default {
+                  set in [open $file]
+                  $t insert $mark [read $in]
                 }
             }
 	}
