@@ -706,7 +706,7 @@ proc AddrShowDialog {w list} {
     pack $f.lb -expand true -fill both
     frame $f.but -bd 10 -relief flat
     pack $f.but -expand true -fill both
-    Widget_AddBut $f.but ok "Done" [list AddrShowDialogDone $f $l] left
+    Widget_AddBut $f.but ok "Done" [list AddrShowDialogDone $f $l] {left fill}
     Widget_PlaceDialog $w $f
     tkwait window $f
     if [info exists addr_db(expansion)] {

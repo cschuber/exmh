@@ -28,8 +28,8 @@ proc Find_Setup {} {
 	set t .find
 	set f $t.but	;# from Exwin_Toplevel
 
-	Widget_AddBut $f next "Next" {Find_It forw} {left padx 1}
-	Widget_AddBut $f prev "Prev" {Find_It prev} {left padx 1}
+	Widget_AddBut $f next "Next" {Find_It forw} {left padx 1 fill}
+	Widget_AddBut $f prev "Prev" {Find_It prev} {left padx 1 fill}
 	set find(allbut) [Widget_CheckBut $f all "All" find(all) {left padx 1}]
 	Widget_RadioBut $f ftoc "FTOC" find(choice) {left padx 1}
 	Widget_RadioBut $f msg "Msg" find(choice) {left padx 1}

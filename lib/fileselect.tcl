@@ -124,10 +124,10 @@ proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""}
 		-command [list fileselect.cancel.cmd $w]
 	
 	Widget_AddBut $w.but ok OK \
-		[list fileselect.ok.cmd $w $cmd $errorHandler] {left padx 1}
+		[list fileselect.ok.cmd $w $cmd $errorHandler] {left padx 1 fill}
 	
 	Widget_AddBut $w.but list List \
-		[list fileselect.list.cmd $w] {left padx 1}    
+		[list fileselect.list.cmd $w] {left padx 1 fill}
 	Widget_CheckBut $w.but listall "List all" fileselect(pattern)
 	$w.but.listall configure -onvalue "{*,.*}" -offvalue "*" \
 		-command {fileselect.list.cmd $fileselect(direntry)}

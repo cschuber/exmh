@@ -141,9 +141,9 @@ proc Sedit_Start { draft } {
 	}
 	foreach but [Widget_GetButDef $b] {
 	    if {[regexp (abort|save) $but]} {
-		Widget_AddButDef $b $but {left padx 5}
+		Widget_AddButDef $b $but {left padx 5 fill}
 	    } else {
-		Widget_AddButDef $b $but {right padx 1}
+		Widget_AddButDef $b $but {right padx 1 fill}
 	    }
 	    Widget_ReEvalCmd $b.$but	;# expand variables now
 	}

@@ -27,8 +27,8 @@ proc FolderDialogInner {path label cancelProc okProc message} {
 
 	set f [Widget_Frame $t but Rim]
 	$f configure -bd 10
-	Widget_AddBut $f cancel "Cancel" [list $cancelProc $path] left
-	Widget_AddBut $f ok "OK" [list $okProc $path $e] right
+       Widget_AddBut $f cancel "Cancel" [list $cancelProc $path] {left fill}
+       Widget_AddBut $f ok "OK" [list $okProc $path $e] {right fill}
     } else {
 	$t.msg config -text $message
 	set e $path.name.rim.name

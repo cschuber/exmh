@@ -26,8 +26,8 @@ proc Import_Dialog {} {
 	Widget_BindEntryCmd $_import(win,entry) <Return> [list ImportWhat $w]
 
 	set f [Widget_Frame $w but Rim {top fill expand} -bd 10]
-	Widget_AddBut $f cancel "Cancel" "destroy $w" left
-	set _import(win,okbut) [Widget_AddBut $f ok "OK" [list ImportWhat $w] right]
+	Widget_AddBut $f cancel "Cancel" "destroy $w" {left fill}
+	set _import(win,okbut) [Widget_AddBut $f ok "OK" [list ImportWhat $w] {right fill}]
     }
     catch {destroy .import.folders}
     $_import(win,msg) config -text \
