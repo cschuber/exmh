@@ -1,4 +1,4 @@
-Last modified: Wed Jun 14 10:09:34 PDT 2000
+Last modified: Fri Jun 23 00:39:09 PDT 2000
 exmh version: 2.2
 welch@acm.org
  
@@ -11,6 +11,8 @@ All the docs have moved into html and are viewable from within
 the installer as well as from within a running exmh.
 The exmh home page is
 http://www.beedub.com/exmh/
+Exmh builds on many related software packages:
+http://www.beedub.com/exmh/software.html
 
 To install, run
 
@@ -24,7 +26,7 @@ From or Reply-To line contains the email address to add.
 
 Thanks to the dozen or so folks that have write access to
 the CVS code base who continue to add features and fix bugs.
-You see this folks listed in the exmh.CHANGES file:
+You see these folks listed in the exmh.CHANGES file:
 
 cwg		Chris Garrigues <cwg-exmh@DeepEddy.Com>
 iko		Anders Hammarquist <iko@cd.chalmers.se>
