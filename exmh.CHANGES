@@ -1,5 +1,8 @@
 HISTORY
 cvs repository 07/26/2002 cwg-exmh@deepeddy.com
+    folder.tcl - Call Msg_Change with skipdisplay in Folder_Pack too.
+
+cvs repository 07/26/2002 cwg-exmh@deepeddy.com
     scan.tcl,ftoc.tcl - Found the bug in ftoc.tcl which was causing
 	the current message to get lost.
 

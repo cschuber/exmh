@@ -210,7 +210,7 @@ proc Folder_Pack {} {
 	Scan_FolderForce
 	set id [Mh_Cur $exmh(folder)]
 	if {$id != {}} {
-	    Msg_Change $id
+	    Msg_Change $id skipdisplay
 	} else {
 	    Msg_ClearCurrent
 	}
