@@ -208,7 +208,7 @@ preference of the various alternatives. The most common use for this
 is to establish a precedence of text/plain over text/html.
 
 The following line makes exmh display the text/plain part in favour 
-of text/html part if both are present in a multipart/alternative:
+of the text/html part if both are present in a multipart/alternative:
 
 text/plain text/html"}
     }
