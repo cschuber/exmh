@@ -1312,14 +1312,25 @@ proc MimeSortHeaders { a b } {
 
   # Modification from Tom Lane so that headers that appear in the
   # Header-Display .mh_profile setting appear first, before
-  # stray headers that are not surpressed with Header-Supress
+  # stray headers that are not suppressed with Header-Supress
+  # Further change - the old lsearch -regexp was completely
+  # wrong.  The header-display is a list of regular expressions
+  # to test against the header value.  You can't do that with lsearch.
 
-  set apos [lsearch -regexp $mhProfile(header-display) $a]
-  if {$apos < 0} { set apos 100000 }
-  set bpos [lsearch -regexp $mhProfile(header-display) $b]
-  if {$bpos < 0} { set bpos 100000 }
-
-
+  set apos 0
+  foreach item $mhProfile(header-display) {
+      if {[regexp -nocase ^${item}\$ $a]} {
+          break
+      }
+      incr apos
+  }
+  set bpos 0
+  foreach item $mhProfile(header-display) {
+      if {[regexp -nocase ^${item}\$ $b]} {
+          break
+      }
+      incr bpos
+  }
    return [expr {$apos - $bpos}]
 }
 proc MimeShowMinHeaders {tkw part inlin} {

@@ -387,7 +387,7 @@ proc Ftoc_LinesHighlight { linenos } {
 	return
     }
     WidgetTextYview $exwin(ftext) -pickplace [lindex $linenos 0].0
-    update idletasks
+#    update idletasks
     foreach lineno $linenos {
 	set newtag range
 	foreach tag [$win tag names $lineno.0] {
@@ -507,12 +507,15 @@ proc Ftoc_FindMsg { msgid } {
             }
             return {}   ;# not found
         }
-        set nextlineno [expr int(($maxlineno+$minlineno)/2)]
-        if {0} {
-          # Don't divide in two, guestimate where the line might be instead
-          # Disabled - welch 2/20/03 - this sometimes picks lines that
-          # are not valid and so Ftoc_MsgNumber returns {}
-          set nextlineno [expr int($minlineno+1+($msgid-$minmsgid)*($maxlineno-$minlineno-2)/($maxmsgid-$minmsgid))]
+        # Original binary search
+        #set nextlineno [expr int(($maxlineno+$minlineno)/2)]
+        # Don't divide in two, guestimate where the line might be instead
+        set nextlineno [expr int($minlineno+1+($msgid-$minmsgid)*($maxlineno-$minlineno-2)/($maxmsgid-$minmsgid))]
+        if {$nextlineno < $minlineno} {
+          set nextlineno $minlineno
+        }
+        if {$nextlineno > $maxlineno} {
+          set nextlineno $maxlineno
         }
         set nextmsgid [Ftoc_MsgNumber $nextlineno]
         # Note that a side effect of Ftoc_MsgNumber was to put this entry in 
@@ -528,7 +531,9 @@ proc Ftoc_FindMsg { msgid } {
                 unset msgtolinecache($msgid)
             }
             return {} ;# new message not listed
-        } else {
+        } elseif {$nextmsgid == ""} {
+            error "Failed to find a message number on line $nextlineno, end is [$::exwin(ftext) index end]\n[$::exwin(ftext) get $nextlineno.0 $nextlineno.end]"
+        } else { 
             set minlineno $nextlineno
             set minmsgid $nextmsgid
         }

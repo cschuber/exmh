@@ -68,7 +68,8 @@ proc Flag_Init {} {
 	}
     }
     FlagInner down icondown labeldown
-    trace variable flist(totalcount,$mhProfile(unseen-sequence)) wu Flag_Trace
+    # Call explicitly from FlistDone
+#    trace variable flist(totalcount,$mhProfile(unseen-sequence)) wu Flag_Trace
 }
 proc Flag_Trace args {
     global flist mhProfile

@@ -210,7 +210,9 @@ proc ExmhArgv {} {
 }
 proc Exmh_Focus {} {
     global exwin
-    focus $exwin(mtext)
+    if {[info exist exwin(mtext)]} {
+      focus $exwin(mtext)
+    }
 }
 proc ExmhResources {} {
     global exmh

@@ -1,4 +1,18 @@
 HISTORY
+cvs repository 03/11/2003 welch@panasas.com
+    flag.tcl - Removed trace on flist(totalcount,$mhProfile(unseen-sequence)) and
+      replaced with explicit call to Flag_Trace in Flist_Done.  This is to
+      reduce the amount of variable trace firing and speed things up a bit.
+    flist.tcl - Removed some ancient debugging code that was an ancient ancestor
+      of the unseen/sequences window.
+    folder.tcl - Shifted the Ftoc_ShowSequences call to eliminate one extra redisplay.
+    ftoc.tcl - added various debugging and fixes to Ftoc_FindMsg, but the trouble
+      was really caused by a -header flag in a users .mh_profile for scan.
+    mime.tcl - fixed the MimeHeaderSort procedure to use the patterns in
+      Folder-Display and Folder-Surpress correctly, and to work better with
+      non-defaults (Tom Lane's fix)
+    seqwin.tcl - eliminated one update idletasks to eliminate screen updates.
+
 cvs repository 02/21/2003 welch@panasas.com
     ftoc.tcl - Reverted change to the binary search in Ftoc_FindMsg
       because the new method sometime causes stack traces because the

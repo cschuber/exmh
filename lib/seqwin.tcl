@@ -508,7 +508,7 @@ proc SeqWinButton {seq y mode} {
 	    }
 	    wm deiconify .
 	    raise .
-	    update idletasks
+#	    update idletasks
 	}
     }
 }

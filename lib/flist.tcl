@@ -61,50 +61,6 @@ proc FlistResetVars {} {
 	    set flist($x) 0
 	}
     }
-    if ![info exists flist(debug)] {
-	set flist(debug) 0
-    }
-
-    # Note - I think this flist debugging window is obviated by
-    # the Unseen_window/Sequences_window - consider nuking it.
-
-    if {$flist(debug)} {
-	trace variable flist(totalcount,$mhProfile(unseen-sequence)) w FlistTraceTotalUnseen
-	trace variable flist($mhProfile(unseen-sequence)) w FlistTraceUnseen
-	trace variable flist(unvisited) w FlistTraceUnvisited
-	set flist(listbox) .flistbox
-	set f $flist(listbox)
-	if ![winfo exists $f] {
-	    Exwin_Toplevel $f "Flist Debug" Flist
-	    Widget_Label $f newMsgs {top fillx } -textvariable flist(totalcount,$mhProfile(unseen-sequence))
-	    Widget_Frame $f top Labels
-	    Widget_Label $f.top unseen {left fill expand} -text Unseen
-	    Widget_Label $f.top unvisited {left fill expand} -text Unvisited
-	    FontWidget listbox $f.unseen
-	    FontWidget listbox $f.unvisited
-	    pack $f.unseen $f.unvisited -side left -fill both -expand true
-	}
-    }
-}
-proc FlistTraceTotalUnseen {args} {
-    global flist mhProfile
-    set l [info level]
-    incr l -1
-    Exmh_Debug FlistTraceTotalUnseen flist(totalcount,$mhProfile(unseen-sequence)) => $flist(totalcount,$mhProfile(unseen-sequence)) : [info level $l] $args
-}
-proc FlistTraceUnseen {args} {
-    global flist
-    $flist(listbox).unseen delete 0 end
-    foreach f $flist($mhProfile(unseen-sequence)) {
-	$flist(listbox).unseen insert end $f
-    }
-}
-proc FlistTraceUnvisited {args} {
-    global flist
-    $flist(listbox).unvisited delete 0 end
-    foreach f $flist(unvisited) {
-	$flist(listbox).unvisited insert end $f
-    }
 }
 
 ### Routines to find all folders, figure out which have nested folders, etc.
@@ -282,7 +238,7 @@ proc Flist_FolderSet { {subfolder .} } {
 proc Flist_Done { {resetVisited 1} } {
     global flist exmh
 
-    # See Flag_Trace, which has code that used to be called from this point
+    Flag_Trace  ;# Used to be called via a variable trace
 
     Exmh_Debug Flist_Done
     if {$resetVisited} {
