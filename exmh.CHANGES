@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 09/01/1999
+    Fixed text/plain to application/pgp hack in mime.tcl so it ignores
+        the format parameter of text/plain. -kchrist
+
 cvs repository 08/25/1999
     Fixed some problems with not timing out PGP subkeys (e.g. DSS keys
 	for PGP5/GPG).  --bmah.

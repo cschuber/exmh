@@ -299,7 +299,7 @@ proc MimeHeader {part contentType encoding} {
 	    set key [string trim [string tolower $key]]
 	    set val [string trim $val]
 	    # Allow single as well as double quotes
-	    if [regexp {^["']} $val quote] {
+	    if [regexp {^[\"']} $val quote] {
 		if [regexp ^${quote}(\[^$quote\]+)$quote $val x val2] {
 		    # Trim quotes and any extra crap after close quote
 		    set val $val2
@@ -365,7 +365,7 @@ proc MimeSetCharset {tkw part} {
 	    set mimeFont(charset,$charset) $font
 	}
     }
-    set partTag [MimeLabel $part part]
+    set partTag [MimeLabel $part charset]
     if [catch {$tkw tag configure $partTag -font $mimeFont(charset,$charset)} err] {
 	MimeInsertNote $tkw [MimeLabel $part part] "Error: $err"
 	$tkw insert insert \n
@@ -950,8 +950,15 @@ proc Mime_ShowText {tkw part} {
 	Mime_WithTextFile fileIO $tkw $part {
 	    gets $fileIO firstLine
 	    if {$pgp(enabled) && [regexp $miscRE(beginpgp) $firstLine]} {
+		# convert from text/plain to application/pgp
 		set mimeHdr($part,type) "application/pgp"
 		catch { unset mimeHdr($part,typeDescr) }
+                if {[info exists mimeHdr($part,param,format)]} {
+                    unset mimeHdr($part,param,format)
+                    set i [lsearch $mimeHdr($part,params) format]
+                    set mimeHdr($part,params) \
+                        [lreplace $mimeHdr($part,params) $i $i]
+                }
 		Pgp_ShowMessage $tkw $part
 	    } else {
 		$tkw insert insert "$firstLine\n"
