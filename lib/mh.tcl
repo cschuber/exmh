@@ -42,7 +42,7 @@ proc Mh_Preferences {} {
     Preferences_Add "MH Tweaks" \
 "Note that most of MH is parameterized by your [file tail $mhProfile(profile)] file.
 These options just affect a few things particular to exmh." [list \
-	{mhProfile(scan-proc) scanProc scan {Scan program}
+	{mhProfile(scan-proc) scanProc {scan -noheader} {Scan program}
 "If you have a custom scan program, name it here."} \
 	{mhProfile(sendType) sendType {CHOICE wait async xterm} {How to send messages}
 "There are three ways exmh can send a message for you:
