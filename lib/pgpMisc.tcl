@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.7  1999/04/10 04:20:08  cwg
+# Do the right thing if pgp(seditpgp) is not enabled.
+#
 # Revision 1.6  1999/04/09 19:11:26  cwg
 # Now that's an embarrasing typo
 #
@@ -293,16 +296,17 @@ proc Misc_PostProcess { srcfile } {
 
     # call the pgp postprocesing if necessary
     if {$pgp(enabled)} {
-	if {$pgp(seditpgp)} {
+	if {$pgp(encrypt) || $pgp(sign)} {
+	    if !$pgp(seditpgp) {
+		Pgp_GetPass $pgp(myname)
+	    } 
 	    set keyid [lindex $pgp(myname) 0]
-	} else {
-	    Pgp_GetPass $pgp(myname)
-	}
-	Exmh_Debug keyid=$keyid
-	Exmh_Debug pass=>$pgpPass($keyid)<
-	if {($pgp(encrypt) || $pgp(sign)) && ([string length $pgpPass($keyid)] > 0)} {
-	    Pgp_Process $curfile $dstfile
-	    set curfile $dstfile
+	    Exmh_Debug keyid=$keyid
+	    Exmh_Debug pass=>$pgpPass($keyid)<
+	    if {[string length $pgpPass($keyid)] > 0} {
+		Pgp_Process $curfile $dstfile
+		set curfile $dstfile
+	    }
 	}
     }
 

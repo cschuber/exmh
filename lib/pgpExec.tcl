@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.2  1999/04/10 04:20:08  cwg
+# Do the right thing if pgp(seditpgp) is not enabled.
+#
 # Revision 1.1  1998/05/05 17:55:37  welch
 # Initial revision
 #
@@ -417,7 +420,7 @@ proc Pgp_GetPass { key } {
     }
 
     set keyid [lindex $key 0]
-    if [info exists pgpPass($keyid)] {
+    if {[info exists pgpPass($keyid)] && [string length $pgpPass($keyid)]} {
 	return $pgpPass($keyid)
     }
     while 1 {
