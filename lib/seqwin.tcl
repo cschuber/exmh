@@ -53,7 +53,8 @@ proc SeqWinToggle {args} {
 	    focus $exwin(mtext)
 	}
 	wm protocol .sequences WM_DELETE_WINDOW SeqWinDeleted
-	catch {Flist_FindSeqs 1}
+        # Flist_FindSeqs won't do anything until we are fully initialized
+        catch {Flist_FindSeqs 1}
     } elseif {!$seqwin(on) && [winfo exists .sequences]} {
 	destroy .sequences
     }
@@ -276,7 +277,7 @@ proc SeqWinUpdate {seq folder num} {
     
     if {![winfo exist .sequences.pane$seq.lb]} {
         # This happens when we are called early in initialization
-        return
+        SeqWinShowSeqPane $seq
     }
     if {![info exist seqwin(folders,$seq)]} {
         set seqwin(folders,$seq) {}

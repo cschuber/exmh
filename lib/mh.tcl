@@ -588,7 +588,9 @@ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
     array unset mhPriv(mode,$folder)    ;# array unset is ok if already unset
     MhReadSeqs $folder seqs
     # Set the value for the sequence we're updating
-    if [catch {set seqs($seq)} oldmsgids] {
+    if {[info exist seqs($seq)]} {
+        set oldmsgids $seqs($seq)
+    } else {
 	set oldmsgids {}
     }
     set seqs($seq) [MhSeq $folder $seq $how $oldmsgids $msgids]

@@ -296,7 +296,7 @@ proc Seq_Add {folder seq msgids} {
 
 proc Seq_Set {folder seq msgids} {
     global flist exmh mhProfile
-if {[catch {
+
 #    catch {MhExec mark +$folder $msgids -seq $seq -zero}
 #    Mh_SequenceUpdate $folder replace $seq $msgids
     set newnum [llength $msgids]
@@ -319,11 +319,6 @@ if {[catch {
 	}
 	Fdisp_HighlightUnseen $folder
     }
-} err]} {
-  Exmh_Debug Seq_Set $folder $seq [lrange $msgids 0 3] ERROR\n$::errorInfo
-} else {
-  Exmh_Debug Seq_Set $folder $seq [lrange $msgids 0 3] OK
-}
 }
 # Deletes messages from a sequence
 proc Seq_Del {folder seq msgids} {

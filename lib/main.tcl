@@ -65,6 +65,10 @@ is displayed to debug the flist module."}
 
     # The order of the following mainly determines the way
     # their associated items appear in the Preferences dialog
+    # The "startup_code" variable is an artifact to make it
+    # easy to add an Exmh_Debug call as each init proc is called.
+
+set startup_code {
     Sedit_Init		;# built in editor
     Ispell_Preferences
     Signature_Init
@@ -97,7 +101,11 @@ is displayed to debug the flist module."}
     Post_Init
     Quote_Init
     Bogo_Init
-
+}
+    foreach line [split $startup_code \n] {
+      Exmh_Debug [lindex $line 0]
+      eval $line
+    }
     wm protocol . WM_DELETE_WINDOW Exmh_Done
     Exwin_Layout
     if [catch {User_Layout} err] {
@@ -122,6 +130,8 @@ is displayed to debug the flist module."}
     # this was done too early.
     wm protocol . WM_SAVE_YOURSELF [list Exmh_Done 0]
 
+    # This stuff can take a while, so we show a busy cursor
+    # while it happens
     busy ExmhJunk
 }
 proc ExmhJunk {} {

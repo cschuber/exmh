@@ -1,4 +1,15 @@
 HISTORY
+cvs repository 1/6/2005 welch@panasas.com
+  lib/seqwin.tcl: Fixed a buglet that caused the incorrect
+    display (missing the first folder) in the sequences window
+    in some cases.
+  lib/sequences.tcl: removed some erroneous debugging code.
+    once again I forgot that catch will trap a "return", not just errors
+  lib/mh.tcl: minor clean up - changed "catch {set foo}"
+    to "info exists foo"
+  lib/main.tcl: added logging to the startup sequence
+  exmh.install: changed 2.7.2 date to 1/6/2005
+
 cvs repository 1/6/2005 valdis.kletnieks@vt.edu
   lib/fdisp.tcl - enable scrollwheel support for fdisp canvas
 
