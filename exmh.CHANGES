@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 05/09/2000  Valdis Kletnieks <valdis.kletnieks@vt.edu>
+    exmh.TODO: remove following 2 patches from #25, add RFC2646 as #50
+    lib/inc.tcl: add preference item for 'flist-at-startup'
+    lib/exwin.tcl, lib/widgetText.tcl: add preference item for
+    automatically scrolling to next message
+
 cvs repository 05/08/2000  Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/html/software.html
     Document Tk/Tcl 8.3.1

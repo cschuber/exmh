@@ -52,6 +52,13 @@ the widget automatically scrolls and extends the selection.  This
 parameter is a polling time period that affects the behavior.  Too
 big and it is not responsive enough.  Too small and it may consume too
 many cycles.  Units are milliseconds."}
+    {widgetText(autoNext) textAutoNext ON "Scroll into the next message"
+"If on, hitting spacebar (or your scroll down key) on the last page
+of a message automatically advances you to the next message, as if
+you had hit the Next button. If off, you must always explicitly
+advance via appropriate exmh commands or buttons, making it safe to
+just hit space repeatedly until things stop scrolling to skim a
+message."}
 	{exwin(placeToplevel)	placeToplevel ON	{Remember window placement}
 "With this enabled, exmh will remember the placement of the various
 popup windows between sessions.  This means you can position them

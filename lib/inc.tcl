@@ -50,6 +50,11 @@ it's just sort of a heart-beat feature..."}
 	{inc(xnsgetmail) xnsGetMail OFF	  {Run xnsgetmail -k}
 "Run xnsgetmail -k before inc in order to fetch your
 XNS mail messages into your UNIX spool file."}
+	{inc(startupflist) incStartupFlist {CHOICE default on off}      {Do a FList on startup}
+"This option determines whether exmh performs an FList operation to find
+all unread MH message on startup. On or off have the obvious effects;
+default performs a FList if you're using multidrop or if you don't have
+inc on startup on."}
 	{inc(pophost) popHost {}	  {Mail host for POP3 protocol}
 "If this is set, inc will try to use the POP3 protocol to
 fetch your mail from a mail server."}
@@ -57,7 +62,9 @@ fetch your mail from a mail server."}
 }
 proc Inc_Startup {} {
     global inc
-    if {! $inc(onStartup) || $inc(style) == "multidrop"} {
+    if {$inc(startupflist) == "on" ||
+       ($inc(startupflist) == "default" &&
+       (! $inc(onStartup) || $inc(style) == "multidrop"))} {
 	Exmh_Status "Checking folders"
 	Flist_FindUnseen
     }

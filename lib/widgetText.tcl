@@ -79,7 +79,7 @@ proc Widget_TextPageOrNext {t {implied implied}} {
     set next 0
     set bottom [lindex [$t yview] 1]
     set next [expr $bottom >= 1]
-    if {$next} {
+    if {$next && $widgetText(autoNext) } {
 	Ftoc_NextImplied show $implied
     } else {
 	Widget_TextPageDown $t

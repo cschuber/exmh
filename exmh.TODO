@@ -159,8 +159,6 @@ Status:
 Incorporate patches from the New Features section of the Patch page
 
   4.Patch to slocal.c that allows regular expressions in .maildelivery files. 
-  6.Preference item to do flist on startup. 
-  7.Preference item to turn off scroll-to-next message. 
   8.String From lines before posting. 
 
 ----------------------------------------------------------------------
@@ -389,6 +387,16 @@ access.  These might include info from:
   o Email addresses and names from the From: line
   o x-vcards
   o RFC2369 list headers
+
+----------------------------------------------------------------------
+Number: 50
+Priority:
+Scope:
+Complexity
+Status:
+
+Add support for RFC2646 'format=flowed'.  This will require
+work on both the display side and sedit/sending side.
 
 ----------------------------------------------------------------------
 
