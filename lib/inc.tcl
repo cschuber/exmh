@@ -55,12 +55,10 @@ XNS mail messages into your UNIX spool file."}
 all unread MH message on startup. On or off have the obvious effects;
 default performs a FList if you're using multidrop or if you don't have
 inc on startup on."}
-	{inc(popexpect) popExpect OFF	  {Use Expect to prompt for passwords}
-"If this is set, an expect script will be used to give passwords
-to the inc program when you fetch from a remote mail server."}
 	{inc(pophost) popHost {}	  {Mail host for POP3 protocol}
 "If this is set, inc will try to use the POP3 protocol to
-fetch your mail from a mail server."}
+fetch your mail from a mail server.  This *requires* the
+Expect program so exmh can automatically manage your POP3 password."}
 	{exmh(incfilter) incfilter {CHOICE slocal procmail other} {Method used to filter incoming mail}
 "Choose here between using slocal (and .maildelivery),
 procmail (and procmailrc) and some other method" }

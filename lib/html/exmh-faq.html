@@ -19,8 +19,13 @@
 <dl COMPACT>
 
   <dt>1 
-  <dd><a HREF="#1">Is it possible to get the cursor keys working in
-      the editor?</a> 
+  <dd><a HREF="#1">How do I configure exmh to use a POP mail server?
+      </a> 
+
+<dl compatc>
+  <dt>1b
+  <dd><a HREF="#1"b>Does exmh speak IMAP (NO)</a> 
+</dl>
 
   <dt>2 
   <dd><a HREF="#2">I'm having problems with non-US ASCII characters</a>
@@ -161,19 +166,32 @@
 <hr>
 <dl COMPACT>
 
-<h3><a NAME="1">1. Is it possible to get the cursor keys working in
-the editor?</a></h3>
+<h3><a NAME="1">1. How do I configure exmh to use a POP mail server?</a></h3>
 <p>
-Use the Bind dialog to set additional keystroke bindings for various
-editing functions. For cursor keys, you first need to figure out what
-their X Keysyms are. I use the "xev" program for this. Assuming the
-keysyms are Up, Down, Left, and Right, then you'd add &lt;Key-Up&gt;;
-to the up1line function, etc. The Bind dialog lets you have multiple
-sequences for a function - just space separate them. You may have to
-drag the entry widget with the middle mouse button to make room to
-add stuff to the end.
-</dl>
+First you must make sure that your MH (or nmh) is compiled with
+support for POP.  You can check by running "inc -help" and check that
+it supports the -host command line argument.
+You set the name of the POP3 mail server host under
+Incorporate Mail or The Top Ten preferences.
+You can also set up a ~/.netrc file that lists your POP3 servers and
+user accounts.  
+<i>This option requires the Expect program</i> so that exmh
+can automatically manage your POP3 password.
 
+<h4><a NAME="1x">I don't have Expect; can I still use a POP mail server?</a></h4>
+<p>
+If you do
+not have expect, you must put your password into your .netrc file
+and leave your POP3 mail host preferences setting <i>empty</i>.
+The .netrc file contains lines in the following format:
+<br>
+machine <i>mail.wherever.com</i> login <i>yourlogin</i> password <i>"a secret"</i>
+
+<h4><a NAME="1b">1b. Can I use an IMAP server?</a></h4>
+Exmh does not directly support IMAP.  However, you can use mail clients
+like <b>fetchmail</b> to get your mail from an IMAP server.  That gets
+the mail onto your local machine, and then exmh/MH can read it from there.
+</dl>
 
 <dl COMPACT>
 <h3><a name="2">2. I'm having problems with with non-US ASCII characters</a></h3>

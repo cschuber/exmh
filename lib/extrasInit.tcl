@@ -41,6 +41,10 @@ none - you have an external agent that handles inc for you, so
 don't bother trying it from within exmh.
 (Incorporate Mail Preferences.)"}
 
+	{inc(pophost) popHost {}	  {Mail host for POP3 protocol}
+"If this is set, inc will try to use the POP3 protocol to
+fetch your mail from a mail server."}
+
 	{editor(prog) editCmd sedit {Editor command}
 "The editor command used to compose mail messages.
 The filename will be appended to the command.
@@ -69,11 +73,6 @@ which you can click on to launch a viewer application.
 This can slow down message displaying somewhat, 
 so you may prefer to do this manually by typing <Key-z>
 (WWW Preferences.)"}
-
-	{exwin(scrollbarSide) scrollbarSide {CHOICE left right} {Scrollbar side}
-"Which side the scrollbars appear on.  This
-only takes effect after you restart exmh.
-(Windows & Scrolling Preferences.)"}
 
 	{ unseenwin(on) unseenWinOn OFF {Enable Unseen Window}
 "Enables the window that summarizes your unseen messages.
