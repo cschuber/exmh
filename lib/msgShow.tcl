@@ -244,9 +244,8 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 	    }
 	}
     }
-    if {$menuitems == {}} {
-	destroy $exwin(mopButtons).list
-    } else {
+    catch {destroy $exwin(mopButtons).list}
+    if {$menuitems != {}} {
 	set menu [Widget_AddMenuB $exwin(mopButtons) list "List..." {right padx 1}]
 	foreach {name url} $menuitems {
 	    Widget_AddMenuItem $menu $name [list URI_StartViewer $url]
