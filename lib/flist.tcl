@@ -298,7 +298,6 @@ proc FlistSeq { folder sequence } {
 
 proc Flist_ForgetUnseen {folder} {
     global flist
-    Exmh_Debug Flist_ForgetUnseen $folder
     set flist(newseq,$folder) {}
     if {[info exists flist(new,$folder)]} {
 	set flist(newMsgs) [expr $flist(newMsgs) - $flist(new,$folder)]
@@ -404,7 +403,6 @@ proc Flist_Done {} {
 
 proc Flist_UnseenUpdate { folder } {
     global exmh flist
-    Exmh_Debug Flist_UnseenUpdate $folder
     Flist_UnseenMsgs $folder
     if {[string compare $folder $exmh(folder)] == 0} {
 	Scan_FolderUpdate $folder
