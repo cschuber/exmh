@@ -74,7 +74,7 @@ proc MhBackup {} {
     if {[string length $sbackup] == 0} {
 	set sbackup #
     }
-    return sbackup
+    return $sbackup
 }
 
 # Run an MH program and check for errors.
