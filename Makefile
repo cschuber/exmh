@@ -3,6 +3,8 @@
 # Remember to update exmh.install when changing version numbers.
 
 VERSION=2.6.1
+RELDATE=`grep '^set date' ./exmh.install | cut -f3 -d" "`
+SNAPRELDATE=`/bin/date +%m/%d/%Y`
 SNAPDATE=`/bin/date +%Y%m%d`
 
 srctar: version htmltar
@@ -43,7 +45,7 @@ clean:
 rpm:	srctar
 	mkdir -p rpmroot/{SOURCES,SPECS,BUILDROOT,RPMS/noarch,SRPMS,BUILD}
 	cp exmh-$(VERSION).tar.gz rpmroot/SOURCES/
-	sed 's/VERSION/$(VERSION)/g' < misc/RPM/exmh-conf.patch > rpmroot/SOURCES/exmh-$(VERSION)-conf.patch
+	sed -e 's/VERSION/$(VERSION)/g' -e 's/RELDATE/$(RELDATE)/g' < misc/RPM/exmh-conf.patch > rpmroot/SOURCES/exmh-$(VERSION)-conf.patch
 	cp misc/RPM/exmh.wmconfig rpmroot/SOURCES/
 	cp misc/RPM/exmh.desktop rpmroot/SOURCES/
 	sed 's/EXMHVERSION/$(VERSION)/g' < misc/RPM/exmh.spec > rpmroot/SPECS/exmh.spec
@@ -53,7 +55,7 @@ rpm:	srctar
 	cp rpmroot/SRPMS/exmh-$(VERSION)-?.src.rpm .
 
 snaprpm:
-	make rpm VERSION=$(VERSION)_$(SNAPDATE)
+	make rpm VERSION=$(VERSION)_$(SNAPDATE) RELDATE=$(SNAPRELDATE)
 
 snaptar:
 	make srctar VERSION=$(VERSION)_$(SNAPDATE)

@@ -1,12 +1,12 @@
 Summary: The exmh mail handling system.
 Name: exmh
 Version: EXMHVERSION 
-Release: 3
+Release: 1
 BuildArchitectures: noarch
 Requires: mh, metamail
 Copyright: freeware
 Group: Applications/Mail
-Source0: ftp://ftp.scriptics.com/pub/tcl/exmh/exmh-%{version}.tar.gz
+Source0: ftp://ftp.tcl.tk/pub/tcl/exmh/exmh-%{version}.tar.gz
 Url: http://www.beedub.com/exmh/
 Source1: exmh.wmconfig
 Source2: exmh.desktop
