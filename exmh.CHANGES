@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 06/21/1999
+    Added code to attempt to load Img 1.2 package, and get
+    inline image/jpg etc support if available
+	- Valdis Kletnieks
+
 cvs repository 6/18/1999
     Fix missed reference to .exmh-defaults in exmh-bg.MASTER
         -Kevin Christian via haldevore
