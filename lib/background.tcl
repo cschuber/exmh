@@ -134,7 +134,7 @@ proc Background_Register { bgInterp {bgPid junk} } {
 }
 proc Background_Cleanup {} {
     global exmh bgaction
-    if [catch {send $exmh(bgInterp) Exmhbg_Done}] {
+    if [catch {send $exmh(bgInterp) Exmhbg_Done [winfo name .]}] {
 	catch {exec kill $exmh(bgPid)}
     }
     catch {
@@ -144,7 +144,7 @@ proc Background_Cleanup {} {
     }
     foreach interp [winfo interps] {
 	if {[string match $exmh(name)-bg* $interp]} {
-	    catch {send $interp Exmhbg_Done}
+	    catch {send $interp Exmhbg_Done [winfo name .]}
 	}
     }
 }

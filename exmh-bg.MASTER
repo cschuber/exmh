@@ -178,15 +178,17 @@ proc Exmh_Status { string {color black} } {
     unset exmh(instatus)
 }
 
-proc Exmhbg_Done {} {
+proc Exmhbg_Done {interp} {
     # Die asynchronously so the front-end gets a response
     # to its send request first.  Set a dead flag so BgRPC
     # doesn't try to talk to the front end
     global exmh
-    set exmh(dead) 1
-    after 1 {
-	catch {Audit_CheckPoint}
-	destroy .
+    if {$exmh(interp) == $interp} {
+	set exmh(dead) 1
+	after 1 {
+	    catch {Audit_CheckPoint}
+	    destroy .
+	}
     }
 }
 
