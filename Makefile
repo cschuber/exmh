@@ -3,11 +3,13 @@
 # Remember to update exmh.install when changing version numbers.
 
 VERSION=2.6.1
-RELDATE=`grep '^set date' ./exmh.install | cut -f3 -d" "`
-SNAPRELDATE=`/bin/date +%m/%d/%Y`
+RELDATE:=$(shell grep '^set date' ./exmh.install | cut -f3 -d" ")
+SNAPRELDATE:=$(shell /bin/date +%m/%d/%Y)
 SNAPDATE=`/bin/date +%Y%m%d`
 
-srctar: version htmltar
+srctar: version realsrctar
+
+realsrctar: htmltar
 	echo ./CVS > Tar.exclude
 	echo ./lib/CVS >> Tar.exclude
 	echo ./misc/CVS >> Tar.exclude
@@ -42,10 +44,10 @@ clean:
 	rm -rf ./rpmroot/
 	rm -rf ./exmh-$(VERSION)
 
-rpm:	srctar
+rpm:	realsrctar
 	mkdir -p rpmroot/{SOURCES,SPECS,BUILDROOT,RPMS/noarch,SRPMS,BUILD}
 	cp exmh-$(VERSION).tar.gz rpmroot/SOURCES/
-	sed -e 's/VERSION/$(VERSION)/g' -e 's/RELDATE/$(RELDATE)/g' < misc/RPM/exmh-conf.patch > rpmroot/SOURCES/exmh-$(VERSION)-conf.patch
+	sed -e 's/VERSION/$(VERSION)/g' -e 's#RELDATE#$(RELDATE)#g' < misc/RPM/exmh-conf.patch > rpmroot/SOURCES/exmh-$(VERSION)-conf.patch
 	cp misc/RPM/exmh.wmconfig rpmroot/SOURCES/
 	cp misc/RPM/exmh.desktop rpmroot/SOURCES/
 	sed 's/EXMHVERSION/$(VERSION)/g' < misc/RPM/exmh.spec > rpmroot/SPECS/exmh.spec
@@ -58,7 +60,7 @@ snaprpm:
 	make rpm VERSION=$(VERSION)_$(SNAPDATE) RELDATE=$(SNAPRELDATE)
 
 snaptar:
-	make srctar VERSION=$(VERSION)_$(SNAPDATE)
+	make realsrctar VERSION=$(VERSION)_$(SNAPDATE)
 
 version: 
 	./PatchVersion $(VERSION) < exmh.install > exmh.install.new
