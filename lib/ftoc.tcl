@@ -569,11 +569,10 @@ proc FtocPickRange { {addcurrent 0} } {
 }
 proc Ftoc_PickSize {} {
     global ftoc
-    set len [llength $ftoc(lineset)]
-    if {$len == 0} {
+    if {$ftoc(curLine) != {}} {
 	return [llength $ftoc(curLine)]
     } else {
-	return $len
+	return [llength $ftoc(lineset)]
     }
 }
 proc Ftoc_NewFtoc {} {
@@ -921,12 +920,10 @@ proc Ftoc_Iterate { lineVar body } {
     global ftoc
     upvar $lineVar line
     catch {
-	if {$ftoc(pickone)} {
-	    if {$ftoc(curLine) != {}} {
-		set line $ftoc(curLine)
-		uplevel 1 $body
-	    }
-	} else {
+	if {$ftoc(curLine) != {}} {
+	    set line $ftoc(curLine)
+	    uplevel 1 $body
+	} elseif {!$ftoc(pickone)} {
 	    foreach line $ftoc(lineset) {
 		uplevel 1 $body
 	    }
@@ -1367,24 +1364,17 @@ proc FtocToggleSequence { sequencename } {
     # If none are in the sequence, then remove from the sequence.
     set flag del
     set msgs {}
-    if {$ftoc(curLine) != ""} {
-	set msgs [Ftoc_MsgNumber $ftoc(curLine)]
-	if {[lsearch -exact $sequence $msgs] == -1} {
-	    set flag add
-	}
-    } else {
-	Ftoc_Iterate line {
-	    set msgid [Ftoc_MsgNumber $line]	
-	    if {$flag == {del}} {
-		if {[lsearch -exact $sequence $msgid] == -1} {
+    Ftoc_Iterate line {
+	set msgid [Ftoc_MsgNumber $line]	
+	if {$flag == {del}} {
+	    if {[lsearch -exact $sequence $msgid] == -1} {
 		    set flag add
-		    set msgs {}
-		}
+		set msgs {}
+	    }
+	    lappend msgs $msgid
+	} else {
+	    if {[lsearch -exact $sequence $msgid] == -1} {
 		lappend msgs $msgid
-	    } else {
-		if {[lsearch -exact $sequence $msgid] == -1} {
-		    lappend msgs $msgid
-		}
 	    }
 	}
     }
