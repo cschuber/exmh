@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 01/03/2001 Bruce A. Mah <bmah@acm.org>
+    lib/pgpPgp5.tcl - Add +force to correct a problem with verifying
+    the signatures of PGP5 clearsigned messages.  From 
+    Dave Tweten <tweten@nas.nasa.gov>, via the FreeBSD Project.
+
 cvs repository 01/03/2001 Hal DeVore <haldevore@acm.org>
     exmh.TODO removed item 24 - support for nmh 1.0, already done
               removed item 33 - change name of /tmp/scancmds,

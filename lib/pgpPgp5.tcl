@@ -1,6 +1,17 @@
 # pgpPgp5.tcl
 
 # $Log$
+# Revision 1.7  2001/01/04 02:24:46  bmah
+# Add +force to PGP5 flags.  This fixes
+# a bug where PGP5 couldn't verify clearsigned messages under some
+# circumstances.  In my testing I was only able to make this happen
+# with clearsigned messages and multipart/mime, which produces some
+# rather strange output anyways.  But this doesn't seem to hurt
+# anything.
+#
+# Submitted-by:	Dave Tweten <tweten@nas.nasa.gov>, via the FreeBSD
+# 		Project
+#
 # Revision 1.6  2000/04/18 18:38:33  valdis
 # Fix quote character to use ascii rather than iso8859-ish one
 #
@@ -88,7 +99,7 @@ set pgp(pgp5,parse_config) 1
 #############
 # Exec_Batch
 # Batchmode flags
-set pgp(pgp5,flags_batch) {+armorlines=0 +batchmode=on +verbose=0}
+set pgp(pgp5,flags_batch) {+armorlines=0 +batchmode=on +force +verbose=0}
 #
 proc Pgp_pgp5_PassFdSet {} {
     global env
