@@ -146,16 +146,15 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
               set buf [read $in 8192]
               if {[regexp "\[\x80-\xff\]" $buf]} {
 		set sedit($t,8bit) 1
+                break
               }
 	    }
 	    close $in
 	}
-	set cmd ""
 	set uuname [file tail $file]
 	if ![regexp name= $type] {
 	    append type " ; name=\"$uuname\""
 	}
-        set in [open $file]
 	if [$t compare insert <= hlimit] {
 	    $t mark set insert "hlimit +1c"
 	}
@@ -166,6 +165,7 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 	    set quoted 0
             set continuation 0
             Exmh_Debug "SeditInsertFile insert quote file"
+            set in [open $file]
 	    while {[gets $in line] > -1} {
 		if {! $inheaders || !$quote(symlink)} {
                     if {!$quoted} {
@@ -207,7 +207,6 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 	    if {$newpart} {
 		set ix [SeditMimeType $type]
 		if {[string length $ix] == 0} {
-                    close $in
 		    return
 		}
 		set mark fileinsert
@@ -238,16 +237,25 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 
             switch -- $encoding {
                 base64 {
+                  if {[info exist mime(encode)]} {
+                    $t insert $mark [exec $mime(encode) -b < $file]
+                  } else {
                     Base64_EncodeInit state old length
+                    set in [open $file]
 		    fconfigure $in -encoding binary -translation binary
                     while {![eof $in]} {
                         $t insert $mark [Base64_EncodeBlock [read $in 4096] state old length]
                     }
                     $t insert $mark [Base64_EncodeTail state old length]
+                  }
                 }
                 quoted-printable {
+                  if {[info exist mime(encode)]} {
+                    $t insert $mark [exec $mime(encode) -q < $file]
+                  } else {
                     set line_cnt 0  ;# Accumulate lines before calling the encoder
                     set buffer ""
+                    set in [open $file]
                     while {[gets $in line] >= 0} {
                         append buffer $line\n
                         incr line_cnt
@@ -258,6 +266,7 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
                         }
                     }
                     $t insert $mark [::mime::qp_encode $buffer]
+                  }
                 }
                 none {
                   $t insert $mark [read $in]
@@ -266,7 +275,6 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
                   $t insert $mark "Error: x-uuencode attachments not supported\n"
                 }
             }
-	    $t insert $mark [read $in]
 	}
 	catch {close $in}
 	catch {close $filein}

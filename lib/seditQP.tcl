@@ -127,15 +127,15 @@ proc SeditFixupEncoding { draft t quote } {
 		Exmh_Debug coding
 		if {$quote} {
 		    puts $out "Content-Transfer-Encoding: quoted-printable"
-		    puts $out $savedLine
-		    flush $out
                     set do_qp 1
 		} else {
 		    puts $out "Content-Transfer-Encoding: 8bit"
-		    puts $out $savedLine
 		}
+                puts $out $savedLine
+                flush $out
 	    }
 	    if [info exists do_qp] {
+                # don't bother with mime(encode) line-at-a-time
 		puts $out [mime::qp_encode $line]
 	    } else {
 		puts $out $line

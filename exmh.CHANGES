@@ -1,4 +1,23 @@
 HISTORY
+cvs repository 10/11/2004 welch@panasas.com
+  lib/mime.tcl:
+  lib/seditExtras.tcl
+  exmh-strip.MASTER: added ability to use mimencode if it exists,
+    because it is much faster than using the Tcl versions.
+    We should also figure out how to use mhstore.
+  lib/seditQP.tcl: minor edits
+  lib/background.tcl: added better debugging for when the background
+    process gets errors from commands shipped to the front end.
+  lib/flist.tcl: restored the flistcache removed on 9/10 because the
+    impact was substantial.  There is still a buglet in there where the
+    right sequence of message views, deletes, and arrivals can fool
+    the cache.  I think the correct thing is to special case the
+    current folder, but I haven't done that yet.
+  lib/inc.tcl: Introduced the use of Mh_FolderFast to set the current
+    folder because "exec folder +foo" turns out to readdir() the
+    entire folder, which can be a bit slow on horrendously large directories.
+  lib/mh.tcl: fixed Mh_SetContext
+
 cvs repository 10/08/2004 valdis.kletnieks@vt.edu
   lib/base64.tcl - properly deal with trailing '=' so we don't append
   spurious nulls to the file

@@ -341,7 +341,10 @@ proc Mh_Folder { f } {
 	}
     }
 }
-proc Mh_FolderNew { f } {
+proc Mh_FolderNew { f } {       ;# Not sure if this name is still used
+    Mh_SetContext Current-Folder $f
+}
+proc Mh_FolderFast { f } {
     Mh_SetContext Current-Folder $f
 }
 proc Mh_SetContext { key value } {
@@ -359,7 +362,7 @@ proc Mh_SetContext { key value } {
 	}
 	close $in
 	close $out
-	frename $mhProfile(context).new $mhProfile(context)
+	file rename -force $mhProfile(context).new $mhProfile(context)
 	return $value
     } else {
 	close $in

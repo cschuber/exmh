@@ -35,6 +35,18 @@ proc Mime_Init {} {
     set mime(junkfiles) {}
     set mime(stop) 0
 
+    foreach dir [split $env(PATH) :] {
+      if {[file executable $dir/mimencode]} {
+          set mime(encode) mimencode
+          break
+      }
+      if {[file executable $dir/mmencode]} {
+          set mime(encode) mmencode
+          break
+      }
+    }
+    # If mime(encode) is not set, we use a fallback path
+
     set types [concat [option get . mimeTypes {}] [option get . mimeUTypes {}]]
     Exmh_Debug MimeTypes $types
     set mime(showproc,default)			Mime_ShowDefault
@@ -1435,30 +1447,37 @@ proc MimeDecode {fileName name encoding text} {
 	    }
 	    quoted-printable -
 	    base64 {
-                # Replace use of mimencode with Tcl versions.
-                # Note, we used to specify the "-p" flag for text parts,
-                # but I believe that is to preserve platform-specific line-ending
-                # characters.  We ignore that and let the Tcl I/O system do that for us.
-                set in [open $fileName]
-                set line_cnt 0  ;# Accumulate lines before calling the decoder
-                set buffer ""
-                while {[gets $in line] >= 0} {
-                    append buffer $line\n
-                    incr line_cnt
-                    if {$line_cnt > 1000} {
-                        if {$encoding == "base64"} {
-                            puts -nonewline $out [Base64_Decode $buffer]
-                        } else {
-                            puts -nonewline $out [::mime::qp_decode $buffer]
-                        }
-                        set line_cnt 0
-                        set buffer ""
-                    }
-                }
-                if {$encoding == "base64"} {
-                    puts -nonewline $out [Base64_Decode $buffer]
+                if {[info exist mime(encode)]} {
+                  if {$encoding == "base64"} {
+                    exec $mime(encode) -u -b $fileName >@ $out
+                  } else {
+                    exec $mime(encode) -u -q $fileName >@ $out
+                  }
                 } else {
-                    puts -nonewline $out [::mime::qp_decode $buffer]
+                  # Replace use of mimencode with Tcl versions.
+                  # This is noticably slower.  We should also
+                  # figure out how to use mhstore here
+                  set in [open $fileName]
+                  set line_cnt 0  ;# Accumulate lines before calling the decoder
+                  set buffer ""
+                  while {[gets $in line] >= 0} {
+                      append buffer $line\n
+                      incr line_cnt
+                      if {$line_cnt > 1000} {
+                          if {$encoding == "base64"} {
+                              puts -nonewline $out [Base64_Decode $buffer]
+                          } else {
+                              puts -nonewline $out [::mime::qp_decode $buffer]
+                          }
+                          set line_cnt 0
+                          set buffer ""
+                      }
+                  }
+                  if {$encoding == "base64"} {
+                      puts -nonewline $out [Base64_Decode $buffer]
+                  } else {
+                      puts -nonewline $out [::mime::qp_decode $buffer]
+                  }
                 }
 	    }
 	    .*uue.* {

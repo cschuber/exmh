@@ -317,7 +317,7 @@ proc Inc_Presort {{doinc 1}} {
 proc Inc_PresortFinish {} {
     global exmh ftoc mhProfile
     LOG Inc_PresortFinish
-    Mh_Folder $exmh(folder)	;# presort inc has changed this to MyIncTmp
+    Mh_FolderFast $exmh(folder)	;# presort inc has changed this to MyIncTmp
     if {$ftoc(displayValid) && [Seq_Count $exmh(folder) $mhProfile(unseen-sequence)] > 0} {
 	Label_Folder $exmh(folder)
 	Scan_Folder $exmh(folder) $ftoc(showNew)

@@ -323,10 +323,8 @@ proc BgRPC { args } {
 		    {no\ application\ named*} {
 			set fail "interp $exmh(interp)"
 		    }
-		    {} {
-			set fail "interp $exmh(interp)"
-		    }
 		    default {
+                        catch {puts stderr "exmh-bg: send error from command \"$args\", error \"$err\""}
 			#puts stderr "BgRPC: $args: $err"
 		    }
 		}

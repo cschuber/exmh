@@ -316,10 +316,18 @@ proc MimeSavePart {part body out newout} {
 	    puts -nonewline $newout $body
 	}
 	base64 {
+          if {[info exist mime(encode)]} {
+            exec $mime(encode) -u -b >@ $newout << $body
+          } else {
             puts -nonewline $newout [Base64_Decode $body]
+          }
 	}
 	quoted-printable {
+          if {[info exist mime(encode)]} {
+            exec $mime(encode) -u -q >@ $newout << $body
+          } else {
             puts -nonewline $newout [mime::qp_decode $body]
+          }
 	}
 	.*uue.* -
 	default {
