@@ -524,104 +524,103 @@ proc Mh_ClearCur { f } {
 
 # Directly modify the context files to add/remove/clear messages
 # from a sequence
-proc Mh_SequenceUpdate { f how seq {msgs {}} } {
+proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
     global mhProfile
-    Exmh_Debug Mh_SequenceUpdate $f $how $seq $msgs
+    Exmh_Debug Mh_SequenceUpdate $f $how $seq $msgs $which
+    array unset sequences
+    array unset mode
+    # First read the private sequence
+    set changed(private) 0
+    if {[catch {open $mhProfile(context) r} in] == 0} {
+	set old [read $in]
+	close $in
+	foreach line [split $old \n] {
+	    if {$line != {}} {
+		if {[regexp {^([^:]*):(.*)$} $line foo tag thisseq]} {
+		    if {[regexp "atr-(.*)-$mhProfile(path)/$f" $tag foo thisseqname]} {
+			set sequences($thisseqname) $thisseq
+			set mode($thisseqname) private
+		    } else {
+			lappend otherprivate "$line"
+		    }
+		} else {
+		    Exmh_Status "Bad line in $mhProfile(context): $line"
+		}
+	    }
+	}
+    }
+    # Then read the public sequence
+    set changed(public) 0
     if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences) r} in] == 0} {
 	set old [read $in]
-	set new {}
 	close $in
-	set hit 0
 	foreach line [split $old \n] {
-	    if {[regexp ^$seq: $line]} {
-		switch -- $how {
-		    clear { # Do nothing }
-		    add {
-			append new [MhSeq add $line $msgs]\n
+	    if {$line != {}} {
+		if {[regexp {^([^:]*):(.*)$} $line foo thisseqname thisseq]} {
+		    if {[catch {string compare $mode($thisseqname) "private"}] == 0} {
+			# If this was also in the private file, merge the two
+			# and move to the public file.
+			set changed(private) 1
+			set sequences($thisseqname) [MhSeq add $thisseq]
+		    } else {
+			set sequences($thisseqname) $thisseq
 		    }
-		    del {
-			set tmp [MhSeq del $line $msgs]
-			if {[regexp {[0-9]$ *} $tmp]} {
-			    append new $tmp\n
-			}
-		    }
-		    replace {
-			append new [MhSeq replace $line $msgs]\n
-		    }
+		    set mode($thisseqname) public
+		} else {
+		    Exmh_Status "Bad line in $mhProfile(path)/$f/$mhProfile(mh-sequences): $line"
 		}
-		set hit 1
-	    } elseif {[string length $line]} {
-		append new $line\n
 	    }
-	}
-	if {! $hit} {
-	    # sequence not found
-	    if {[regexp {(add|replace)} $how]} {
-		append new "$seq: $msgs\n"
-	    } else {
-		return
-	    }
-	}
-	if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences).new w} out] == 0} {
-	    Exmh_Debug New sequences: $mhProfile(path)/$f/$mhProfile(mh-sequences)
-	    Exmh_Debug $new
-	    puts -nonewline $out $new
-	    if {[catch {
-		close $out
-	    } err]} {
-		Exmh_Status "Cannot close $mhProfile(path)/$f/$mhProfile(mh-sequences).new: $err"
-	    } else {
-		Mh_Rename $mhProfile(path)/$f/$mhProfile(mh-sequences).new \
-			$mhProfile(path)/$f/$mhProfile(mh-sequences)
-	    }
-	    return
 	}
     }
-    # private sequences
-    if {[catch {open $mhProfile(context) r} in] == 0} {
+    # Set the value for the sequence we're updating
+    if [catch {set sequences($seq)} oldmsgs] {
+	set oldmsgs {}
+    }
+    set sequences($seq) [MhSeq $how $oldmsgs $msgs]
+    if {![catch {set mode($seq)}] && ($mode($seq) != $which)} {
+	set changed($mode($seq)) 1
+    }
+    set mode($seq) $which
+    set changed($which) 1
+    if {$changed(public) == 1} {
+	Exmh_Debug Changed public
+	if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences).new w} out] == 0} {
+	    foreach sequence [array names sequences] {
+		if {[string compare $mode($sequence) "public"] == 0} {
+		    if {![regexp {^ *$} $sequences($sequence)]} {
+			puts $out "$sequence: $sequences($sequence)"
+		    }
+		}
+	    }
+	    close $out
+	    Mh_Rename $mhProfile(path)/$f/$mhProfile(mh-sequences).new \
+		    $mhProfile(path)/$f/$mhProfile(mh-sequences)
+	} else {
+	    Exmh_Status "Couldn't write to $mhProfile(path)/$f/$mhProfile(mh-sequences).new"
+	    set changed(private) 1
+	    foreach sequence [array names sequences] {
+		set mode($sequence) "private"
+	    }
+	}
+    }
+    if {$changed(private) == 1} {
+	Exmh_Debug Changed private
 	if {[catch {open $mhProfile(context).new w} out] == 0} {
-	    set hit 0
-	    while {[gets $in line] >= 0} {
-		if {[string match atr-$seq-$mhProfile(path)/$f:* $line]} {
-		    switch -- $how {
-			clear { # Do nothing }
-			add {
-			    puts $out [MhSeq add $line $msgs] 
-			}
-			del {
-			    puts $out [MhSeq del $line $msgs]
-			}
-			replace {
-			    puts $out [MhSeq replace $line $msgs]
-			}
-		    }
-		    set hit 1
-		} else {
-		    if {$line != {}} {
-			puts $out $line
+	    puts $out [join $otherprivate "\n"]
+	    foreach sequence [array names sequences] {
+		if {[string compare $mode($sequence) "private"] == 0} {
+		    if {![regexp {^ *$} $sequences($sequence)]} {
+			puts $out "atr-$sequence-$mhProfile(path)/$f: $sequences($sequence)"
 		    }
 		}
 	    }
-	    if {! $hit} {
-		if {[regexp {(add|replace)} $how]} {
-		    puts $out "atr-$seq-$mhProfile(path)/$f: $msgs"
-		}
-	    }
-	    close $in
 	    close $out
 	    Mh_Rename $mhProfile(context).new $mhProfile(context)
-	    return
 	}
-	close $in
     }
 }
-
-proc MhSeq { how line msgs } {
-    if {![regexp {(.*: )(.*)} $line x prefix oldmsgs]} {
-	Exmh_Debug MhSeq $how regexp failed $line
-	return
-    }
-    Exmh_Debug MhSeq $how $line $msgs
+proc MhSeq { how oldmsgs msgs } {
+    Exmh_Debug MhSeq $how $oldmsgs $msgs
     set new [MhSeqExpand $msgs]
     set old [MhSeqExpand $oldmsgs]
     if {[string compare $how "add"] == 0} {
@@ -648,14 +647,16 @@ proc MhSeq { how line msgs } {
 		lappend merge $id
 	    }
 	}
-    } else {
+    } elseif {[string compare $how "replace"] == 0} {
 	# replace
-	Exmh_Debug $prefix $msgs
-	return "$prefix $msgs"
+	Exmh_Debug $msgs
+	return $msgs
+    } else {
+	return {}
     }
     set seq [MhSeqMake $merge]
-    Exmh_Debug $prefix $seq
-    return "$prefix $seq"
+    Exmh_Debug $seq
+    return $seq
 }
 proc MhSeqMake { msgs } {
     Exmh_Debug MhSeqMake $msgs
