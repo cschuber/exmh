@@ -13,7 +13,7 @@
 
 proc Ftoc_Init {} {
     global ftoc
-    set ftoc(displayValid) 0		;# 1 => pick results, not full scan
+    set ftoc(displayValid) 1		;# 0 => pick results, not full scan
     set ftoc(displayDirty) 0		;# 1 => display differs from cache
     set ftoc(mono) [expr {[winfo depth .] <= 4}]
     # Parameters to the Next button
