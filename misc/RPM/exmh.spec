@@ -5,7 +5,6 @@ Release: 1
 Requires: mh, metamail
 Copyright: freeware
 Group: Applications/Mail
-BuildArchitectures: noarch
 Source0: ftp://ftp.scriptics.com/pub/tcl/exmh/exmh-%{version}.tar.gz
 Url: http://www.beedub.com/exmh/
 Source1: exmh.wmconfig
@@ -17,7 +16,7 @@ Source2: exmh.desktop
 # make sure to change all the paths that need to be changed
 # by comparing to the previous conf patch.
 Patch0: exmh-%{version}-conf.patch
-BuildRoot: %{_tmppath}/%{name}-root
+#BuildRoot: %{_tmppath}/%{name}-root
 
 Summary(de): EXMH-Mail-Programm
 Summary(fr): Programme de courrier EXMH
@@ -90,7 +89,8 @@ cp -ar misc/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc
 cp %SOURCE2 $RPM_BUILD_ROOT/etc/X11/applnk/Internet/
 install -m644 $RPM_SOURCE_DIR/exmh.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/exmh
 
-find $RPM_BUILD_ROOT/usr/lib/exmh-%{version} -type f| grep -v $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc |sed -e "s|$RPM_BUILD_ROOT||" > filelist
+find $RPM_BUILD_ROOT/usr/lib/exmh-%{version}    -type f | grep -v $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc |sed -e "s|$RPM_BUILD_ROOT||" > filelist
+cat filelist
 %clean
 rm -rf $RPM_BUILD_ROOT
 
