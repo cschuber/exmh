@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.19  1999/10/27 14:59:27  kchrist
+# Quick application/pgp bug fix.
+#
 # Revision 1.18  1999/10/25 15:38:39  kchrist
 # Added a dropKeys pattern to pgpGPG.tcl.
 #
@@ -715,7 +718,7 @@ proc Pgp_Process { v srcfile dstfile } {
 	
     switch $pgp(format,$id) {
         app { 
-	    Pgp_ProcessAP $v $dstfile $pgpfile $mailheaders
+	    Pgp_ProcessAP $v $dstfile $pgpfile $mailheaders $typeparams
         }
         pm { 
             Pgp_ProcessPM $v $dstfile $pgpfile $mailheaders $msgfile $id
@@ -728,7 +731,7 @@ proc Pgp_Process { v srcfile dstfile } {
     File_Delete $msgfile $pgpfile
 }
 
-proc Pgp_ProcessAP {v dstfile pgpfile mailheaders} {
+proc Pgp_ProcessAP {v dstfile pgpfile mailheaders typeparams} {
     global pgp
 
     lappend mailheaders \

@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 10/27/1999
+    Quick application/pgp support fix. -kchrist
+
 cvs repository 10/25/1999
     Added a dropKeys pattern to pgpGPG.tcl.
     Simplified PGP GUI by removing "detached" signature option. Problem
