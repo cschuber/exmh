@@ -384,6 +384,14 @@ Apply patches from Valdis Kletnieks
 
 
 
+Number: 43
+Priority: Low
+Scope: Narrow
+Complexity: ?
+
+If x-image-url fails to load and an x-face is present it should be used.
+
+
 $Id$
 
 # Emacs stuff
