@@ -19,22 +19,11 @@ proc Msg_Init {} {
 proc Msg_Reset { numMsgs {folder {}} } {
     # Reset state after scanning a new folder
     global msg
-    set msg(seen) {}			;# list of seen messages
-    set msg(seenOld) {}			;# seen, then deleted or moved
     set msg(dpy)  {}			;# Currently displayed message
     set msg(id) [Mh_Cur $folder]	;# pick current message
     set msg(path) ""			;# File pathname of current message
     Buttons_Current [expr {$msg(id) != {}}]	;# Enable/disable buttons
     Ftoc_Reset $numMsgs $msg(id) $folder	;# Reset display
-}
-proc Msg_CheckPoint {} {
-    # push current MH state to disk
-    global exmh msg mhProfile
-    if {$msg(seen) != {}} {
-	Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $msg(seen)
-	set msg(seen) {}
-    }
-    set msg(seenOld) {}
 }
 proc Msg_Pick { line {show show} } {
     # Select a message
@@ -143,37 +132,14 @@ proc MsgChange {msgid {show show}} {
 	    Ftoc_MoveFeedback $msgid
 	}
     }
-    Folder_CheckPointShared
 }
 
 proc MsgSeen { msgid } {
     # Suppress duplicates or else mark does the wrong thing.
     global msg exmh mhProfile
-    if {[lsearch $msg(seen) $msgid] < 0} {
-	lappend msg(seen) $msgid
-    }
     Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $msgid
     Flag_MsgSeen
 }
-proc Msg_UnSeen { msgid } {
-    # We nuke deleted and moved messages from the seen list because
-    # marking them confuses MH.  However, we still need to remember
-    # them to properly maintain our unseen state in the presence of
-    # background Flist_FindSeqs calls.  Hence msg(seenOld)
-    global msg
-    set ix [lsearch $msg(seen) $msgid]
-    if {$ix >= 0} {
-	set msg(seen) [lreplace $msg(seen) $ix $ix]
-	if {[lsearch $msg(seenOld) $msgid] < 0} {
-	    lappend msg(seenOld) $msgid
-	}
-    }
-}
-proc Msg_Seen {} {
-    global msg
-    return [concat $msg(seenOld) $msg(seen)]
-}
-
 
 # Message operations.
 # These take two forms of arguments.  The original form is a single
@@ -472,7 +438,6 @@ proc Msg_RemoveById { msgid {rmProc Ftoc_Delete} } {
     global msg
     set lineno [Ftoc_FindMsg $msgid]
     $rmProc $lineno
-    Msg_UnSeen $msgid
     if {$msg(id) == $msgid} {
 	Msg_ClearCurrent
     }
@@ -645,7 +610,6 @@ proc Msg_UUdecode {} {
 
 proc Msg_Mark {seq} {
     global exmh mhProfile
-    Msg_CheckPoint
     set msgids [Ftoc_CurMsgs]
     Seq_Add $exmh(folder) $seq $msgids
     if {$seq == $mhProfile(unseen-sequence)} {
@@ -656,7 +620,6 @@ proc Msg_Mark {seq} {
 }
 proc Msg_UnMark {seq} {
     global exmh mhProfile
-    Msg_CheckPoint
     set msgids [Ftoc_CurMsgs]
     Seq_Del $exmh(folder) $seq $msgids
     Ftoc_ShowSequence $seq $msgids

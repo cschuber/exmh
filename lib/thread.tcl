@@ -222,7 +222,6 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
 # Redisplay
 #
     Ftoc_RangeUnHighlight
-    Msg_CheckPoint
     Msg_Reset $maxlines $folder
     set ftoc(folder) {}
     set ftoc(displayValid) 0    ;#  don't cache this display now

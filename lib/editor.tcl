@@ -76,9 +76,6 @@ The filename will be appended to the command."] \
 proc Edit_Draft {} {
     global mhProfile exmh
     # Run the editor on the current draft
-    if {$exmh(folder) == $mhProfile(draft-folder)} {
-	Msg_CheckPoint	;# Update cur message
-    }
     set draftID [Mh_Cur $mhProfile(draft-folder)]
     if {$draftID == {}} {
 	Exmh_Status "No current message in Draft-Folder $mhProfile(draft-folder)" error

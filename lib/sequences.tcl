@@ -270,11 +270,7 @@ proc Seq_Add {folder seq msgids} {
 	set flist(seq,$folder,$seq) {}
 	set new 0
     }
-    if {([string compare $folder $exmh(folder)] == 0) && ($seq == $mhProfile(unseen-sequence))} {
-	set known [concat [Msg_Seen] $flist(seq,$folder,$seq)]
-    } else {
-	set known $flist(seq,$folder,$seq)
-    }
+    set known $flist(seq,$folder,$seq)
     # Subtract elements of $known from $msgids
     if {[llength $known] > [llength $msgids]} {
 	set nmsgids {}

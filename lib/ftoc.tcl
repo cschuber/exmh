@@ -909,8 +909,6 @@ proc Ftoc_Changes {type {allowAuto 1} } {
 	    set ftoc(changed) 0
 	    return 1
 	}
-    } else {
-	Msg_CheckPoint		;# Sync unseen and cur message state.
     }
     return $ftoc(changed)
 }
@@ -1128,7 +1126,6 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	}
 	Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $msgid	;# in case deleted or moved w/out viewing
 	if {$delline} {
-	    Msg_UnSeen $msgid	;# avoid MH mark bug
 	    $exwin(ftext) delete $c0 "$ce + 1 chars"
 	    set ftoc(displayDirty) 1
 	    Ftoc_ClearMsgCache

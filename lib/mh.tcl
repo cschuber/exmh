@@ -144,11 +144,6 @@ proc Mh_CompSetup {} {
 	    # In drafts with no previously current message
 	    Scan_Folder $exmh(folder)
 	    Msg_Change [Seq_Msgs $exmh(folder) cur]
-	    if {[Mh_Cur $exmh(folder)] == {}} {
-		# Scan_Folder destroyed the cur sequence (drafts must
-		# have been empty). Restore it.
-		Msg_CheckPoint
-	    }
 	}
     }
     set exmh([Mh_Cur $mhProfile(draft-folder)],action) comp

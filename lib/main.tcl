@@ -277,7 +277,6 @@ proc Exmh_OldStatus {} {
 proc Exmh_CheckPoint {} {
     # This is really "folder change" CheckPoint
     Exmh_Debug Scan_CacheUpdate [time Scan_CacheUpdate]
-    Msg_CheckPoint
 }
 
 proc Exmh_Done {{exit 1}} {
@@ -295,7 +294,7 @@ proc Exmh_Done {{exit 1}} {
 	    unset exmh(newuser)
 	}
 	# The following is done in response to WM_SAVE_YOURSELF
-	foreach cmd {Msg_CheckPoint Sedit_CheckPoint Aliases_CheckPoint
+	foreach cmd {Sedit_CheckPoint Aliases_CheckPoint
 		    Exmh_CheckPoint Fcache_CheckPoint	    
 		    Exwin_CheckPoint } {
 	    if {[info command $cmd] != {}} {

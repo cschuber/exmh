@@ -221,7 +221,6 @@ proc Folder_Commit { {rmmCommit Mh_Rmm} {moveCommit Mh_Refile} {copyCommit Mh_Co
 proc FolderCommit { rmmCommit moveCommit copyCommit } {
     global exmh exwin ftoc
 
-    Msg_CheckPoint	;# Update sequence state
     Ftoc_Commit $rmmCommit $moveCommit $copyCommit
     Exmh_Debug Scan_CacheUpdate [time Scan_CacheUpdate]
 
@@ -236,7 +235,6 @@ proc Folder_CommitType { type } {
     global ftoc exmh
     Exmh_Debug Folder_CommitType $type
     if {[string compare $type "Change folder"] == 0} {
-	Msg_CheckPoint
 	busy Ftoc_Commit Mh_Rmm Mh_Refile Mh_Copy
 	if $ftoc(autoPack) {
 	    Background_Wait	;# Let folder ops complete
@@ -324,16 +322,6 @@ proc Folder_PurgeBg { {folderlist {}} } {
 proc Folder_PurgeAllBg {} {
     global flist
     Folder_PurgeBg $flist(allfolders)
-}
-
-# Called when changing messages.  If you are sharing a folder,
-# you need to checkpoint state to the file system at each message.
-
-proc Folder_CheckPointShared {} {
-    global exmh folder
-    if {[info exist folder(shared,$exmh(folder))]} {
-	Msg_CheckPoint
-    }
 }
 proc Folder_IsShared {folder} {
     global folder

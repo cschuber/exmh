@@ -1,4 +1,11 @@
 HISTORY
+cvs repository 10/28/2002 cwg-exmh@deepeddy.com
+    msg.tcl, editor.tcl, folder.tcl, ftoc.tcl, main.tcl, mh.tcl, 
+	sequences.tcl, thread.tcl  - Remove message checkpoint code
+	which was originally intended to work around an mh mark bug,
+	but which now seems unneeded and needlessly complex (causing
+	messages to not get unmarked in various contexts).
+
 cvs repository 10/16/2002 haldevore@acm.org
     pick.tcl - Adaptation of Ted Cabeen's "catch up to current" code
 
@@ -7,7 +14,7 @@ cvs repository 09/23/2002 cwg-exmh@deepeddy.com
 
 cvs repository 09/21/2002 cwg-exmh@deepeddy.com
     ftoc.tcl, msg.tcl, pick.tcl, scan.tcl, thread.tcl -
-	Remove the $folder argument from Ftoc_ShowSequence and
+	Remove the $folder argument from Ftoc_ShowSequences and
 	Ftoc_Update because it's always the current folder; break
 	Ftoc_ShowSequence out of Ftoc_ShowSequences; add an optional
 	argument to both procedures that specifies the particular
