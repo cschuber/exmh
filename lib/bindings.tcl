@@ -174,7 +174,7 @@ proc Bind_Pref {} {
 	pack $f.can -side left -fill both -expand true
 	BindPrefDisplay .bindpref.c.can
     }
-    Exwin_ToplevelFocus .bindpref .bindpref.def.cmd
+    focus .bindpref.def.cmd
 }
 proc BindingsPrefHelp {} {
     Help Bindings "Command Bindings Help"

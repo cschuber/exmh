@@ -260,7 +260,6 @@ proc PreferencesSectionDialog { id } {
 	    PreferencesDialogItem $body $id $item $maxWidth
 	}
     }
-    Exwin_ToplevelFocus .pref$ix none
     set pref(label) $buttons.label
 }
 proc PreferencesNext { ix {i 1}} {

@@ -182,8 +182,8 @@ proc Sedit_Start { draft } {
 	set sedit(.sedit$id,draft) $draft
 	set sedit(.sedit$id,id) $id
     }
-    Exwin_ToplevelFocus .sedit$id $t
-
+    focus $t
+    
     SeditTextBindings $draft $t		;# set up sendMsg binding
     if [file readable $quote(filename)] {
 		$b.repl configure -state normal

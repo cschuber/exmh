@@ -109,7 +109,6 @@ proc PickAddField {f pane what} {
 
     set pick($pane,lastentry) [Widget_EndEntries]
     focus $pick($pane,lastentry)
-    Exwin_ToplevelFocus [winfo toplevel $f] [focus]
 }
 proc PickAddOrField {pane who} {
     global pick

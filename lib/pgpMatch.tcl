@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.4  1999/04/16 00:22:40  cwg
+# Code cleanup.  Removed some dead code
+#
 # Revision 1.3  1999/04/04 20:34:57  cwg
 # Removed dead code which only ran in pre tk-4.1 versions.
 #
@@ -324,7 +327,7 @@ proc Pgp_KeyBox { label keyring keylist } {
     }
     Widget_BindEntryCmd $keybox(sel) <Key-Return> [list $keybox(listbut) invoke]
 
-    Exwin_ToplevelFocus $w $keybox(sel)
+    focus $keybox(sel)
     update idletask
     grab $w
     tkwait variable keybox(result)

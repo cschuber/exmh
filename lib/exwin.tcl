@@ -433,38 +433,6 @@ proc Exwin_Dismiss { path {geo ok} } {
     wm withdraw $path
     update idletasks	;# Helps window dismiss
 }
-proc Exwin_ToplevelFocus { toplevel {default none} } {
-    global exwin
-    if {[string compare $default none] != 0} {
-	focus $default
-    }
-}
-proc ExwinSetFocus { w } {
-    global exwin
-    catch {
-	focus $exwin(focus,$w) ;# could be "none", or empty
-    }
-}
-proc ExwinSaveFocus { w } {
-    global exwin
-    set new [focus]
-    if {[string compare $new none] == 0} {
-	return
-    }
-    if {[string compare [winfo toplevel $new] $w] == 0} {
-	set exwin(focus,$w) $new
-    }
-}
-proc Exwin_Grab { args } {
-    global exwin
-    Exmh_Debug Exwin_Grab $args focus=[focus]
-    if {[string compare [lindex $args 0] release] == 0} {
-	set exwin(grab) {}
-    } else {
-	set exwin(grab) $args
-    }
-    eval grab $args
-}
 proc Exwin_CheckPoint { } {
     global exwin
     if {! $exwin(placeToplevel)} {

@@ -204,7 +204,7 @@ proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""}
 
     # set kbd focus to entry widget
 
-    Exwin_ToplevelFocus $w $fileselect(entry)
+    focus $fileselect(entry)
 
     # Wait for button hits if no callbacks are defined
 

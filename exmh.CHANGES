@@ -2,6 +2,9 @@ HISTORY
 
 cvs repository 4/15/1999
     Crypt menu values are now 'per window', not global. -cwg
+    Code Cleanup.  While trying to understand the focus bug in the
+    sedit window, I found some dead code relating to focus.  It didn't
+    solve the problem, but it does make it slightly easier to follow. -cwg
 
 cvs repository 4/14/1999
     Fixed small bug in searching body of message -haldevore

@@ -76,7 +76,7 @@ proc Aliases_Pref { {nalias {}} } {
 	wm minsize .aliaspref 1 1
 
     }
-    Exwin_ToplevelFocus .aliaspref .aliaspref.alias.entry
+    focus .aliaspref.alias.entry
     # The following command foils a spontaneous <Destroy> event
     # that otherwise kills the dialog in the special case that we
     # just created/destroyed the .aliasfile toplevel
