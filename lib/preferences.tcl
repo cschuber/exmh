@@ -43,12 +43,73 @@ proc Preferences_Init { userDefaults appDefaults } {
 
     catch {exec mkdir -p [glob ~]/.exmh}
 
+    if {[file exists [glob ~]/.exmh-defaults] 
+	&& ![file exists $userDefaults]} { 
+	PreferencesCopyToNewLocation
+    }
+    
     PreferencesReadFile $pref(appDefaults) startup
     PreferencesReadFile $pref(localDefaults) 50
     PreferencesReadFile $pref(userDefaults) user
 
     Preferences_Resource pref(helpInOneWindow) helpInOneWindow 1
 }
+
+proc PreferencesCopyToNewLocation {} {
+    global pref
+
+    Widget_Toplevel .newprefs "Copy User Preferences"
+    Widget_Message .newprefs msg -aspect 1000 -text "
+It appears you have not run Exmh since the [file tail $pref(userDefaults)] 
+and other related files moved in to the ~/.exmh directory.
+
+Is it ok if Exmh copies the files to your ~/.exmh directory?  Once you 
+have verified that Exmh is functioning properly, you can delete the 
+old files by hand.
+"
+
+    Widget_Frame .newprefs rim Pad {top expand fill}
+    .newprefs.rim configure -bd 10
+   
+    Widget_Frame .newprefs.rim but Menubar {top fill}
+    Widget_AddBut .newprefs.rim.but yes "Yes" PreferencesDoCopyFiles
+    Widget_AddBut .newprefs.rim.but no "No, Exit" {destroy .newprefs ; exit }
+    tkwait window .newprefs
+}
+
+proc PreferencesDoCopyFiles { } {
+    if {[file exists [glob ~]/.exmh-defaults] 
+	&& ![file exists [glob ~]/.exmh/exmh-defaults]} {
+	catch {exec cp -r [glob ~]/.exmh-defaults [glob ~]/.exmh/exmh-defaults}
+    }
+
+    if {[file exists [glob ~]/.exmh_addrs] 
+	&& ![file exists [glob ~]/.exmh/exmh_addrs]} {
+	catch {exec cp -r [glob ~]/.exmh_addrs [glob ~]/.exmh/exmh_addrs}
+    }
+
+    if {[file exists [glob ~]/.exmh_addrs.bak] 
+	&& ![file exists [glob ~]/.exmh/exmh_addrs.bak]} {
+	catch { exec cp -r [glob ~]/.exmh_addrs.bak [glob ~]/.exmh/exmh_addrs.bak}
+    }
+    
+    if {[file exists [glob ~]/.exmh-images] 
+	&& ![file exists [glob ~]/.exmh/exmh-images]} {
+	catch { exec cp -r [glob ~]/.exmh-images [glob ~]/.exmh/exmh-images}
+    }
+    
+    if {[file exists [glob ~]/.exmhbindings] 
+	&& ![file exists [glob ~]/.exmh/exmhbindings]} {
+	catch { exec cp -r [glob ~]/.exmhbindings [glob ~]/.exmh/exmhbindings}
+    }
+    
+    if {[file exists [glob ~]/.exmhsedit] 
+	&& ![file exists [glob ~]/.exmh/exmhsedit]} {
+	catch { exec cp -r [glob ~]/.exmhsedit [glob ~]/.exmh/exmhsedit}
+    }
+    catch {destroy .newprefs}
+}
+
 proc PreferencesReadFile { basename level } {
     if [file exists $basename] {
 	if [catch {option readfile $basename $level} err] {

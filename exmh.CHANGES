@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 6/8/1999
+    added an auto-copy of old config files to new, with a nice dialog box
+	- slipcon
+
 cvs repository 6/5/1999
     Moved all the ~/.exmh* files to ~/.exmh/exmh*
     Important user change: the installer does NOT move any of your old files,
