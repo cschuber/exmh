@@ -2,6 +2,7 @@ HISTORY
 cvs repository 02/16/2003 cwg-exmh@deepeddy.com
     msg.tcl - Only call Ftoc_ShowSequence in MsgChange if we have a valid 
 	message.
+    ftoc.tcl - Bulletproof Ftoc_ShowSequence
 
 cvs repository 02/10/2003 valdis.kletnieks@vt.edu
     exmh-strip.MASTER, lib/aliases.tcl, lib/background.tcl, lib/busy.tcl

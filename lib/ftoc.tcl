@@ -680,10 +680,12 @@ proc Ftoc_ShowSequence { seq {msgids {}} } {
     if {$msgids != {}} {
 	foreach msg $msgids {
 	    set lineno [Ftoc_FindMsg $msg]
-	    if {[lsearch -exact $seqids $msg] == -1} {
-		$exwin(ftext) tag remove $seq $lineno.0 $lineno.end
-	    } else {
-		$exwin(ftext) tag add $seq $lineno.0 $lineno.end
+	    if {$lineno != {}} {
+		if {[lsearch -exact $seqids $msg] == -1} {
+		    $exwin(ftext) tag remove $seq $lineno.0 $lineno.end
+		} else {
+		    $exwin(ftext) tag add $seq $lineno.0 $lineno.end
+		}
 	    }
 	}
     } else {
