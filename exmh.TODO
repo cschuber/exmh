@@ -382,7 +382,10 @@ Apply patches from Valdis Kletnieks
   - MDN patch 
   - Delivery Service Notification
 
-
+NOTE: these are all "on hold".  The first two need documentation
+patches, the third requires a modified MH or nmh and will be held
+until that is distributed.
+                                   
 
 Number: 43
 Priority: Low
