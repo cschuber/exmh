@@ -772,6 +772,7 @@ proc MhParseProfile {} {
 	    set mhProfile($key) $value
 	}
     }
+    close $input
     if {![info exists mhProfile(path)]} {
 	if {[info exists mhProfile(FAIL)]} {
 	    puts stderr "No Path entry in your [file tail $mhProfile(profile)] file."
