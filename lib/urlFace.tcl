@@ -212,7 +212,7 @@ proc UrlFaceQueryDone { href filename msgPath pane } {
 	set normalized [UrlFaceGetNormalizedImage $data(file)]
 	UrlFaceLog "normalized file is $normalized"
 
-	UrlFaceLog "executing cp $normalized $filename"
+	UrlFaceLog "executing cp [glob $normalized] $filename"
 	if [catch {exec cp $normalized $filename} err] {
 	    Exmh_Status "cannot create face file in ~/.exmh-images! ($err)" red
 	    UrlFaceLog "cannot create face file in ~/.exmh-images! ($err)"
