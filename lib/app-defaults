@@ -500,7 +500,7 @@ exmh.iconic:		0
 	image application/pgp text/pgp multipart/x-tioga text/x-html text/html \
 	application/x-shell-script \
 	audio/basic audio/x-sunaudio application/x-suncalendar \
-	message/delivery-status \
+	message/delivery-status message/disposition-notification \
 	application/x-pgp-message \
 	application/fv-infohaus \
 	multipart/signed multipart/encrypted \
@@ -537,7 +537,8 @@ exmh.iconic:		0
 *mime_message/rfc822:		Mime_ShowRfc822
 *mime_message/sample:		Mime_ShowRfc822
 *mime_message/news:		Mime_ShowRfc822
-*mime_message/delivery-status:		Mime_ShowText
+*mime_message/delivery-status:		Mime_ShowDSN
+*mime_message/disposition-notification:	Mime_ShowMDN
 *mime_application/pgp:			Pgp_ShowMessage
 *mime_application/x-pgp-message:	Pgp_ShowMessage
 *mime_text/pgp:				Pgp_ShowMessage

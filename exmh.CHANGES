@@ -7,7 +7,9 @@ cvs repository 6/10/1999
     Fix for problems with annotation settings
         -Michiel de Vries via haldevore
     Add optional horizontal scroll bars
-        -Valdis Kletnieks via haldevore
+        -David A. Curry via Valdis Kletnieks via haldevore
+    Improvements to MDN code
+        -Anund Lie via Valdis Kletnieks via haldevore
     
 cvs repository 6/9/1999
     Changed $HOME/.exmhdisplay to $HOME/.exmh/.display in misc scripts -cwg

@@ -176,6 +176,19 @@ will be translated into a suitable DOS 8.3 representation."}
 	{mime(mdnTo) dispositionNotificationTo {} {Disposition Notification To}
 "The address where you want MDN receipts to end up.  This normally your
 own email address."}
+	{mime(mdnSend) dispositionNotificationSend
+         {CHOICE never deny {ask user} auto/ask auto/ignore } 
+         {Send MDNs}
+"This controls if and how to send MDNs (receipts).  The options are:
+  - Never generate MDN, always ignore requests silently.
+  - Automatically generate a \"denied\" MDN when a MDN is requested.
+  - Ask user whether to generate a MDN when displaying the message.
+  - Automatically when displaying the message, but ask user in 
+    certain cases where it may not be appropriate to generate MDNs.
+  - As above, but silently ignore potentially suspect MDN requests."}
+	{mime(explainReport) explainReports OFF {Show report explanations}
+"This controls whether human-readable explanations are presented along
+with the machine-readable part (part 2) of multipart/report messages."}
     }
     set i 0
     foreach char {A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \
@@ -252,6 +265,13 @@ proc MimeColor { tkw color } {
 #
 # message/rfc822 only:
 # mimeHdr($part,fullHeaders)	Boolean to display full headers
+#
+# multipart/report part 2 only:
+# mimeHdr($part,explainReport)  Display explanation of machine-readable part
+#                               of report.
+# mimeHdr($part,originalMessageDate)    Date of reported message, if known.
+# mimeHdr($part,originalMessageEnclosed)   Indicates whether the reported
+#                               message is enclosed as part 3 of multipart.
 #
 # images only:
 # mimeHdr($part,photo)		The image itself
@@ -697,6 +717,10 @@ proc MimeRedisplayPart {tkw part} {
 	    $triangle create line 0 5 10 5 -arrow last 
 	}
 	MimeShowPartBody $tkw $part
+
+	if [$tkw compare insert != "insert linestart"] {
+	    $tkw insert insert "\n"
+	}
     }
 
     MimeCleanTag $tkw 1
@@ -1045,14 +1069,8 @@ proc Mime_ShowRfc822 {tkw part} {
 	}
 	MimeShowHeaders $tkw $part=1 [MimeLabel $part part]
 	MimeInsertSeparator $tkw $part 6
-    	if {$part == 0 \
-	    && ![info exists mimeHdr(0=1,hdr,x-exmhmdn)] \
-	    && [info exists mimeHdr(0=1,hdr,disposition-notification-to)]} {
-	    if [info exists mime(mdnDone)] {
-		unset mime(mdnDone)
-	    } else {
-		MDNAsk $tkw $mimeHdr(0=1,hdr,disposition-notification-to)
-	    }
+    	if {$part == 0} {
+	    MDNCheck $tkw
         }
 
 	MimeShowPart $tkw $part=1 [MimeLabel $part part] 1
@@ -1065,6 +1083,71 @@ proc Mime_ShowRfc822 {tkw part} {
     }
     return 1
 }
+
+proc Mime_ShowMDN {tkw part} {
+    Mime_ShowReport $tkw $part report { Mime_ExplainMDN $tkw $part report }
+}
+
+proc Mime_ShowDSN {tkw part} {
+    Mime_ShowReport $tkw $part report { Mime_ExplainDSN $tkw $part report }
+}
+
+proc Mime_ShowReport {tkw part reportVar body } {
+    global mimeHdr mime
+    upvar $reportVar report
+
+    if ![info exists mimeHdr($part,explainReport)] {
+	set mimeHdr($part,explainReport) $mime(explainReport)
+    }
+
+    if {[string compare $part "0"] != 0} {
+	MimeMenuAdd $part checkbutton \
+		-label "Show explanation" \
+		-command [list busy MimeRedisplayPart $tkw $part] \
+		-variable mimeHdr($part,explainReport)
+    }
+
+    if [Mime_ShowText $tkw $part] {
+	if { $mimeHdr($part,explainReport) && $mimeHdr($part,display) } {
+	    MimeInsertSeparator $tkw $part 6
+
+	    ParseReport $part report
+
+	    if [info exists report(original-recipient)] {
+		set recipient $report(original-recipient)
+	    } elseif [info exists report(final-recipient)] {
+		set recipient $report(final-recipient)
+	    } else {
+		set recipient "(unknown)"
+	    }
+
+	    $tkw insert insert \
+	        "This is a report concerning the message you sent\
+		 \n  to:      $recipient"
+
+	    if [info exists mimeHdr($part,originalMessageDate)] {
+		$tkw insert insert \
+		"\n  on date: $mimeHdr($part,originalMessageDate)"
+	    }
+
+	    if [info exists mimeHdr($part,originalMessageEnclosed)] {
+		if { $mimeHdr($part,originalMessageEnclosed) } {
+		    $tkw insert insert "\n(A copy of the\
+                        message is included below.)"
+		}
+	    }
+
+	    $tkw insert insert "\n\n"
+
+	    uplevel $body
+	} else {
+	    return 1
+	}
+    } else {
+	return 0
+    }
+}
+
 proc MimeShowHeaders {tkw part overTag} {
     global mimeHdr
 
@@ -1633,71 +1716,165 @@ proc Mime_ShowMultipartAlternative {tkw part} {
 
     return 1
 }
+
+proc MimeShowReportPart {tkw part overTag only reportPart} {
+    global mimeHdr
+
+    set partTag [MimeLabel $part part]
+    if ![info exists mimeHdr($part,decode)] {
+	# decode sub-parts by default, but not main body
+	set mimeHdr($part,decode) [string compare $part 0=1]
+    }
+    MimeWithTagging $tkw $partTag $overTag \
+		    {-background $mimeHdr($part,color) \
+		     -foreground [$tkw cget -foreground]} {
+	MimeSetPartVars desc displayedPart $tkw $part $partTag
+	MimeSetStdMenuItems $tkw $part
+	MimeShowPartHeader $tkw $part $partTag $only $reportPart $desc
+	MimeShowPartBody $tkw $part
+    }
+    Exmh_Status $desc
+}
+
 proc Mime_ShowMultipartReport {tkw part} {
     global mimeHdr mime
 
-    if ![info exists mimeHdr($part,param,boundary)] {
-	$tkw insert insert "No <boundary> parameter for multipart message\n"
-	$tkw insert insert "Raw content follows...\n\n"
-	return [Mime_ShowText $tkw $part]
-    }
-    set numParts $mimeHdr($part,numParts)
-    if { $numParts > 3 || $numParts < 2} {
-	$tkw insert insert "Incorrect number of parts in multipart/report\n"
-	$tkw insert insert "Raw content follows...\n\n"
-	return [Mime_ShowText $tkw $part]
-    }
-    if {![info exists mimeHdr($part,param,report-type)]} {
-	return [Mime_ShowMultipart $tkw $part]
-    }
-    switch $mimeHdr($part,param,report-type) {
-	"disposition-notification" {
-	    return [Mime_ShowMultipartReportMDN $tkw $part]
+    MimeWithDisplayHiding $tkw $part {
+	if ![info exists mimeHdr($part,param,boundary)] {
+	    $tkw insert insert "No <boundary> parameter for multipart message\n"
+	    $tkw insert insert "Raw content follows...\n\n"
+	    return [Mime_ShowText $tkw $part]
 	}
-	default {
-	    # Fallback for report types we don't handle yet
-	    return [Mime_ShowMultipart $tkw $part]
+
+	set numParts $mimeHdr($part,numParts)
+
+	if { $numParts < 2 || $numParts > 3 } {
+	    $tkw insert insert "Incorrect number of parts in multipart/report\n"
+	}
+
+	if { $numParts >= 1 } {
+	    set mimeHdr($part=1,color) \
+		[MimeDarkerColor $tkw $mimeHdr($part,color)]
+	    set mimeHdr($part=1,justDoIt) 1
+	    MimeShowReportPart $tkw $part=1 [MimeLabel $part part] 0 \
+		"Human-readable report  "
+	}
+
+	if { $numParts >= 2 } {
+	    set mimeHdr($part=2,color) \
+		[MimeDarkerColor $tkw $mimeHdr($part,color)]
+	    set mimeHdr($part=2,justDoIt) 1
+	    MimeInsertSeparator $tkw $part 8
+
+	    if { $numParts >= 3 } {
+		set mimeHdr($part=2,originalMessageEnclosed) 1
+
+		if [catch {open $mimeHdr($part=3,file)} in] {
+		    error "Cannot read original message file"
+		} else {
+		    while {! [eof $in]} {
+			set len [gets $in line]
+			if {[string match "date:*" [string tolower $line]]} {
+			    set mimeHdr($part=2,originalMessageDate) \
+				[string trim [string range $line 5 end]]
+			}
+		    }
+		    close $in
+		}
+
+	    } else {
+		set mimeHdr($part=2,originalMessageEnclosed) 0
+	    }
+
+	    MimeShowReportPart $tkw $part=2 [MimeLabel $part part] 0 \
+		"Machine-readable report"
+	}
+	
+	if { $numParts >= 3 } {
+	    set mimeHdr($part=3,color) \
+		[MimeDarkerColor $tkw $mimeHdr($part,color)]
+	    set mimeHdr($part=3,justDoIt) 1
+	    MimeInsertSeparator $tkw $part 8
+	    MimeShowReportPart $tkw $part=3 [MimeLabel $part part] 0 \
+		"Original message       "
+	}
+
+	for {set subpart 4} {$subpart <= $numParts} {incr subpart} {
+	    set mimeHdr($part=$subpart,color) \
+		[MimeDarkerColor $tkw $mimeHdr($part,color)]
+	    set mimeHdr($part=$subpart,justDoIt) 1
+	    MimeInsertSeparator $tkw $part 8
+	    MimeShowPart $tkw $part=$subpart [MimeLabel $part part] 0
 	}
     }
 }
-proc Mime_ShowMultipartReportMDN {tkw part} {
-    global mimeHdr mime
-    set numParts $mimeHdr($part,numParts)
-    set from "unknown"
-    set date "010170"
-    if [info exists mime(mdnDone)] {
-	# Magic button has been pressed, fallback
-	unset mime(mdnDone)
-	return [Mime_ShowMultipart $tkw $part]
+
+proc ParseReport {part reportVar} {
+
+    global mimeHdr
+
+    upvar $reportVar report
+    set uniq 1
+    set cur  " "
+
+    if [catch {open $mimeHdr($part,file)} in] {
+	error "Cannot read report body"
     }
-    if [catch {open $mimeHdr($part=2,file)} in] {
-	error "Cannot read disposition file"
-    }
-    for {set len [gets $in line]} {! [eof $in]} {set len [gets $in line]} {
-	if {[string match "final-recipient:*" [string tolower $line]]} {
-	    if { [scan [string trim [string range $line 15 end]] \
-			"%\[^\;]%c%s" * * from] != 3 } {
-		set from [string trim [string range $line 15 end]]
+    while {! [eof $in]} {
+	gets $in line
+Exmh_Status "Parse report: $line"
+	if ![regexp {^[	 ]} $line] {
+	    if [regexp -indices {^([^:]+):} $line match hdr] {
+		set cur [string tolower [eval {string range $line} $hdr]]
+		if [info exists report($cur)] {
+		    # Duplicate header
+		    set cur :$uniq:$cur
+		    incr uniq
+		}
+		set report($cur) \
+		    [string trim \
+			 [string range $line \
+			      [expr [lindex $match 1]+1] end]]
+Exmh_Status "  header: $cur: $report($cur)"
 	    }
-	    set from [string trim $from \>\<]
-	} elseif {[string match "disposition:*" [string tolower $line]]} {
-	    set disposition [string trim [string range $line 12 end]]
+	} elseif [regexp -indices {^[	 ]+} $line match] {
+	    append report($cur) \n$line
 	}
     }
     close $in
-    if ![catch {open $mimeHdr($part=3,file)} in] {
-	for {set len [gets $in line]} {! [eof $in]} \
-		{set len [gets $in line]} {
-	    if {[string match "date:*" [string tolower $line]]} {
-		set date [string trim [string range $line 5 end]]
-	    }
-	}
-	close $in
-    }
+}
 
-    MDNReportDialog $tkw $from $date $disposition $numParts
+proc Mime_ExplainMDN {tkw part reportVar} {
+    global mimeHdr mime
+    upvar $reportVar report
+
+    if [info exists report(disposition)] {
+	$tkw insert insert \
+"This report is a message disposition notification, which reports
+details on how the recipient received the message.\n\n"
+	MDNExplainDisposition $tkw report
+    } else {
+	$tkw insert insert \
+"This report is a message disposition notification, which indicates that
+the message probably was received by the recipient, but no further details 
+are known.  There is no guarantee that the message actually was seen
+or acted on by the recipient."
+    }
     return 1
 }
+
+proc Mime_ExplainDSN {tkw part reportVar} {
+    global mimeHdr mime
+    upvar $reportVar report
+
+    $tkw insert insert "\
+This report is a delivery status notification, that reports actions taken
+by the message transport system in delivering the message to the 
+recipient."
+
+    return 1
+}
+
 proc MimeChopPart {tkw part} {
     # Chop up the parts at this level if it hasn't already been done.
     global mimeHdr
@@ -1884,14 +2061,7 @@ proc MimeParseSingle {tkw part fileIO } {
 		MimeShowMinHeaders $tkw $part 1
 	    }
 	    MimeInsertSeparator $tkw $part 6
-	    if {![info exists mimeHdr(0=1,hdr,x-exmhmdn)] && \
-		   [info exists mimeHdr(0=1,hdr,disposition-notification-to)]} {
-		if [info exists mime(mdnDone)] {
-		    unset mime(mdnDone)
-		} else {
-		    MDNAsk $tkw $mimeHdr(0=1,hdr,disposition-notification-to)
-		}
-	    }
+	    MDNCheck $tkw
 	    if [info exists mimeHdr($part,param,charset)] {
 		set tag [MimeSetCharset $tkw $part]
 		$tkw tag remove noteTag "insert -1line"  end
