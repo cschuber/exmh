@@ -108,8 +108,11 @@
 
   <dt>15 
   <dd><a HREF="#15">How do I set up the templates for mail
-      messages.</a> 
-
+      messages?</a> 
+<dl compact>
+  <dt>15a 
+  <dd><a HREF="#15a">Can I have templates associated with folders?</a> 
+</dl>
   <dt>16 
   <dd><a HREF="#16">How do I get a copy of mail I sent saved into a
       folder (easily).</a>
@@ -619,7 +622,7 @@ MH stuff.
 </dl>
 
 <h3><a NAME="15">15. How do I set up the templates for mail
-messages.</a></h3>
+messages?</a></h3>
 <p>
 MH uses four template files depending on the operation.  nmh adds a
 fifth type of template file.  Default versions of the files are in the
@@ -739,6 +742,23 @@ Subject:
 body:nocomponent,overflowoffset=0,noleftadjust,nocompress
     ----------end of sample forward filter-----------------
 </pre>
+
+<h3><a NAME="15a">15a. Can I have templates associated with folders?</a></h3>
+
+<p>
+To use templates specific to a given folder, simply copy your
+components and/or replcomps files (see <a href="#15">above</a>) into
+that folder and edit them appropriately.  Those files will be used as
+templates when composing new messages from within the folder or when
+replying to messages in that folder.
+<p>
+This feature works hierarchically.  So for example, if you have
+several nested folders under Mail/exmh, and you have created the files
+Mail/exmh/components and Mail/exmh/replcomps, they'll be used (as
+above) when you're in any of those nested folders.
+<p>
+Folder-specific template files are a feature implemented by exmh; they
+are not a part of the normal MH/nmh functionality.
 
 <h3><a NAME="16">16. How do I get a copy of mail I sent saved into
 a folder (easily).</a></h3>
