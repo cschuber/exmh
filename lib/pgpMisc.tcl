@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.17  1999/08/04 19:50:44  cwg
+# Fixed problems with not providing a password under pgp2
+#
 # Revision 1.16  1999/08/04 16:30:18  cwg
 # Don't prompt for a passphrase when we shouldn't.
 #
@@ -332,17 +335,17 @@ proc Misc_PostProcess { srcfile } {
 
     # call the pgp postprocesing if necessary
     if {$pgp(enabled)} {
-	set v $pgp(version,$id)
 	if {$pgp(encrypt,$id) || $pgp(sign,$id)} {
+	    set v $pgp(version,$id)
+	    set keyid [lindex $pgp($v,myname) 0]
 	    # If there's a passphrase from sedit and it's non-empty, use it
-	    # but otherwise don't touch passphrase for current key
 	    if {[info exists pgpPass(cur)] && ([string length $pgpPass(cur)] > 0) && [info exists pgp($v,myname)]} {
-		set keyid [lindex $pgp($v,myname) 0]
 		Pgp_SetPassTimeout $v cur
 		set pgp($v,pass,$keyid) $pgpPass(cur)
+	    } else {
+		set pgp($v,pass,$keyid) ""
 	    }
-	    set keyid [lindex $pgp($v,myname) 0]
-	    Exmh_Debug keyid=$keyid
+
 	    # if non-seditpgp
 	    if {!$pgp(seditpgp)} {
 		set pgp($v,pass,$keyid) [Pgp_GetPass $v $pgp($pgp(version,$id),myname)]
