@@ -28,6 +28,7 @@ proc Flist_Init {} {
     set flist(context) {}
     set flist(contextMtime) 0
     set flist(cacheFileMtime) 0
+    set flist(active) 0
     Flist_FindAllFolders
 }
 proc FlistResetVars {} {
@@ -275,13 +276,17 @@ proc Flist_FolderSet { {subfolder .} } {
 # Flist_ForgetUnseen
 # Flist_AddUnseen
 
-proc Flist_Done {} {
+proc Flist_Done { {resetVisited 1} } {
     global flist exmh
 
     # See Flag_Trace, which has code that used to be called from this point
 
     Exmh_Debug Flist_Done
-    set flist(unvisited) [FlistSort $flist(unvisitedNext)]
+    if {$resetVisited} {
+      # This procedure is called from FolderChange, which doesn't
+      # want to reset this list, and from external sorting, which does
+      set flist(unvisited) [FlistSort $flist(unvisitedNext)]
+    }
     set flist(active) 0
 }
 
@@ -289,7 +294,7 @@ proc Flist_Done {} {
 # Call Flist_UnseenUpdate from external sorting programs after
 # they add messages to a folder
 
-proc Flist_UnseenUpdate { folder } {
+proc Flist_UnseenUpdate { folder {resetVisited 1} } {
     global exmh flist ftoc mhProfile
     Exmh_Debug Flist_UnseenUpdate $folder
     foreach seq [Mh_Sequences $folder] {
@@ -307,7 +312,7 @@ proc Flist_UnseenUpdate { folder } {
 	set flist(unvisitedNext) $flist(unvisited)
     }
     # This wiggles the flag and sorts flist(unvisited)
-    Flist_Done
+    Flist_Done $resetVisited
 }
 proc Flist_UnseenFolders {} {
     global flist mhProfile
@@ -342,6 +347,7 @@ proc FlistFindSeqsInner {} {
     if {[catch {
     FlistGetContext
     foreach folder $flist(unseenfolders) {
+Exmh_Debug FlistFindSeqsInner $folder
         foreach seq [Mh_Sequences $folder] {
             if {[lsearch $seqwin(nevershow) $seq] < 0} {
                 set seqlist [MhGetSeqCache $folder $seq]

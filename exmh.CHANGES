@@ -1,5 +1,9 @@
 HISTORY
 cvs repository 02/18/2003 welch@panasas.com
+    flist.tcl, folder.tcl - oops! botched change related to Flist_UpdateUnseen
+    described below.  Repackaged 2.6.1 and updated cvs tag.
+
+cvs repository 02/18/2003 welch@panasas.com
     Makefile, exmh.README, exmh.install, version.sed, 
     exmh.README.html, index.html, software.html
       2.6.1 release
