@@ -1,6 +1,10 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.3  1999/08/11 04:09:20  bmah
+# Fix problems caused by GPG returning key IDs that are 8 bytes long,
+# when exmh (and keyservers) like to work with 4-byte key IDs.
+#
 # Revision 1.2  1999/08/03 04:05:54  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -286,12 +290,12 @@ set pgp(gpg,pat_dropKeys) {}
 set pgp(gpg,pat_splitKeys) \n
 # Patterns that match out interesting keys
 set pgp(gpg,pat_keySec) \
-                {^(pub|sec):[^:]*:[^:]*:([^:]*):([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:([^:]+).*$}
+                {^(pub|sec):[^:]*:[^:]*:([^:]*):[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:([^:]+).*$}
 set pgp(gpg,pat_keySec_sub) \
-                {^(ssb):[^:]*:[^:]*:([^:]+):([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*.*$}
+                {^(ssb):[^:]*:[^:]*:([^:]+):[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*.*$}
 set pgp(gpg,pat_keyPub) $pgp(gpg,pat_keySec)
 set pgp(gpg,pat_keyPub_sub) \
-                {^(sub):[^:]*:[^:]*:([^:]+):([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*.*$}
+                {^(sub):[^:]*:[^:]*:([^:]+):[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*.*$}
 set pgp(gpg,pat_uid) \
                 {^(uid):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:([^:]+).*$}
 # TclCmd to match out userid and keyid
