@@ -157,6 +157,10 @@ Inc:           Just like clicking the Inc button
 Compose:       Starts a mail composition"
     }
   }
+}
+
+proc Seq_TraceInit {} {
+    global flist seqwin
 
     trace variable flist wu Seq_Trace
     trace variable seqwin(on) w SeqWinToggle
@@ -218,7 +222,7 @@ Exmh_Debug "Seq_Trace $array $elem $op"
 	    }
 	}
 	if {$seqwin(on)} {
-	    SeqWinUpdate $seq $folder $num
+	    BgRPC SeqWinUpdate $seq $folder $num
 	}
     } elseif {$var == {totalcount}} {
 	set seq [lindex $indices 1]
@@ -232,7 +236,7 @@ Exmh_Debug "Seq_Trace $array $elem $op"
 	    set flist(totalcount,$seq) 0
 	}
 	if {$seqwin(on)} {
-	    SeqWinShowSeqPane $seq
+	    BgRPC SeqWinShowSeqPane $seq
 	}
     }
 }

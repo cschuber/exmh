@@ -67,6 +67,9 @@ structure is deeply nested." }
     trace variable fcache(sortByName) w Fcache_Redisplay
     trace variable fcache(nicknames) w Fcache_Redisplay
     trace variable fcache(unseenCount) w Fcache_Redisplay
+
+    # BUG - this trace is replaced by the trace set up
+    # in Seq_TraceInit
     trace variable flist wu Fcache_RedisplayUnseen
 
     # Init the cache and handle various error cases.

@@ -82,6 +82,7 @@ is displayed to debug the flist module."}
     Exwin_Init
     Flist_Init
     Seq_Init
+    Seq_TraceInit
     Fcache_Init
     Fdisp_Init		;# After Flist and Fcache
     Sound_Init

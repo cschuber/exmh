@@ -317,7 +317,7 @@ Exmh_Debug FlistFindSeqsInner $folder
                   # Sequence is different than last time we checked
 
                   set flistcache($folder,$seq) $seqlist
-                  Seq_Set $folder $seq $seqlist
+                  BgRPC Seq_Set $folder $seq $seqlist
                 }
             }
 	}
@@ -337,7 +337,8 @@ proc FlistFindSeqs {reset} {
 	# Flist active
 	return
     }
-    BgRPC FlistFindSeqsInner
+    #BgRPC FlistFindSeqsInner
+    FlistFindSeqsInner
     BgRPC Flist_Done
 }
 proc FlistGetContext {} {

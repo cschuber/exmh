@@ -1214,6 +1214,12 @@ proc Mh_FindFile { filename } {
 }
 # exmh-2.5 APIs
 # Mh_ClearCur 
-# Mh_MarkSeen
-# Mh_MarkUnseen
 # Mh_Unseen 
+
+proc Mh_MarkSeen {folder ids} {
+    global mhProfile
+    Seq_Del $folder $mhProfile(unseen-sequence) $ids
+}
+proc Mh_MarkUnseen {folder ids} {
+    Seq_Add $folder $mhProfile(unseen-sequence) $ids
+}

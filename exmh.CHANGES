@@ -1,4 +1,10 @@
 HISTORY
+cvs repostiory 3/30/2003 welch@panasas.com
+   sequences.tcl, flist.tcl, main.tcl, exmh-bg.MASTER - restructure
+    sequence searching so it is done in the background process
+    like it used to be in exmh-2.5
+  select.tcl - fixed non-numeric typeing
+  mh.tcl - added stubs for 2.5 APIs Mh_MarkSeen and Mh_MarkUnseen
 
 cvs repository 03/26/2003 haldevore@acm.org
     flag.tcl - Applied patch sent to exmh-users by dglo@ssec.wisc.edu

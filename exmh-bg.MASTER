@@ -198,6 +198,7 @@ Mh_Init
 Inc_Init
 Ftoc_Init		;# Need ftoc(scanWidth)
 Flist_Init
+Seq_Init                ;# Need seqwin(nevershow)
 Post_Init
 set busy(style) none
 Background_Init
