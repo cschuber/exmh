@@ -240,3 +240,34 @@ I have no fix, and the problem is not Debian-specific. It may
 be good to just forward this to the upstream authors.
 
 
+
+Number: 15
+Version: 1.6.9
+Priority: ?
+Scope: ?
+Complexity: ?
+
+
+Subject: Odd "unseen" exmh weirdnesses
+Date: Tue, 13 Apr 1999 00:28:07 -0500
+From: Eddie Kuns <ekuns@kilroy.chi.il.us>
+
+When I create a new folder, move messages into that folder, and mark them 
+unseen -- all within EXMH -- the "unseen"-ness seems to get stored in 
+~/Mail/.exmhcontext RATHER THAN in the unseen sequence file.  I am now 
+pretty sure that this only happens in a new folder, opened this session of 
+exmh.  (Also in a folder opened in a recent exmh session which somehow -- I 
+don't know how -- has its context not quite right.)
+
+Any time I've had "unseen" weirdness in a folder (messages refusing to 
+leave the unseen coloration and other oddities), it has always been caused 
+by "atr-unseen-" lines in ~/Mail/.exmhcontext.  Exiting exmh, removing that 
+line, and restarting exmh (sometimes having to do this more than one time 
+in succession) has always fixed this problem.  Once fixed, the problem 
+never recurs in the same folder.
+
+From: Brent Welch <welch@scriptics.com>
+
+Ahh - this is a good diagnosis - this issue has plagued exmh for some time.
+It may be as simple as creating an empty .mh_sequences file in the 
+directory will fix it.
