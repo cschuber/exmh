@@ -83,10 +83,13 @@ proc PreferencesCopyDone { movedFiles } {
 The following files have been moved and renamed.  Once you have 
 verified that Exmh is working properly, you can delete these files.
 
-[puts $movedFiles]
+$movedFiles
 "
 
     Widget_Frame .filesmoved rim Pad {top expand fill}
+    .filesmoved.rim configure -bd 10
+
+    Widget_Frame .filesmoved.rim but Menubar {top fill}
     Widget_AddBut .filesmoved.rim.but ok "OK" {destroy .filesmoved }
     tkwait window .filesmoved
 }
@@ -140,7 +143,7 @@ proc PreferencesDoCopyFiles { } {
         append movedList ".exmhsedit\n"
     }
     catch {destroy .newprefs}
-   # PreferencesCopyDone movedList
+    PreferencesCopyDone "$movedList"
 }
 
 proc PreferencesReadFile { basename level } {
