@@ -99,6 +99,7 @@ proc MsgClear {} {
     $exwin(mtext) delete 0.0 end
     $exwin(mtext) configure -state disabled
     Face_Delete
+    catch {destroy $exwin(mopButtons).list}
 }
 proc Msg_ShowSomething {} {
     global exmh msg

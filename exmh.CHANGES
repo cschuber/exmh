@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 5/18/1999
+    Clear List... button in MsgClear -Kevin.Christian@lsil.com via cwg
+
 cvs repository 5/13/1999
     Sped up startup time by not precaching nicknames for all the
 	folders. -cwg
