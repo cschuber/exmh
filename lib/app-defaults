@@ -83,10 +83,10 @@
 *Menubutton.takeFocus: 0
 
 ! Cursors
-*Text.cursor:			xterm
-*Ftoc*Text.cursor:		hand2
 *Dialog*cursor:			top_left_arrow
 *Status*cursor:			top_left_arrow
+*Text.cursor:			xterm
+*Ftoc*Text.cursor:		hand2
 *Status.boundary.cursor:	double_arrow
 *Main.quit.cursor:		gumby
 *Entry.cursor:			xterm
