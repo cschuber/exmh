@@ -6,6 +6,11 @@
 # 
 
 # $Log$
+# Revision 1.16  2001/12/06 16:39:13  kchrist
+# Exmh can now parse the GnuPG options file and identify the
+# "default-key" (same as "myname" in PGP).  Added "--status-fd 2" to
+# args_decrypt so that the output can be parsed with Pgp_InterpretOutput.
+#
 # Revision 1.15  2000/09/21 15:06:44  valdis
 # Catch PGP stderr so 'Get key' and 'Generate Key' work...
 #
@@ -365,8 +370,14 @@ proc Pgp_Exec_ParseConfigTxt { v file } {
     if [catch {open $file r} in] {
 	return
     }
+    if {$v != "gpg"} {
+	set pat "^\[ \t]*(\[a-z]+)\[ \t]*=(\[^#]*)"
+    } else {
+	# GnuPG uses space as separator and options may have dashes
+	set pat "^\[ \t]*(\[a-z-]+)\[ \t]*(\[^#]*)"
+    }
     for {set len [gets $in line]} {$len >= 0} {set len [gets $in line]} {
-	if [regexp -nocase "^\[ \t]*(\[a-z]+)\[ \t]*=(\[^#]*)" $line {} option value] {
+	if [regexp -nocase $pat $line {} option value] {
 	    set pgp($v,config,[string tolower $option]) [string trim $value " \t\""]
 	}
     }
@@ -765,6 +776,11 @@ proc Pgp_Exec_Init {} {
                 set pgp($v,secring) {}
             }
             set pgp($v,privatekeys) [Pgp_Exec_KeyList $v $pgp($v,ownPattern) Sec]
+	    # GnuPG uses default-key for what PGP uses myname
+	    if {![info exists pgp($v,config,myname] && \
+		    [info exists pgp($v,config,default-key)]} {
+		    set pgp($v,config,myname) $pgp($v,config,default-key)
+	    }
             #
             if [info exists pgp($v,config,myname)] {
                 set myname [string tolower [set pgp($v,config,myname)]]

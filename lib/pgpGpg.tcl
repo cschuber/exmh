@@ -1,6 +1,11 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.13  2001/12/06 16:39:13  kchrist
+# Exmh can now parse the GnuPG options file and identify the
+# "default-key" (same as "myname" in PGP).  Added "--status-fd 2" to
+# args_decrypt so that the output can be parsed with Pgp_InterpretOutput.
+#
 # Revision 1.12  2000/06/15 17:03:11  valdis
 # Add X-Mailer: change, fix PGP Comment: line...
 #
@@ -296,7 +301,7 @@ proc Pgp_Gpg_Arglist {} {
 #
 
 # Should config file be parsed
-set pgp(gpg,parse_config) 0
+set pgp(gpg,parse_config) 1
 
 #######
 # Exec
@@ -396,7 +401,7 @@ set pgp(gpg,pat_getDecryptSym) "NEED_PASSPHRASE_SYM"
 
 ###############
 # Exec_Decrypt
-set pgp(gpg,args_decrypt) {-o $out $in}
+set pgp(gpg,args_decrypt) {--status-fd 2 -o $out $in}
 
 ##################### >>>>>>>>>>>> DELETE
 # Exec_DecryptExpect
