@@ -584,6 +584,12 @@ this time period, in minutes, has elapsed." }
 	Preferences_Tweak pgp(version)
     }
 
+    # Fix up change in pgp(sign) value
+    switch $pgp(sign) {
+	1 {set pgp(sign) standard}
+	0 {set pgp(sign) none}
+    }
+
     # And now load the version specific stuff
     foreach v $setup {
         # Load version specific support
