@@ -256,7 +256,7 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 	# Remove comments
 	regsub -all {\([^()]*\)} $header($index) {} h
 	# Remove whitespace
-	regsub -all " " $h {} h
+	regsub -all " \n\t" $h {} h
 	# Loop through the fields
 	foreach f [split $h ,] {
 	    # Stricture #1

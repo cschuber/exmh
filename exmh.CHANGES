@@ -1,7 +1,13 @@
 HISTORY
+cvs repository 03/18/2003 welch@panasas.coM
+    exmh.install - bumped up date for 2.6.2
+    msgShow.tcl - added \n adn \t to the white-space removal in the 
+        Hook_MsgShowListHeaders proc.
+
 cvs repository 03/15/2003 valdis.kletnieks@vt.edu
     seqwin.tcl - bug fix for brent's previous bug fix.  Make sure that
       $seqwin(startuphidden) is set before we call SeqWinToggle
+
 cvs repository 03/14/2003 welch@panasas.com
     sequences.tcl, seqwin.tcl - Bug fixes for previous submit
     bindings.tcl - fixed this to properly allow users to override bindings.
