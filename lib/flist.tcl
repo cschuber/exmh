@@ -195,7 +195,7 @@ proc Flist_DelFolder { folder } {
 proc FlistCacheFolderList {} {
     global flist
     if [catch {open $flist(cacheFile) w} out] {
-	Exmh_Status "Cannot cache folder list: $out" red
+	Exmh_Status "Cannot cache folder list: $out" warning
     } else {
 	foreach f $flist(allfolders) {
 	    puts $out $f
@@ -378,7 +378,7 @@ proc Flist_Done {} {
     if {$flist(newMsgs) > 0} {
 	if {$flist(newMsgs) == 1} {set msg "msg"} else {set msg "msgs"}
 	if {[llength $flist(unseen)] == 1} {set f "folder"} else {set f "folders"}
-	Exmh_Status "$flist(newMsgs) unread $msg in [llength $flist(unseen)] $f" blue
+	Exmh_Status "$flist(newMsgs) unread $msg in [llength $flist(unseen)] $f"
 	if ![info exists flist(lastNewMsgs)] {
 	    set flist(lastNewMsgs) 0
 	}
@@ -390,7 +390,7 @@ proc Flist_Done {} {
     } else {
 	set flist(newMsgs) 0
 	Flag_NoUnseen
-	Exmh_Status "No unread msgs" blue
+	Exmh_Status "No unread msgs"
     }
     set flist(lastNewMsgs) $flist(newMsgs)
     set flist(unvisited) [FlistSort $flist(unvisitedNext)]

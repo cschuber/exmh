@@ -218,7 +218,7 @@ proc ExmhResources {} {
 	Preferences_Resource exmh(c_st_normal) c_st_normal blue
 	Preferences_Resource exmh(c_st_error) c_st_error purple
 	Preferences_Resource exmh(c_st_warn) c_st_warn red
-	Preferences_Resource exmh(c_st_background) c_st_background black
+	Preferences_Resource exmh(c_st_background) c_st_background "\#d9d9d9"
     } else {
 	Preferences_Resource exmh(c_st_normal) c_st_normal black
 	if {$exmh(c_st_normal) != "white" && $exmh(c_st_normal) != "black"} {
@@ -231,7 +231,7 @@ proc ExmhResources {} {
 }
 
 proc Exmh_Status {string { level normal } } {
-    global exmh exwin
+    global exmh exwin tk_patchLevel
     if {[string compare $string 0] == 0 } { set string $exmh(version) }
     if [info exists exwin(status)] {
 	switch -- $level {
@@ -239,10 +239,6 @@ proc Exmh_Status {string { level normal } } {
 	    error	-
 	    background	-
 	    normal	{ # do nothing }
-	    red		{set level warn}
-	    blue	{set level normal}
-	    purple	{set level error}
-	    "medium sea green" {set level background}
 	    default	{set level normal}
 	}
 	if ![info exists exmh(c_st_$level)] {
@@ -252,7 +248,14 @@ proc Exmh_Status {string { level normal } } {
 	catch {$exwin(status) configure -fg $exmh(c_st_$level)}
 	$exwin(status) delete 0 end
 	$exwin(status) insert 0 $string
-	$exwin(status) configure -state disabled
+	# Oh, the inhumanity.. backward-incompatible behavior changes
+	set state "disabled -bg $exmh(c_st_background)"
+	if [info exists tk_patchLevel] {
+	    if {$tk_patchLevel > "8.4a1"} {
+		set state "readonly -readonlybackground $exmh(c_st_background)"
+	    }
+	}
+	eval $exwin(status) configure -state $state
 	ExmhLog $string
 	update idletasks
     } else {
@@ -283,7 +286,7 @@ proc Exmh_Done {{exit 1}} {
 	    catch {exec date} d
 	    Audit "Quit $d"
 	}
-	Exmh_Status "Checkpointing state" red
+	Exmh_Status "Checkpointing state" warning
 	if [info exists exmh(newuser)] {
 	    PreferencesSave nodismiss	;# Save tuned parameters
 	    unset exmh(newuser)
@@ -447,9 +450,9 @@ proc ExmhLogSave {} {
     if [catch {
 	puts $logfile [$exmh(log) get 1.0 end]
 	close $logfile
-	Exmh_Status "Saved log in [Env_Tmp]/exmhlog.$id" blue
+	Exmh_Status "Saved log in [Env_Tmp]/exmhlog.$id"
     } msg] {
-	Exmh_Status "Cannot save log: $msg" purple
+	Exmh_Status "Cannot save log: $msg" error
     }
 }
 #### Misc
@@ -480,8 +483,8 @@ proc Tcl_Tk_Vers_Init {} {
 # namespaces, so we need to do backward-compatibility until we
 # fix the code everyplace.
 global tk_version tk_patchLevel tcl_version tcl_patchLevel
-    if [info exists tk_patchLevel] {
-        if {$tk_patchLevel > "8.4a2"} {
+    if [info exists tk_version] {
+        if {$tk_version > "8.3"} {
 	    ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
 	    ::tk::unsupported::ExposePrivateCommand tkEntrySeeInsert
 	    ::tk::unsupported::ExposePrivateCommand tkMenuUnpost

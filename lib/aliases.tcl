@@ -145,7 +145,7 @@ proc AliasesSetupCommit {top entry} {
     }
     set mhProfile(aliasfile) $filename
     if [catch {open ~/.mh_profile a} out] {
-	Exmh_Status "Cannot open ~/.mh_profile: $out" purple
+	Exmh_Status "Cannot open ~/.mh_profile: $out" error
 	unset mhProfile(aliasfile)
 	destroy .aliasfile
 	return

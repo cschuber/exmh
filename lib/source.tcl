@@ -6,7 +6,7 @@ if {$exmh(sourceHook) && [info command source-orig] ==  ""} {
 	 set fn [file rootname [file tail $file]]
 	 if [info exists SourceHook($fn)] {
 	    if [catch {uplevel 1 $SourceHook($fn)} err] {
-		Exmh_Status "Error in source hook for $fn: $err" red
+		Exmh_Status "Error in source hook for $fn: $err" warning
 	    }
 	 }
 	 return $result

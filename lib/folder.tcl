@@ -90,7 +90,7 @@ proc FolderChange {f msgShowProc} {
 	return
     }
     if ![file isdirectory $mhProfile(path)/$f] {
-	Exmh_Status "Folder $f doesn't exist" purple
+	Exmh_Status "Folder $f doesn't exist" error
 	return
     }
     set oldFolder $exmh(folder)
@@ -148,7 +148,7 @@ proc Folder_Target {f} {
 	return 0
     }
     if {$exmh(folder) == $f} {
-	Exmh_Status "Target must be different than current" red
+	Exmh_Status "Target must be different than current" warning
 	return 0
     }
     Fdisp_HighlightTarget $f
@@ -184,7 +184,7 @@ proc Folder_Sort { args } {
 
     if {[Ftoc_Changes "Sort"] == 0} then {
 	Background_Wait
-	Exmh_Status "Sorting folder..." blue
+	Exmh_Status "Sorting folder..."
 	eval {Mh_Sort $exmh(folder)} $args
  	Flist_ResetUnseen $exmh(folder)	 ;# unseen sequence might have changed
 	Scan_FolderForce
@@ -209,7 +209,7 @@ proc Folder_Pack {} {
 
     if {[Ftoc_Changes "Pack"] == 0} then {
 	Background_Wait
-	Exmh_Status "Packing folder..." blue
+	Exmh_Status "Packing folder..."
 	Mh_Pack $exmh(folder)
  	Flist_ResetUnseen $exmh(folder)	 ;# unseen sequence might have changed
 	Scan_FolderForce

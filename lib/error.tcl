@@ -108,7 +108,7 @@ pressing the Mail to button, or just Dismiss me."
     if {[string length $msg] > 20} {
 	set msg [concat [string range $msg 0 30] ...]
     }
-    if [catch {Exmh_Status "tkerror: $msg" purple}] {
+    if [catch {Exmh_Status "tkerror: $msg" error}] {
 	puts stderr "tkrror: $msg"
 	puts stderr "*** TCL Trace ***"
 	puts stderr $savedErrorInfo
@@ -122,7 +122,7 @@ proc ExmhMailError { w errInfo } {
         file delete [Env_Tmp]/exmhErrorMsg
     }
     if [catch {open [Env_Tmp]/exmhErrorMsg w} out] {
-	Exmh_Status "Cannot open [Env_Tmp]/exmhErrorMsg" purple
+	Exmh_Status "Cannot open [Env_Tmp]/exmhErrorMsg" error
 	return
     }
     if [catch {
@@ -161,13 +161,13 @@ proc ExmhMailError { w errInfo } {
 	puts $out $errInfo
 	close $out
     } msg] {
-	Exmh_Status "[Env_Tmp]/exmhErrorMsg $msg" purple
+	Exmh_Status "[Env_Tmp]/exmhErrorMsg $msg" error
 	return
     }
     if [catch {
 	exec send [Env_Tmp]/exmhErrorMsg
     } msg] {
-	Exmh_Status "Send error: $msg" purple
+	Exmh_Status "Send error: $msg" error
 	return
     } else {
 	Exmh_Status "Mailed report to $exmh(maintainer)"

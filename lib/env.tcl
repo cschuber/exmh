@@ -80,7 +80,7 @@ proc Env_Tmp {} {
     } err]} {
 	puts $err
 	catch {puts stderr "WARNING: exmh using unsafe /tmp directory"}
-	Exmh_Status "WARNING: exmh using unsafe /tmp directory" red
+	Exmh_Status "WARNING: exmh using unsafe /tmp directory" warning
 	set exmh(tmpdir) /tmp
     }
 

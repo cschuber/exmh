@@ -76,7 +76,7 @@ proc FolderNewCommit { top entry } {
 	    continue
 	}
 	if [file exists $path] {
-	    Exmh_Status "Non-directory $path already exists" red
+	    Exmh_Status "Non-directory $path already exists" warning
 	    Exwin_Dismiss $top
 	    return
 	}
@@ -97,7 +97,7 @@ proc FolderNewCommit { top entry } {
 	    exec chmod $mhProfile(folder-protect) $path
 	}
     }
-    Exmh_Status "Created folder $name" blue
+    Exmh_Status "Created folder $name"
     Flist_AddFolder $name
     Fcache_Folder $name
     Exwin_Dismiss $top
@@ -129,7 +129,7 @@ proc FolderDelCommit { top entry } {
     }
     set path $mhProfile(path)
     if [catch {Mh_Path $name new} nextid] {
-	Exmh_Status "Cleaning up folder $name" blue
+	Exmh_Status "Cleaning up folder $name"
 	Flist_DelFolder $name
 	Fcache_FolderDiscard $name
 	Glimpse_Delete $name
@@ -144,7 +144,7 @@ proc FolderDelCommit { top entry } {
 	if [catch {exec rmf +$name -nointeractive} err] {
 	    Exmh_Status $err
 	} else {
-	    Exmh_Status "Deleted folder $name" blue
+	    Exmh_Status "Deleted folder $name"
 	    Flist_DelFolder $name
 	    Fcache_FolderDiscard $name
 	    Glimpse_Delete $name

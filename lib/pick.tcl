@@ -184,9 +184,9 @@ proc Pick_It {} {
 }
 proc PickInner {cmd msgs} {
     global pick
-    Exmh_Status "$cmd $msgs" red
+    Exmh_Status "$cmd $msgs" warning
     if [catch [concat $cmd $msgs] ids] {
-	Exmh_Status "Fail: [string range $ids 2 end]" purple
+	Exmh_Status "Fail: [string range $ids 2 end]" error
 	return
     }
     set pick(ids) [split $ids \n]
@@ -195,7 +195,7 @@ proc PickInner {cmd msgs} {
 	Ftoc_RangeUnHighlight
     }
     Ftoc_PickMsgs $pick(ids) $pick(addtosel)
-    Exmh_Status "Pick hit [llength $pick(ids)] msgs" blue
+    Exmh_Status "Pick hit [llength $pick(ids)] msgs"
 }
 proc PickMarkSeen {} {
     global exmh pick
@@ -210,8 +210,8 @@ proc PickMarkSeen {} {
 }
 proc Pick_MarkSeen {} {
     global exmh pick
-    Exmh_Status "Clearing unseen sequence..." red
+    Exmh_Status "Clearing unseen sequence..." warning
     set pick(ids) [Mh_Unseen $exmh(folder)]
     busy PickMarkSeen
-    Exmh_Status ok blue
+    Exmh_Status ok
 }

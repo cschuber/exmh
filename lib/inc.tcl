@@ -239,7 +239,7 @@ proc Inc_Presort {{doinc 1}} {
 	Exmh_Status "incfilter ..."
 	foreach file $files {
 	    if {![regexp {^[0-9]+$} [file tail $file]]} {
-		Exmh_Status "Deleting stray file in MyIncTmp: [file tail $file]" red 
+		Exmh_Status "Deleting stray file in MyIncTmp: [file tail $file]" warning
 		File_Delete $file
 		continue
 	    }
@@ -290,9 +290,9 @@ proc Inc_Presort {{doinc 1}} {
 		if {$inc(presortFeedback)} {
 		    if {[string length $subject] > 0} {
 			regsub "^Subject: *" $subject "" subject
-			Exmh_Status "[file tail $file]: $subject" red
+			Exmh_Status "[file tail $file]: $subject" warning
 		    } else {
-			Exmh_Status [file tail $file] red
+			Exmh_Status [file tail $file] warning
 		    }
 		}
 	    }
@@ -327,13 +327,13 @@ proc Inc_PresortFinish {} {
 proc Inc_All {{updateScan 1}} {
     global exdrops exmh ftoc pop
 
-    Exmh_Status "Checking dropboxes..." red
+    Exmh_Status "Checking dropboxes..." warning
     MhSetMailDrops	;# Update, if needed
 
     set hits {}
     foreach record [array names exdrops] {
         set fields [ scan $exdrops($record) "%s %s %s" folder dropname popname]
-        Exmh_Status "dropbox... $dropname" red
+        Exmh_Status "dropbox... $dropname" warning
 	if {[string first / $dropname] < 0} {
 
 	    # Not a pathname, but a POP hostname
@@ -374,7 +374,7 @@ proc Inc_All {{updateScan 1}} {
     }
     if {$updateScan && ([llength $hits] > 0)} {
 	BgRPC Flist_Done
-	Exmh_Status "New mail in: $hits" blue
+	Exmh_Status "New mail in: $hits"
     } else {
 	Exmh_Status ""
     }
@@ -391,9 +391,9 @@ proc Inc_Pending {} {
     }
     if [llength $active] {
 	# Output the list of active folder
-	Exmh_Status "Active: $active" blue
+	Exmh_Status "Active: $active"
     } else {
-	Exmh_Status "No active folders" red
+	Exmh_Status "No active folders" warning
     }
     Flist_FindUnseen
 }

@@ -70,7 +70,7 @@ proc Thread_Scan { folder minfo } {
                              -noheader -noclear -width 9999 -format $scan_fmt]
 
     if [catch {open "|$scan_cmd"} pipe] {
-        Exmh_Status "scan failed: $pipe" purple
+        Exmh_Status "scan failed: $pipe" error
         return 1
     }
 
@@ -80,7 +80,7 @@ proc Thread_Scan { folder minfo } {
     set msginfo(hits) 0
     set msginfo(tref) 0
 
-    Exmh_Status $status blue
+    Exmh_Status $status
     while {[gets $pipe line] > 0} {
 	set num {}
 	if ![regexp {^ *([0-9]+) <([^>]*)>(.*)} $line x num mid newline] {
@@ -90,13 +90,13 @@ proc Thread_Scan { folder minfo } {
 	    set newline {}
 	}
         if {$num != [lindex $msginfo(msgs) $numline]} {
-            Exmh_Status "thread/scan message mismatch. Rescan?" purple
+            Exmh_Status "thread/scan message mismatch. Rescan?" error
             return 1
         }
         incr numline
         if {$maxlines > 250 && [expr $numline%$pass] == 0} {
             set done [expr 10*$numline/$pass]
-            Exmh_Status "$status $done% done" blue
+            Exmh_Status "$status $done% done"
         }
         set msginfo(refs,$num)  {}
         set msginfo(isref,$num) 0
@@ -119,7 +119,7 @@ proc Thread_Scan { folder minfo } {
         }
     }
     if [catch {close $pipe} err] {
-        Exmh_Status "scan diagnostic: $err" purple
+        Exmh_Status "scan diagnostic: $err" error
         # we suppose that there were only diagnostics, no need to fail...
     }
 
@@ -201,7 +201,7 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
     set numline 0
     set msginfo(msgs)  {}
     set msginfo(selm)  {}
-    Exmh_Status "Getting text from the display ..." blue
+    Exmh_Status "Getting text from the display ..."
     while {$numline < $maxlines} {
 	incr numline
 	set text [$exwin(ftext) get $numline.0 $numline.end]
@@ -230,7 +230,7 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
 
     set msginfo(out) {}
 
-    Exmh_Status "Redisplaying FTOC ..." blue
+    Exmh_Status "Redisplaying FTOC ..."
     $exwin(ftext) configure -state normal
     $exwin(ftext) delete 0.0 end
     foreach m $msginfo(msgs) {

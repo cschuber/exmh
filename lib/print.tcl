@@ -28,7 +28,7 @@ proc Print {} {
     }
     set nprint [llength $file]
     if {$nprint == 0} {
-	Exmh_Status "No messages selected for printing" red
+	Exmh_Status "No messages selected for printing" warning
 	return
     }
     set plural s

@@ -109,7 +109,7 @@ proc Scan_FolderForce {{F ""}} {
     }
     set cacheFile $mhProfile(path)/$F/.xmhcache
     if {$F == ""} {
-	Exmh_Status "No current folder" red
+	Exmh_Status "No current folder" warning
     } elseif {$F != $exmh(folder)} {
 	# If we aren't currently viewing the folder, just delete
 	# the cache file and we'll take care of this later
@@ -178,7 +178,7 @@ proc ScanIO {folder scanIO } {
 	ScanAddLines [read $scanIO]
 	close $scanIO
     } err] {
-	Exmh_Status $err red
+	Exmh_Status $err warning
 	catch {close $scanIO}
     }
     ScanAddLineCleanup $folder
@@ -343,6 +343,6 @@ proc Scan_AllFolders { {force 0} } {
     puts $out "exec rm $ctx.\[pid\]"
     puts $out exit
     close $out
-    Exmh_Status "wish -f [Env_Tmp]/scancmds &" blue
+    Exmh_Status "wish -f [Env_Tmp]/scancmds &"
     exec $wish -f [Env_Tmp]/scancmds &
 }

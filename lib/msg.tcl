@@ -210,7 +210,7 @@ proc Msg_Compose { args } {
     if {[string compare [info command $args] $args] == 0} {
 	# Old interface with hook procedure
 	if [catch {$args} err] {			;# Setup draft msg
-	    Exmh_Status "$args: $err" purple
+	    Exmh_Status "$args: $err" error
 	    return
 	}
     } else {
@@ -350,12 +350,12 @@ proc Msg_Reply { args } {
 	if {[string compare [info command $args] $args] == 0} {
 	    # Old interface with hook procedure
 	    if [catch {$args $exmh(folder) $m} err] {	;# Setup draft msg
-		Exmh_Status "${args}: $err" purple
+		Exmh_Status "${args}: $err" error
 		Quote_Cleanup
 		return
 	    }
 	} else {
-	    Exmh_Status "repl $args" purple
+	    Exmh_Status "repl $args" error
 	    if [catch {
 		set ix [lsearch $args -noedit]
 		if {$ix >= 0} {
@@ -367,13 +367,13 @@ proc Msg_Reply { args } {
                     set path [Mh_FindFile "replcomps"]
 		    if {0 != [string length $path]} {
 			lappend args -form $path/replcomps
-			Exmh_Status "repl $args" purple
+			Exmh_Status "repl $args" error
 		    }
 		}
 		eval {MhExec repl +$exmh(folder) $m -nowhatnowproc} $args
 		eval {MhAnnoSetup $exmh(folder) $m repl} $args
 	    } err] {	;# Setup draft msg
-		Exmh_Status "repl: $err" purple
+		Exmh_Status "repl: $err" error
 		Quote_Cleanup				;# Nuke @ link
 		return
 	    }
@@ -410,7 +410,7 @@ proc Msg_Forward { args } {
 	if {[string compare [info command $args] $args] == 0} {
 	    # Old interface with hook procedure
 	    if [catch {$args $exmh(folder) $ids} err] {	;# Setup draft msg
-		Exmh_Status "${args}: $err" purple
+		Exmh_Status "${args}: $err" error
 		return
 	    }
 	}  else {
@@ -432,7 +432,7 @@ proc Msg_Forward { args } {
 		    Mh_Forw_MungeSubj $exmh(folder) $ids
 		}
 	    } err] {
-		Exmh_Status "forw: $err" purple
+		Exmh_Status "forw: $err" error
 		return
 	    }
 	}
@@ -455,7 +455,7 @@ proc Msg_Dist { args } {
 	if {[string compare [info command $args] $args] == 0} {
 	    # Old interface with hook procedure
 	    if [catch {$args $exmh(folder) $m} err] {   ;# Setup draft msg
-		Exmh_Status "${args}: $err" purple
+		Exmh_Status "${args}: $err" error
 		return
 	    }
 	}  else {
@@ -464,7 +464,7 @@ proc Msg_Dist { args } {
 		eval {MhExec dist +$exmh(folder) $m} -nowhatnowproc $args
 		eval {MhAnnoSetup $exmh(folder) $m dist} $args
 	    } err] {
-		Exmh_Status "dist: $err" purple
+		Exmh_Status "dist: $err" error
 		return
 	    }
 	}
@@ -478,7 +478,7 @@ proc MsgOk { number msgvar } {
 	set msg $number
 	return 1
     } else {
-	Exmh_Status "No valid message number" red
+	Exmh_Status "No valid message number" warning
 	return 0
     }
 }
@@ -510,7 +510,7 @@ proc Msg_Move { {moveProc Ftoc_MoveMark} {advance 1} {show show} } {
     global exmh fdisp
 
     if {$exmh(target) == ""} {
-	Exmh_Status "Must first click button $fdisp(tarbutton) on folder label to pick destination" purple
+	Exmh_Status "Must first click button $fdisp(tarbutton) on folder label to pick destination" error
 	return
     }
     if { $exmh(target) != $exmh(folder)} then {
@@ -537,7 +537,7 @@ proc Msg_Clip { {folder {}}  {id {}} } {
     if {$id     == {}} {set id     $msg(id)}
 
     if {$id == {}} {
-	Exmh_Status "Select a message to clip first" red
+	Exmh_Status "Select a message to clip first" warning
 	return
     }
     if ![info exists msg(tearid)] {
@@ -570,7 +570,7 @@ proc Msg_BurstDigest {} {
     global msg exmh mhProfile
 
     if {$msg(id) == {}} {
-	Exmh_Status "No message selected to burst" purple
+	Exmh_Status "No message selected to burst" error
 	return
     }
     if {[Ftoc_Changes "Burst Digest"] != 0} {
@@ -578,7 +578,7 @@ proc Msg_BurstDigest {} {
 	return
     }
 
-    Exmh_Status "Bursting message $msg(id) in $exmh(folder)..." blue
+    Exmh_Status "Bursting message $msg(id) in $exmh(folder)..."
 
     # burst the digest; catch the output
     if [catch { MhExec burst -verbose $msg(id) +$exmh(folder)} out] {
@@ -600,7 +600,7 @@ proc Msg_BurstDigest {} {
 	}
 	# rescan to pick them up, make sure Commit is done.
 	Background_Wait
-	Exmh_Status "Bursting message $msg(id) in $exmh(folder)...done" blue
+	Exmh_Status "Bursting message $msg(id) in $exmh(folder)...done"
 	Scan_FolderUpdate $exmh(folder)
 	if {$allids != {}} {
 	    Msg_Change [lindex $allids 0]

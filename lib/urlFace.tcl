@@ -35,7 +35,7 @@ proc UrlGetCachedImageFileName { href } {
 	}
 
 	default {
-	    Exmh_Status "Image type $extension not supported!" red
+	    Exmh_Status "Image type $extension not supported!" warning
 	    UrlFaceLog "Image type $extension not supported!"
 	    return ""
 	}
@@ -64,7 +64,7 @@ proc UrlFaceGetNormalizedImage { filename } {
 	    if [catch {exec tifftopnm <$filename 2>/dev/null \
 			   | pnmscale -xysize $urlFace(width) $urlFace(height) \
 			   >${rootname}.ppm} err] {
-		Exmh_Status "cannot convert TIFF file! ($err)" red
+		Exmh_Status "cannot convert TIFF file! ($err)" warning
 		UrlFaceLog "cannot convert TIFF file! ($err)"
 		return "";
 	    } else {
@@ -76,7 +76,7 @@ proc UrlFaceGetNormalizedImage { filename } {
 	    if [catch {exec djpeg -pnm $filename \
 			   | pnmscale -xysize $urlFace(width) $urlFace(height) \
 			   >${rootname}.ppm} err] {
-		Exmh_Status "cannot convert JPEG file! ($err)" red
+		Exmh_Status "cannot convert JPEG file! ($err)" warning
 		UrlFaceLog "cannot convert JPEG file! ($err)"
 		return "";
 	    } else {
@@ -87,7 +87,7 @@ proc UrlFaceGetNormalizedImage { filename } {
 	.xbm {
 	    if [catch {exec xbmtopbm <$filename \
 			   | pnmscale -xysize $urlFace(width) $urlFace(height) >${rootname}.ppm 2>/dev/null} err] {
-		Exmh_Status "cannot convert XBM file! ($err)" red
+		Exmh_Status "cannot convert XBM file! ($err)" warning
 		UrlFaceLog "cannot convert XBM file! ($err)"
 		return "";
 	    } else {
@@ -98,7 +98,7 @@ proc UrlFaceGetNormalizedImage { filename } {
 	.pbm {
 	    if [catch {exec pnmscale -xysize $urlFace(width) $urlFace(height) <$filename \
 			   >${rootname}.ppm 2>/dev/null} err] {
-		Exmh_Status "cannot scale PBM file! ($err)" red
+		Exmh_Status "cannot scale PBM file! ($err)" warning
 		UrlFaceLog "cannot scale PBM file! ($err)"
 		return "";
 	    } else {
@@ -119,7 +119,7 @@ proc UrlFaceGetNormalizedImage { filename } {
 		&& [catch {exec sh -c "pnmscale -xysize $urlFace(width) $urlFace(height) <$filename \
 			       >${filename}.new \
 			       && mv $filename.new ${filename}"} err]} {
-		Exmh_Status "cannot scale PPM file! ($err)" red
+		Exmh_Status "cannot scale PPM file! ($err)" warning
 		UrlFaceLog "cannot scale PPM file! ($err)"
 	    }
 	    return $filename;
@@ -140,7 +140,7 @@ proc UrlFaceGetNormalizedImage { filename } {
 			       | ppmtogif >${filename}.new \
 			       && mv ${filename}.new ${filename}\
 			       && exit 0)" 2>/dev/null} err]} {
-		Exmh_Status "cannot scale GIF file! ($err)" red
+		Exmh_Status "cannot scale GIF file! ($err)" warning
 		UrlFaceLog "cannot scale GIF file! ($err)"
 	    }
 	    return $filename
@@ -160,7 +160,7 @@ proc UrlFaceGetNormalizedImage { filename } {
 			       | ppmquant 256 \
 			       | ppmtoxpm >${filename}.new \
 			       && mv ${filename}.new ${filename})" 2>/dev/null} err]} {
-		Exmh_Status "cannot scale XPM file! ($err)" red
+		Exmh_Status "cannot scale XPM file! ($err)" warning
 		UrlFaceLog "cannot scale XPM file! ($err)"
 	    }
 	    return $filename;
@@ -177,7 +177,7 @@ proc UrlFaceQueryStatus {state count length} {
 
     if {![string compare $state "error"]} {
 	# error reading from URL
-	Exmh_Status "error reading $href! ($count)" red
+	Exmh_Status "error reading $href! ($count)" warning
 	UrlFaceLog "error reading $href! ($count)"
 	set urlFace($href,urlFailed) 1
 	lappend failedURLs $href
@@ -215,7 +215,7 @@ proc UrlFaceQueryDone { href filename msgPath pane } {
 
 	UrlFaceLog "executing cp [glob $normalized] $filename"
 	if [catch {exec cp [glob $normalized] $filename} err] {
-	    Exmh_Status "cannot create face file in ~/.exmh/exmh-images! ($err)" red
+	    Exmh_Status "cannot create face file in ~/.exmh/exmh-images! ($err)" warning
 	    UrlFaceLog "cannot create face file in ~/.exmh/exmh-images! ($err)"
 	    FaceShowFile $exmh(library)/loaderror.ppm $pane
 	    return
@@ -270,7 +270,7 @@ proc UrlDisplayFace { href pane } {
 	if {![string compare $ret ""]} {
 	    # URL could not be reached. Disable the access to it
 	    # during this session.
-	    Exmh_Status "unable to display the X-Image-Url face!" red
+	    Exmh_Status "unable to display the X-Image-Url face!" warning
 	    UrlFaceLog "unable to display the X-Image-Url face!"
 	    FaceShowFile $exmh(library)/loaderror.ppm $pane
 	    lappend failedURLs $href

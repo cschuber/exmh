@@ -112,7 +112,7 @@ proc SeditSelFmtArg {t} {
 	Widget_AddBut .par.but format "Format" {
 	    Exmh_Status "Formatting Selection"
 	    if [catch {exec par -$par(options) -B=$par(body) -Q=$par(quote) -P=$par(protect) $par(width) << $par(txt)} res] {
-	        Exmh_Status "Error: Invalid options for Par" red
+	        Exmh_Status "Error: Invalid options for Par" warning
 	    } else {
             	if ![catch {$par(t) index sel.first} tndx] {
                     $par(t) delete sel.first sel.last

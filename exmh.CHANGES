@@ -1,6 +1,20 @@
 HISTORY
 
 cvs repository 01/22/2002 valdis.kletnieks@vt.edu
+    install.tcl, lib/main.tcl - Do version test as per Jeff Hobb's suggestion.
+
+cvs repository 01/22/2002 valdis.kletnieks@vt.edu
+    lib/aliases.tcl, lib/background.tcl, lib/env.tcl, lib/error.tcl,
+    lib/faces.tcl, lib/flist.tcl, lib/folder.tcl, lib/folderNew.tcl,
+    lib/inc.tcl, lib/main.tcl, lib/mime.tcl, lib/msg.tcl, lib/pick.tcl,
+    lib/print.tcl, lib/scan.tcl, lib/seditSel.tcl, lib/source.tcl,
+    lib/thread.tcl, lib/urlFace.tcl
+	Clean up red/purple/blue hardcoded values for Exmh_Status
+    lib/app-defaults-color, lib/main.tcl - clean up dead unused code
+	for c_st_background (which is used as a *foreground* color gaak)
+	c_st_background is now the *background* color for the status field
+
+cvs repository 01/22/2002 valdis.kletnieks@vt.edu
     install.tcl - tkEntryBackspace handling for Tk8.4a2 and later namespaces
 
 cvs repository 01/22/2002 valdis.kletnieks@vt.edu

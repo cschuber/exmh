@@ -426,7 +426,7 @@ proc FaceShowFile {facefile pane} {
 
 proc FaceXFace { xface {pane {}}} {
     global faces
-    Exmh_Status "$faces(xfaceProg)" red
+    Exmh_Status "$faces(xfaceProg)" warning
 # Tputs decode x-face: [time {
     if [catch {open "| $faces(xfaceProg) > [Env_Tmp]/FACE.[pid].xbm" w} fid] {
 	Exmh_Status $fid error

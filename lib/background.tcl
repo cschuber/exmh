@@ -242,7 +242,7 @@ proc BackgroundNewMsgs { N } {
 	    set msg "msgs"
 	}
 	set exmh(numUnInced) $N
-	Exmh_Status "You have $N spooled $msg" blue
+	Exmh_Status "You have $N spooled $msg"
 	Flag_Spooled
     } else {
 	Flag_NoSpooled

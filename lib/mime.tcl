@@ -1148,7 +1148,7 @@ proc MimeExtractMessage {tkw part} {
 
     Mh_RefileFile $exmh(folder) $mimeHdr($part,file)
     Scan_Folder $exmh(folder) 0
-    Exmh_Status "Extraction of part $part...done" blue
+    Exmh_Status "Extraction of part $part...done"
 }
 
 proc Mime_ShowMDN {tkw part} {

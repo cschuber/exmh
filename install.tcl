@@ -15,8 +15,8 @@ option add *Text.c_link			blue	startup
 proc install_init { appName dotFile } {
     global install tk_version tk_patchLevel tcl_version tcl_patchLevel
     # Work around namespaces issue in Tk8.4a2 and later
-    if [info exists tk_patchLevel] {
-        if {$tk_patchLevel > "8.4a2"} {
+    if [info exists tk_version] {
+        if {$tk_version > "8.3"} {
             ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
         }
     }
