@@ -217,7 +217,6 @@ proc ScanAddLineCleanup { folder } {
 }
 proc Scan_ProjectSelection { ids } {
     global ftoc exwin
-    set ftoc(displayValid) 0	;# Don't cache this display
     set lines {}
     set num 0
     foreach id $ids {
@@ -227,6 +226,7 @@ proc Scan_ProjectSelection { ids } {
 	    incr num
 	}
     }
+    set ftoc(displayValid) 0	;# Don't cache this display
     ScanAddLineReset $ftoc(folder)
     foreach line $lines {
 	ScanAddLine $line

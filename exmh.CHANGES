@@ -1,4 +1,13 @@
 HISTORY
+
+cvs repository 02/29/2000
+    Applied patch to speed up pick  -Dick Wesseling via haldevore
+    Applied patch to allow parentheses in address book entries
+                                    -Mats Bengtsson via haldevore
+    Applied patch to limit encodings to one for which we
+      have fonts -Marc Boucher via haldevore
+    Happy leap century day!
+
 cvs repository 02/02/2000
     Fixed hard-coded '-wrap word' -vklenieks
 

@@ -1056,16 +1056,17 @@ proc Mime_GetCharset {tkw part} {
     set charset us-ascii
     if [info exists mimeHdr($part,param,charset)] {
 	set charset [string tolower $mimeHdr($part,param,charset)]
-	if {[string length $tkw]} {
 
-	    # Limit the encodings to ones for which we have fonts.
+	# Limit the encodings to ones for which we have fonts.
 
-	    if ![info exists mime(registry,$charset)] {
+	if ![info exists mime(registry,$charset)] {
+	    if {[string length $tkw]} {
+
 		MimeInsertNote $tkw [MimeLabel $part charset] \
 			       "Unknown charset: <$charset>"
 		$tkw insert insert \n
-		set charset us-ascii
 	    }
+	    set charset us-ascii
 	}
     }
     return $charset

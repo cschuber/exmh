@@ -802,7 +802,13 @@ proc Addr_ParseFrom { fromline } {
     }
     
     #    AddrDebug "  result is $token"
-    set token [string trim $token "\"()"]
+    #    set token [string trim $token "\"()"]
+    if [regexp {^\((.*)\)$} $token t1 t2] {
+       set token $t2
+    } 
+    if [regexp {^\"(.*)\"$} $token t1 t2] {
+       set token $t2
+    }
     #    AddrDebug "  trimmed result is $token"
     return $token
 }
