@@ -1,4 +1,18 @@
 HISTORY
+cvs repository 04/19/2000
+
+    lib/ftoc.tcl, lib/folder.tcl: Added Ftoc_LastFolder and Folder_Previous
+    so you can go back to the folder you were just in.
+    lib/flist.tcl:  Added "force" argument to Flist_FindAllFolders
+    lib/folder.tcl: Added Folder_CheckPointShared, Folder_IsShared,
+    Folder_FindShared to support the notion of folders shared by
+    other exmh users.
+    lib/mh.tcl: Changed to use mhProfile(sendproc) instead of "send"
+    lib/msg.tcl: Added call to Folder_CheckPointShared
+    lib/seditMime.tcl: Tweaks to handle proper positioning of the
+    insert cursor.  One for --- header separators, another for when
+    you delete the last character in a part.
+    lib/seditQP.tcl: Took out extra Mime-Version header
 
 cvs repository 04/19/2000
     lib/html/software.html
