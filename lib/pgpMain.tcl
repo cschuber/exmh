@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.3  1999/08/03 16:31:43  cwg
+# Display the body of a message which fails to be decoded by PGP.
+#
 # Revision 1.2  1999/08/03 04:05:55  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -1198,6 +1201,15 @@ proc Pgp_DisplayMsg { v tkw part pgpresultvar } {
 	}
     } else {
 	$tkw insert insert "$pgpresult(msg)\n"
+    }
+    Exmh_Debug "pgpresult(ok): $pgpresult(ok)"
+    if {$pgpresult(ok) == 0} {
+	MimeInsertSeparator $tkw $part 6
+	MimeWithDisplayHiding $tkw $part {
+	    Mime_WithTextFile fileIO $tkw $part {
+		$tkw insert insert [read $fileIO]
+	    }
+	}
     }
     MimeInsertSeparator $tkw $part 6
 }
