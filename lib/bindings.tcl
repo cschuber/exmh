@@ -41,7 +41,7 @@ proc BindingsReset { w } {
     Bind_Key $w <Key-m> {Msg_Move}
     Bind_Key $w <Key-M> {Msg_MoveNoshow}
     Bind_Key $w <Key-r> {Msg_Reply -nocc to -nocc cc}
-    Bind_Key $w <Key-R> {Msg_Reply -cc to -cc cc}
+    Bind_Key $w <Key-R> {Msg_ReplyAll}
     Bind_Key $w <Key-f> {Msg_Forward}
     Bind_Key $w <Key-F> {Ftoc_NextFolder}
     Bind_Key $w <Key-s> {Msg_Show cur}
