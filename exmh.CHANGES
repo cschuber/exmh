@@ -1,17 +1,27 @@
 HISTORY
 
+cvs repository 4/20/1999
+    Attaching something while using "plain" encryption now changes the
+	encryption to multipart -cwg
+    Fixed a minor bug in the regular expression for URLs, so <mailto:foo>
+	loses the trailing '>' as it should. -jbeck
+    Got RFC 2368 (mailto: URLs with extra parameters) parsing working. -jbeck
+    Added two conditions to MimeSetDisplayFlag as to when *not* to display
+	a given part of a MIME message [i.e., the triangle points to the
+	right and you have to do the (Invoke menu with right button) thing]:
+	1) if it's a text/*vcard; 2) if it's got a "Content-Disposition:
+	Ancillary" header. -jbeck
+
 cvs repository 4/16/1999
     Fixed a minor bug in yesterday's crypt code; also made crypt menu
-    values to be reset when a sedit window is opened, thereby making
-    them 'per message', not 'per window'.  This seems more intuitive. -cwg
-    Attaching something while using "plain" encryption now changes the
-    encryption to multipart -cwg
+	values to be reset when a sedit window is opened, thereby making
+	them 'per message', not 'per window'.  This seems more intuitive. -cwg
 
 cvs repository 4/15/1999
     Crypt menu values are now 'per window', not global. -cwg
-    Code Cleanup.  While trying to understand the focus bug in the
-    sedit window, I found some dead code relating to focus.  It didn't
-    solve the problem, but it does make it slightly easier to follow. -cwg
+    Code Cleanup.  While trying to understand the focus bug in the sedit
+	window, I found some dead code relating to focus.  It didn't solve
+	the problem, but it does make it slightly easier to follow. -cwg
 
 cvs repository 4/14/1999
     Fixed small bug in searching body of message -haldevore

@@ -583,9 +583,24 @@ proc MimeSetDisplayFlag {part} {
 	if [regexp {^multipart} $mimeHdr($part,type)] {
 	    set mimeHdr($part,display) \
 		[expr ![regexp {parallel$} $mimeHdr($part,type)]]
+	    return
 	} elseif [regexp {^image} $mimeHdr($part,type)] {
 	    set mimeHdr($part,display) $mime(showImage)
-	} elseif ![info exists mimeHdr($part,display)] {
+	    return
+	}
+	if [regexp {^text.*vcard} $mimeHdr($part,type)] {
+	    set mimeHdr($part,display) 0
+	    Exmh_Debug "vcard: not displaying"
+	    return
+	}
+	if {[info exists mimeHdr($part,hdr,content-disposition)]} {
+	    set disp [split $mimeHdr($part,hdr,content-disposition) \;]
+	    if [regexp {ancillary} [lindex $disp 0]] {
+		set mimeHdr($part,display) 0
+		return
+	    }
+	}
+	if ![info exists mimeHdr($part,display)] {
 	    set mimeHdr($part,display) \
 		[expr {[file exists $mimeHdr($part,file)] && \
 			([file size $mimeHdr($part,file)] < $msg(maxsize))}]

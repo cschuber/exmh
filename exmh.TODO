@@ -139,18 +139,6 @@ Automatic detection of what style digital signatures to use.
 
 
 
-Number: 20
-Priority: 
-Scope: 
-Complexity: 
-
-Is there anything useful we can do with these text/x-vcard's that
-people have been attaching to their messages?  At minimum, we should
-display them with the triangle pointing right 'cause they're ugly.
-
-Handle "Content-Disposition: Ancillary" in the same way. 
-
-
 Number: 21
 Priority: 
 Scope: 

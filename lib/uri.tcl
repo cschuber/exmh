@@ -378,7 +378,7 @@ proc URI_ScanMsg { {w {}} {limit end} } {
 	# end to end index within the text line to end highlight
 	# temp_uri to the value of the URL.
 
-	if {[regexp -indices "<$protocol:/+\[^>)\]+>" $text indices] == 1} {
+	if {[regexp -indices "<$protocol:\[^>)\]+>" $text indices] == 1} {
 
 	    # check for URIs like <protocol: > present
 	    Exmh_Debug Regexp1 $indices

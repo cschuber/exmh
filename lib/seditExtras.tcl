@@ -803,12 +803,52 @@ proc SeditClip {draft t} {
     Msg_Clip $f $id
 }
 
+proc DecodeURL { url } {
+    regsub -all -nocase {%0a} $url {}   url
+    regsub -all -nocase {%0d} $url "\n" url
+    regsub -all         {%20} $url { }  url
+    regsub -all         {%25} $url {%}  url
+    regsub -all -nocase {%2c} $url {,}  url
+    regsub -all -nocase {%3c} $url {<}  url
+    regsub -all -nocase {%3d} $url {=}  url
+    regsub -all -nocase {%3e} $url {>}  url
+    regsub -all -nocase {%3f} $url {?}  url
+    return $url
+}
+
 proc Sedit_Mailto { url } {
     global mhProfile sedit
+
     MhExec comp -nowhatnowproc
     Sedit_Start [Mh_Path $mhProfile(draft-folder) cur]
+    # See RFC 2368 for mailto: URL syntax
     regsub mailto: $url {} url
-    SeditSetHeader $sedit(t) to $url 
+    if {[regexp -nocase {\?} $url]} {
+      regsub -nocase {.*\?} $url {} headers
+      foreach hdr [split $headers &] {
+        if {[regexp -nocase {body=} $hdr]} {
+          regsub -nocase {body=} $hdr {} body
+          set body [DecodeURL $body]
+          $sedit(t) insert "header + 1 line" "\n$body"
+        } else {
+          regsub {=.*} $hdr {} hdr_name
+          set hdr_name [string tolower $hdr_name]
+          regsub {.*=} $hdr {} hdr_value
+          set hdr_value [DecodeURL $hdr_value]
+          if {[string compare $hdr_name to] == 0} {
+            set to $hdr_value
+          }
+          SeditSetHeader $sedit(t) $hdr_name $hdr_value 
+        }
+      }
+      regsub -nocase {\?.*} $url {} url
+    }
+    set url [DecodeURL $url]
+    if [info exists to] {
+      SeditSetHeader $sedit(t) to "$url, $to" 
+    } else {
+      SeditSetHeader $sedit(t) to $url
+    }
 }
 # Run MHN now to format a message
 proc SeditMHN {draft t} {
