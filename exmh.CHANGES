@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 03/18/2003 haldevore@acm.org
+    msgShow.tcl - change MsgShowListHeaders to keep all protocols
+    and include the protocol in the menu item.  This should be made
+    smarter or prettier someday.
+
+    addr.tcl - add escaped quotes around search expression so it
+    survives as a single argument after the eval.
+
 cvs repository 03/18/2003 valdis.kletnieks@vt.edu
     msgShow.tcl - Fix MsgShowListHeaders to be pedantically correct - it had
     been accidentally picking the first field only.  It now loops through

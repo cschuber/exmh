@@ -256,23 +256,15 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 	# Remove comments
 	regsub -all {\([^()]*\)} $header($index) {} h
 	# Remove whitespace
-	regsub -all " \n\t" $h {} h
+	regsub -all "\[ \n\t\]" $h {} h
 	# Loop through the fields
 	foreach f [split $h ,] {
-            # Trim any blanks between the , and the <
-            regsub {^[ ]*} $f {} f
 	    # Stricture #1
 	    if {[string index $f 0] == "<"} {
 		# Stricture #2
 		regexp "<(.*)>" $f match url
-                # We're looking at a purported URL, 
-                regexp {^([^:]*)} $url match proto
-		# We assume that uri.tcl is set up to do http:
-                switch -- $proto {
-		    https -
-                    http -
-		    mailto { lappend menuitems $name $url; break; }
-                }
+		regexp {^([^:]*)} $url match proto
+		lappend menuitems $name $proto $url
 	    } else {
 		# Stricture #3
 		break
@@ -286,8 +278,8 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 	    set menu [Widget_AddMenuB $exwin(mopButtons) list "List..." {right padx 1 filly}]
 	}
 	$exwin(mopButtons).list.m delete 1 99
-	foreach {name url} $menuitems {
-	    Widget_AddMenuItem $menu $name [list URI_StartViewer $url]
+	foreach {name proto url} $menuitems {
+	    Widget_AddMenuItem $menu "$name ($proto)" [list URI_StartViewer $url]
 	}
     } else {
 	catch {destroy $exwin(mopButtons).list}
