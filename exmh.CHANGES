@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 5/13/1999
+    Sped up startup time by not precaching nicknames for all the
+	folders. -cwg
+
 cvs repository 5/12/1999
     Added another hack to the misc directory. -cwg
 

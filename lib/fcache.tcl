@@ -86,9 +86,6 @@ structure is deeply nested." }
     if {[llength $fcache(folders)] != [llength $fcache(LRU)]} {
 	set fcache(LRU) $fcache(folders)
     }
-    foreach folder $flist(allfolders) {
-       Fcache_FolderName $folder
-    }
     FcacheFixupLines nodisplay
 }
 proc Fcache_Redisplay { args } {
@@ -102,7 +99,6 @@ proc Fcache_FolderName { folder } {
    } elseif [info exists folderNickName($folder)] {
       return $folderNickName($folder)
    }
-
    set nickname {}
    foreach part [Misc_Reverse [split $folder "/"]] {
       if {"$nickname" == {}} {
