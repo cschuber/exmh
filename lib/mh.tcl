@@ -491,7 +491,7 @@ proc MhReadSeqs {folder seqsvar} {
 		foreach line [split $old \n] {
 		    if {$line != {}} {
 			if {[regexp {^([^:]*):\s*(.*)$} $line foo seq msgids]} {
-			    if {[info exists mhPriv(mode,$seq)] && $mhPriv(mode,$seq) == "private"} {
+			    if {[info exists mhPriv(mode,$seq)] && $mhPriv(mode,$seq) == "private" && [info exists mhPriv(pubseq,$folder,$seq)]} {
 				# If this was also in the private file, merge the two
 				# and move to the public file.
 				set mhPriv(changed,private) 1
