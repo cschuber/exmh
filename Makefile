@@ -15,6 +15,8 @@ srctar: version htmltar
 	echo ./Tar.exclude >> Tar.exclude
 	echo ./html-$(VERSION).tar.gz >> Tar.exclude
 	echo ./exmh-$(VERSION).tar.gz >> Tar.exclude
+	echo ./exmh-$(VERSION)-1.src.rpm >> Tar.exclude
+	echo ./exmh-$(VERSION)-1.noarch.rpm >> Tar.exclude
 	rm -rf /tmp/exmh-$(VERSION)
 	mkdir /tmp/exmh-$(VERSION)
 	tar cvfX - Tar.exclude . | (cd /tmp/exmh-$(VERSION) ; tar xf -)
