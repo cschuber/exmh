@@ -353,7 +353,6 @@ should "do the right thing".
 
 
 Number: 40
-Version: 2.0.3
 Priority: Low
 Scope: Narrow
 Complexity: Low
@@ -363,6 +362,13 @@ focus on the scrollbar in order to scroll with the cursor keys.
 Brent's book discusses how to properly deal with this.
 
 
+
+Number: 41
+Priority: Low
+Scope: Wide
+Complexity: Low
+
+Ensure that all toplevel windows have handlers for WM_* messages.
 
 
 
