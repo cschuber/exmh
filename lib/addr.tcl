@@ -693,7 +693,7 @@ proc LDAP_Lookup {n} {
     
     Exmh_Status "Querying $addr_db(ldap_server) from $addr_db(ldap_searchbase) with $n via $addr_db(ldap_searchprog)..."
 
-    set query "(|(cn=*$n*)(mail=*$n*)(sn=*$n*)(givenname=*$n*))"
+    set query "\"(|(cn=*$n*)(mail=*$n*)(sn=*$n*)(givenname=*$n*))\""
     if {[catch {set query "[encoding convertto $addr_db(ldap_encoding) "$query"]"} err]} {
 	Exmh_Debug "LDAP_Lookup encoding convertto: $err"
     }
