@@ -2,6 +2,7 @@ Summary: The exmh mail handling system.
 Name: exmh
 Version: EXMHVERSION 
 Release: 1
+BuildArchitectures: noarch
 Requires: mh, metamail
 Copyright: freeware
 Group: Applications/Mail
