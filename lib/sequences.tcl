@@ -341,7 +341,6 @@ proc Seq_Set {folder seq msgids} {
 # Deletes messages from a sequence
 proc Seq_Del {folder seq msgids} {
     global flist mhProfile
-    Exmh_Debug Seq_Del $folder $seq $msgids
 #   eval {MhExec mark +$folder -seq $seq -delete} $msgids
     Mh_SequenceUpdate $folder del $seq $msgids
     set delta 0
