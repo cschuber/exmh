@@ -102,9 +102,11 @@ proc ScanFolder {F adjustDisplay} {
     Ftoc_ShowUnseen $F
     return
 }
-proc Scan_FolderForce {} {
+proc Scan_FolderForce {{F ""}} {
     global exmh mhProfile ftoc
-    set F $exmh(folder)
+    if {$F == ""} {
+	set F $exmh(folder)
+    }
     set cacheFile $mhProfile(path)/$F/.xmhcache
     if {$F == ""} {
 	Exmh_Status "No current folder" red
