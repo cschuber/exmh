@@ -947,6 +947,11 @@ proc SeditMHN {draft t} {
 # text through an arbitrary Unix filter.  
 
 proc SeditShellDo {t e m b} {
+    global SeditShellUndoText
+
+    if {![info exists SeditShellUndoText]} {
+	set SeditShellUndoText ""
+    }
 
     set c [string trim [$e get]]
     set last_idx [$m index last]
@@ -970,11 +975,30 @@ proc SeditShellDo {t e m b} {
         $m add command -label $c -command [list SeditShellMenu $e $c $b]
     }
 
-    if {![catch "set tndx [$t index sel.first]"]} {
-        set res [exec -keepnewline sh -c "$c" << [selection get]]
-        $t delete sel.first sel.last
-        $t mark set insert $tndx
-        $t insert insert $res
+    if {![catch {set tndx [$t index sel.first]}] &&
+        ![catch {set selection [selection get]}]} {
+
+	set SeditShellUndoText $selection
+
+        if {![catch {set res [exec -keepnewline sh -c "$c" << $selection]}]} {
+	    $t delete sel.first sel.last
+	    $t mark set insert $tndx
+	    $t insert insert $res sel
+	}
+    }
+}
+
+proc SeditShellUndo {t} {
+    global SeditShellUndoText
+
+    if {![info exists SeditShellUndoText]} {
+	set SeditShellUndoText ""
+    }
+
+    if {![catch {set tndx [$t index sel.first]}]} {
+	    $t delete sel.first sel.last
+	    $t mark set insert $tndx
+	    $t insert insert $SeditShellUndoText sel
     }
 }
 
@@ -998,16 +1022,21 @@ proc SeditShellCreate {t} {
         set f1 $w.f1
         set e $f1.e
         set m $f1.m.m
-        set b $f1.b
+        set b $f1.b1
+        set b2 $f1.b2
 
         pack [label $f1.l -text Filter] -side left
         pack [entry $e] -side left -expand yes -fill x -ipady 2
         pack [button $b -text Filter \
                 -command [list SeditShellDo $t $e $m $b]] -side left -ipady 2
+        pack [button $b2 -text Undo \
+                -command [list SeditShellUndo $t]] -side left -ipady 2
         pack [menubutton $f1.m -text History -menu $m] -side left -ipady 2
         menu $m -tearoff false
 
-        catch { source [glob ~]/.exmh/exmh-shell-history }
+        if {![catch { source [glob ~]/.exmh/exmh-shell-history } res]} {
+	    Exmh_Debug "Couldn't source shell history: $res"
+	}
 
 	# Without this, the new widgets aren't always visible.
 	event generate $t <Configure>

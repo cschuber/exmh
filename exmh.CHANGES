@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 06/27/2000 Bruce A. Mah <bmah@cisco.com>
+    lib/seditExtras.tcl:  Add an "undo" feature for sedit shell,
+    from John Klassa <klassa@cisco.com>.
+
 cvs repository 06/27/2000 Hal DeVore <haldevore@earthling.net>
     lib/{mh.tcl,msg.tcl}: Add upward search for components,
     forwcomps, and replcomps.  Add search for distcomps also.
