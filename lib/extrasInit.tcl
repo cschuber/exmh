@@ -493,6 +493,12 @@ wish script is used.)"}
     {sedit(autosaveInterval)   seditAutosaveInterval 60 {Seconds between auto saves}
 "This is the interval, in seconds, between automatic saves of 
 the message being edited.  Set to 0 to disable autosaving."}
+    {sedit(useFilter) seditUseFilter ON
+     {Access to Unix filter mechanism}
+"Adds the ability to filter selected text through an arbitrary Unix
+filter while composing messages.  Very handy for adding attributions,
+stripping whitespace, applying a rot13 filter (and so forth), all on the
+fly."}
     }
     Preferences_Resource sedit(wordbreakpat) seditWordBreakPat "\[\ \t/>\]"
     # Converting from boolean to choice
@@ -909,4 +915,3 @@ Compose:     Starts a mail composition"
       UnseenWinToggle
   }
 }
-

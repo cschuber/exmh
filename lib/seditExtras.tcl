@@ -942,6 +942,78 @@ proc SeditMHN {draft t} {
 	}
     }
 }
+
+# The next three procedures add widgets that let you filter selected
+# text through an arbitrary Unix filter.  
+
+proc SeditShellDo {t e m b} {
+
+    set c [string trim [$e get]]
+    set last_idx [$m index last]
+    set insert 1
+
+    if {[string compare $last_idx none]} {
+	for {set idx 0} {$idx <= $last_idx} {incr idx} {
+	    set label [lindex [$m entryconfigure $idx -label] end]
+	    if {![string compare $label $c]} {
+		set insert 0
+		break
+	    }
+	}
+    }
+
+    if {$insert == 1} {
+        set fh [open [glob ~]/.exmh/exmh-shell-history a]
+        puts $fh \
+            "\$m add command -label {$c} -command \[list SeditShellMenu \$e {$c} \$b\]"
+        close $fh
+        $m add command -label $c -command [list SeditShellMenu $e $c $b]
+    }
+
+    if {![catch "set tndx [$t index sel.first]"]} {
+        set res [exec -keepnewline sh -c "$c" << [selection get]]
+        $t delete sel.first sel.last
+        $t mark set insert $tndx
+        $t insert insert $res
+    }
+}
+
+proc SeditShellMenu {e c b} {
+    $e delete 0 end
+    $e insert end $c
+    $b invoke
+}
+
+proc SeditShellCreate {t} {
+
+    set w [winfo parent [winfo parent $t]]
+
+    if {![winfo exists $w.jkf]} {
+
+        set w $w.jkf
+
+        pack [frame $w] -side top -fill x -ipady 2 -expand no
+        pack [frame $w.f1] -side top -fill x -expand no
+
+        set f1 $w.f1
+        set e $f1.e
+        set m $f1.m.m
+        set b $f1.b
+
+        pack [label $f1.l -text Filter] -side left
+        pack [entry $e] -side left -expand yes -fill x -ipady 2
+        pack [button $b -text Filter \
+                -command [list SeditShellDo $t $e $m $b]] -side left -ipady 2
+        pack [menubutton $f1.m -text History -menu $m] -side left -ipady 2
+        menu $m -tearoff false
+
+        catch { source [glob ~]/.exmh/exmh-shell-history }
+
+	# Without this, the new widgets aren't always visible.
+	event generate $t <Configure>
+    }
+}
+
 proc SeditExternalCmd { draft t cmd } {
     # Save message, process with external command, and reload
     # last argument to command will be draft file name.

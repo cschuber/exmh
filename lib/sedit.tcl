@@ -245,6 +245,12 @@ proc Sedit_Start { draft } {
     if {$sedit(iso)} {
 	SeditInitMimeType $draft $t
     }
+    if {$sedit(useFilter)} {
+	SeditShellCreate $t
+    } else {
+	set shell_parent [winfo parent [winfo parent $t]]
+	catch { destroy $shell_parent.jkf }
+    }
     foreach cmd [info commands Hook_SeditInit*] {
 	if [catch {$cmd $draft $t} err] {
 	    SeditMsg $t "$cmd $err"
