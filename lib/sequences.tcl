@@ -216,12 +216,6 @@ Exmh_Debug "Seq_Trace $array $elem $op"
 	    }
 	}
 	if {$delta != 0} {
-            # Sequence information changed, so update the fcache
-            # I suspect that this "scan $elem" is redundant - it
-            # is saying to force the fache update because the
-            # seqcount element of flist changed.  May be redundant
-            # with the local delta
-            Fcache_RedisplayUnseen [scan $elem "seqcount,%s,$mhProfile(unseen-sequence)" folder]
 	    if {[info exists flist(totalcount,$seq)]} {
 		incr flist(totalcount,$seq) $delta
 	    } else {
