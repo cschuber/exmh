@@ -142,7 +142,7 @@ so you can paste with middle click.
 <h3><a NAME="2">2. How do I display ISO-8859 fonts so that my special
 characters show up?</a></h3>
 <p>
-<a NAME="2">Put an Xresource specification into your ~/.exmh-defaults
+<a NAME="2">Put an Xresource specification into your ~/.exmh/exmh-defaults
 file: 
 <br>
 
@@ -360,7 +360,7 @@ from 300 to 30,000 and you shouldn't have any more trouble ;-)
 widgets in EXMH?</a></h3>
 (See also exmh.COLORS for more color schemes...) Here is a set of Xresources
 that I use to get a grey-family for my TK-based applications. You can
-put this into your ~/.exmh-defaults, or into your ~/.Xdefaults. This
+put this into your ~/.exmh/exmh-defaults, or into your ~/.Xdefaults. This
 works ok on a monochrome screen, although buttons do not highlight
 when you pass the mouse over them. 
 <pre>
@@ -455,7 +455,7 @@ folders. Check out flag.tcl for the details.
 There are really lots of variations on reply, that's why. You should
 pick your favorite one and define a personal button for it so that
 *you* get what *you* want. You can define a repl button by putting
-these resources into your ~/.exmh-defaults file 
+these resources into your ~/.exmh/exmh-defaults file 
 <pre>
 *Mops.ubuttonlist: myrepl
 *Mops.myrepl.text: Repl
@@ -686,7 +686,7 @@ Note: it won't work to abbreviate it as -anno.
 Did you know you can colorize rfc822 headers in the message display
 by setting *m_tagnames and related X resources? This feature has been
 around for some time, but seems to be little-known. Here's what I have
-in my ~/.exmh-defaults-color file. 
+in my ~/.exmh/exmh-defaults-color file. 
 <p>
 <code>*m_tagnames: hidden subject from x-filters-matched content-type
 x-mailer replied replied-to</code> 

@@ -79,7 +79,7 @@ to a Tcl variable and an X resource name. Changes in the Preference
 user interface change the value of the Tcl variable, which affects
 the <i>exmh</i> runtime behavior. Then, when you click <b>Save</b>
 in the dialog, the values are saved as X resource settings in your
-~/.exmh-defaults file. 
+~/.exmh/exmh-defaults file. 
 <p>
 Choices are represented by radio-style buttons where only one button
 in the set can be enabled at once. Changes take effect immediately.
@@ -96,7 +96,7 @@ through all the Preference sections to get an idea of what sort of
 options are available. 
 <p>
 If you decide you like your settings, click <b>Save</b> in the main
-Preferences dialog to save them in a .exmh-defaults file in your home
+Preferences dialog to save them in a exmh-defaults file in your ~/.exmh
 directory. Click <b>Reset All</b> in the main dialog to restore all
 the settings to those of your last <b>Save</b>. Within each module's
 preference dialog there is a <b>Reset</b> button that resets only those
@@ -104,7 +104,7 @@ module's settings.
 <p>
 <i>Warning!</i> If you click <b>Dismiss</b> in the main dialog, some
 preferences may have been set for the current session, but they will
-not have been saved to your ~/.exmh-defaults file. 
+not have been saved to your ~/.exmh/exmh-defaults file. 
 
 <h3><a NAME="PREFERENCE SECTIONS" HREF="#CONTENTS">PREFERENCE SECTIONS</a></h3>
 <p>
@@ -360,25 +360,25 @@ as app-defaults). To handle site-specific color-specific resources,
 <i>exmh</i> will also read the local.app-defaults-color or local.app-defaults-mono
 if those files exist. 
 <p>
-Each user has a ~/.exmh-defaults file in their home directory. To handle
+Each user has a ~/.exmh/exmh-defaults file in their home directory. To handle
 personal color-specific resources, <i>exmh</i> will also read your
-~/.exmh-defaults-color or ~/.exmh-defaults-mono if those files exist.
+~/.exmh/exmh-defaults-color or ~/.exmh/exmh-defaults-mono if those files exist.
 
 <p>
 I do not recommend putting exmh-related resource settings in your ~/.Xdefaults,
 although you can do that. If you do, be warned that values from the
 ~/.Xdefaults file and the RESOURCE_MANAGER property on the root window
-will be overridden by things in your ~/.exmh-defaults file. 
+will be overridden by things in your ~/.exmh/exmh-defaults file. 
 <p>
-The ~/.exmh-defaults file is divided into sections. The first section
+The ~/.exmh/exmh-defaults file is divided into sections. The first section
 is for things you add by hand. The remaining sections are automatically
-managed by <i>exmh</i>. If you manually add settings to your ~/.exmh-defaults
+managed by <i>exmh</i>. If you manually add settings to your ~/.exmh/exmh-defaults
 file, add entries to the <i>beginning</i> of this file. Add them before
 the comment about the rest of the file being automatically generated
 and you will not lose your changes. 
 <p>
 If a resource has a multiword value, you *should not quote* the value
-in the resource file. The right way to specify these in your ~/.exmh-defaults
+in the resource file. The right way to specify these in your ~/.exmh/exmh-defaults
 file is shown below. The leading "*" gets around quirks in the way
 Tk names its applications; different instances of the application have
 different names. 
@@ -393,7 +393,7 @@ to version 1.5, will be exactly the same in later versions of <i>exmh</i>.
 Furthermore, there might be new goodies that appear in future versions
 that are not described here. Only by reading the app-defaults file
 of the current version will you be sure you are setting things correctly
-in your ~/.exmh-defaults file. (<i>Hint:</i> read through the main
+in your ~/.exmh/exmh-defaults file. (<i>Hint:</i> read through the main
 exmh script for the definition of the exmh(library) Tcl variable, which
 is the script library where app-defaults lives. The script is short,
 and the definition is near the beginning.) 
@@ -588,7 +588,7 @@ a new menu entry to the message More... menu. It will be a check-button
 type entry that will set the Tcl variable that controls the "skip marked"
 behavior of Next and Prev. In addition, we will separate the user-defined
 entries from the system entries with a special separator menu entry.
-The resources in your ~/.exmh-defaults would look something like this:
+The resources in your ~/.exmh/exmh-defaults would look something like this:
 
 <pre><blockquote>*Mops.more.m.uentrylist: sep skip
 *Mops.more.m.t_sep: separator
@@ -780,7 +780,7 @@ tag name. "default" applies to displayed headers, while "hidden" applies
 to hidden ones (scrolled off the top). 
 </dl>
 <p>
-For example, here is what I have in my own ~/.exmh-defaults file: 
+For example, here is what I have in my own ~/.exmh/exmh-defaults file: 
 <pre><blockquote>*m_tagnames:  hidden subject from x-filters-matched
 *m_hidden:    -font 6x10
 *m_default:   -foreground black
@@ -795,13 +795,13 @@ AND POSITION RESOURCES</a></h3>
 Exmh automatically remembers the position of top-level windows, both
 within a session and between successive runs of <i>exmh</i>. It does
 this by saving some <b>position</b> resource specifications in your
-~/.exmh-defaults file. In addition, <i>exmh</i> will remember the geometry
+~/.exmh/exmh-defaults file. In addition, <i>exmh</i> will remember the geometry
 of the main window and of the detached folder display. 
 <p>
 <i>Warning</i>: If you use a virtual root window manager, the memory
 of a window location will cause problems if you start <i>exmh</i> in
 a new "room". If you move <i>exmh</i> to a new room, you'll have to
-edit your ~/.exmh-defaults and delete all the *position resource specifications.
+edit your ~/.exmh/exmh-defaults and delete all the *position resource specifications.
 Or, you can turn off the <i>Remember Window Positions</i> preference
 item under Window Stuff. Then, when exmh exits, it removes these for
 you. 
