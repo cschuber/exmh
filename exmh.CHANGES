@@ -2,6 +2,17 @@ HISTORY
 
 Released exmh-2.1.2 6/8/2000 Brent Welch <welch@ajubasolutions.com>
 
+cvs repository 06/08/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
+    Support for PGP 6.5.
+    Added new file lib/pgpPgp65.tcl.
+    Added PGP 6.5 config to lib/pgpBase.tcl, lib/extrasInit.tcl,
+    exmh.install, lib/app-defaults, and lib/html/PGP.html.
+    Fixed a check in extrasInit - it assumed a PGP version was present
+    if the $pubring and $path for the version were there. I added a
+    check that the 'pgp verify' command was present.  Otherwise it
+    thinks that 5.0 is available if 6.5 is present.
+    lib/pgpWWW.tcl - provide a working default URL.
+
 cvs repository 06/08/2000  Hal DeVore <hdevore@earthling.net>
     lib/extrasInit.tcl: Corrected help text for Play Multiple
 

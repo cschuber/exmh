@@ -6,6 +6,9 @@
 #
 
 # $Log$
+# Revision 1.5  2000/06/09 03:46:25  valdis
+# PGP 6.5 support
+#
 # Revision 1.4  1999/08/24 15:51:07  bmah
 # Patch from Kevin Christian to make email PGP key queries work, and
 # to make key attachment RFC 2015 compliant.
@@ -45,7 +48,7 @@ set miscRE(beginpgpclear) {^-+BEGIN PGP SIGNED MESSAGE-+$}
 set pgp(enabled) 0
 set pgp(pat_MenuInner) {Pgp}
 
-set pgp(supportedversions) [list pgp pgp5 gpg]
+set pgp(supportedversions) [list pgp pgp5 gpg pgp6]
 
 # -- GnuPG -- #
 set pgp(gpg,enabled) 0
@@ -72,7 +75,7 @@ set pgp(gpg,keyGenCmd) "rm -f $pgp(gpg,pubringBkp) && gpg --gen-key"
 set pgp(gpg,pat_MenuInner) {GPG}
 ## Version checking and Compatibilty
 set pgp(gpg,pat_Version) "Version:\[ \t\]*(GNUPG|GnuPG).*"
-set pgp(gpg,list_Alien) {pgp5 pgp}
+set pgp(gpg,list_Alien) {pgp5 pgp6 pgp}
 
 
 # -- PGP 2.6 -- #
@@ -111,8 +114,7 @@ set pgp(pgp,afterKeyGen) {
 set pgp(pgp,pat_MenuInner) {PGP[^5]}
 ## Version checking and Compatibilty
 set pgp(pgp,pat_Version) "Version:\[ \t\]*2\.6.*"
-set pgp(pgp,list_Alien) {pgp5 gpg}
-
+set pgp(pgp,list_Alien) {pgp5 pgp6 gpg}
 
 # -- PGP 5.0 -- #
 set pgp(pgp5,enabled) 0
@@ -132,8 +134,46 @@ set pgp(pgp5,keyGenCmd) "rm -f $pgp(pgp5,pubringBkp) && pgpk -g"
 ## ButtonMenuInner
 set pgp(pgp5,pat_MenuInner) {PGP5}
 ## Version checking and Compatibilty
-set pgp(pgp5,pat_Version) "Version:\[ \t\]*((PGP\[^\n\]*)?(5|6)\\.|PGPsdk).*"
-set pgp(pgp5,list_Alien) {gpg pgp}
+set pgp(pgp5,pat_Version) "Version:\[ \t\]*((PGP\[^\n\]*)? 5\\.|PGPsdk).*"
+set pgp(pgp5,list_Alien) {gpg pgp pgp6}
+
+# -- PGP 6.5.n -- #
+set pgp(pgp6,enabled) 0
+set pgp(pgp6,fullName) "PGP 6.5"
+
+set pgp(pgp6,executable,key) pgp6
+set pgp(pgp6,executable,verify) pgp6
+set pgp(pgp6,executable,encrypt) pgp6
+set pgp(pgp6,executable,sign) pgp6
+
+if [info exists env(PGPPATH)] {
+    set pgp(pgp6,defaultPath) "$env(PGPPATH)"
+} else {
+    set pgp(pgp6,defaultPath) "$env(HOME)/.pgp"
+}
+set pgp(pgp6,configFile) "$pgp(pgp6,defaultPath)/config.txt"
+set pgp(pgp6,pubring) "$pgp(pgp6,defaultPath)/pubring.pkr"
+set pgp(pgp6,secring) "$pgp(pgp6,defaultPath)/secring.skr"
+set pgp(pgp6,pubringBkp) "$pgp(pgp6,defaultPath)/pubring-bak-1.pkr"
+set pgp(pgp6,keyGenCmd) "rm -f $pgp(pgp6,pubringBkp) && pgp6 -kg"
+set pgp(pgp6,afterKeyGen) {
+    if {![file exists pgp(pgp6,pubringBkp)]} {
+        return
+    } else {
+        set tmpfile [Mime_TempFile "pgp"]
+        Exec_GetKeys pgp \
+               [lindex [lindex $pgp(pgp6,privatekeys) 0] 0] $tmpfile
+        Pgp_Misc_Send $pgp(pgp6,keyserver) ADD $tmpfile \
+               "content-type: application/pgp; format=keys-only"
+        File_Delete $tmpfile
+    }
+}
+
+## ButtonMenuInner
+set pgp(pgp6,pat_MenuInner) {PGP6}
+## Version checking and Compatibilty
+set pgp(pgp6,pat_Version) "Version:\[ \t\]*6\.5.*"
+set pgp(pgp6,list_Alien) {pgp pgp5 gpg}
 
 ###
 }
