@@ -354,10 +354,12 @@ proc Seq_Del {folder seq msgids} {
 	    }
 	}
     }
-    incr flist(seqcount,$folder,$seq) $delta
-    if {$seq == $mhProfile(unseen-sequence)} {
-	if {$flist(seqcount,$folder,$seq) == 0} {
-	    FlistUnseenFolder $folder
+    if {$delta != 0} {
+	incr flist(seqcount,$folder,$seq) $delta
+	if {$seq == $mhProfile(unseen-sequence)} {
+	    if {$flist(seqcount,$folder,$seq) == 0} {
+		FlistUnseenFolder $folder
+	    }
 	}
     }
 }
