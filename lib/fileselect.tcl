@@ -60,14 +60,16 @@ exmh was started is used."}
     }
 }
 
-proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""}} {
+proc FSBox {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandler ""} {smash 1}} {
     global fileselect
     global exwin
 
-    # Smash out anything that isn't alphanumeric, period, underscore or dash
-    regsub -all {[^[:print:]._-]+} $defaultName _ defaultName
-    # Oh, and too many things treat dot-files as special...
-    regsub {^\.+} $defaultName _ defaultName
+    if {$smash} {
+        # Smash out anything that isn't alphanumeric, period, underscore or dash
+        regsub -all {[^[:print:]._-]+} $defaultName _ defaultName
+        # Oh, and too many things treat dot-files as special...
+        regsub {^\.+} $defaultName _ defaultName
+    }
 
 	set fileselect(origname) $defaultName
     if $fileselect(dotsByDefault) {

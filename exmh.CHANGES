@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 1/5/2005 valdis.kletnieks@vt.edu
+  lib/fileselect.tcl, lib/seditExtras.tcl
+   patch from George Ross <gdmr@inf.ed.ac.uk> to not smash filenames
+   when attaching a file to a message, only when saving an attachment
+
 cvs repository 1/4/2005 welch@panasas.com
   exmh-strip.MASTER: Added stub for "winfo" so I could run this with
    tclsh instead of wish.  Updated comments.
