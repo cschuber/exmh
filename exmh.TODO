@@ -283,6 +283,13 @@ Complexity: Low
 Add multipart/alternative prioritization code as a user option
 
 
+Number: 31
+Priority: Med
+Scope: Narrow
+Complexity: Low
+
+Add a prompt before replacing the user's .mh_profile
+
 
 $Id$
 
