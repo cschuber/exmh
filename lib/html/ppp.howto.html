@@ -1,3 +1,8 @@
+<html>
+<head>
+<title>Setting up mail on PPP-connected dialup machines</title>
+</head>
+<body>
 <pre>
 ABOUT SETTING UP MAIL ON PPP-CONNECTED DIALUP MACHINES.
 =======================================================
@@ -93,7 +98,7 @@ although the name of your PPP connected Unix machine is completely different.
 
 After editing myhost.mc, put the file into ./cf/cf. Then cd to ./cf, call
 
-m4 m4/cf.m4 cf/myhost.mc > sendmail.cf
+m4 m4/cf.m4 cf/myhost.mc &gt; sendmail.cf
 su
 cp sendmail.cf /etc
 touch /etc/sendmail.cw
@@ -160,3 +165,5 @@ TU Berlin, Inst. f. Theor. Physik, Sekr. PN 7-1, Hardenbergstr. 36
 use "finger henrik@satchmo.physik.tu-berlin.de" to get my public pgp key
 ---------------------------------------------------------------------
 </pre>
+</body>
+</html>

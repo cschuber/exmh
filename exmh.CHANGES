@@ -15,6 +15,7 @@ cvs repository 4/13/1999
 	digits in the unseen count.  Previously the code was inconsistent
 	as to whether 2 or 3 digits should be used.  Now it is dynamically
 	determined, and only as many as necessary are used. -jbeck
+    Did some weblint clean-up on the html docs. -jbeck
 
 cvs repository 4/12/1999
     Added support for faces for newsgroups. -jbeck
