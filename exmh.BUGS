@@ -130,3 +130,113 @@ that if you open your Pref window before you compose a message,
 you won't be able to turn ispell on at that time (look at the Log
 window for details).  Once you compose a message, though, you'll
 be able to turn ispell on/off normally.
+
+Number: 11
+Version: 2.0.2
+Priority: ?
+Scope: ?
+Complexity: ?
+
+Message received at submit@bugs.debian.org:
+From: "Thomas Gebhardt" <gebhardt@HRZ.Uni-Marburg.DE>
+
+Package: exmh
+Version: 2.0.2-1
+
+Hi,
+
+sometimes I get a message with MIME encoded iso-latin characters with
+a header like
+
+
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary="-==--=-=-=======--==--=-=--=-===---===----=--===";
+ protocol="application/pgp-signature"; micalg=pgp-sha1
+
+---==--=-=-=======--==--=-=--=-===---===----=--===
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+.... message text ....
+
+
+---==--=-=-=======--==--=-=--=-===---===----=--===
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP MESSAGE-----
+Version: PGPfreeware 5.5.3i for non-commercial use <http://www.pgpi.com>
+
+iQA/AwUBNZOc0qMJGtg+zqPAEQKTsgCg7+JhDM/BnXCnoWZebJGyZmMBxzoAoLbP
+stDjIbtFhQEP+EiReo3uqVME
+=4ohD
+-----END PGP MESSAGE-----
+
+---==--=-=-=======--==--=-=--=-===---===----=--===--                   
+
+When I reply to such a message and use the "Quote" Button to
+quote parts of the message text, then the iso-latin characters
+do not show up correctly in the quoted text. They are displayed
+like "=F6" , i.e. as MIME codes.
+
+This seems to be a bug report for the upstream maintainer.
+
+Cheers, Thomas
+
+
+Number: 12
+Version: 2.0.2
+Priority: ?
+Scope: ?
+Complexity: ?
+
+Message received at submit@bugs.debian.org:
+From: Martin Weinberg <weinberg@osprey.phast.umass.edu>
+
+Setting FACEPATH as documented in /usr/doc/exmh/README.debian
+results in a display of arbitrary faces.  I have not been able
+to figure out the logic error in faces.tcl.
+
+Picons behave properly if FACEPATH is not set.
+
+
+Number: 13
+Version: 1.6.9
+Priority: ?
+Scope: ?
+Complexity: ?
+
+Message received at submit@bugs.debian.org:
+From: Dominik Kubla <kubla@netz.klinik.uni-mainz.de>
+
+The exmh frontend can not handle inc contacting a POP server and asking
+for a password.
+
+Number: 14
+Version: 1.6.9
+Priority: ?
+Scope: ?
+Complexity: ?
+
+[This may be impossible to fix, since PGP doesn't really
+output any useful exit status]
+
+Message received at submit@bugs.debian.org:
+From: Lars Wirzenius <liw@iki.fi>
+
+If I change PGP to use some other language than English, exmh
+loses it's ability to verify PGP messages. This is because
+it checks the output of PGP to see if it has a message that
+indicates a good signature. The pattern matches English only.
+
+This could be fixed to have exmh support all languages, or to
+force PGP to use English when run from exmh. I don't know if
+either is feasible without modifying either program heavily (and
+if either is going to be modified, it should be exmh, I think;
+PGP is a security tool, and should not be modified lightly).
+
+I have no fix, and the problem is not Debian-specific. It may
+be good to just forward this to the upstream authors.
+
+
