@@ -383,6 +383,25 @@ Status:
 Highlight sequences which are not specified in resources.
 (I didn't do this in my sequence highlighting code because I don't need
 it and I'm not sure what the right answer is - cwg)
+
+More thoughts from cwg:
+
+I think the strategy should be to move the highlighting configurations
+from resources into the preferences pane and then dynamically generate
+new configurations for sequences which turn up in folders, probably by
+picking a foreground color from a list of possible foreground colors.
+
+----------------------------------------------------------------------
+Number: 53
+Priority: Low
+Scope: Narrow
+Complexity:
+Status:
+
+Pretty up the vertical orientation of the sequences window.
+
+Columns need to be coordinated between the panes to do this.  May not
+be worth the effort.
 ----------------------------------------------------------------------
 
 $Id$
