@@ -1,6 +1,9 @@
 # pgpOld.tcl
 
 # $Log$
+# Revision 1.3  1999/08/22 19:19:22  bmah
+# Fix typo that prevented Old PGP->Extract Keys from working.
+#
 # Revision 1.2  1999/08/03 04:05:55  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -70,9 +73,9 @@ proc Pgp_Old_Decrypt { } {
     return 1
 }
 
-proc Old_ExtractKeys { path } {
+proc Pgp_Old_ExtractKeys { path } {
 
-    Exmh_Debug "Old_ExtractKeys $path"
+    Exmh_Debug "Pgp_Old_ExtractKeys $path"
 
     # decide which version to use / implicitely checks for pgp enabled
     if { [catch {Pgp_CheckVersion $path real v} err] } {
