@@ -111,6 +111,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/exmh-%{version}/misc
 
 %changelog
+* Sun Jul 29 2001 Anders Eriksson <aer-list@mailandnews.com>
+- Made the root package exclude the misc/ directory
+
 * Thu May 24 2001 Scott Lipcon <slipcon@mercea.net>
 - change rpm to build exmh-misc package as well.
 
