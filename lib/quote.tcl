@@ -122,7 +122,7 @@ proc Quote_Message { part file } {
 proc Quote_MultipartDefault { part file } {
     global mimeHdr
 
-    for {set i 1} {$i <= $mimeHdr($part,numParts)} {incr i 1} {
+    for {set i 1} {$i <= ($mimeHdr($part,numParts) || 0)} {incr i 1} {
 	Quote_General $part=$i $file
 	puts $file ""
     }

@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 09/29/2003 cwg-exmh@deepeddy.com
+  quote.tcl - In Quote_MultipartDefault, bulletproof against undefined
+  numParts defaulting to zero.
+
 cvs repository 08/28/2003 cwg-exmh@deepeddy.com
   ftoc.tcl - In FtocCommit, clear all unseen messages at the same time.
   (modification of the 7/13 change)
