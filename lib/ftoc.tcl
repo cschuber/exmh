@@ -678,7 +678,7 @@ proc Ftoc_ShowSequences { folder } {
     foreach seq [Mh_Sequences $folder] {
 	$exwin(ftext) tag remove $seq 0.0 end
 	set msgids [Seq_Msgs $folder $seq]
-	Exmh_Debug $seq: $msgids
+	Exmh_Debug $seq: [MhSeqMake $msgids]
 	foreach lineno [Ftoc_FindMsgs $msgids] {
 	    $exwin(ftext) tag add $seq $lineno.0 $lineno.end
 	}
