@@ -645,7 +645,7 @@ actions have their text grayed out.
 	    top of an incorrect active text button.  NOTE:  This also
 	    works if the URL was selected outside of exmh!!
 
-	<dt><button -command Partial_Cnocatenate>Concatenate partial
+	<dt><button -command Partial_Concatenate>Concatenate partial
 	    messages</button> 
 	<dd>If you get a message in parts, as a MIME type
 	    message/partial, then select all the messages that have
@@ -679,11 +679,82 @@ your draft messages.
       is that you will come back to the draft via the drafts folder
      later. 
 
+  <dt><a NAME="crypt">Crypt...</a>
+  <dd>This is a menu of options that use the Pretty Good Privacy
+      package to to encryption and authentication. An
+      explanation of pgp is beyond the scope of this manual.
+      <p>
+      The options in the menu determine how your message will be
+      encrypted or signed when the message is sent.
+      <p>
+      These values default to the values provided on the
+      <button -command Preferences_Dialog>Preferences</button>
+      PGP page and are reset for every new message.
+      <p>
+      There are currently three formats supported for signed or
+      encrypted messages:
+      <dl>
+	<dt>Plain
+	<dd>This uses no encapsulation whatsoever for the signed
+	    message. This format is compatible with older
+	    non-MIME compliant mail programs. 
+	    
+	<dt>Application/PGP
+	<dd>This uses the now deprecated Application/PGP MIME
+	    type.  This type was deprecated because it turned
+	    out to be insufficiently flexible. 
+	    
+	<dt>Multipart/MIME
+	<dd>This uses Multipart/signed MIME type with the signature
+	    part encoded as an application/pgp-signature.  This is
+	    compatible with other non-PGP digital signature schemes.
+	    Many minimally compliant mail programs see your signature
+	    as an attachment.
+      </dl>
+      <p>
+      There are also four signature operations supported via the Sign
+      sub-menu:
+      <dl>
+	<dt>None
+	<dd>No signature is produced.
+	<dt>Standard
+	<dd>This causes the message to be digitally signed so
+	    that the recipient can determine that you were
+	    really the author. 
+	<dt>Clear Sign
+	<dd>This causes a signed, but not encrypted message to
+	    be passed in clear text so even if a recipient
+	    doesn't have PGP available, they can still read the text.
+	<dt>plus Encrypt
+	<dd>This causes the message to be encrypted as well as signed.	    
+      </dl>
+      <p>
+      Toggling "Encrypt Only" causes the message to be encrypted so
+      that only the intended recipient can read it. If you have
+      enabled caching of passphrases you can use "Clear
+      Passphrases(s)" to clear the cache. Users with multiple private
+      keys may select which key to use for signatures via "Choose
+      Key" (or the SEDIT area described in the next paragraph).
+      <p>
+      If PGP is enabled, and "sedit PGP password" is selected in
+      the <button -command Preferences_Dialog>Preferences</button>,
+      a field for entering a PGP password appears at the bottom
+      of the SEDIT window.  If your password is provided in this
+      field, then the values set in the Crypt... menu are
+      invoked.  If no password is provided, then encryption is
+      not used AND the message is not sent.  This makes it harder
+      to send un-encrypted messages out by mistake.
+      <p> 
+      If PGP is enabled and "sedit PGP password is <em>not</em>
+      selected in the 
+      <button -command Preferences_Dialog>Preferences</button>,
+      a popup window appears after pressing the SEND button. 
+      
   <dt>Help 
   <dd>This button brings up a window with a short explanation of the
       editor. 
 
-  <dt>Quote 
+  <dt>Quote... 
   <dd>This is only active while you are replying to a message. When
       you are replying to a message, the file named "@" is a symbolic
       link to the message to which you are replying. When this file is
@@ -860,82 +931,6 @@ your draft messages.
 	<dd>Save the draft and invoke your alternate editor on the
 	    message. Define the alternate under the Editor Support
 	    <button -command Preferences_Dialog>Preferences</button>.
-
-	<dt><a NAME="crypt">Crypt...</a>
-	<dd>This is a menu of options that use the Pretty Good Privacy
-	    package to to encryption and authentication. An
-	    explanation of pgp is beyond the scope of this manual.
-	    <p>
-	    The options in the menu determine how your message will be
-	    encrypted or signed when the message is sent.
-	    <p>
-	    These values default to the values provided on the 
-	    <button -command Preferences_Dialog>Preferences</button>
-	    PGP page and are reset for every new message.
-	    <p>
-	    There are currently three formats supported for signed or
-	    encrypted messages:
-	    <dl>
-	      <dt>Plain
-	      <dd>This uses no encapsulation whatsoever for the signed
-	          message. This format is compatible with older
-	          non-MIME compliant mail programs. 
-
-	      <dt>Application/PGP
-	      <dd>This uses the now deprecated Application/PGP MIME
-	          type.  This type was deprecated because it turned
-		  out to be insufficiently flexible. 
-
-	      <dt>Multipart/MIME
-	      <dd>This uses Multipart/signed MIME type with the
-	          signature part encoded as an
-		  application/pgp-signature.  This is compatible with
-		  other non-PGP digital signature schemes.  Many
-		  minimally compliant mail programs see your signature
-		  as an attachment.
-	    </dl>
-
-	    There are also four toggleable values which may be used in
-	    various combinations:
-
-	    <dl>
-
-	      <dt>Encrypt
-	      <dd>This causes the message to be encrypted so that only
-	          the intended recipient can read it.
-
-	      <dt>Sign
-	      <dd>This causes the message to be digitally signed so
-	          that the recipient can determine that you were
-	          really the author. 
-
-	      <dt>Mime
-	      <dd>This allows the encrypted or signed message to
-	          itself contain MIME subparts.  This flag cannot be
-	          specified with the "Plain" format.  In the future,
-	          it may be required for the other formats. 
-
-	      <dt>Clear Sign
-	      <dd>This causes a signed, but not encrypted message to
-	          be passed in clear text so even if a recipient
-	          doesn't have PGP available, they can still read the text.
-	    </dl>
-
-	    <p>
-	    If PGP is enabled, and "sedit PGP password" is selected in
-	    the 
-	    <button -command Preferences_Dialog>Preferences</button>,
-	    a field for entering a PGP password appears at the bottom
-	    of the SEDIT window.  If your password is provided in this
-	    field, then the values set in the Crypt... menu are
-	    invoked.  If no password is provided, then encryption is
-	    not used.  This makes it easy to go between using PGP and
-	    not using it for particular messages.
-	    <p> 
-	    If PGP is enabled and "sedit PGP password is <em>not</em>
-	    selected in the 
-	    <button -command Preferences_Dialog>Preferences</button>,
-	    a popup window appears after pressing the SEND button. 
       </dl>
 </dl>
 
