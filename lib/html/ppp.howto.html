@@ -118,12 +118,15 @@ and restart sendmail. That's all.
 You will need to edit the postfix main.cf file often found in
 /usr/local/etc/postfix. No other file needs adjustment.
 
-In the section titled "SENDING MAIL", uncomment the line reading
-"myorigin=$mydomain".
-
 In the section titles "ADDRESS REWRITING", add the lines:
 masquerade_domains = $mydomain
 masquerade_exceptions = root,mailer-daemon
+You may add any other accounts for which you do not want 
+masquerading to querade_exceptions.
+
+Normally you will not want to set both mail_origin and masquerade_domains
+as they will be processed sequntially and masquerade_exceptions will 
+be lost.
 
 You can find more information on these changes in sample-rewrite.cf.
 

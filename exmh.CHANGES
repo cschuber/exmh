@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 01/25/2002 slipcon@mercea.net
+    lib/html/ppp.howto.html - fixed postfix instructions, via Kevin
+        Oberman again.
+
 cvs repository 01/26/2002 valdis.kletnieks@vt.edu
     lib/ftp_get.tcl - add a 'catch' in case an FTP dies early, so we don't
 	throw an error unsetting data(fd) if it was never set..
