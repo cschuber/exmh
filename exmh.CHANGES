@@ -1,5 +1,13 @@
 HISTORY
 
+cvs repository 05/18/2001 bmah
+    lib/extrasInit.tcl:
+    lib/pgpBase.tcl:	PGP detection code now tries to execute a
+			program (e.g. "gpg --version") and parse the
+			output to determine presence of installed
+			versions.  Former versions only checked the
+			existence of files.
+
 cvs repository 05/16/2001 kchrist
     lib/sedit.tcl: Make sure exmh($id,action) survives a 'Keep on send'.
 
