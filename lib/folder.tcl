@@ -345,7 +345,8 @@ proc Folder_IsShared {folder} {
     set folder(shared,$folder) 1
 }
 proc Folder_FindShared {} {
-    if {[catch {open ~/Mail/.folders_shared} in]} {
+    global mhProfile
+    if {[catch {open $mhProfile(path)/.folders_shared} in]} {
 	Exmh_Debug $in
 	return
     }

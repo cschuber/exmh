@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 06/278/2000 Hal DeVore <haldevore@earthling.net>
+    lib/folder.tcl: Got rid of a hardcoded path to ~/Mail
+
 cvs repository 06/27/2000 Bruce A. Mah <bmah@cisco.com>
     lib/seditExtras.tcl:  Add an "undo" feature for sedit shell,
     from John Klassa <klassa@cisco.com>.
