@@ -145,35 +145,39 @@ proc Inc_PresortMultidrop {} {
 
 proc Inc_Inbox {} {
     # Inc from the spool file to the inbox folder
-    global exmh mhProfile ftoc pop inc
+    global exmh mhProfile ftoc inc
     if [info exists mhProfile(inbox)] {
 	set inbox [string trimleft $mhProfile(inbox) +]
     } else {
 	set inbox inbox
     }
     Exmh_Status "Inc ..."
+
+    # Optionally wrap inc with an expect wrapper.
+
     set cmd [list exec inc +$inbox -truncate -nochangecur -width $ftoc(scanWidth)]
-    if {[info exist pop(password)]} {
-	# INC HACK - wrap expect in an expect script
-	set cmd [Inc_Expect $cmd]
-    }
+    set cmd [Inc_Expect $cmd]
 
     # Return value from 'inc' is 1 when there are no messages....
     if [catch $cmd incout] {
 	Exmh_Debug Inc_Inbox $cmd: $incout
 	set incout {}
-    } elseif {[info exist pop(password)]} {
-	# eliminate 'Password (host:user):' prompt.
-	regsub {.*\): *} $incout {} incout
     }	
 
     BgRPC Inc_InboxFinish $inbox $incout Flist_Done
 }
 proc Inc_Expect {cmd} {
-    global exmh pop
-    set cmd [lrange $cmd 1 end]	;# drop leading "exec"
-    set cmd [concat [list exec inc.expect] $cmd [list << $pop(password)]]
-    Exmh_Debug $cmd
+    global inc exmh pop
+    if {![info exist pop(password)]} {
+	# No password implies no POP host
+	return $cmd
+    }
+
+    # Drop the leading "exec", and splice in the -host argument
+
+    set cmd [lrange $cmd 1 end]
+    set cmd [concat [list exec inc.expect] $cmd [list -host $inc(pophost) << $pop(password)]]
+    Exmh_Debug [concat [list exec inc.expect] $cmd [list -host $inc(pophost)]]
     return $cmd
 }
 
@@ -211,9 +215,7 @@ proc Inc_Presort {{doinc 1}} {
     }
     if {$doinc} {
 	set cmd [list exec inc +MyIncTmp -silent]
-	if {[info exist pop(password)]} {
-	    set cmd [Inc_Expect $cmd]
-	}
+	set cmd [Inc_Expect $cmd]
 	if {[catch $cmd err]} {
 	    # Some versions of inc exit non-zero when they should not.
 	    Exmh_Debug Inc_Presort +MyIncTmp: $err
@@ -336,14 +338,9 @@ proc Inc_All {{updateScan 1}} {
 		set cmd [list exec inc +$folder -host $host \
 			-truncate -width $ftoc(scanWidth)]
 	    }
-	    if {0} {
-		# This doesn't work for folks that have set up their
-		# .netrc file to have passwords for all their POP hosts.
-		Pop_GetPassword $host
-		if {[info exist pop($host,password)]} {
-		    set cmd [Inc_Expect $cmd]
-		}
-	    }
+	    # There used to be code here to call
+	    # Pop_GetPassword and Inc_Expect, but it doesn't work
+	    # Instead, assume .netrc file has passwords for all POP hosts.
 	} else {
 	    if { [file exists $dropname] && [file size $dropname] } {
 		set cmd [list exec inc +$folder -file $dropname \

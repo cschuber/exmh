@@ -48,10 +48,11 @@
 <hr>
 
 <h3><a NAME="version">Version</a></h3>
-Last modified: Thu Jan 18 22:41:39 PST 2001
+Last modified:
+Tue May 15 13:44:19 PDT 2001
 <br>
 
-exmh version: 2.3.1
+exmh version: 2.4
 <br>
 
 "Brent Welch" &lt;welch@acm.org&gt;
@@ -86,54 +87,9 @@ comments, pro and con, about <i>exmh</i>. I've learned a lot from the
 2000+ registrations I have received so far. Thanks! 
 <p>
 EXMH lives "high in the food chain". You'll need some additional software.
+Please review the
+<a href="software.html">necessary and optional packages</a> for exmh.
 
-<hr>
-
-<h3><a NAME="requiredpkgs">Required Packages</a></h3>
-Find <font COLOR="#FF0000">Tcl</font> and <font COLOR="#FF0000">Tk</font>
-on 
-<pre>
-	<a href="http://www.scriptics.com/software/download.html">http://www.scriptics.com/software/download.html</a>
-	<a href="ftp://ftp.scriptics.com/pub/tcl">ftp.scriptics.com:/pub/tcl</a>
-	<a href="ftp://ftp.neosoft.com/pub/tcl">ftp.neosoft.com:/pub/tcl</a>
-</pre>Find <font COLOR="#FF0000">MH</font> on 
-<pre>
-	<a href="http://www.mhost.com/nmh/">http://www.mhost.com/nmh/</a>
-	ftp.ics.uci.edu:/pub/mh 
-</pre>Find <font COLOR="#FF0000">Metamail</font> (for MIME support,
-including 8-bit charsets) on 
-<pre>
-	ftp.bellcore.com:/pub/nsb 
-</pre>
-<hr>
-
-<h3><a NAME="optionalpkgs">Optional Packages</a></h3>
-Find <font COLOR="#FF0000">Faces</font> (a.k.a. "Picons") on 
-<pre>
-	cs.indiana.edu:/pub/faces 
-	http://www.cs.indiana.edu/picons/ftp/faq.html
-</pre>
-<p>
-<font COLOR="#FF0000">Expect</font> is available as 
-<pre>
-	pub/expect/expect.tar.Z from ftp.cme.nist.gov 
-</pre>
-<p>
-<font COLOR="#FF0000">Japanization</font> patch for <font COLOR="#FF0000">Tcl</font>
-and <font COLOR="#FF0000">Tk</font> 
-<pre>
-	srawgw.sra.co.jp:/pub/lang/tcl/jp 
-	tcl7.3jp-patch.gz, tcl7.3jp-update1.gz, tcl7.3jp-update2.gz, 
-	tk3.6jp-patch.gz, tk3.6jp-update1.gz, tk3.6jp-update2.gz. 
-	It seems that they will move the archives to ftp.sra.co.jp near future. 
-</pre>
-<p>
-Find <font COLOR="#FF0000">Glimpse</font>, the full text search engine,
-at University of Arizona: 
-<pre>
-	http://glimpse.cs.arizona.edu:1994/ 
-</pre>
-<hr>
 <h4><a NAME="knownbugs">Known Bugs</a></h4>
 <h5>AIX BUG that results in no buttons or menus</h5>
 The Aix 3.2 compiler does not compile tkOption.c correctly when optimization
@@ -148,7 +104,35 @@ in <i>exmh</i>.
 <hr>
 <h4><a NAME="flashes">Flashes</a></h4>
 <ul>
+<li>2.4 accumulates bug fixes and some code cleanup.
+installed without the .exmhinstall cache file.
 <li>2.3.1 fixed an installation bug in 2.3 that showed up when you
+installed without the .exmhinstall cache file.
+<li>2.3 captures 6 months of feature tweaks and bug fixes by the
+hard working exmh-workers crew.  The CVS sources are now at SourceForge.
+<li>2.1 and 2.2 were made while Brent was at Scriptics/Ajuba.
+<li>2.0.3 is done as Brent finally moves the sources into net CVS
+and asks for help maintaining the code.  For more info on CVS, see
+http://www.scriptics.com/software/netcvs.html
+<li>2.0.2 is done as Brent leaves Sun for Scriptics Corp,
+http://www.scriptics.com/.
+I've tried to shift all email contact to &lt;welch@acm.org&gt;, and am
+housing exmh at http://www.beedub.com/exmh/.
+<li>2.0.1 fixes a bug in mime.tcl that prevents temp files from being
+deleted.
+<li>2.0 is finally released.  This collects a host of minor bug fixes, most
+notably to ispell and the address book.
+<li>2.0zeta fixes the exmh-netscape interaction that was added in 2.0epsilon.
+<li>2.0epsilon features cleanup of the address book, the ispell interface,
+and the intelligent signature features. 
+<li>2.0delta is a collection of fixes and features. 
+<li>2.0gamma is more bug fixes, especially in the new HTML code. There
+is also a new Quote package that computes a cleaned up version of the
+message to which you are replying. 
+<li>2.0beta has many bug fixes for the alpha release. The new line-breaking
+behavior of the built-in editor has been made optional, with the old
+line-breaking behavior as the default. 
+<li>2.4 fixed an installation bug in 2.3 that showed up when you
 installed without the .exmhinstall cache file.
 <li>2.3 captures 6 months of feature tweaks and bug fixes by the
 hard working exmh-workers crew.  The CVS sources are now at SourceForge.

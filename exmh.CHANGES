@@ -1,4 +1,19 @@
 HISTORY
+
+cvs repository 05/15/2001 Brent Welch <welch@panasas.com>
+    Makefile:
+    exmh.README:
+    exmh.CHANGES:
+    lib/html/exmh.README.html:
+    lib/html/index.html:
+    lib/html/software.html:
+    exmh.install: Changing version number to 2.4
+    version.csh:
+    version.sed: Scripts to help with version changes.
+    exmh-bg.MASTER:
+    exmh.MASTER: Fixed initialization of exmh(userLibrary)
+    lib/inc.tcl: Cleanup of Inc_Expect
+
 cvs repository 05/14/2001 kchrist
     Fixed a bug in which a corrupt context would prevent exmh from
     starting. Problem was caused by direct calls to 'repl' instead of
@@ -38,7 +53,6 @@ cvs repository 05/10/2001 Brent Welch <welch@panasas.com>
     exmh.MASTER:
     exmh-bg.MASTER: Removed auto_reset from auto_path_update and
 	add exmh(userLibrary) to auto_path very early.
-	footbag
     inc.expect.MASTER: Code cleanup and fix to ensure that the
 	password is not echoed in the scan listing.
     lib/addr.tcl: Adopted patch for LDAP searching

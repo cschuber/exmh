@@ -48,14 +48,8 @@ proc auto_path_update { path } {
 auto_path_update $exmh(library)
 
 # Support per-user directory containing .tcl files.
-
-foreach d {~/.exmh/lib ~/.tk/exmh} {
-    set d [glob -nocomplain $d]
-    if  {[string length $d] == 0} {
-	continue
-    }
-    if {[file exists [file join $d tclIndex]]} {
-	set exmh(userLibrary) $d
+foreach exmh(userLibrary) {~/.exmh/lib ~/.tk/exmh} {
+    if {[file exists [file join $exmh(userLibrary) tclIndex]]} {
 	auto_path_update $exmh(userLibrary)	;# library for new modules
 	break
     }

@@ -60,17 +60,14 @@ if ![file exists $exmh(library)/tclIndex] {
 # but then files migrated into ~/.exmh so
 # a lib subdirectory there is cleaner
 
-foreach d {~/.exmh/lib ~/.tk/exmh} {
-    set d [glob -nocomplain $d]
-    if  {[string length $d] == 0} {
-	continue
-    }
-    if {[file exists [file join $d tclIndex]]} {
-	set exmh(userLibrary) $d
+foreach exmh(userLibrary) {~/.exmh/lib ~/.tk/exmh} {
+    if {[file exists [file join $exmh(userLibrary) tclIndex]]} {
 	auto_path_update $exmh(userLibrary)	;# library for new modules
 	break
     }
 }
+# Fall through with ~/.tk/exmh as the default because there
+# are other places in the code that assume exmh(userLibrary) is defined
 
 # Set up the environment
 Env_Init
