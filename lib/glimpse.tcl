@@ -315,7 +315,7 @@ proc Glimpse_Start {} {
 	if $glimpse(singleIndex) {
 	    catch {unset dirlist}
 	    set msgSrch $mhProfile(path)
-	    append msgSrch {/([^ ]+)/([0-9]+): (.*)}
+	    append msgSrch {/*([^ ]+)/([0-9]+): (.*)}
 	    foreach r [split $result "\n"] {
 		if [regexp -- $msgSrch $r all curf num context] {
 		    if {[lsearch -exact $mhresult $curf]==-1} {
