@@ -263,6 +263,23 @@ proc EditShowDialog {id text} {
 	    ButtonMenuInner $menu	;# This also expands variables
 	}
 
+	# Make sure only valid entries are enabled in version submenu
+	# otherwise things may fail in post-processing.
+	# We don't have to take care of the active entry since 
+	# preferences only allows valid entries as initial version
+	if {$pgp(enabled)} {
+	    set submenu $d.more.m.encrypt.version
+	    for {set sm 0} {$sm<=[$submenu index last]} {incr sm} {
+		if [catch {$submenu entrycget $sm -value} v] {
+		    continue
+		}
+		if {[info exists pgp($v,enabled)] && \
+			!$pgp($v,enabled) } {
+		    $submenu entryconfigure $sm -state disabled
+		}
+	    }
+	}
+
 	Widget_Message $d msg -text "$text\nReturn for Send\nControl-c for Kill" -aspect 400
 
 	focus $d
@@ -304,10 +321,13 @@ proc EditStart { draft {type prog} } {
     Exmh_Debug EditStart $draft $type
 
     if $pgp(enabled) {
-	# Copy the default PGP values into this window
+	# Copy the default PGP values into this window only if they
+	# don't already exists. This way, we preserve values between
+	# re-edit sessions. Edit_Done takes care of resetting to 
+	# preference values when we send or abort (ie. get done draft).
 	set id [SeditId $draft]
 	foreach var {encrypt sign format version} {
-	    set pgp($var,$id) $pgp($var)
+	    if ![info exists pgp($var,$id)] {set pgp($var,$id) $pgp($var)}
 	}
     }
     
@@ -404,7 +424,7 @@ proc EditDone {act msg} {
 }
 proc Edit_Done {act {msg cur}} {
     # Commit or abort an edit session
-    global mhProfile exmh env editor
+    global mhProfile exmh env editor pgp
     if {$msg == "cur"} {
 	set msg [Mh_Cur $mhProfile(draft-folder)]
 	if {$msg == {}} {
@@ -457,6 +477,11 @@ proc Edit_Done {act {msg cur}} {
 		}
 	    }
 	    Mh_AnnoCleanup $msg
+	    # Done with this draft, set PGP defaults for next call
+	    set id [SeditId $msg]
+	    foreach var {encrypt sign format version} {
+		set pgp($var,$id) $pgp($var)
+	    }
 	}
 	reedit	{
 	    Exmh_Status " "
@@ -503,6 +528,11 @@ proc Edit_Done {act {msg cur}} {
 		Exmh_Status "Draft $msg aborted" error
 		Quote_Cleanup
 		Mh_AnnoCleanup $msg
+		# Done with this draft, set PGP defaults for next call
+		set id [SeditId $msg]
+		foreach var {encrypt sign format version} {
+		    set pgp($var,$id) $pgp($var)
+		}
 	    }
 	}
 	dismiss	{

@@ -170,6 +170,24 @@ proc Sedit_Start { draft } {
 	}
 	SeditMsg $t $draft
 
+	# Make sure only valid entries are enabled in version submenu
+	# otherwise things will crash when we try submenu command.
+	# We don't have to take care of the active entry since 
+	# preferences only allows valid entries as initial version
+	if {$pgp(enabled)} {
+	    set submenu $b.pgp.m.version
+	    for {set sm 0} {$sm<=[$submenu index last]} {incr sm} {
+		if [catch {$submenu entrycget $sm -command} cmd] {
+		    continue
+		}
+		if {[regexp {Pgp_SetSeditPgpVersion *([^ ]+)} $cmd {} v] && \
+			[info exists pgp($v,enabled)] && \
+			!$pgp($v,enabled) } {
+		    $submenu entryconfigure $sm -state disabled
+		}
+	    }
+	}
+
 	# Define a bunch of maps among things
 	set sedit($t,toplevel) .sedit$id
 	set sedit($id,text) $t
