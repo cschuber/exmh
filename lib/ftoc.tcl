@@ -652,8 +652,8 @@ proc Ftoc_ShowSequences { folder } {
     foreach sequencename [Mh_Sequences $folder] {
 	$exwin(ftext) tag remove $sequencename 0.0 end
 	set sequence [Mh_Sequence $folder $sequencename]
+	Exmh_Debug $sequencename: $sequence
 	foreach i $sequence {
-	    Exmh_Debug $sequencename: $sequence
 	    set line [Ftoc_FindMsg $i]
 	    if {$line != {}} {
 		$exwin(ftext) tag add $sequencename $line.0 $line.end
