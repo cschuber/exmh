@@ -1,5 +1,8 @@
 HISTORY
 
+cvs respository 12/11/2000 Hal DeVore <haldevore@acm.org>
+    lib/sedit.tcl - removed duplicate SeditSetHeader proc
+
 cvs respository 11/22/2000 Hal DeVore <haldevore@acm.org>
     lib/html/guide.html - Corrected a couple of improperly closed
     <code> tags

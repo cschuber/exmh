@@ -674,29 +674,6 @@ proc SeditDragDrop { w args } {
     }
 }
 
-proc SeditSetHeader { t key value } {
-    set hit 0
-    for {set L 1} {[$t compare $L.0 < hlimit]} {incr L} {
-	set line [$t get $L.0 $L.end]
-	if [regexp -nocase ^[string tolower $key]: $line] {
-	    set hit 1
-	    set line " dummy"
-	    while {[regexp {^[ 	]} $line]} {
-		$t delete $L.0 "$L.0 + 1 line"
-		set line [$t get $L.0 $L.end]
-	    } 
-	    $t insert $L.0 "[string toupper [string index $key 0]][string tolower [string range $key 1 end]]: $value\n"
-	    $t tag remove Charset $L.0 $L.end
-	    return
-	} 
-    }
-    if {! $hit} {
-	incr L -1
-	$t insert $L.0 "[string toupper [string index $key 0]][string tolower [string range $key 1 end]]: $value\n"
-	$t tag remove Charset $L.0 $L.end
-    }
-}
-
 # Set/Replace/Append a message header
 # (does not handle duplicate headers)
 proc SeditSetHeader { t key value {append NO}} {
