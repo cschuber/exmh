@@ -518,6 +518,11 @@ proc Pgp_Init {} {
 "PGP is the Pretty Good Privacy package from Zimmerman.
 PGP lets you sign and encrypt messages using public keys.
 There is considerable documentation that comes with PGP itself." {
+    {pgp(seditpgp) pgpSeditPgp OFF {Sedit PGP password}
+"Turning this on provides you with a PGP password field in the sedit
+window so that you will not be prompted with the password prompt.  
+Changing this value will require that you exit and re-enter exmh if 
+you've already composed email." }
     {pgp(keeppass)  pgpKeepPass  ON {Keep PGP password}
 "Exmh tries to remember your PGP password between pgp
 invocations. But the password is then kept in a global
@@ -537,6 +542,21 @@ other people." }
 "Exmh will clear its memory of the PGP password after
 this time period, in minutes, has elapesed.  If you use
 different keys, they have their own timeout period." }
+    {pgp(sign) pgpSign ON {Sign outgoing messages}
+"If this is turned on, outgoing messages will be signed." }
+    {pgp(encrypt) pgpEncrypt OFF {Encrypt outgoing messages}
+"If this is turned on, outgoing messages will be encrypted." }
+    {pgp(mime) pgpMime ON {Use Mime for PGP}
+"If this is turned on, outgoing PGP messages will use Mime for encapsulation." }
+    {pgp(format) pgpFormat {CHOICE pm plain app} {Format to encode PGP}
+"There are multiple standards for PGP encoding.
+    Pm:     Use the multipart/pgp standard (This is the preferred standard)
+    Plain:  No MIME headers at all
+    app:    Use the now deprecated application/pgp standard.
+This can be changed on the fly from the sedit window" }
+    {pgp(clearsign) pgpClearSign ON {Sign messages in the clear}
+"If this is turned on, messages will be signed so that they can be read by
+non-PGP mail readers." }
     {pgp(rfc822) pgpRfc822 OFF {Encrypt headers}
 "Used to encrypt the whole message, instead of only encrypting
 the body, so that the subject line (for instance) is also

@@ -8,6 +8,13 @@
 # todo:
 
 # $Log$
+# Revision 1.2  1999/03/26 08:41:55  cwg
+# Changes to PGP interface to use preferences variables instead of
+# message headers.  Also, reorganize the "PGP..." menu and rename it
+# "Crypt..."
+#
+# See the "PGP interface" preferences page for more info.
+#
 # Revision 1.1  1998/05/05 17:55:38  welch
 # Initial revision
 #
@@ -265,7 +272,7 @@ proc Misc_GetHeader { in } {
 
 #
 proc Misc_PostProcess { srcfile } {
-    global mhProfile
+    global mhProfile pgp pgpPass
 
     set dstfile [Mh_Path $mhProfile(draft-folder) new]
     set curfile $srcfile
@@ -276,9 +283,10 @@ proc Misc_PostProcess { srcfile } {
     close $in
 
     # call the pgp postprocesing if necessary
-    set hdrIndex [lsearch -glob $mailheader {[Pp]gp-[Aa]ction:*}]
-    if {($hdrIndex >= 0) &&
-            ![regexp -nocase {^[^ ]*: *none} [lindex $mailheader $hdrIndex]]} {
+    set keyid [lindex $pgp(myname) 0]
+    Exmh_Debug keyid=$keyid
+    Exmh_Debug pass=>$pgpPass($keyid)<
+    if {($pgp(encrypt) || $pgp(sign)) && ([string length $pgpPass($keyid)] > 0)} {
 	Pgp_Process $curfile $dstfile
 	set curfile $dstfile
     }

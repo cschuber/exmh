@@ -44,7 +44,7 @@ proc SeditSigfileDefault {} {
     return $propersig
 }
 proc Sedit_Start { draft } {
-    global sedit intelligentSign quote msg
+    global sedit intelligentSign quote pgp pgpPass msg
     global exmh	;# for menu references to $exmh(...)
     if ![info exists sedit(init)] {
 	Sedit_Init
@@ -67,6 +67,16 @@ proc Sedit_Start { draft } {
 	set t [Widget_Text $f $sedit(height) -setgrid true -wrap char]
 
 	Drop_Attach $t SeditDragDrop
+
+	if {$pgp(enabled) && $pgp(seditpgp)} {
+	    set keyid [lindex $pgp(myname) 0]
+	    set label "PGP password:"
+	    Widget_BeginEntries [string length $label] 10 [list SeditSend $draft $t]
+	    Widget_LabeledEntry .sedit$id.pgp $label pgpPass($keyid) \
+		    -show *
+	    Widget_EndEntries
+	}
+
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]
 
 	# Nuke the Dismiss button because the Abort, Send, and Save&Quit

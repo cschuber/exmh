@@ -882,30 +882,37 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.l_alt: Alternate Editor
 *Sedit.Menubar.more.m.c_alt: SeditAlternate $draft $t
 
-*Sedit.Menubar.pgp.text:	PGP...
-*Sedit.Menubar.pgp.m.entrylist: none pmsign pmencsn pmenc appsign appsnbin appencsn appenc sign encsign encrypt signkey clear
-*Sedit.Menubar.pgp.m.l_none:	No PGP action
-*Sedit.Menubar.pgp.m.c_none:	Pgp_SeditEncrypt none $draft $t
-*Sedit.Menubar.pgp.m.l_pmsign:	PGP/MIME sign clear
-*Sedit.Menubar.pgp.m.c_pmsign:	Pgp_SeditEncrypt PGP/MIME-signclear $draft $t
-*Sedit.Menubar.pgp.m.l_pmencsn:	PGP/MIME encrypt and sign
-*Sedit.Menubar.pgp.m.c_pmencsn:	Pgp_SeditEncrypt PGP/MIME-encryptsign $draft $t
-*Sedit.Menubar.pgp.m.l_pmenc:	PGP/MIME encrypt only
-*Sedit.Menubar.pgp.m.c_pmenc:	Pgp_SeditEncrypt PGP/MIME-encrypt $draft $t
-*Sedit.Menubar.pgp.m.l_appsign:	application/pgp sign clear
-*Sedit.Menubar.pgp.m.c_appsign:	Pgp_SeditEncrypt application/pgp-signclear $draft $t
-*Sedit.Menubar.pgp.m.l_appsnbin:	application/pgp sign binary
-*Sedit.Menubar.pgp.m.c_appsnbin:	Pgp_SeditEncrypt application/pgp-signbinary $draft $t
-*Sedit.Menubar.pgp.m.l_appencsn:	application/pgp encrypt and sign
-*Sedit.Menubar.pgp.m.c_appencsn:	Pgp_SeditEncrypt application/pgp-encryptsign $draft $t
-*Sedit.Menubar.pgp.m.l_appenc:	application/pgp encrypt only
-*Sedit.Menubar.pgp.m.c_appenc:	Pgp_SeditEncrypt application/pgp-encrypt $draft $t
-*Sedit.Menubar.pgp.m.l_sign:	PGP sign clear
-*Sedit.Menubar.pgp.m.c_sign:	Pgp_SeditEncrypt PGP-signclear $draft $t
-*Sedit.Menubar.pgp.m.l_encsign:	PGP encrypt and sign
-*Sedit.Menubar.pgp.m.c_encsign:	Pgp_SeditEncrypt PGP-encryptsign $draft $t
-*Sedit.Menubar.pgp.m.l_encrypt:	PGP encrypt only
-*Sedit.Menubar.pgp.m.c_encrypt:	Pgp_SeditEncrypt PGP-encrypt $draft $t
+*Sedit.Menubar.pgp.text:	Crypt...
+*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpencrypt pgpsign pgpmime pgpclearsign
+*Sedit.Menubar.pgp.m.l_pgpencrypt:	Encrypt
+*Sedit.Menubar.pgp.m.t_pgpencrypt:	check
+*Sedit.Menubar.pgp.m.v_pgpencrypt:	pgp(encrypt)
+*Sedit.Menubar.pgp.m.l_pgpsign:		Sign
+*Sedit.Menubar.pgp.m.t_pgpsign:		check
+*Sedit.Menubar.pgp.m.v_pgpsign:		pgp(sign)
+*Sedit.Menubar.pgp.m.l_pgpmime:		Mime
+*Sedit.Menubar.pgp.m.t_pgpmime:		check
+*Sedit.Menubar.pgp.m.v_pgpmime:		pgp(mime)
+*Sedit.Menubar.pgp.m.l_pgpclearsign:	Clear Sign
+*Sedit.Menubar.pgp.m.t_pgpclearsign:	check
+*Sedit.Menubar.pgp.m.v_pgpclearsign:	pgp(clearsign)
+*Sedit.Menubar.pgp.m.l_pgpformat:	Format
+*Sedit.Menubar.pgp.m.t_pgpformat:	cascade
+*Sedit.Menubar.pgp.m.m_pgpformat:	format
+*Sedit.Menubar.pgp.m.format.entrylist:	plain app pm
+*Sedit.Menubar.pgp.m.format.l_plain:	Plain
+*Sedit.Menubar.pgp.m.format.t_plain:	radio
+*Sedit.Menubar.pgp.m.format.v_plain:	pgp(format)
+*Sedit.Menubar.pgp.m.format.x_plain:	plain
+*Sedit.Menubar.pgp.m.format.l_app:	Application/PGP
+*Sedit.Menubar.pgp.m.format.t_app:	radio
+*Sedit.Menubar.pgp.m.format.v_app:	pgp(format)
+*Sedit.Menubar.pgp.m.format.x_app:	app
+*Sedit.Menubar.pgp.m.format.l_pm:	Multipart/MIME
+*Sedit.Menubar.pgp.m.format.t_pm:	radio
+*Sedit.Menubar.pgp.m.format.v_pm:	pgp(format)
+*Sedit.Menubar.pgp.m.format.x_pm:	pm
+
 *Sedit.Menubar.pgp.m.l_signkey:	Change Default Key
 *Sedit.Menubar.pgp.m.c_signkey:	Pgp_SetMyName
 *Sedit.Menubar.pgp.m.l_clear:	Clear Cached Password

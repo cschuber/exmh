@@ -6,6 +6,13 @@
 # 
 
 # $Log$
+# Revision 1.2  1999/03/26 08:41:55  cwg
+# Changes to PGP interface to use preferences variables instead of
+# message headers.  Also, reorganize the "PGP..." menu and rename it
+# "Crypt..."
+#
+# See the "PGP interface" preferences page for more info.
+#
 # Revision 1.1  1998/05/05 17:55:38  welch
 # Initial revision
 #
@@ -61,6 +68,7 @@ proc PgpMatch_Whom { draft {hasfcc 0} } {
 	}
 	set id [string trim $id]
 	regsub { at } $id {@} id
+	regsub {\[.*\]} $id {} id
 	set ids [concat $ids [PgpMatch_Email $id $pgp(pubring)]]
     }
     if $hasfcc {
@@ -82,11 +90,7 @@ proc PgpMatch_Email { email keyring } {
 	return $pgpMatch($email)
     }
 
-    if {![regexp "@" $email]} {
-	set id "$email@$env(LOCALHOST)"
-    } else {
-	set id $email
-    }
+    set id $email
 
     set sep "]\[{}<>()@\"|,;!' "
 

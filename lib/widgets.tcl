@@ -310,12 +310,12 @@ proc Widget_BeginEntries { {lwidth 10} {ewidth 20} {okCmd {}} {link {}}} {
 	}
     }
 }
-proc Widget_LabeledEntry { w name textvar} {
+proc Widget_LabeledEntry { w name textvar args} {
     global widgetEntry tk_version
     set f [frame $w -class LabeledEntry]
     Widget_Label $f label {left} -text $name -width $widgetEntry(lwidth)
-    Widget_Entry $f entry {left fillx} \
-	-width $widgetEntry(ewidth) -textvariable $textvar
+    eval {Widget_Entry $f entry {left fillx} \
+	    -width $widgetEntry(ewidth) -textvariable $textvar} $args
     pack $f -side top -fill x
     if [info exists widgetEntry(last)] {
 	bind $widgetEntry(last) <Tab> [list focus $f.entry]
