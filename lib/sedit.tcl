@@ -44,7 +44,7 @@ proc SeditSigfileDefault {} {
     return $propersig
 }
 proc Sedit_Start { draft } {
-    global sedit intelligentSign quote pgp pgpPass msg
+    global sedit intelligentSign quote msg
     global exmh	;# for menu references to $exmh(...)
     if ![info exists sedit(init)] {
 	Sedit_Init
@@ -68,27 +68,7 @@ proc Sedit_Start { draft } {
 
 	Drop_Attach $t SeditDragDrop
 
-	if {$pgp(enabled) && $pgp(seditpgp)} {
-	    set keyid [lindex $pgp(myname) 0]
-	    set keyname [lindex $pgp(myname) 1]
-	    set pgp(sedit_label) "PGP passphrase for $keyname:"
-	    set w ".sedit$id"
-	    if {![winfo exists $w.pgp]} {
-		pack [frame $w.pgp] -side top -fill x -ipady 2
-	    }
-	    if {![winfo exists $w.pgp.l]} {
-		pack [label $w.pgp.l -textvariable pgp(sedit_label)] \
-		    -side left
-	    }
-	    if {![winfo exists $w.pgp.e]} {
-		pack [entry $w.pgp.e -textvariable pgpPass(cur) -show *] \
-		    -side left -expand yes -fill x -ipady 2
-	    }
-	    if {![winfo exists $w.pgp.b]} {
-		pack [button $w.pgp.b -text "Choose Alternate Key" \
-		    -command {Pgp_SetMyName}] -side left -ipady 2
-	    }
-	}
+	EditAddPassPhrasePane .sedit$id
 
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]
 

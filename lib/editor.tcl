@@ -150,6 +150,29 @@ proc Edit_Dialog {draftID} {
 proc EditDialog {draftID} {
     Edit_Dialog $draftID
 }
+proc EditAddPassPhrasePane {w} {
+    global pgp pgpPass
+    if {$pgp(enabled) && $pgp(seditpgp)} {
+	set keyid [lindex $pgp(myname) 0]
+	set keyname [lindex $pgp(myname) 1]
+	set pgp(sedit_label) "PGP passphrase for $keyname:"
+	if {![winfo exists $w.pgp]} {
+	    pack [frame $w.pgp] -side bottom -fill x -ipady 2
+	}
+	if {![winfo exists $w.pgp.l]} {
+	    pack [label $w.pgp.l -textvariable pgp(sedit_label)] \
+		    -side left
+	}
+	if {![winfo exists $w.pgp.e]} {
+	    pack [entry $w.pgp.e -textvariable pgpPass(cur) -show *] \
+		    -side left -expand yes -fill x -ipady 2
+	}
+	if {![winfo exists $w.pgp.b]} {
+	    pack [button $w.pgp.b -text "Choose Alternate Key" \
+		    -command {Pgp_SetMyName}] -side left -ipady 2
+	}
+    }
+}
 proc EditShowDialog {id text} {
     global exwin editor
     # Create the buttons and arrange them from left to right in the RH
@@ -160,6 +183,8 @@ proc EditShowDialog {id text} {
 	set d .edit$id
 	wm transient $d
 	$d config -relief raised -borderwidth 2
+
+	EditAddPassPhrasePane $d
 
 	foreach but [Widget_GetButDef $d] {
 	    Widget_AddButDef $d $but

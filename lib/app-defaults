@@ -1065,26 +1065,43 @@ exmh.iconic:		0
 
 *WhatNow.more.m.t_encrypt:	cascade
 *WhatNow.more.m.m_encrypt:	encrypt
-*WhatNow.more.m.l_encrypt:	PGP...
-*WhatNow.more.m.encrypt.entrylist:	none pmsign pmencsn pmenc appsign appsnbin appencsn appenc signkey
-*WhatNow.more.m.encrypt.l_none:		No PGP action
-*WhatNow.more.m.encrypt.c_none:		Pgp_EncryptWhatNow none $id
-*WhatNow.more.m.encrypt.l_pmsign:	PGP/MIME sign clear
-*WhatNow.more.m.encrypt.c_pmsign:	Pgp_EncryptWhatNow PGP/MIME-signclear $id
-*WhatNow.more.m.encrypt.l_pmencsn:	PGP/MIME encrypt and sign
-*WhatNow.more.m.encrypt.c_pmencsn:	Pgp_EncryptWhatNow PGP/MIME-encryptsign $id
-*WhatNow.more.m.encrypt.l_pmenc:	PGP/MIME encrypt only
-*WhatNow.more.m.encrypt.c_pmenc:	Pgp_EncryptWhatNow PGP/MIME-encrypt $id
-*WhatNow.more.m.encrypt.l_appsign:	application/pgp sign clear
-*WhatNow.more.m.encrypt.c_appsign:	Pgp_EncryptWhatNow application/pgp-signclear $id
-*WhatNow.more.m.encrypt.l_appsnbin:	application/pgp sign binary
-*WhatNow.more.m.encrypt.c_appsnbin:	Pgp_EncryptWhatNow application/pgp-signbinary $id
-*WhatNow.more.m.encrypt.l_appencsn:	application/pgp encrypt and sign
-*WhatNow.more.m.encrypt.c_appencsn:	Pgp_EncryptWhatNow application/pgp-encryptsign $id
-*WhatNow.more.m.encrypt.l_appenc:	application/pgp encrypt only
-*WhatNow.more.m.encrypt.c_appenc:	Pgp_EncryptWhatNow application/pgp-encrypt $id
+*WhatNow.more.m.l_encrypt:	Crypt...
+*WhatNow.more.m.encrypt.entrylist: pgpformat pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey
+*WhatNow.more.m.encrypt.l_pgpencrypt:	Encrypt
+*WhatNow.more.m.encrypt.t_pgpencrypt:	check
+*WhatNow.more.m.encrypt.v_pgpencrypt:	pgp(encrypt,$id)
+*WhatNow.more.m.encrypt.l_pgpsign:		Sign
+*WhatNow.more.m.encrypt.t_pgpsign:		check
+*WhatNow.more.m.encrypt.v_pgpsign:		pgp(sign,$id)
+*WhatNow.more.m.encrypt.l_pgpmime:		Mime
+*WhatNow.more.m.encrypt.t_pgpmime:		check
+*WhatNow.more.m.encrypt.v_pgpmime:		pgp(mime,$id)
+*WhatNow.more.m.encrypt.l_pgpclearsign:	Clear Sign
+*WhatNow.more.m.encrypt.t_pgpclearsign:	check
+*WhatNow.more.m.encrypt.v_pgpclearsign:	pgp(clearsign,$id)
+*WhatNow.more.m.encrypt.l_pgpchoosekey:	Choose Key
+*WhatNow.more.m.encrypt.c_pgpchoosekey:	Pgp_SetMyName
+*WhatNow.more.m.encrypt.l_pgpformat:	Format
+*WhatNow.more.m.encrypt.t_pgpformat:	cascade
+*WhatNow.more.m.encrypt.m_pgpformat:	format
+*WhatNow.more.m.encrypt.format.entrylist:	plain app pm
+*WhatNow.more.m.encrypt.format.l_plain:	Plain
+*WhatNow.more.m.encrypt.format.t_plain:	radio
+*WhatNow.more.m.encrypt.format.v_plain:	pgp(format,$id)
+*WhatNow.more.m.encrypt.format.x_plain:	plain
+*WhatNow.more.m.encrypt.format.l_app:	Application/PGP
+*WhatNow.more.m.encrypt.format.t_app:	radio
+*WhatNow.more.m.encrypt.format.v_app:	pgp(format,$id)
+*WhatNow.more.m.encrypt.format.x_app:	app
+*WhatNow.more.m.encrypt.format.l_pm:	Multipart/MIME
+*WhatNow.more.m.encrypt.format.t_pm:	radio
+*WhatNow.more.m.encrypt.format.v_pm:	pgp(format,$id)
+*WhatNow.more.m.encrypt.format.x_pm:	pm
+
 *WhatNow.more.m.encrypt.l_signkey:	Change Default Key
 *WhatNow.more.m.encrypt.c_signkey:	Pgp_SetMyName
+*WhatNow.more.m.encrypt.l_clear:	Clear Cached Password
+*WhatNow.more.m.encrypt.c_clear:	Pgp_ClearPassword
 
 ! Sedit bindings
 *sedit_typeKillsSel: 1
