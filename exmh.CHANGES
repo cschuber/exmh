@@ -11,6 +11,7 @@ cvs repository 03/23/2000
     d)  Markup revisions and additional info in question 15 (templates).
         It noted 4 types of templates but only listed 3.  Now it has
         info on 4 MH plus 1 new nmh template.  
+                                             -haldevore
 
 cvs repository 02/29/2000
     Applied patch to speed up pick  -Dick Wesseling via haldevore
