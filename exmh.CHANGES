@@ -5,6 +5,10 @@ cvs repository 4/4/1999
 	Also, removed the -mono flag since it hasn't actually worked since 
 	tk-4.0b3. -cwg
 
+cvs repositry 4/3/1999
+    Added user preference to control action of "target" button (usually
+        button 3, X resource fl_tarbutton) in folder list. -haldevore
+
 cvs repository 4/2/1999
     Change ordering of mime type guessing. It used to be
 	mailcap, mime.types, magic, now it is mime.types,
