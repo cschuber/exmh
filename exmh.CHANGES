@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 07/22/1999
+    added code from Red Hat patch to base -Red Hat 6.0 SRPM via haldevore
+
 cvs repository 06/21/1999
     Added code to attempt to load Img 1.2 package, and get
     inline image/jpg etc support if available

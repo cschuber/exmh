@@ -59,6 +59,7 @@ wm group . .
 
 # For session managers
 wm command . "$argv0 $argv"
+catch {wm client . "[exec hostname]"}
 
 # modified by k.furukawa, jul.1994.  for kanji
 # this piece of code enables japanese kanji display if you use
