@@ -130,26 +130,26 @@ proc Ftoc_Bindings { w } {
 
     Drag_Attach $w FtocDragSelect Shift 3
 }
-proc FtocRangeStart { line } {
+proc FtocRangeStart { lineno } {
     # For normal button-down "start a selection"
     global ftoc
     Ftoc_RangeUnHighlight
-    set ftoc(pickstart) $line
-    set ftoc(pickend) $line
+    set ftoc(pickstart) $lineno
+    set ftoc(pickend) $lineno
     set ftoc(pickstate) new
     set ftoc(extend) 0
-    Ftoc_RangeHighlight $line $line
+    Ftoc_RangeHighlight $lineno $lineno
 }
-proc FtocRangeAdd { line } {
+proc FtocRangeAdd { lineno } {
     # For shift-select "add to selection"
     global ftoc
-    set ftoc(pickstart) $line
-    set ftoc(pickend) $line
+    set ftoc(pickstart) $lineno
+    set ftoc(pickend) $lineno
     set ftoc(pickstate) invert
     set ftoc(extend) 0
-    FtocRangeInvert $line $line
+    FtocRangeInvert $lineno $lineno
 }
-proc FtocRangeEnd { {line {}} {addcurrent 0} } {
+proc FtocRangeEnd { {lineno {}} {addcurrent 0} } {
     # For end of button sweep
     global ftoc exwin
     catch {unset ftoc(extend)}
@@ -157,34 +157,23 @@ proc FtocRangeEnd { {line {}} {addcurrent 0} } {
 	# Spurious button-release event
 	return
     }
-    if {($line == $ftoc(pickstart)) && !$addcurrent} {
+    if {($lineno == $ftoc(pickstart)) && !$addcurrent} {
 	# regular button click optimization
 	unset ftoc(pickend)
-	Msg_Pick $line show
+	Msg_Pick $lineno show
 	return
     }
-    if {$line != {}} {
-	FtocRangeExtend $line
+    if {$lineno != {}} {
+	FtocRangeExtend $lineno
     }
     FtocPickRange $addcurrent
     catch {unset ftoc(pickend)}
 }
-proc Ftoc_PickMsgs { ids addtosel } {
+proc Ftoc_PickMsgs { msgids addtosel } {
     # For adding to the selection by message number
     global ftoc
-    Exmh_Status "Marking [llength $ids] hits"
-    set lines {}
-    for {set L 0} {$L <= $ftoc(numMsgs)} {incr L} {
-	set ix [lsearch $ids [Ftoc_MsgNumber $L]]
-	if {$ix >= 0} {
-	    lappend lines $L
-	    set ids [lreplace $ids $ix $ix]
-	    if {[string length $ids] == 0} {
-		break
-	    }
-	}
-    }
-    Ftoc_LinesHighlight $lines
+    Exmh_Status "Marking [llength $msgids] hits"
+    Ftoc_LinesHighlight [Ftoc_FindMsgs $msgids]
     FtocPickRange $addtosel
 }
 proc FtocRangeExtendXY { x y } {
@@ -234,99 +223,99 @@ proc FtocSelExtend {} {
 	after $widgetText(selectDelay) [list FtocSelExtend]
     }
 }
-proc FtocRangeExtend { line } {
+proc FtocRangeExtend { lineno } {
     global ftoc
     if ![info exists ftoc(pickend)] {
 	return
     }
-    if {$line <= 0} {
-	set line 1
+    if {$lineno <= 0} {
+	set lineno 1
     }
-    if {$line > $ftoc(numMsgs)} {
-	set line $ftoc(numMsgs)
+    if {$lineno > $ftoc(numMsgs)} {
+	set lineno $ftoc(numMsgs)
     }
-    if {$line == $ftoc(pickend)} {
+    if {$lineno == $ftoc(pickend)} {
 	# Invariant, previously defined selection is fine.
 	return
     }
-    if {$line == 0} {
+    if {$lineno == 0} {
 	# no messages in folder
 	return
     }
     if {$ftoc(pickstate) != "invert"} {
 	if {$ftoc(pickstart) < $ftoc(pickend)} {
 	    # Growing downward
-	    if {$line > $ftoc(pickend)} {
-		Ftoc_RangeHighlight [expr $ftoc(pickend)+1] $line
+	    if {$lineno > $ftoc(pickend)} {
+		Ftoc_RangeHighlight [expr $ftoc(pickend)+1] $lineno
 	    } else {
-		if {$line < $ftoc(pickstart)} {
+		if {$lineno < $ftoc(pickstart)} {
 		    if {$ftoc(pickstart) != $ftoc(pickend)} {
 			# Change direction
 			FtocRangeClear [expr $ftoc(pickstart)+1] \
 					$ftoc(pickend)
 		    }
-		    Ftoc_RangeHighlight [expr $ftoc(pickstart)-1] $line
+		    Ftoc_RangeHighlight [expr $ftoc(pickstart)-1] $lineno
 		} else {
 		    # Shrink selection
-		    FtocRangeClear [expr $line+1] $ftoc(pickend)
+		    FtocRangeClear [expr $lineno+1] $ftoc(pickend)
 		}
 	    }
 	} else {
 	    # Growing upward
-	    if {$line < $ftoc(pickend)} {
-		Ftoc_RangeHighlight [expr $ftoc(pickend)-1] $line
+	    if {$lineno < $ftoc(pickend)} {
+		Ftoc_RangeHighlight [expr $ftoc(pickend)-1] $lineno
 	    } else {
-		if {$line > $ftoc(pickstart)} {
+		if {$lineno > $ftoc(pickstart)} {
 		    if {$ftoc(pickstart) != $ftoc(pickend)} {
 			# Change direction
 			FtocRangeClear [expr $ftoc(pickstart)-1] \
 					$ftoc(pickend)
 		    }
-		    Ftoc_RangeHighlight [expr $ftoc(pickstart)+1] $line
+		    Ftoc_RangeHighlight [expr $ftoc(pickstart)+1] $lineno
 		} else {
 		    # Shrink selection
-		    FtocRangeClear [expr $line-1] $ftoc(pickend)
+		    FtocRangeClear [expr $lineno-1] $ftoc(pickend)
 		}
 	    }
 	}
     } else {
 	if {$ftoc(pickstart) < $ftoc(pickend)} {
 	    # Growing downward
-	    if {$line > $ftoc(pickend)} {
-		FtocRangeInvert [expr $ftoc(pickend)+1] $line
+	    if {$lineno > $ftoc(pickend)} {
+		FtocRangeInvert [expr $ftoc(pickend)+1] $lineno
 	    } else {
-		if {$line < $ftoc(pickstart)} {
+		if {$lineno < $ftoc(pickstart)} {
 		    if {$ftoc(pickstart) != $ftoc(pickend)} {
 			# Change direction
 			FtocRangeInvert [expr $ftoc(pickstart)+1] \
 					$ftoc(pickend)
 		    }
-		    FtocRangeInvert [expr $ftoc(pickstart)-1] $line
+		    FtocRangeInvert [expr $ftoc(pickstart)-1] $lineno
 		} else {
 		    # Shrink selection
-		    FtocRangeInvert [expr $line+1] $ftoc(pickend)
+		    FtocRangeInvert [expr $lineno+1] $ftoc(pickend)
 		}
 	    }
 	} else {
 	    # Growing upward
-	    if {$line < $ftoc(pickend)} {
-		FtocRangeInvert [expr $ftoc(pickend)-1] $line
+	    if {$lineno < $ftoc(pickend)} {
+		FtocRangeInvert [expr $ftoc(pickend)-1] $lineno
 	    } else {
-		if {$line > $ftoc(pickstart)} {
+		if {$lineno > $ftoc(pickstart)} {
 		    if {$ftoc(pickstart) != $ftoc(pickend)} {
 			# Change direction
 			FtocRangeInvert [expr $ftoc(pickstart)-1] \
 					$ftoc(pickend)
 		    }
-		    FtocRangeInvert [expr $ftoc(pickstart)+1] $line
+		    FtocRangeInvert [expr $ftoc(pickstart)+1] $lineno
 		} else {
 		    # Shrink selection
-		    FtocRangeInvert [expr $line-1] $ftoc(pickend)
+		    FtocRangeInvert [expr $lineno-1] $ftoc(pickend)
 		}
 	    }
 	}
     }
-    set ftoc(pickend) $line
+    set ftoc(pickend) $lineno
 }
 proc FtocRangeInvert { start end } {
     global exwin
@@ -334,12 +323,12 @@ proc FtocRangeInvert { start end } {
     if {$start > $end} {
 	set tmp $start ; set start $end ; set end $tmp
     }
-    for {set line $start} {$line <= $end} {incr line} {
+    for {set lineno $start} {$lineno <= $end} {incr lineno} {
 	catch {
 	    set newtag range
 	    set oldtag {}
 	    set nuke 0
-	    foreach tag [$win tag names $line.0] {
+	    foreach tag [$win tag names $lineno.0] {
 		case $tag {
 		    deleted { set newtag drange ; set oldtag $tag ; break; }
 		    moved { set newtag mrange ; set oldtag $tag ; break; }
@@ -351,16 +340,16 @@ proc FtocRangeInvert { start end } {
 		}
 	    }
 	    if {$nuke} {
-		set ix [lsearch $ftoc(lineset) $line]
+		set ix [lsearch $ftoc(lineset) $lineno]
 		if {$ix >= 0} {
 		    set ftoc(lineset) [lreplace $ftoc(lineset) $ix $ix]
 		}
 	    }
 	    if {$oldtag != {}} {
-		$win tag remove $oldtag $line.0 $line.end
+		$win tag remove $oldtag $lineno.0 $lineno.end
 	    }
 	    if {$newtag != {}} {
-		$win tag add $newtag $line.0 $line.end
+		$win tag add $newtag $lineno.0 $lineno.end
 	    }
 	}
     }
@@ -371,34 +360,34 @@ proc Ftoc_RangeHighlight { start end } {
     if {$start > $end} {
 	set tmp $start ; set start $end ; set end $tmp
     }
-    for {set line $start} {$line <= $end} {incr line} {
+    for {set lineno $start} {$lineno <= $end} {incr lineno} {
 	set newtag range
-	foreach tag [$win tag names $line.0] {
+	foreach tag [$win tag names $lineno.0] {
 	    case $tag {
 		{drange deleted} { set newtag drange ;  break; }
 		{mrange moved} { set newtag mrange ;  break; }
 	    }
 	}
-	$win tag add $newtag $line.0 $line.end
+	$win tag add $newtag $lineno.0 $lineno.end
     }
 }
-proc Ftoc_LinesHighlight { lines } {
+proc Ftoc_LinesHighlight { linenos } {
     global exwin
     set win $exwin(ftext)
-    if {$lines == {}} {
+    if {$linenos == {}} {
 	return
     }
-    WidgetTextYview $exwin(ftext) -pickplace [lindex $lines 0].0
+    WidgetTextYview $exwin(ftext) -pickplace [lindex $linenos 0].0
     update idletasks
-    foreach line $lines {
+    foreach lineno $linenos {
 	set newtag range
-	foreach tag [$win tag names $line.0] {
+	foreach tag [$win tag names $lineno.0] {
 	    case $tag {
 		{drange deleted} { set newtag drange ;  break; }
 		{mrange moved} { set newtag mrange ;  break; }
 	    }
 	}
-	$win tag add $newtag $line.0 $line.end
+	$win tag add $newtag $lineno.0 $lineno.end
     }
 }
 proc FtocRangeClear { start end } {
@@ -407,20 +396,20 @@ proc FtocRangeClear { start end } {
     if {$start > $end} {
 	set tmp $start ; set start $end ; set end $tmp
     }
-    for {set line $start} {$line <= $end} {incr line} {
+    for {set lineno $start} {$lineno <= $end} {incr lineno} {
 	catch {
 	    set newtag {}
 	    set oldtag range
-	    foreach tag [$win tag names $line.0] {
+	    foreach tag [$win tag names $lineno.0] {
 		case $tag {
 		    drange { set newtag deleted ; set oldtag drange; break; }
 		    mrange { set newtag moved ; set oldtag mrange; break; }
 		    range { break }
 		}
 	    }
-	    $win tag remove $oldtag $line.0 $line.end
+	    $win tag remove $oldtag $lineno.0 $lineno.end
 	    if {$newtag != {}} {
-		$win tag add $newtag $line.0 $line.end
+		$win tag add $newtag $lineno.0 $lineno.end
 	    }
 	}
     }
@@ -451,21 +440,32 @@ proc Ftoc_BindRight { cmd } {
     bind $exwin(ftext) <3> $cmd
 }
 
+proc Ftoc_FindMsgs {msgids} {
+    global ftoc msgtolinecache
+    set linenos {}
+    foreach msg $msgids {
+	set lineno [Ftoc_FindMsg $msg]
+	if {$lineno != {}} {
+	    lappend linenos $lineno
+	}
+    }
+    return $linenos
+}
 proc Ftoc_FindMsg { msgid } {
     global ftoc msgtolinecache
     if {$msgid == {}} {
-	return {}
+        return {}
     }
-    if {![catch {set msgtolinecache($msgid)} L]} {
-	return $L
+    if {![catch {set msgtolinecache($msgid)} lineno]} {
+        return $lineno
     }
     if !$ftoc(displayValid) {
-	#
-	# Linear search for pick and thread FTOCs (pseudo-displays)
-	#
-        for {set L 1} {$L <= $ftoc(numMsgs)} {incr L} {
-            if {[Ftoc_MsgNumber $L] == $msgid} {
-                return $L
+        #
+        # Linear search for pick and thread FTOCs (pseudo-displays)
+        #
+        for {set lineno 1} {$lineno <= $ftoc(numMsgs)} {incr lineno} {
+            if {[Ftoc_MsgNumber $lineno] == $msgid} {
+                return $lineno
             }
         }
         return {}
@@ -474,68 +474,79 @@ proc Ftoc_FindMsg { msgid } {
     #
     # Binary search for other FTOCs
     #
-    set minLine 1
-    set minMsg [Ftoc_MsgNumber $minLine]
-    if {$msgid == $minMsg} {
-	return $minLine
+    set minlineno 1
+    set minmsgid [Ftoc_MsgNumber $minlineno]
+    if {$msgid == $minmsgid} {
+        return $minlineno
     }
-    set maxLine $ftoc(numMsgs)	;# Ignore trailing blank line
-    set maxMsg [Ftoc_MsgNumber $maxLine]
-    if {$msgid == $maxMsg} {
-	return $maxLine
+    set maxlineno $ftoc(numMsgs)  ;# Ignore trailing blank line
+    set maxmsgid [Ftoc_MsgNumber $maxlineno]
+    if {$msgid == $maxmsgid} {
+        return $maxlineno
     }
     while (1) {
-	if {$msgid > $maxMsg || $msgid < $minMsg} {
-	    Exmh_Status "Cannot find $msgid ($minMsg,$maxMsg)" warn
-	    set msgtolinecache($msgid) {}
-	    return {} ;# new message not listed
-	}
-	if {$maxLine == $minLine} {
-	    set msgtolinecache($msgid) {}
-	    return {}	;# not found
-	}
-	#set nextLine [expr int(($maxLine+$minLine)/2)]
-	# Don't divide in two, guestimate where the line might be instead
-	set nextLine [expr int($minLine+1+($msgid-$minMsg)*($maxLine-$minLine-2)/($maxMsg-$minMsg))]
-	set nextMsg [Ftoc_MsgNumber $nextLine]
-	# Note that a side effect of Ftoc_MsgNumber was to put this entry in the cache,
-	# so we don't have to do it here.
-	if {$nextMsg == $msgid} {
-	    return $nextLine
-	} elseif {$nextMsg > $msgid} {
-	    set maxLine $nextLine
-	    set maxMsg $nextMsg
-	} elseif {$minLine == $nextLine} {
-	    Exmh_Status "Cannot find $msgid" warn
-	    set msgtolinecache($msgid) {}
-	    return {} ;# new message not listed
-	} else {
-	    set minLine $nextLine
-	    set minMsg $nextMsg
-	}
+        if {$msgid > $maxmsgid || $msgid < $minmsgid} {
+            Exmh_Status "Cannot find $msgid ($minmsgid,$maxmsgid)" warn
+            set msgtolinecache($msgid) {}
+            return {} ;# new message not listed
+        }
+        if {$maxlineno == $minlineno} {
+            set msgtolinecache($msgid) {}
+            return {}   ;# not found
+        }
+        #set nextlineno [expr int(($maxlineno+$minlineno)/2)]
+        # Don't divide in two, guestimate where the line might be instead
+        set nextlineno [expr int($minlineno+1+($msgid-$minmsgid)*($maxlineno-$minlineno-2)/($maxmsgid-$minmsgid))]
+        set nextmsgid [Ftoc_MsgNumber $nextlineno]
+        # Note that a side effect of Ftoc_MsgNumber was to put this entry in 
+	# the cache,so we don't have to do it here.
+        if {$nextmsgid == $msgid} {
+            return $nextlineno
+        } elseif {$nextmsgid > $msgid} {
+            set maxlineno $nextlineno
+            set maxmsgid $nextmsgid
+        } elseif {$minlineno == $nextlineno} {
+            Exmh_Status "Cannot find $msgid" warn
+            set msgtolinecache($msgid) {}
+            return {} ;# new message not listed
+        } else {
+            set minlineno $nextlineno
+            set minmsgid $nextmsgid
+        }
     }
     # not reached
 }
 proc Ftoc_ClearMsgCache {} {
     global linetomsgcache msgtolinecache
     foreach x {linetomsgcache msgtolinecache} {
-        if {[info exists $x]} {
-            unset $x
-        }
+	if {[info exists $x]} {
+	    unset $x
+	}
     }
 }
-proc Ftoc_MsgNumber { L } {
+proc Ftoc_MsgNumbers { linenos } {
     global exwin linetomsgcache msgtolinecache
-    if [catch {set linetomsgcache($L)} msgno] {
-	if [catch {$exwin(ftext) get $L.0 $L.end} line] {
-	    set linetomsgcache($L) {}
-	    return {}
+    set msgids {}
+    foreach lineno $linenos {
+	set msgid [Ftoc_MsgNumber $lineno]
+	if {$msgid != {}} {
+	    lappend msgids $msgid
 	}
-	set msgno [Ftoc_MsgNumberRaw $line]
-	set msgtolinecache($msgno) $L
-	set linetomsgcache($L) $msgno
     }
-    return $msgno
+    return $msgids
+}
+proc Ftoc_MsgNumber { lineno } {
+    global exwin linetomsgcache msgtolinecache
+    if [catch {set linetomsgcache($lineno)} msgid] {
+        if [catch {$exwin(ftext) get $lineno.0 $lineno.end} line] {
+            set linetomsgcache($lineno) {}
+            return {}
+        }
+        set msgid [Ftoc_MsgNumberRaw $line]
+        set msgtolinecache($msgid) $lineno
+        set linetomsgcache($lineno) $msgid
+    }
+    return $msgid
 }
 proc Ftoc_MsgNumberRaw { line } {
     if [regexp {^( *)([0-9]+)} $line foo foo2 number] {
@@ -559,12 +570,12 @@ proc FtocPickRange { {addcurrent 0} } {
 	set ftoc(curLine) {}
     }
     foreach range [concat \
-	[FtocMakePairs [$exwin(ftext) tag ranges range]] \
-	[FtocMakePairs [$exwin(ftext) tag ranges drange]] \
-	[FtocMakePairs [$exwin(ftext) tag ranges mrange]]] {
+		       [FtocMakePairs [$exwin(ftext) tag ranges range]] \
+		       [FtocMakePairs [$exwin(ftext) tag ranges drange]] \
+		       [FtocMakePairs [$exwin(ftext) tag ranges mrange]]] {
 	set mark1 [lindex $range 0]
-	set line [lindex [split $mark1 .] 0]
-	lappend lineset $line
+	set lineno [lindex [split $mark1 .] 0]
+	lappend lineset $lineno
     }
     if {$lineset == {}} {
 	return			;# spurious <ButtonRelease-1> events
@@ -588,19 +599,19 @@ proc Ftoc_PickSize {} {
 	return [llength $ftoc(lineset)]
     }
 }
-proc Ftoc_NewFtoc {} {
+proc Ftoc_NewFtoc {{linenos ftoclineset}} {
     global ftoc
-    set ids {}
-    foreach l $ftoc(lineset) {
-	lappend ids [Ftoc_MsgNumber $l]
+    if {$linenos == "ftoclineset"} {
+	set linenos $ftoc(lineset)
     }
-    if {[llength $ids] <= 1} {
+    set msgids [Ftoc_MsgNumbers $linenos]
+    if {[llength $msgids] <= 1} {
 	Exmh_Status "Select more than one message first" warn
 	return
     }
     if {[Ftoc_Changes "new ftoc"] == 0} {
-	Exmh_Status $ids
-	Scan_ProjectSelection $ids
+	Exmh_Status $msgids
+	Scan_ProjectSelection $msgids
     }
 }
 
@@ -612,7 +623,7 @@ proc Ftoc_ClearCurrent {} {
     global ftoc exwin
     set ftoc(pickone) 1
     set ftoc(lineset) {}
-
+    
     if {$ftoc(curLine) == {}} {
 	set ftoc(curLine) [Mh_Cur $ftoc(folder)]
     }
@@ -622,14 +633,14 @@ proc Ftoc_ClearCurrent {} {
     }
     return $ftoc(curLine)
 }
-proc Ftoc_Change { line {show show} } {
-    global ftoc exwin
-    set ftoc(curLine) $line
+proc Ftoc_Change { lineno {show show} } {
+    global ftoc exwin mhProfile
+    set ftoc(curLine) $lineno
     if {$ftoc(curLine) == {}} {
 	set ok 0
     } else {
 	if {$show == "show"} {
-	    $exwin(ftext) tag remove unseen $ftoc(curLine).0 $ftoc(curLine).end
+	    $exwin(ftext) tag remove $mhProfile(unseen-sequence) $ftoc(curLine).0 $ftoc(curLine).end
 	}
 	Ftoc_RescanLine $ftoc(curLine) +
 	$exwin(ftext) tag add cur $ftoc(curLine).0 $ftoc(curLine).end
@@ -647,47 +658,29 @@ proc Ftoc_Change { line {show show} } {
 }
 proc Ftoc_InitSequences { w } {
     global exwin
-    set sequences [option get . sequences {}]
-    foreach sequencename $sequences {
-	eval $w tag configure $sequencename \
-		[option get . sequence_$sequencename {}]
-	$w tag raise $sequencename
+    set seqs [option get . sequences {}]
+    foreach seq $seqs {
+	eval $w tag configure $seq \
+	    [option get . sequence_$seq {}]
+	$w tag raise $seq
     }
 }
 proc Ftoc_ShowSequences { folder } {
     global exwin
     Exmh_Debug Ftoc_ShowSequences $folder
-    set sequences [option get . sequences {}]
-    set hiddensequences [option get . hiddensequences {}]
-    foreach sequence $sequences {
-	if {[lsearch -exact $hiddensequences $sequence] == -1} {
-	    $exwin(ftext) tag remove $sequence 1.0 end
+    set seqs [option get . sequences {}]
+    set hiddenseqs [option get . hiddensequences {}]
+    foreach seq $seqs {
+	if {[lsearch -exact $hiddenseqs $seq] == -1} {
+	    $exwin(ftext) tag remove $seq 1.0 end
 	}
     }
-    foreach sequencename [Mh_Sequences $folder] {
-	$exwin(ftext) tag remove $sequencename 0.0 end
-	set sequence [Seq_Msgs $folder $sequencename]
-	Exmh_Debug $sequencename: $sequence
-	foreach i $sequence {
-	    set line [Ftoc_FindMsg $i]
-	    if {$line != {}} {
-		$exwin(ftext) tag add $sequencename $line.0 $line.end
-	    }
-	}
-    }
-}
-proc Ftoc_MarkSeen { ids } {
-    global exwin ftoc
-
-    set ids [lsort -integer -decreasing $ids]
-    for {set L $ftoc(numMsgs)} {$L > 0} {incr L -1} {
-	set ix [lsearch $ids [Ftoc_MsgNumber $L]]
-	if {$ix >= 0} {
-	    $exwin(ftext) tag remove unseen $L.0 $L.end
-	    set ids [lreplace $ids $ix $ix]
-	    if {[llength $ids] == 0} {
-		break
-	    }
+    foreach seq [Mh_Sequences $folder] {
+	$exwin(ftext) tag remove $seq 0.0 end
+	set msgids [Seq_Msgs $folder $seq]
+	Exmh_Debug $seq: $msgids
+	foreach lineno [Ftoc_FindMsgs $msgids] {
+	    $exwin(ftext) tag add $seq $lineno.0 $lineno.end
 	}
     }
 }
@@ -743,18 +736,18 @@ proc Ftoc_NextImplied { {show show} {implied implied} } {
 }
 proc Ftoc_Next { show {implied no} } {
     # Go to the next message in the scan display
-    global exmh flist ftoc
-
+    global exmh flist ftoc mhProfile
+    
     set ftoc(direction) "next"
     if {$ftoc(curLine) == {}} {
-	if [Msg_ShowUnseen] {
+	if [Msg_Show $mhProfile(unseen-sequence)] {
 	    return
 	}
     }
     set next [FtocSkipMarked $ftoc(curLine) 1]
     if {($ftoc(curLine) == $next) || \
-	($ftoc(curLine) >= $ftoc(numMsgs)) || \
-	($ftoc(curLine) <= 0)} {
+	    ($ftoc(curLine) >= $ftoc(numMsgs)) || \
+	    ($ftoc(curLine) <= 0)} {
 	# End of folder
 	Ftoc_NextFolder $implied
     } else {
@@ -764,7 +757,7 @@ proc Ftoc_Next { show {implied no} } {
 }
 proc Ftoc_Prev { {show show} } {
     global ftoc
-
+    
     Exmh_Debug Ftoc_Prev
     if {$ftoc(curLine) == {}} {
 	if {$ftoc(numMsgs) > 0} {
@@ -780,7 +773,7 @@ proc Ftoc_Prev { {show show} } {
     }
 }
 proc Ftoc_NextFolder { {implied no} } {
-    global ftoc exmh
+    global ftoc exmh mhProfile
     # Try to chain to the next folder with unread messages.
     if {$implied != "no"} {
 	# Implied - chained with some other operation - be lenient
@@ -797,18 +790,18 @@ proc Ftoc_NextFolder { {implied no} } {
 	    return
 	}
     }
-    set f [Flist_NextUnseen]
-    if {[string length $f] != 0} {
+    set folder [Flist_NextUnvisited]
+    if {[string length $folder] != 0} {
 	if {$ftoc(softChange)} {
 	    set ftoc(lastFolder) $exmh(folder)
-	    Folder_Change $f Msg_ShowUnseen
+	    Folder_Change $folder [list Msg_Show $mhProfile(unseen-sequence)]
 	    return
 	} else {
 	    set ftoc(softChange) 1
 	    Ftoc_ClearCurrent
 	    Msg_ClearCurrent
 	    Exmh_Status ""
-	    Exmh_Status "End of folder; <Next> => $f" warn
+	    Exmh_Status "End of folder; <Next> => $folder" warn
 	    return
 	}
     }
@@ -830,17 +823,17 @@ proc Ftoc_PrevMarked { {show show} } {
     Ftoc_Prev $show
     set ftoc(skipMarked) $skip
 }
-proc Ftoc_Marked { id } {
+proc Ftoc_Marked { msgid } {
     global ftoc exwin
     if {$ftoc(skipMarked) == 0} {
 	return 0	;# Pretend it isn't marked
     }
-    set i [Ftoc_FindMsg $id]
-    if {[string length $i] == 0} {
+    set lineno [Ftoc_FindMsg $msgid]
+    if {[string length $lineno] == 0} {
 	return 1	;# Can't find it, pretend it's marked
     }
     set marked 0
-    foreach tag [$exwin(ftext) tag names $i.0] {
+    foreach tag [$exwin(ftext) tag names $lineno.0] {
 	if [regexp {(deleted|moved|drange|mrange)} $tag] {
 	    set marked 1 ; break;
 	}
@@ -849,7 +842,7 @@ proc Ftoc_Marked { id } {
 }
 proc FtocSkipMarked {start inc} {
     global exwin ftoc
-
+    
     if {$start == {}} {
 	return {}
     }
@@ -872,7 +865,7 @@ proc FtocSkipMarked {start inc} {
 
 proc Ftoc_Changes {type {allowAuto 1} } {
     global ftoc
-
+    
     if {$ftoc(changed) != 0} then {
 	Exmh_Debug Ftoc_Changes $type
 	if {("$allowAuto" == "1") && $ftoc(autoCommit)} {
@@ -933,31 +926,46 @@ proc FtocDialog { changes type } {
     return $ftoc(okToCommit)
 }
 
-proc Ftoc_Iterate { lineVar body } {
+proc Ftoc_CurLines {} {
     global ftoc
-    upvar $lineVar line
-    catch {
-	if {$ftoc(curLine) != {}} {
-	    set line $ftoc(curLine)
-	    uplevel 1 $body
-	} elseif {!$ftoc(pickone)} {
-	    foreach line $ftoc(lineset) {
-		uplevel 1 $body
-	    }
-	}
+    if {$ftoc(curLine) != {}} {
+	return $ftoc(curLine)
+    } elseif {!$ftoc(pickone)} {
+	return $ftoc(lineset);
+    } else {
+	return {}
+    }
+}
+
+proc Ftoc_CurMsgs {} {
+    Ftoc_MsgNumbers [Ftoc_CurLines]
+}
+
+proc Ftoc_Iterate { linenoVar body } {
+    global ftoc
+    upvar $linenoVar lineno
+    foreach lineno [Ftoc_CurLines] {
+	uplevel 1 $body
+    }
+}
+proc Ftoc_MsgIterate { msgidVar body } {
+    global ftoc
+    upvar $msgidVar msgid
+    foreach msgid [Ftoc_CurMsgs] {
+	uplevel 1 $body
     }
 }
 proc Ftoc_Unmark {} {
     global ftoc
-
+    
     set hits 0
-    Ftoc_Iterate line {
-	if [FtocUnmarkInner $line] { incr hits }
+    Ftoc_Iterate lineno {
+	if [FtocUnmarkInner $lineno] { incr hits }
     }
     Exmh_Status "Unmarked $hits msgs"
     incr ftoc(changed) -$hits
 }
-proc FtocUnmarkInner { line {all 0}} {
+proc FtocUnmarkInner { lineno {all 0}} {
     global exwin
     set res 0
     if {$all} {
@@ -965,72 +973,72 @@ proc FtocUnmarkInner { line {all 0}} {
     } else {
 	set pat (deleted|moved|drange|mrange)
     }
-    foreach tag [$exwin(ftext) tag names $line.0] {
+    foreach tag [$exwin(ftext) tag names $lineno.0] {
 	if [regexp $pat $tag] {
-	    $exwin(ftext) tag remove $tag $line.0 $line.end
+	    $exwin(ftext) tag remove $tag $lineno.0 $lineno.end
 	    if [regexp {(drange|mrange|crange)} $tag] {
-		eval $exwin(ftext) tag add range $line.0 $line.end
+		eval $exwin(ftext) tag add range $lineno.0 $lineno.end
 	    }
 	    set res 1
 	}
     }
     return $res
 }
-proc Ftoc_Delete { line msgid } {
+proc Ftoc_Delete { lineno } {
     global exwin ftoc
     $exwin(ftext) configure -state normal
-    $exwin(ftext) delete $line.0 "$line.end + 1 chars"
+    $exwin(ftext) delete $lineno.0 "$lineno.end + 1 chars"
     $exwin(ftext) configure -state disabled
     set ftoc(displayDirty) 1
     Ftoc_ClearMsgCache
 }
-proc Ftoc_RemoveMark { line msgid } {
+proc Ftoc_RemoveMark { lineno } {
     # Flag the current message(s) for deletion
     global ftoc exwin
-    if ![FtocUnmarkInner $line 1] {
+    if ![FtocUnmarkInner $lineno 1] {
 	incr ftoc(changed)
     }
-
+    
     if {$ftoc(pickone)} {
-	$exwin(ftext) tag add deleted $line.0 $line.end
+	$exwin(ftext) tag add deleted $lineno.0 $lineno.end
     } else {
-	$exwin(ftext) tag remove range $line.0 $line.end
-	$exwin(ftext) tag add drange $line.0 $line.end
+	$exwin(ftext) tag remove range $lineno.0 $lineno.end
+	$exwin(ftext) tag add drange $lineno.0 $lineno.end
     }
 }
-proc Ftoc_MoveMark { line msgid } {
+proc Ftoc_MoveMark { lineno } {
     global ftoc exwin exmh
-    if ![FtocUnmarkInner $line] {
+    if ![FtocUnmarkInner $lineno] {
 	incr ftoc(changed)
     }
     # This tag records the target folder
-    $exwin(ftext) tag add [list moved $exmh(target)] $line.0 $line.end
-
+    $exwin(ftext) tag add [list moved $exmh(target)] $lineno.0 $lineno.end
+    
     if {$ftoc(pickone)} {
-	$exwin(ftext) tag add moved $line.0 $line.end
+	$exwin(ftext) tag add moved $lineno.0 $lineno.end
     } else {
-	$exwin(ftext) tag remove range $line.0 $line.end
-	$exwin(ftext) tag add mrange $line.0 $line.end
+	$exwin(ftext) tag remove range $lineno.0 $lineno.end
+	$exwin(ftext) tag add mrange $lineno.0 $lineno.end
     }
 }
-proc Ftoc_CopyMark { line msgid } {
+proc Ftoc_CopyMark { lineno } {
     global ftoc exwin exmh
-    if ![FtocUnmarkInner $line] {
+    if ![FtocUnmarkInner $lineno] {
 	incr ftoc(changed)
     }
     # This tag records the target folder
-    $exwin(ftext) tag add [list copied $exmh(target)] $line.0 $line.end
-
+    $exwin(ftext) tag add [list copied $exmh(target)] $lineno.0 $lineno.end
+    
     if {$ftoc(pickone)} {
-	$exwin(ftext) tag add moved $line.0 $line.end
+	$exwin(ftext) tag add moved $lineno.0 $lineno.end
     } else {
-	$exwin(ftext) tag remove range $line.0 $line.end
-	$exwin(ftext) tag add mrange $line.0 $line.end
+	$exwin(ftext) tag remove range $lineno.0 $lineno.end
+	$exwin(ftext) tag add mrange $lineno.0 $lineno.end
     }
 }
 proc Ftoc_Commit { rmmCommit moveCommit copyCommit } {
     global ftoc exwin
-
+    
     # Disable operations on ranges
     Ftoc_RangeUnHighlight
     if {! $ftoc(pickone)} {
@@ -1038,7 +1046,7 @@ proc Ftoc_Commit { rmmCommit moveCommit copyCommit } {
 	set ftoc(lineset) {}
 	set ftoc(pickone) 1
     }
-
+    
     Exmh_Status "Committing $ftoc(changed) changes..."
     $exwin(ftext) configure -state normal
     FtocCommit deleted $rmmCommit
@@ -1056,16 +1064,16 @@ proc Ftoc_Commit { rmmCommit moveCommit copyCommit } {
     }
 }
 proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
-    global ftoc exmh exwin msg
-
+    global ftoc exmh exwin msg mhProfile
+    
     set delmsgs {}
     set curid [file tail $msg(path)]
     set pairs [FtocMakeReversePairs [$exwin(ftext) tag ranges $tagname]]
     foreach range $pairs {
 	set c0 [lindex $range 0]
 	set ce [lindex $range 1]
-	scan $c0 "%d" L
-	set msgid [Ftoc_MsgNumber $L]
+	scan $c0 "%d" lineno
+	set msgid [Ftoc_MsgNumber $lineno]
 	set F {}
 	set delline 0	;# Nuke display line
 	foreach tag [$exwin(ftext) tag names $c0] {
@@ -1102,7 +1110,7 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	    lappend delmsgs $msgid
 	    set delline 1
 	}
-	Seq_RemoveMsg unseen $msgid	;# in case deleted or moved w/out viewing
+	Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $msgid	;# in case deleted or moved w/out viewing
 	if {$delline} {
 	    Msg_UnSeen $msgid	;# avoid MH mark bug
 	    $exwin(ftext) delete $c0 "$ce + 1 chars"
@@ -1112,10 +1120,10 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 		Ftoc_ClearCurrent
 		Msg_ClearCurrent
 	    }
-	    if {$L == $ftoc(curLine)} {
+	    if {$lineno == $ftoc(curLine)} {
 		set ftoc(curLine) {}
 	    } elseif {$ftoc(curLine) != {}} {
-		if {$L < $ftoc(curLine)} {
+		if {$lineno < $ftoc(curLine)} {
 		    incr ftoc(curLine) -1
 		    if {$ftoc(curLine) == 0} {
 			set ftoc(curLine) {}
@@ -1185,15 +1193,11 @@ proc FtocMakeReversePairs { list } {
     }
 }
 
-proc Ftoc_MoveFeedback { msgid line } {
+proc Ftoc_MoveFeedback { msgid } {
     global exwin ftoc
+    set lineno [Ftoc_FindMsg $msgid]
     set msg [Exmh_OldStatus]
-    if {[string compare $line "last"] == 0} {
-	set line $ftoc(numMsgs)
-    } elseif {[string compare $line first] == 0} {
-	set line 1
-    }
-    foreach tag [$exwin(ftext) tag names $line.0] {
+    foreach tag [$exwin(ftext) tag names $lineno.0] {
 	if [regexp {moved (.+)} $tag match folder] {
 	    Exmh_Status "$msgid => +$folder"
 	    return
@@ -1235,7 +1239,7 @@ proc Ftoc_FindAll {string} {
 	Ftoc_PickMsgs $msgids 0
 	return 1
     }
-
+    
 }
 proc Ftoc_FindMatch {L string} {
     global exwin ftoc
@@ -1290,18 +1294,18 @@ proc Ftoc_SelectAll {} {
 proc Ftoc_SelectAllToEnd {} {
     global ftoc
     if {$ftoc(curLine) != {}} {
-      FtocRangeStart $ftoc(curLine)
+	FtocRangeStart $ftoc(curLine)
     } else {
-      if {$ftoc(direction) == "next"} {
-        FtocRangeStart 1
-      } else {
-        FtocRangeStart $ftoc(numMsgs)
-      }
+	if {$ftoc(direction) == "next"} {
+	    FtocRangeStart 1
+	} else {
+	    FtocRangeStart $ftoc(numMsgs)
+	}
     }
     if {$ftoc(direction) == "next"} {
-      FtocRangeEnd $ftoc(numMsgs)
+	FtocRangeEnd $ftoc(numMsgs)
     } else {
-      FtocRangeEnd 1
+	FtocRangeEnd 1
     }
 }
 proc Ftoc_CatchUp {} {
@@ -1328,69 +1332,51 @@ set ftocDrag(format,filename) string
 set ftocDrag(type,string) foldermsg
 
 # Drag Selected
-proc FtocDragSelectOld {w x y wx wy} {
-	global exmh ftoc
-
-        set folder $ftoc(folder)
-        if !$ftoc(displayValid) {
-            set folder $exmh(folder)
-        }
-	set line [lindex [split [$w index cur] .] 0]
-	set msg [Ftoc_MsgNumber $line]
-	if {$msg == {} || $msg == 0} return
-
-	# Hand off to Drag code
-	global ftocDrag mhProfile
-	set ftocDrag(source) $w
-	set ftocDrag(data,foldermsg) "+$folder $msg"
-	set ftocDrag(data,filename) $mhProfile(path)/$folder/$msg
-	Drag_Source ftocDrag $x $y
-}
 proc FtocDragSelect {w x y wx wy} {
     global exmh ftoc ftocDrag mhProfile
-
+    
     set folder $ftoc(folder)
     if !$ftoc(displayValid) {
-        set folder $exmh(folder)
+	set folder $exmh(folder)
     }
-    set msgs {}
     if $ftoc(pickone) {
-	set line [lindex [split [$w index cur] .] 0]
-	set msgs [Ftoc_MsgNumber $line]
-	if {$msgs == {} || $msgs == 0} return
-	set ftocDrag(data,filename) $mhProfile(path)/$folder/$msgs
+	set lineno [lindex [split [$w index cur] .] 0]
+	set msgids [Ftoc_MsgNumber $lineno]
+	if {$msgids == {} || $msgids == 0} return
+	set ftocDrag(data,filename) $mhProfile(path)/$folder/$msgids
     } else {
-	foreach line $ftoc(lineset) {
-	    set msgid [Ftoc_MsgNumber $line]
-	    if {$msgid != {}} {
-		lappend msgs $msgid
-	    }
-	}
-    	catch {unset ftocDrag(data,filename)}
+	set msgids [Ftoc_MsgNumber $ftoc(lineset)]
+	catch {unset ftocDrag(data,filename)}
     }
-
+    
     # Hand off to Drag code
     set ftocDrag(source) $w
-    set ftocDrag(data,foldermsg) "+$folder $msgs"
+    set ftocDrag(data,foldermsg) "+$folder $msgids"
     Drag_Source ftocDrag $x $y
 }
-proc FtocToggleSequence { sequencename } {
+proc FtocToggleSequence { seq } {
     global ftoc exmh
     set folder $exmh(folder)
-    set sequence [Seq_Msgs $folder $sequencename]
-    # If any selected message is not in the sequence, then add to the sequence.
-    # If none are in the sequence, then remove from the sequence.
-    set flag del
-    set msgs {}
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]	
-	if {[lsearch -exact $sequence $msgid] == -1} {
-	    set flag add
+    set origmsgids [Seq_Msgs $folder $seq]
+    set selmsgids [Ftoc_CurMsgs]
+    if {$selmsgids == {}} {
+	Exmh_Status No messages were selected
+    } else {
+	# If any selected message is not already in the sequence, then add 
+	#   messages to the sequence.
+	# If all selected messages are already in the sequence, then remove
+	#   messages from the sequence.
+	set flag del
+	foreach msgid $selmsgids {
+	    if {[lsearch -exact $origmsgids $msgid] == -1} {
+		set flag add
+	    }
 	}
-	lappend msgs $msgid
-    }
-    if {$msgs != {}} {
-	Mh_SequenceUpdate $folder $flag $sequencename $msgs
+	if {$flag == "del"} {
+	    Seq_Del $folder $seq $selmsgids
+	} else {
+	    Seq_Add $folder $seq $selmsgids
+	}
 	Ftoc_ShowSequences $folder
     }
 }

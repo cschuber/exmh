@@ -51,26 +51,26 @@ proc ScanFolder {folder adjustDisplay} {
 	    Ftoc_Reset [Widget_TextEnd $exwin(ftext)] {} $folder
 	}
 	if {$ftoc(numMsgs) > 0} {
-	    set id [Ftoc_MsgNumber $ftoc(numMsgs)]
+	    set msgid [Ftoc_MsgNumber $ftoc(numMsgs)]
 	    if [catch {
-		Exmh_Debug Scanning new messages $id-last
+		Exmh_Debug Scanning new messages $msgid-last
 		set input [open "|$mhProfile(scan-proc) [list +$folder] \
-		    $id-last -width $ftoc(scanWidth)"]
+		    $msgid-last -width $ftoc(scanWidth)"]
 		set check [gets $input]
 		set new [read $input]
 		close $input
 	    } err] {
 		# The last message no longer exists
-		Exmh_Debug No last msg $id: $err
+		Exmh_Debug No last msg $msgid: $err
 	    } else {
-		set id2 [Ftoc_MsgNumberRaw $check]
-		if {$id2 == $id} {
+		set msgid2 [Ftoc_MsgNumberRaw $check]
+		if {$msgid2 == $msgid} {
 		    # Last message still matches: add the new lines
 		    ScanAddLines $new
 		    set ftoc(displayDirty) 1
 		    set update 0	;# OK
 		} else {
-		    Exmh_Debug "My last $id != $id2"
+		    Exmh_Debug "My last $msgid != $msgid2"
 		}
 	    }
 	}
@@ -123,7 +123,7 @@ proc Scan_FolderForce {{folder ""}} {
 	set ftoc(displayValid) 1
 	set ftoc(displayDirty) 1
 	Ftoc_Yview end
-	Seq_Msgs $folder unseen
+	Seq_Msgs $folder $mhProfile(unseen-sequence)
 	Ftoc_ShowSequences $folder
 	Exmh_Status ok
     }
@@ -139,11 +139,11 @@ proc Scan_FolderUpdate { folder } {
 }
 proc Scan_Iterate { incout lineVar body } {
     upvar $lineVar line
-    foreach line [split $incout \n] {
-	if [regexp ^Incorporating $line] {
+    foreach lineno [split $incout \n] {
+	if [regexp ^Incorporating $lineno] {
 	    continue
 	}
-	if {[string length $line] > 0} {
+	if {[string length $lineno] > 0} {
 	    uplevel $body
 	}
     }
@@ -162,7 +162,6 @@ proc Scan_Inc {folder incOutput} {
     if {$ftoc(showNew)} {
 	Ftoc_Yview end
     }
-    # Don't forget unseen here, just find recently added unseen messages
     Ftoc_ShowSequences $folder
     Label_Folder $folder
 }
@@ -215,23 +214,24 @@ proc ScanAddLineCleanup { folder } {
     set ftoc(folder) $folder
     $exwin(ftext) configure -state disabled
 }
-proc Scan_ProjectSelection { ids } {
+proc Scan_ProjectSelection { msgids } {
     global ftoc exwin
-    set lines {}
+    set linenos {}
     set num 0
-    foreach id $ids {
-	set L [Ftoc_FindMsg $id]
-	if {$L != {}} {
-	    lappend lines [$exwin(ftext) get $L.0 $L.end]
+    foreach lineno [Ftoc_FindMsgs $msgids] {
+	if {$lineno != {}} {
+	    lappend linenos [$exwin(ftext) get $lineno.0 $lineno.end]
 	    incr num
 	}
     }
     set ftoc(displayValid) 0	;# Don't cache this display
     ScanAddLineReset $ftoc(folder)
-    foreach line $lines {
-	ScanAddLine $line
+    foreach lineno $linenos {
+	ScanAddLine $lineno
     }
     ScanAddLineCleanup $ftoc(folder)
+    Ftoc_ClearMsgCache
+    Ftoc_ShowSequences $ftoc(folder)
     Msg_ClearCurrent
     Msg_Reset $num
 }

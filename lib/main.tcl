@@ -81,7 +81,6 @@ is displayed to debug the flist module."}
     Inc_Init
     Exwin_Init
     Flist_Init
-    UnseenWin_Init
     Seq_Init
     Fcache_Init
     Fdisp_Init		;# After Flist and Fcache

@@ -63,9 +63,8 @@ proc Folder_Summary { folder } {
     }
 }
 
-proc Folder_Change {folder {msgShowProc Msg_ShowCurrent}} {
-#    LogStart "Folder_Change $folder"
-    Exmh_Debug ****************
+proc Folder_Change {folder {msgShowProc {Msg_Show cur}}} {
+    Exmh_Debug Folder_Change $folder $msgShowProc
     Exmh_Debug Folder_Change $folder [time [list  FolderChange $folder $msgShowProc]]
 }
 proc FolderChange {folder msgShowProc} {
@@ -121,7 +120,7 @@ proc FolderChange {folder msgShowProc} {
     Flist_UnseenUpdate $folder
     Scan_CacheUpdate
     Exmh_Status $folder
-    # Either Msg_ShowCurrent or Msg_ShowUnseen
+    # Usually {Msg_Show $seq} or {Msg_Change $msg}
     eval $msgShowProc
 
     # Take any required folder-specific action (e.g., for drafts folder)
@@ -131,11 +130,10 @@ proc FolderChange {folder msgShowProc} {
     foreach cmd [info commands Hook_FolderChange*] {
 	$cmd $folder
     }
-}
-
-proc Folder_Unseen {} {
-    Ftoc_NextFolder
-#    Folder_Change [Flist_NextUnseen]
+    Exmh_Debug oldFolder=$oldFolder
+    foreach seq [option get . sequences {}] {
+	BgRPC Seq_Msgs $oldFolder $seq
+    }
 }
 
 proc Folder_Target {folder} {

@@ -20,7 +20,7 @@ proc Bindings_Main { w } {
     BindingsReset $w
 }
 proc BindingsReset { w } {
-    global bindings
+    global bindings mhProfile
     bindtags $w [list TSelect TScroll Command $w all]
     set w Command
     bind $w <Any-Key> {if {"%A" != "{}"} {Exmh_Status "bad key %A"} }
@@ -43,10 +43,10 @@ proc BindingsReset { w } {
     Bind_Key $w <Key-r> {Msg_Reply -nocc to -nocc cc}
     Bind_Key $w <Key-R> {Msg_Reply -cc to -cc cc}
     Bind_Key $w <Key-f> {Msg_Forward}
-    Bind_Key $w <Key-F> {Folder_Unseen}
-    Bind_Key $w <Key-s> {Msg_ShowCurrent}
+    Bind_Key $w <Key-F> {Ftoc_NextFolder}
+    Bind_Key $w <Key-s> {Msg_Show cur}
     Bind_Key $w <Key-u> {Ftoc_Unmark}
-    Bind_Key $w <Key-U> {Msg_ShowUnseen}
+    Bind_Key $w <Key-U> "Msg_Show $mhProfile(unseen-sequence)"
     Bind_Key $w <asciicircum> {Msg_First}
     Bind_Key $w <dollar> {Msg_Last}
     Bind_Key $w <Control-s> {Find_It forw}

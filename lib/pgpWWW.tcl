@@ -9,42 +9,6 @@
 # Added keyfetching method hkp
 # -- Markus Gruber
 #
-# $Log$
-# Revision 1.6  2001/08/23 23:13:26  kchrist
-# Minor bug fix. Trying to set "Method for querying GnuPG keys"
-# to other led to:
-#
-# extra switch pattern with no body, this may be due to a comment
-# incorrectly placed outside of a switch body - see the "switch"
-# documentation
-#
-# Moving the '#' solved the problem.
-#
-# Revision 1.5  2000/06/16 23:41:37  jmorzins
-# Corrected the email address for the pgp.mit.edu email keyserver.
-#
-# Revision 1.4  2000/06/09 03:19:55  valdis
-# Provide known working default URL for PGP keys - www-swiss.ai.mit.edu wasnt working
-#
-# Revision 1.3  1999/08/22 18:17:08  bmah
-# Email PGP queries now go out correctly.  Use Exmh_Status to inform
-# user of state of an outgoing email key query.
-#
-# Revision 1.2  1999/08/03 04:05:56  bmah
-# Merge support for PGP2/PGP5/GPG from multipgp branch.
-#
-# Revision 1.1.4.1  1999/06/14 20:05:17  gruber
-# updated multipgp interface
-#
-# Revision 1.1  1999/06/14 15:14:55  markus
-# added files
-#
-# Revision 1.2  1998/12/24 12:59:09  markus
-# fixed variable path in WWW_QueryWWWKey
-#
-# Revision 1.1.1.1  1998/11/24 22:34:46  markus
-# Initial revision
-#
 
 proc Pgp_WWW_Init {} {
 global pgp
@@ -139,7 +103,7 @@ proc Pgp_WWW_make_msg {id file} {
     close $pipe
 
     # update the folder listing:
-    Flist_FindUnseen
+    Flist_FindSeqs
     busy Scan_FolderForce
 }
 

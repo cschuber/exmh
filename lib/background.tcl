@@ -257,7 +257,7 @@ proc BackgroundInc {} {
 }
 
 proc BackgroundFlist {} {
-    Flist_FindUnseen		;# Update folder highlights
+    Flist_FindSeqs		;# Update folder highlights
     BgRPC Inc_PresortFinish	;# Update scan listing
 }
 

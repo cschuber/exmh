@@ -199,20 +199,16 @@ proc PickInner {cmd msgs} {
     Exmh_Status "Pick hit [llength $pick(ids)] msgs"
 }
 proc PickMarkSeen {} {
-    global exmh pick
+    global exmh pick mhProfile
     if ![info exists pick(ids)] {
 	return
     }
-    Mh_MarkSeen $exmh(folder) $pick(ids)
-    Ftoc_MarkSeen $pick(ids)
-    foreach id $pick(ids) {
-	Seq_RemoveMsg unseen $id
-    }
+    Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $pick(ids)
 }
 proc Pick_MarkSeen {} {
-    global exmh pick
+    global exmh pick mhProfile
     Exmh_Status "Clearing unseen sequence..." warning
-    set pick(ids) [Mh_Unseen $exmh(folder)]
+    set pick(ids) [Seq_Msgs $exmh(folder) $mhProfile(unseen-sequence)]
     busy PickMarkSeen
     Exmh_Status ok
 }

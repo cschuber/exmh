@@ -359,7 +359,7 @@ exmh.iconic:		0
 *Fops.inc.text:		Inc
 *Fops.inc.command:	Inc
 *Fops.flist.text:	Flist
-*Fops.flist.command:	busy Flist_FindUnseen 1 ; Inc_PresortFinish
+*Fops.flist.command:	busy Flist_FindSeqs 1 ; Inc_PresortFinish
 *Fops.new.text:		New
 *Fops.new.command:	Folder_New
 
@@ -393,7 +393,7 @@ exmh.iconic:		0
 *Mops.more.m.l_clip: 	Clip
 *Mops.more.m.c_clip:	Msg_Clip
 *Mops.more.m.l_xunseen: First Unseen
-*Mops.more.m.c_xunseen:	Msg_ShowUnseen
+*Mops.more.m.c_xunseen:	Msg_Show unseen
 *Mops.more.m.l_burst: 	Burst Digest
 *Mops.more.m.c_burst:	Msg_BurstDigest
 *Mops.more.m.l_distrib: 	Redistribute

@@ -76,7 +76,7 @@ proc Inc_Startup {} {
        ($inc(startupflist) == "default" &&
        (! $inc(onStartup) || $inc(style) == "multidrop"))} {
 	Exmh_Status "Checking folders"
-	Flist_FindUnseen
+	Flist_FindSeqs
     }
     if {$inc(onStartup)} {
 	set s [Sound_Off]
@@ -97,13 +97,13 @@ proc Inc_Mapped {} {
 # be the first one just inc'ed.)
 
 proc Inc_Show {} {
-    global exmh
+    global exmh mhProfile
 
     Inc
     if { $exmh(folder) != "inbox" } {
 	Folder_Change inbox
     }
-    Msg_ShowUnseen
+    Msg_Show $mhProfile(unseen-sequence)
 }
 
 proc Inc {} {
@@ -190,7 +190,7 @@ proc Inc_Expect {cmd} {
 }
 
 proc Inc_InboxFinish { f incout {hook {}} } {
-    global exmh
+    global exmh mhProfile
     set msgids {}
     Scan_Iterate $incout line {
 	set id [Ftoc_MsgNumberRaw $line]
@@ -203,7 +203,7 @@ proc Inc_InboxFinish { f incout {hook {}} } {
 	Exmh_Status "No new messages in $f"
 	return
     }
-    Seq_Add $f unseen $msgids
+    Seq_Add $f $mhProfile(unseen-sequence) $msgids
     if {$hook != {}} {
 	eval $hook
     }
@@ -301,7 +301,7 @@ proc Inc_Presort {{doinc 1}} {
     File_Delete $mhProfile(path)/MyIncTmp/$mhProfile(mh-sequences)
     catch {exec rmdir $mhProfile(path)/MyIncTmp}
 
-    Flist_FindUnseen		;# Needed to set new message state.
+    Flist_FindSeqs		;# Needed to set new message state.
     # This after breaks a potential deadlock:
     # UI Inc button is pressed - registers outstanding Inc operation
     # PresortFinish notes new messages in the current folder and wants
@@ -311,10 +311,10 @@ proc Inc_Presort {{doinc 1}} {
     after 1 {BgRPC Inc_PresortFinish}
 }
 proc Inc_PresortFinish {} {
-    global exmh ftoc
+    global exmh ftoc mhProfile
     LOG Inc_PresortFinish
     Mh_Folder $exmh(folder)	;# presort inc has changed this to MyIncTmp
-    if {$ftoc(displayValid) && [Seq_Count $exmh(folder) unseen] > 0} {
+    if {$ftoc(displayValid) && [Seq_Count $exmh(folder) $mhProfile(unseen-sequence)] > 0} {
 	Label_Folder $exmh(folder)
 	Scan_Folder $exmh(folder) $ftoc(showNew)
     }
@@ -395,5 +395,5 @@ proc Inc_Pending {} {
     } else {
 	Exmh_Status "No active folders" warning
     }
-    Flist_FindUnseen
+    Flist_FindSeqs
 }

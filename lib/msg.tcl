@@ -29,9 +29,9 @@ proc Msg_Reset { numMsgs {folder {}} } {
 }
 proc Msg_CheckPoint {} {
     # push current MH state to disk
-    global exmh msg
+    global exmh msg mhProfile
     if {$msg(seen) != {}} {
-	Mh_MarkSeen $exmh(folder) $msg(seen)
+	Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $msg(seen)
 	set msg(seen) {}
     }
     set msg(seenOld) {}
@@ -48,35 +48,35 @@ proc Msg_Pick { line {show show} } {
 	Msg_ClearCurrent
     }
 }
-
-proc Msg_ShowCurrent { {show show} } {
-    global msg
-    if {$msg(id) != {}} {
-	set msg(dpy) {}	;# force redisplay
-	Msg_Change $msg(id) $show
-	return 1
-    } else {
-	Msg_ClearCurrent
-	Ftoc_Yview end
-	return 0
-    }
-}
-proc Msg_ShowUnseen { {show show} } {
-    global exmh
-    foreach id [Seq_Msgs $exmh(folder) unseen] {
-	if {![Ftoc_Marked $id]} {
-	    Msg_Change $id show
+proc Msg_Show { {seq cur} {show show} } {
+    global exmh msg
+    Exmh_Debug Msg_Show $seq $show
+    if {$seq == "cur"} {
+	if {$msg(id) != {}} {
+	    set msg(dpy) {}	;# force redisplay
+	    Msg_Change $msg(id) $show
 	    return 1
+	} else {
+	    Msg_ClearCurrent
+	    Ftoc_Yview end
+	    return 0
 	}
+    } else {
+	foreach id [Seq_Msgs $exmh(folder) $seq] {
+	    if {![Ftoc_Marked $id]} {
+		Msg_Change $id $show
+		return 1
+	    }
+	}
+	Msg_ClearCurrent
     }
-    Msg_ClearCurrent
     return 0
 }
 proc Msg_ClearCurrent { } {
     global msg exmh
     set msg(id) {}		;# Clear current message
     set msg(dpy) {}		;# and currently displayed message
-    Mh_ClearCur $exmh(folder)
+    Seq_Forget $exmh(folder) cur
     MsgClear
     Buttons_Current 0
     Uri_ClearCurrent
@@ -92,8 +92,8 @@ proc MsgClear {} {
     catch {destroy $exwin(mopButtons).list}
 }
 proc Msg_ShowSomething {} {
-    global exmh msg
-    set order {unseen cur}
+    global exmh msg mhProfile
+    set order [list $mhProfile(unseen-sequence) cur]
     foreach pick $order {
 	if {[catch {MhExec pick +$exmh(folder) $pick} tmp] == 0} then {
 	    Msg_Change [lindex $tmp 0] show
@@ -119,12 +119,12 @@ proc Msg_Change {msgid {show show} } {
 }
 proc MsgChange {msgid {show show}} {
     global exmh exwin msg mhProfile
-
+    
     Ftoc_ClearCurrent
     Mh_SetCur $exmh(folder) $msgid
     Ftoc_ShowSequences $exmh(folder)
-    set line [Ftoc_FindMsg $msgid]
-    if {! [Ftoc_Change $line $show]} {
+    set lineno [Ftoc_FindMsg $msgid]
+    if {! [Ftoc_Change $lineno $show]} {
 	Exmh_Status "Cannot find msg $msgid - Rescan?"
     } else {
 	if {$msg(id) == {}} {
@@ -134,12 +134,12 @@ proc MsgChange {msgid {show show}} {
 	set msg(path) $mhProfile(path)/$exmh(folder)/$msg(id)
 	if {$show == "show"} {
 	    MsgShow $msgid
-	    Mh_MarkSeen $exmh(folder) $msgid
+	    Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $msgid
 	} elseif {$show != "skipdisplay"} {
 	    MsgClear
 	}
-	if {$line != {}} {
-	    Ftoc_MoveFeedback $msgid $line
+	if {$lineno != {}} {
+	    Ftoc_MoveFeedback $msgid
 	}
     }
     Folder_CheckPointShared
@@ -147,18 +147,18 @@ proc MsgChange {msgid {show show}} {
 
 proc MsgSeen { msgid } {
     # Suppress duplicates or else mark does the wrong thing.
-    global msg
+    global msg exmh mhProfile
     if {[lsearch $msg(seen) $msgid] < 0} {
 	lappend msg(seen) $msgid
     }
-    Seq_RemoveMsg unseen $msgid
+    Seq_Del $exmh(folder) mhProfile(unseen-sequence) $msgid
     Flag_MsgSeen
 }
 proc Msg_UnSeen { msgid } {
     # We nuke deleted and moved messages from the seen list because
     # marking them confuses MH.  However, we still need to remember
     # them to properly maintain our unseen state in the presense of
-    # background Flist_FindUnseen calls.  Hence msg(seenOld)
+    # background Flist_FindSeqs calls.  Hence msg(seenOld)
     global msg
     set ix [lsearch $msg(seen) $msgid]
     if {$ix >= 0} {
@@ -308,7 +308,7 @@ proc MsgComp {args} {
 
 proc Msg_ReplyAll { } {
     global nmh
-
+    
     if {$nmh == 1} {
 	Msg_Reply -group
     } else {
@@ -321,7 +321,7 @@ proc Msg_Reply { args } {
     if {[string length $args] == 0} {
 	set args Mh_ReplySetup
     }
-
+    
     if [MsgOk $msg(id) m] {
 	Quote_MakeFile $exmh(folder) $m
 	set edit 1
@@ -342,7 +342,7 @@ proc Msg_Reply { args } {
 		}
 		set ix [lsearch $args -form]
 		if {$ix < 0} {
-                    set path [Mh_FindFile "replcomps"]
+		    set path [Mh_FindFile "replcomps"]
 		    if {0 != [string length $path]} {
 			lappend args -form $path/replcomps
 			Exmh_Status "repl $args" error
@@ -361,7 +361,7 @@ proc Msg_Reply { args } {
 	} else {
 	    Edit_Done send				;# Just send it
 	}
-   }
+    }
 }
 
 proc Msg_Forward { args } {
@@ -369,16 +369,9 @@ proc Msg_Forward { args } {
     if {[string length $args] == 0} {
 	set args Mh_ForwSetup
     }
-
-    set ids {}
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]
-	if {$msgid != {}} {
-	    lappend ids $msgid
-	}
-    }
-    if {[llength $ids] > 0} {
-	global mhProfile
+    
+    set msgids [Ftoc_CurMsgs]
+    if {[llength $msgids] > 0} {
 	set mime 0
 	if [info exists mhProfile(forw)] {
 	    if {[lsearch $mhProfile(forw) -mime] >= 0} {
@@ -387,12 +380,12 @@ proc Msg_Forward { args } {
 	}
 	if {[string compare [info command $args] $args] == 0} {
 	    # Old interface with hook procedure
-	    if [catch {$args $exmh(folder) $ids} err] {	;# Setup draft msg
+	    if [catch {$args $exmh(folder) $msgids} err] {	;# Setup draft msg
 		Exmh_Status "${args}: $err" error
 		return
 	    }
 	}  else {
-	    Exmh_Status "forw +$exmh(folder) $ids $args"
+	    Exmh_Status "forw +$exmh(folder) $msgids $args"
 	    if [catch {
 		if {[lsearch $args -mime] >= 0} {
 		    set mime 1
@@ -401,13 +394,13 @@ proc Msg_Forward { args } {
 		if {$ix < 0} {
 		    if [file exists $mhProfile(path)/$exmh(folder)/forwcomps] {
 			lappend args -form $exmh(folder)/forwcomps
-			Exmh_Status "forw +$exmh(folder) $ids $args"
+			Exmh_Status "forw +$exmh(folder) $msgids $args"
 		    }
 		}
-		eval {MhExec forw +$exmh(folder)} $ids -nowhatnowproc $args
-		eval {MhAnnoSetup $exmh(folder) $ids forw} $args
+		eval {MhExec forw +$exmh(folder)} $msgids -nowhatnowproc $args
+		eval {MhAnnoSetup $exmh(folder) $msgids forw} $args
 		if {$mhProfile(forwtweak)} {
-		    Mh_Forw_MungeSubj $exmh(folder) $ids
+		    Mh_Forw_MungeSubj $exmh(folder) $msgids
 		}
 	    } err] {
 		Exmh_Status "forw: $err" error
@@ -420,7 +413,7 @@ proc Msg_Forward { args } {
 	if {$mime} {set sedit(mhnDefault) 1}
 	Edit_Draft					;# Run the editor
 	set sedit(mhnDefault) $old
-   }
+    }
 }
 
 proc Msg_Dist { args } {
@@ -428,7 +421,7 @@ proc Msg_Dist { args } {
     if {[string length $args] == 0} {
 	set args Mh_DistSetup
     }
-
+    
     if [MsgOk $msg(id) m] {
 	if {[string compare [info command $args] $args] == 0} {
 	    # Old interface with hook procedure
@@ -449,7 +442,7 @@ proc Msg_Dist { args } {
 	Edit_Draft                                  ;# Run the editor
     }
 }
- 
+
 proc MsgOk { number msgvar } {
     upvar $msgvar msg
     if {$number != ""} {
@@ -463,10 +456,9 @@ proc MsgOk { number msgvar } {
 
 proc Msg_Remove { {rmProc Ftoc_RemoveMark} {show show} } {
     Exmh_Debug Msg_Remove $rmProc $show
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]
-	Exmh_Debug Msg_Remove l=$line m=$msgid
-	$rmProc $line $msgid
+    Ftoc_Iterate lineno {
+	Exmh_Debug Msg_Remove l=$lineno
+	$rmProc $lineno
     }
     if {[Ftoc_PickSize] == 1} {
 	Ftoc_NextImplied $show
@@ -477,8 +469,8 @@ proc Msg_RemoveNoshow { {rmProc Ftoc_RemoveMark} } {
 }
 proc Msg_RemoveById { msgid {rmProc Ftoc_Delete} } {
     global msg
-    set line [Ftoc_FindMsg $msgid]
-    $rmProc $line $msgid
+    set lineno [Ftoc_FindMsg $msgid]
+    $rmProc $lineno
     Msg_UnSeen $msgid
     if {$msg(id) == $msgid} {
 	Msg_ClearCurrent
@@ -486,15 +478,14 @@ proc Msg_RemoveById { msgid {rmProc Ftoc_Delete} } {
 }
 proc Msg_Move { {moveProc Ftoc_MoveMark} {advance 1} {show show} } {
     global exmh fdisp
-
+    
     if {$exmh(target) == ""} {
 	Exmh_Status "Must first click button $fdisp(tarbutton) on folder label to pick destination" error
 	return
     }
     if { $exmh(target) != $exmh(folder)} then {
-	Ftoc_Iterate line {
-	    set msgid [Ftoc_MsgNumber $line]
-	    $moveProc $line $msgid
+	Ftoc_Iterate lineno {
+	    $moveProc $lineno
 	}
 	Exmh_Status "=> $exmh(target)"
 	if {[Ftoc_Advance $advance] && ([Ftoc_PickSize] == 1)} {
@@ -510,10 +501,10 @@ proc Msg_MoveNoshow { {moveProc Ftoc_MoveMark} } {
 proc Msg_Clip { {folder {}}  {id {}} } {
     # "Tear off" a message into a top-level text widget
     global mhProfile exmh msg exwin
-
+    
     if {$folder == {}} {set folder $exmh(folder)}
     if {$id     == {}} {set id     $msg(id)}
-
+    
     if {$id == {}} {
 	Exmh_Status "Select a message to clip first" warning
 	return
@@ -524,7 +515,7 @@ proc Msg_Clip { {folder {}}  {id {}} } {
 	incr msg(tearid)
     }
     set self [Widget_Toplevel .tear$msg(tearid) "$folder $id" Clip]
-
+    
     Widget_Frame $self but Menubar {top fill}
     Widget_AddBut $self.but quit "Dismiss" [list destroy $self]
     Widget_Label $self.but label {left fill} -text $folder/$id
@@ -532,13 +523,13 @@ proc Msg_Clip { {folder {}}  {id {}} } {
     set t [Widget_Text $self $exwin(mtextLines) -cursor $cursor -setgrid true]
     Msg_Setup $t
     if [MsgShowInText $t $mhProfile(path)/$folder/$id] {
-        foreach cmd [info commands Hook_MsgClip*] {
+	foreach cmd [info commands Hook_MsgClip*] {
             if [catch {$cmd $mhProfile(path)/$folder/$id $t} err] {
-                SeditMsg $t "$cmd $err"
-            }
+		SeditMsg $t "$cmd $err"
+	    }
         }
     }
-
+    
 }
 proc Msg_FindMatch {L string} {
     global exwin
@@ -546,7 +537,7 @@ proc Msg_FindMatch {L string} {
 }
 proc Msg_BurstDigest {} {
     global msg exmh mhProfile
-
+    
     if {$msg(id) == {}} {
 	Exmh_Status "No message selected to burst" error
 	return
@@ -555,33 +546,33 @@ proc Msg_BurstDigest {} {
 	# Pending changes and no autoCommit
 	return
     }
-
+    
     Exmh_Status "Bursting message $msg(id) in $exmh(folder)..."
-
+    
     # burst the digest; catch the output
     if [catch { MhExec burst -verbose $msg(id) +$exmh(folder)} out] {
 	Exmh_Status "Error bursting digest: $out"
     } else {
 	# burst OK, split up the output
-	set allids {}
+	set allmsgids {}
 	foreach line [ split $out \n] {
-	    #extract the new message number and save in $allids
+	    #extract the new message number and save in $allmsgids
 	    if [regexp {of digest .* becomes message ([0-9]+)} $line match msgid] {
-		lappend allids $msgid
+		lappend allmsgids $msgid
 	    }
 	}
-	set allids [lsort -increasing -integer $allids]
+	set allmsgids [lsort -increasing -integer $allmsgids]
 	# mark new messages as unread
-	Exmh_Debug burst created msgs $allids
-	if {$allids != {}} {
-	    eval { MhExec mark +$exmh(folder) -sequence $mhProfile(unseen-sequence) } $allids
+	Exmh_Debug burst created msgs $allmsgids
+	if {$allmsgids != {}} {
+	    eval { MhExec mark +$exmh(folder) -sequence $mhProfile(unseen-sequence) } $allmsgids
 	}
 	# rescan to pick them up, make sure Commit is done.
 	Background_Wait
 	Exmh_Status "Bursting message $msg(id) in $exmh(folder)...done"
 	Scan_FolderUpdate $exmh(folder)
-	if {$allids != {}} {
-	    Msg_Change [lindex $allids 0]
+	if {$allmsgids != {}} {
+	    Msg_Change [lindex $allmsgids 0]
 	} else {
 	    Msg_ClearCurrent
 	}
@@ -590,11 +581,10 @@ proc Msg_BurstDigest {} {
 proc Msg_Save {} {
     global exmh mhProfile
     set files {}
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]
+    Ftoc_MsgIterate msgid {
 	lappend files $mhProfile(path)/$exmh(folder)/$msgid
     }
-
+    
     set name [FSBox "Select file to create/append to:" ]
     if {$name != {}} {
 	set exists [file exists $name]
@@ -643,7 +633,7 @@ proc Msg_Edit {} {
 }
 
 proc Msg_UUdecode {} {
-    global exmh msg mhProfile
+    global msg
     set name [FSBox "Select file to decode into:" ]
     if {$name != {}} {
 	Mime_Uudecode $msg(path) $name
@@ -652,41 +642,23 @@ proc Msg_UUdecode {} {
     }
 }
 
-proc Msg_MarkUnseen {} {
-    global exmh
-    Msg_CheckPoint
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]
-	Mh_MarkUnseen $exmh(folder) $msgid
-    }
-    Msg_ClearCurrent
-    Ftoc_ClearCurrent
-    Seq_Forget $exmh(folder) unseen
-    Ftoc_ShowSequences $exmh(folder)
-}
-
 proc Msg_Mark {seq} {
-    global exmh
-    if {$seq == "unseen"} {
-      return [Msg_MarkUnseen]
-    }
+    global exmh mhProfile
     Msg_CheckPoint
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]
-        Mh_SequenceUpdate $exmh(folder) add $seq $msgid
+    Ftoc_MsgIterate msgid {
+	Seq_Add $exmh(folder) $seq $msgid
+    }
+    if {$seq == $mhProfile(unseen-sequence)} {
+	Msg_ClearCurrent
+	Ftoc_ClearCurrent
     }
     Ftoc_ShowSequences $exmh(folder)
 }
 proc Msg_UnMark {seq} {
-    global exmh
-    if {$seq == "unseen"} {
-      # Not sure if this is correct
-      return [Msg_MarkSeen $exmh(folder) $msg(seen)]
-    }
+    global exmh mhProfile
     Msg_CheckPoint
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]
-        Mh_SequenceUpdate $exmh(folder) del $seq $msgid
+    Ftoc_MsgIterate msgid {
+	Seq_Del $exmh(folder) $seq $msgid
     }
     Ftoc_ShowSequences $exmh(folder)
 }

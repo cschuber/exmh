@@ -44,7 +44,7 @@ proc UserInc {} {
     # some folders (like newsgroups)
     #
     Inc_Inbox
-    Flist_FindUnseen
+    Flist_FindSeqs
 }
 
 proc User_Bindings { w } {

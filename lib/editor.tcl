@@ -474,11 +474,10 @@ proc Edit_Done {act {msg cur}} {
 	    Quote_Cleanup
 	    if {$anno} {
 		if {[string compare $exmh($msg,folder) $exmh(folder)] == 0} {
-		    foreach m $exmh($msg,mhmessages) {
-			set ix [Ftoc_FindMsg $m]
-			Exmh_Debug Edit_Done ix=$ix
-			if {$ix != {}} {
-			    Ftoc_RescanLine $ix dash
+		    foreach lineno [Ftoc_FindMsgs $exmh($msg,mhmessages)] {
+			Exmh_Debug Edit_Done lineno=$lineno
+			if {$lineno != {}} {
+			    Ftoc_RescanLine $lineno dash
 			}
 		    }
 		}

@@ -152,7 +152,7 @@ proc Thread_DisplayAll { {breakoff 20} {mark "+->"} } {
 }
 
 proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
-    global exwin exmh ftoc msg
+    global exwin exmh ftoc msg mhProfile
 
 #
 #  Check that the current FTOC corresponds to a 'real folder' scan.
@@ -252,14 +252,14 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
         Exmh_Status "folder incorrectly threaded. line number mismatch" warn
     }
 
-    Flist_ForgetSequence $folder unseen
+    Flist_ForgetSequence $folder $mhProfile(unseen-sequence)
     Ftoc_ShowSequences $folder
 
     if {$curmsg != {}} {
         set msg(id) $curmsg
         set ftoc(curLine) [Ftoc_FindMsg $curmsg]
         Buttons_Current 1
-        Msg_ShowCurrent $show
+        Msg_Show cur $show
     } else {
 	if $selected {
 	    Buttons_Current 0

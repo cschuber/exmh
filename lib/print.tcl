@@ -22,8 +22,7 @@ proc Print {} {
     global exmh msg print mhProfile address
     set logvar {}
     set file {}
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]
+    Ftoc_MsgIterate msgid {
 	lappend file $mhProfile(path)/$exmh(folder)/$msgid
     }
     set nprint [llength $file]

@@ -1,4 +1,49 @@
 HISTORY
+cvs repository 08/20/2002 cwg-exmh@deepeddy.com
+    app-defaults-color - Change default colors of ftoc so highlighted
+	sequences will appear better. 
+    seqwin.tcl - New File; Replacement for unseenwin...more generalized.
+    sequences.tcl - seqwin hooks are in here.
+    flist.tcl - Initialize flist() elements differently;
+	Flist_FindUnseen is now Flist_FindSeqs and calls Seq_Set
+	instead of doing it by hand. 
+    ftoc.tcl - Ftoc_FindMsgs replaces Ftoc_FindMsg and handles lists
+	of messages; Ftoc_MsgNumbers replaces Ftoc_MsgNumber and
+	handles lists of lines; ftoc_NewFtoc now takes an optional
+	argument to specify the lines; defaulting again to
+	ftoc(lineset); remove Ftoc_MarkSeen as dead code; New function
+	Ftoc_CurLines and rewrite Ftoc_Iterate to use Ftoc_CurLines;
+	new function Ftoc_MsgIterate to use instead of Ftoc_Iterate in
+	several places; call Msg_Show instead of Msg_ShowCurrent and
+	Msg_ShowUnseen; call Seq_Del and Seq_Add instead of
+	Mh_SequenceUpdate or Seq_RemoveMsg
+    mh.tcl - Call Seq_Add and Seq_Del instead of Mh_SequenceUpdate;
+	Seq_Expand moved back here and named back to MhSeqExpand;
+	Seq_Modify rewritten, moved back here and named back to MhSeq.
+    msg.tcl - Merge Msg_ShowCurrent and Msg_ShowUnseen into Msg_Show;
+	Call Ftoc_MsgNumbers instead of Ftoc_MsgNumber; Call
+	Ftoc_FindMsgs instead of Ftoc_FindMsg; Call Seq_Add or Seq_Del
+	instead of Seq_RemoveMsg or Mh_SequenceUpdate; Call
+	Ftoc_MsgNumbers or Ftoc_MsgIterate where it's simpler than
+	Ftoc_Iterate;  
+    app-defaults, background.tcl, inc.tcl, pgpWWW.tcl, user.tcl - Use
+	Flist_FindSeqs instead of Flist_FindUnseen.
+    bindings.tcl, folder.tcl, inc.tcl - Msg_ShowCurrent and
+	Msg_ShowUnseen are now Msg_Show. 
+    editor.tcl - use new Ftoc_FindMsgs instead of Ftoc_FindMsg
+    pick.tcl - use Seq_Del instead of Seq_RemoveMsg.
+    print.tcl - Use Ftoc_MsgIterate instead of Ftoc_Iterate.
+    scan.tcl - Use Ftoc_MsgNumbers instead of Ftoc_MsgNumber; call
+	Ftoc_ClearMsgCache and Ftoc_ShowSequences in
+	Scan_ProjectSelection. 
+    thread.tcl - Use Ftoc_MsgNumbers instead of Ftoc_MsgNumber;
+	Ftoc_FindMsgs instead of Ftoc_FindMsg 
+    bindings.tcl, fcache.tcl, flag.tcl, flist.tcl - use 
+	$mhProfile(unseen-sequence) instead of hard
+	coding 'unseen'.
+    extrasInit - remove UnseenWin initialization; change topten
+	reference to unseenWin to be to seqWin instead.
+
 cvs repository 08/08/2002 cwg-exmh@deepeddy.com
     sequences.tcl, flag.tcl - move flag handling from Seq_Trace
 	into new Flag_Trace.
