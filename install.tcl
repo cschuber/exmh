@@ -410,7 +410,7 @@ proc installSed { } {
 		    break
 		}
 	    }
-	    puts $script "s$sepexec expect$sepexec $pathname$sep"
+	    puts $script "s${sep}exec expect${sep}exec $pathname$sep"
 	}
     }
 
