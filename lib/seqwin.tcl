@@ -22,11 +22,11 @@ proc SeqWinSetSelection {seq {which -1}} {
 
 proc SeqWin_Init {} {
     global seqwin
+    set seqwin(startuphidden) 1
     SeqWinToggle
     if {[winfo exists .sequences]} {
       # Temporarily withdraw this until we build up unseen state
       wm withdraw .sequences
-      set seqwin(startuphidden) 1
       after 1000 {
           set seqwin(startuphidden) 0
           SeqWinDeiconify
