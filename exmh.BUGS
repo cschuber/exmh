@@ -51,7 +51,8 @@ Version: 2.0.3 + cvs as of around 4/7
 Priority: Low
 Scope: Narrow
 Complexity: ?
-Status: DUPLICATE of number 10 ??
+Status: Bug 10 was fixed.  Someone thought this might be a duplicate
+	of that.  Was it? 
 
 I-Spell gets turned off by magic.  Make the magic go away.
 
@@ -85,38 +86,6 @@ From: Brent Welch <welch@scriptics.com>
 
 We should fix it to use the http:: package, if available.
 I also noticed there is no timeout on Http_get.
-
-
-
-----------------------------------------------------------------------
-Number: 10
-Version: 2.0.3
-Priority: Med
-Scope: Narrow
-Complexity: ?
-Status: 
-
-From: "Jacob Morzinski" <jmorzins@MIT.EDU>
-
-The exmh variable ispellVars(command) is not initialized until
-_after_ you open your first sedit window.  (At that time, it gets
-set to the value of $ispellVars(defaultCommand).)
-
-The Ispell preferences window, on the other hand, tries to
-automagically turn the ispell checkbox on/off based on whether or
-not your machine has an ispell command available.  It does this
-by attempting to run $ispellVars(command) when the window is
-first opened, and each time the checkbox is clicked to "on".
-
-If ispellVars(command) is still unset, the exec fails, and exmh
-mistakes this failure as indicating that your machine does not have
-ispell.  Consequently, it won't permit the checkbox to be activated.
-
-No, I don't know why the code does it this way.  But it means
-that if you open your Pref window before you compose a message,
-you won't be able to turn ispell on at that time (look at the Log
-window for details).  Once you compose a message, though, you'll
-be able to turn ispell on/off normally.
 
 
 

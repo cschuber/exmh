@@ -139,7 +139,12 @@ proc Ispell_Init { } {
 	return ;
     }
 
-    if [catch {open "|$ispellVars(command)" r+} ispellVars(spell_buffer)] {
+    if {[info exists ispellVars(command)]} {
+	set cmd $ispellVars(command)
+    } else {
+	set cmd $ispellVars(defaultCommand)
+    }
+    if [catch {open "|$cmd" r+} ispellVars(spell_buffer)] {
 	set ispellVars(on) 0	;# triggers trace
 	return
     }
