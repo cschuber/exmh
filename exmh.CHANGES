@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 10/08/2004 valdis.kletnieks@vt.edu
+  lib/seditExtras.tcl - add fconfigure -translation binary so base64 encoding
+  works properly.
+
 cvs repository 09/10/2004 welch@panasas.com
   lib/flist.tcl: removed the flistcache as inspired by Harvey Eneman and
     Jongki Suwandi.  This cache caused message highlighting to not occur

@@ -239,6 +239,7 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
             switch -- $encoding {
                 base64 {
                     Base64_EncodeInit state old length
+		    fconfigure $in -encoding binary -translation binary
                     while {![eof $in]} {
                         $t insert $mark [Base64_EncodeBlock [read $in 4096] state old length]
                     }
