@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 06/22/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
+    lib/receipt.tcl - generate proper Final-Recipient: field
+
 cvs repository 06/22/2000 Bruce A. Mah <bmah@cisco.com>
     lib/html/exmh-faq.html:  Added FAQ #15a on folder-specific template 
     files.
