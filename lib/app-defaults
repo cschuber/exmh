@@ -616,7 +616,7 @@ exmh.iconic:		0
 ! fonts available
 ! mime_charset maps to a font which uses the charset.
 !
-*mimeCharsets: us-ascii iso-8859-1 iso-8859-8 iso-2022-jp koi8-r iso-8859-2
+*mimeCharsets: us-ascii iso-8859-1 iso-8859-8 iso-2022-jp koi8-r iso-8859-2 iso-10646-1 utf-8
 !
 *mimeUCharsets:
 
@@ -654,6 +654,13 @@ exmh.iconic:		0
 *mime_iso-8859-2_registry: iso8859
 *mime_iso-8859-2_encoding: 2
 
+! Unicode fonts
+*mime_iso-10646-1_registry: iso10646
+*mime_iso-10646-1_encoding: 1
+*mime_utf-8_registry: iso10646
+*mime_utf-8_encoding: 1
+
+
 ! For each charset, we have four differerent possible ways that the
 ! characters may be displayed.  "plain" is how they are displayed in
 ! an ordinary (text/plain) message; "fixed" is how fixed face
@@ -687,6 +694,20 @@ exmh.iconic:		0
 *mime_iso-2022-jp_fixed_families:     fixed
 *mime_iso-2022-jp_proportional_families:
 *mime_iso-2022-jp_title_families:
+
+! A good Unicode font set can be found at
+! http://www.cl.cam.ac.uk/~mgk25/ucs-fonts.html
+! http://www.cl.cam.ac.uk/~mgk25/download/ucs-fonts.tar.gz
+
+*mime_utf-8_plain_families: fixed
+*mime_utf-8_fixed_families: fixed
+*mime_utf-8_proportional_families: fixed
+*mime_utf-8_title_families: fixed
+
+*mime_iso-10646-1_plain_families: fixed
+*mime_iso-10646-1_fixed_families: fixed
+*mime_iso-10646-1_proportional_families: fixed
+*mime_iso-10646-1_title_families: fixed
 
 !
 ! Mime External message access methods

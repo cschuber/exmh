@@ -1,6 +1,19 @@
 HISTORY
+cvs repository 04/10/2001 Brent Welch <welch@panasas.com>
+    exmh-strip.MASTER: extracted code from mime.tcl into a utility script
+    that strips attachments from mail and replaces them with message/external-body
+    parts that reference the extracted file.
+    lib/app-defaults: Added mappings from utf-8 charset to iso10646 fonts
+    lib/env.tcl: switched from TMPDIR environment variable to exmh(tmpdir) so
+    that we don't pollute the environment with our choice of temp directory.
+    This confuses some programs, especially gnuclient.
+    lib/mime.tcl: Fixed message/external-body for the local-file access case.
+    lib/inc.tcl: Added guard against undefined exmh(slocal) to Inc_Init.
+    Cleaned up check against stray files (e.g., "++") in the MyIncTmp directory.
+    lib/folder.tcl: Added Folder_Cache calls when setting the move/copy folder
+    so that the folder appears in the folder cache.
 
-cvs repository 03/03/2001 Brent Welch <brent.welch@interwoven.com>
+cvs repository 03/03/2001 Brent Welch <welch@panasas.com>
     lib/inc.tcl: Eliminated the use of the expect wrapper around
     inc for the "presort-multidrop" and "multidrop" cases.  This
     interferes with folks that have set up their .netrc file to

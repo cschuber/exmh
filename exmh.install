@@ -58,8 +58,8 @@ install_testLib	./lib
 # The following are installation directories, which you may have to adjust,
 # and install file patterns (glob/sed), which should not be site dependent.
 install_dir  bin	[installGuessDir /usr/local/bin exmh]		{Install bin directory}
-install_glob bin	exmh exmh-bg exmh-async ftp.expect inc.expect
-install_sed  .MASTER	exmh exmh-bg exmh-async ftp.expect inc.expect
+install_glob bin	exmh exmh-bg exmh-async ftp.expect inc.expect exmh-strip
+install_sed  .MASTER	exmh exmh-bg exmh-async ftp.expect inc.expect exmh-strip
 install_dir  man	/usr/man/manl	{Install man directory}
 install_glob man	exmh*.l
 install_dir  lib	/usr/local/lib/exmh-$vers	{Install lib directory}

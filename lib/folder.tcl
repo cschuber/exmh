@@ -159,12 +159,14 @@ proc Folder_Target {f} {
 proc Folder_TargetMove { f {moveProc Ftoc_MoveMark} } {
     if [Folder_Target $f] {
 	Msg_Move $moveProc
+	Fcache_Folder $f
     }
 }
 
 proc Folder_TargetCopy { f {copyProc Ftoc_CopyMark} } {
     if [Folder_Target $f] {
 	Msg_Move $copyProc advance?
+	Fcache_Folder $f
     }
 }
 

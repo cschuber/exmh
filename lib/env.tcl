@@ -18,6 +18,7 @@
 
 proc Env_Init {} {
     global env
+    global exmh
 
     # Use an alternate context to avoid conflict with command line MH
     # This has to be the same as used by exmh so that private sequences work
@@ -25,8 +26,8 @@ proc Env_Init {} {
     set env(MHCONTEXT) .exmhcontext
 
     # Merge LOGNAME into USER so we only need to look for one later
-    if [catch {set env(USER)} user] {
-	if [catch {set env(LOGNAME)} user] {
+    if {[catch {set env(USER)} user]} {
+	if {[catch {set env(LOGNAME)} user]} {
 	    puts stderr "No USER or LOGNAME envar"
 	    set user ""
 	}
@@ -36,10 +37,11 @@ proc Env_Init {} {
     # Init TMPDIR
 
     if {[info exists env(EXMHTMPDIR)]} {
-	set env(TMPDIR) $env(EXMHTMPDIR)
-    }
-    if {![info exists env(TMPDIR)]} {
-	set env(TMPDIR) /tmp/$env(USER)
+	set exmh(tmpdir) $env(EXMHTMPDIR)
+    } elseif {[info exist env(TMPDIR)]} {
+	set exmh(tmpdir) $env(TMPDIR)
+    } else {
+	set exmh(tmpdir) /tmp/$env(USER)
     }
 
     # Make sure MH is on the path
@@ -62,23 +64,23 @@ proc Env_Init {} {
 }
 
 proc Env_Tmp {} {
-    global env
+    global exmh
 
     # Doing this every time we use the temp file directory ensures
     # no-one steals it without the user knowing it.
 
     if {[catch {
-	file mkdir $env(TMPDIR)
-	if {$env(TMPDIR) != "/tmp"} {
-	    file attributes $env(TMPDIR) -permissions 0700
+	file mkdir $exmh(tmpdir)
+	if {$exmh(tmpdir) != "/tmp"} {
+	    file attributes $exmh(tmpdir) -permissions 0700
 	}
     } err]} {
 	puts $err
 	catch {puts stderr "WARNING: exmh using unsafe /tmp directory"}
 	Exmh_Status "WARNING: exmh using unsafe /tmp directory" red
-	set env(TMPDIR) /tmp
+	set exmh(tmpdir) /tmp
     }
 
-    return $env(TMPDIR)
+    return $exmh(tmpdir)
 }
 

@@ -16,7 +16,7 @@
 
 proc Inc_Init {} {
     global exmh inc
-    if {$exmh(slocal) == {}} {
+    if {![info exist exmh(slocal)] || $exmh(slocal) == {}} {
 	set exmh(slocal) slocal
     }
     if [info exists exmh(incStyle)] {
@@ -228,7 +228,8 @@ proc Inc_Presort {{doinc 1}} {
     if {[catch {glob $mhProfile(path)/MyIncTmp/*} files] == 0} {
 	Exmh_Status "incfilter ..."
 	foreach file $files {
-	    if {[string compare [file tail $file] "++"] == 0} {
+	    if {![regexp {^[0-9]+$} [file tail $file]]} {
+		Exmh_Status "Deleting stray file in MyIncTmp: [file tail $file]" red 
 		File_Delete $file
 		continue
 	    }

@@ -1506,8 +1506,9 @@ proc MimeLocalFileTransfer {tkw part} {
     global mime mimeHdr
 
     set name $mimeHdr($part,param,name)
+    set dir $mimeHdr($part,param,directory)
 
-    set mimeHdr($part=1,file) $name
+    set mimeHdr($part=1,file) [file join $dir $name]
 }
 proc MimeFTPTransfer {tkw part} {
     global mime mimeHdr

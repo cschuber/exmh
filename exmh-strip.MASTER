@@ -1,0 +1,428 @@
+#!/usr10/home/welch/TclPro1.4/linux-ix86/bin/protclsh83.bin
+#
+# Utility to strip out attachments from MIME messages.
+# They are replaced with references to the external files.
+#
+# You must supply the input message destination directory on the command line.
+# This does not handle nested multiparts correctly.  So, if you
+# forward a message with attachments, the message/rfc822 layer
+# outside the multipart/mixed will foil it.
+#
+# The original message is put into a "strip_backup" folder.  It
+# is replaced with a message containing message/external-body parts
+# that reference the saved attachment. 
+#
+# This script is invoked from a procedure like the following,
+# which you can put into your ~/.tk/exmh library of custom scripts.
+
+proc Save_Attachments {} {
+    global msg
+
+    exec [glob ~/bin/exmh-strip] $msg(path) [glob ~/doc]
+    Msg_ShowCurrent
+}
+
+# Here are some resources for your exmh-defaults that add this to a new menu.
+
+#	*Mops.umenulist: repl2
+#	*Mops.repl2.text:	Welch
+#	*Mops.repl2.m.entrylist: save sep 
+#	*Mops.repl2.m.t_sep: separator
+#	*Mops.repl2.m.l_save: Save Attachments
+#	*Mops.repl2.m.c_save: Save_Attachments
+
+#
+# Copyright (c) 2001 Brent Welch
+# Use and copying of this software and preparation of derivative works based
+# upon this software are permitted. Any distribution of this software or
+# derivative works must comply with all applicable United States export
+# control laws. This software is made available AS IS, and no one
+# makes any arranty about the software, its performance or its conformity to
+# any specification.
+
+#CONFIGURATION
+#END CONFIGURATION
+
+if {[catch {wm withdraw .}]} {
+    # Stub out stuff when not running under wish
+    proc option {args} {return ""}
+    set pref(panes) ""
+    set exmh(userLibrary) ""
+}
+
+if {$argc < 2} {
+    puts stderr "exmh-strip requires some arguments:"
+    puts stderr "Usage: exmh-strip msg_path doc_directory"
+    exit 1
+}
+
+set msg_path [lindex $argv 0]
+set doc_directory [lindex $argv 1]
+set uniq 0	;# for content-ID generation
+
+proc auto_path_update { path } {
+    # Add library directories to the auto_path,
+    # ensuring that later paths have precedence
+    # and that function override works
+    global auto_path
+    if [file exists $path/tclIndex] {
+	if {[info tclversion] != 7.0} {
+	    set auto_path "$path $auto_path"
+	} else {
+	    lappend auto_path $path
+	}
+	catch {auto_reset} ;# Needed for per-user override, but breaks w/ TCLX
+    }
+}
+auto_path_update $exmh(library)
+
+# Set up environment variables
+
+Env_Init
+
+proc Exmh_Status { string args } {
+    catch {puts stdout $string}
+}
+proc Exmh_Debug { args } {
+    switch -glob -- $args {
+	Pref_Add* { return }
+    	default {
+	    catch {puts stdout [join $args]}
+	}
+    }
+}
+
+# We fault in routines from the regular library of exmh procedures.
+
+Mh_Init
+Mime_Init
+Pgp_Base_Init
+
+proc dummy_tk_window {args} {
+    # Ignore everything done to the window
+}
+
+# Procedure to strip out attachments.
+# Unfortunately we have to rip out various code sections
+# from mime.tcl
+
+proc Mime_Strip {fileName} {
+    global mime mimeHdr
+
+    # Stuff from MsgShowInText
+
+    set part 0
+    set subpart 1
+
+    set mimeHdr($part=$subpart,hdr,cur) {}
+    set mimeHdr($part=$subpart,hdr,from) {}
+    set mimeHdr($part=$subpart,hdr,date) {}
+    set mimeHdr($part=$subpart,hdr,subject) {}
+    set mimeHdr($part=$subpart,hdr,x-face) {}
+    set mimeHdr($part=$subpart,hdr,x-image-url) {}
+    set mimeHdr($part=$subpart,hdr,newsgroups) {}
+    set mimeHdr($part=$subpart,fullHeaders) $mime(fullHeaders)
+    set mimeHdr($part=$subpart,yview) 1.0
+
+    set mimeHdr($part,decode) 1
+    set mimeHdr($part,file) $fileName
+    set mimeHdr($part,rawfile) $fileName
+    #set mimeHdr($part,color) [lindex [$win configure -background] 4]
+    set mimeHdr($part,color) ""
+    set mimeHdr($part,type) message/rfc822
+    set mimeHdr($part,encoding) 7bit
+    set mimeHdr($part,hdr,content-type) message/rfc822
+    set mimeHdr($part,HeaderSize) 0
+    set mimeHdr($part,display) 1
+
+    global mimeFont
+    if ![info exists mimeFont(default)] {
+	set mimeFont(title) ""
+	set mimeFont(note) ""
+	set mimeFont(default) ""
+
+    }
+
+    set partTag [MimeLabel $part part]
+    set defaultTag [MimeLabel $part=1 part]
+
+    # From MimeSetPartVars
+
+    if [catch {open $fileName r} fileIO] {
+	Exmh_Status "Cannot open body $fileName: $fileIO"
+	set mimeHdr($part,numParts) 0
+	return 0
+    }
+
+    # Open shadow output for new version of stipped message
+
+    if [catch {open ${fileName}.strip w} out] {
+	Exmh_Status "Cannot open body ${fileName}.strip: $out"
+	set mimeHdr($part,numParts) 0
+	close $fileIO
+	return 0
+    }
+
+    set result [MimeParseSingle $part $fileIO $out]
+    MimeClose $fileIO
+    close $out
+    if {!$result} {
+	# No attachements found
+	file delete ${fileName}.strip
+    } else {
+	file mkdir [file join [exec mhpath +] strip_backup]
+	file rename ${fileName} [exec mhpath +strip_backup new]
+	file rename ${fileName}.strip ${fileName}
+    }
+    return $result
+}
+
+# Modified version of MimeParseSingle from lib/mime.tcl
+
+proc MimeParseSingle {part fileIO out} {
+    global mimeHdr mime miscRE msg
+    global doc_directory
+
+    set mimeHdr($part=1,color) $mimeHdr($part,color)
+    set part $part=1
+    set mimeHdr($part,hdrs) {}
+    set uniq 0
+
+    # Skip any blank lines or "ugly uucp-style From_ lines" at the frontend.
+    while {([set numBytes [gets $fileIO line]] == 0) ||
+	    [regexp {^(>?From |[	 ]+$)} $line]} {
+	puts $out $line
+    }
+    puts $out $line
+
+    # Parse headers
+
+    set headers ""
+
+    if [regexp {^([^: ]+):} $line] {
+	while {$numBytes > 0} {
+	    if {[regexp -- {^-*$} $line]} {
+		# Drafts-folder message
+		break
+	    }
+	    if ![regexp {^[	 ]} $line] {
+		if [regexp -indices {^([^:]+):} $line match hdr] {
+		    set cur [string tolower \
+				[eval {string range $line} $hdr]]
+		    if {[lsearch $mimeHdr($part,hdrs) $cur] >= 0} {
+			# Duplicate header
+			set cur :$uniq:$cur
+			incr uniq
+		    }
+		    set mimeHdr($part,hdr,$cur) \
+			    [string trim \
+				[string range $line \
+				    [expr [lindex $match 1]+1] end]]
+		    lappend mimeHdr($part,hdrs) $cur
+		}
+	    } elseif [regexp -indices {^[	 ]+} $line match] {
+		append mimeHdr($part,hdr,$cur) \n$line
+	    }
+	    set numBytes [gets $fileIO line]
+	    append headers $line\n
+	}
+	if [catch {set mimeHdr($part,hdr,content-type)} contentType] {
+	    set contentType text/plain
+	}
+	if [catch {set mimeHdr($part,hdr,content-transfer-encoding)} encoding] {
+	    set encoding 7bit
+	}
+	if {[string compare $contentType X-sun-attachment] == 0} {
+	    set contentType "multipart/x-sun-attachment; boundary=--------"
+	    set mimeHdr(0=1,hdr,mime-version) x-sun-attachment
+	}
+	set encoding [string trim [string tolower $encoding] \ \" ]
+	set type [MimeHeader $part $contentType $encoding]
+	if {[string compare $part "0=1"] == 0} {
+	    set mimeHdr($part,decode) \
+		[expr {$mime(enabled) && 
+		       [info exists mimeHdr(0=1,hdr,content-type)]}]
+	}
+
+    } else {
+	# Weird no header case
+	Exmh_Status "no headers"
+	return 0
+    }
+    if {$numBytes >= 0} {
+	if {[string match multipart/* $type]} {
+	    # Look through parts for attachements to strip
+
+	    puts $out $headers
+	    return [MimeChopPart $part $fileIO $out]
+	} elseif {![regexp {^(text|message)/.*} $type]} {
+
+	    # Skip text and message types
+
+	    set body [read $fileIO]
+	    return [MimeStripPart $part $headers $body $out]
+	}
+    }
+    return 0
+}
+
+proc MimeStripPart {part headers body out} {
+    global mimeHdr doc_directory uniq
+
+    if {![info exist mimeHdr($part,param,filename)]} {
+	# Not an interesting thing - e.g., "vcard" junk or text
+	return 0
+    }
+    set path [file join $doc_directory $mimeHdr($part,param,filename)]
+    if {[catch {open $path w} newout]} {
+	# Cannot save to suggested file name
+	Exmh_Debug $newout
+	return 0
+    }
+    if {[MimeSavePart $part $body $out $newout]} {
+
+	# Successfully stripped the part - now whack the headers
+	
+	regexp -nocase {content-type[^\n]+} $headers oldtype
+	regsub -nocase {content-transfer-encoding[^\n]+\n} $headers \
+		{} headers
+	regsub -nocase {content-type.+\n([^\t\n])} $headers \
+"Content-Type: message/external-body;
+	name=\"$mimeHdr($part,param,filename)\";
+	access-type=local-file;
+	directory=\"$doc_directory\";
+	\\1" headers
+	# Output new headers and stub body
+
+	puts -nonewline $out $headers\n
+	puts $out $oldtype
+	puts $out "Content-ID: exmh-strip-[clock format [clock seconds] \
+				-format {%Y-%m-%d-%H-%M-%S}]-[incr uniq]"
+	close $newout
+	return 1
+    }
+    close $newout
+    return 0
+}
+
+proc MimeSavePart {part body out newout} {
+    global mimeHdr doc_directory
+    global mime
+
+    switch -regexp -- $mimeHdr($part,encoding) {
+	(8|7)bit {
+	    puts -nonewline $newout $body
+	}
+	base64 {
+	    exec $mime(encode) -u -b >@ $newout << $body
+	}
+	quoted-printable {
+	    exec $mime(encode) -u -q >@ $newout << $body
+	}
+	.*uue.* -
+	default {
+	    # Punting on uuencoded and anything else weird.
+	    puts -nonewline $out $body
+	    return 0
+	}
+    }
+    return 1
+}
+proc MimeChopPart {part fileIO out} {
+    # Chop up the parts at this level
+    global mimeHdr
+
+    if [catch {set mimeHdr($part,param,boundary)} boundary] {
+	Exmh_Status "Invalid MIME Multipart"
+	return 0
+    }
+    # spaces in boundarys can cause line breaks - cc-mail trash
+    regsub -all "\n *" $boundary { } boundary
+    set type $mimeHdr($part,type)
+    set mimeHdr($part,numParts) \
+	[MimeParseMulti $part $fileIO $boundary \
+	    [expr {($type == "multipart/digest") ? \
+		"message/rfc822" : "text/plain"}] $out]
+}
+
+proc MimeParseMulti {part fileIO boundary defType out} {
+    global mimeHdr mime
+
+    set subpart 0
+
+    # Prolog
+    while {([set numBytes [gets $fileIO line]] >= 0) &&
+	   ([string compare --$boundary $line] != 0) &&
+	   ([string compare --$boundary-- $line] != 0)} {
+	puts $out $line
+    }
+    puts $out $line	;# Initial boundary
+
+    while {($numBytes >= 0) && ([string compare --$boundary-- $line] != 0)} {
+	incr subpart
+	catch {unset contentType}
+
+	# Header
+	set headers ""
+	while {([set numBytes [gets $fileIO line]] > 0) &&
+	       ([string compare --$boundary-- $line] != 0) &&
+	       ([string compare --$boundary $line] != 0) &&
+	       (! [regexp -- {^-*$} $line])} {
+	    append headers $line\n
+	    if ![regexp {^[	 ]} $line] {
+		if [regexp -indices {^([^:]+):} $line match hdr] {
+		    set cur [string tolower \
+				[eval {string range $line} $hdr]]
+		    set mimeHdr($part=$subpart,hdr,$cur) \
+			[string trim \
+				[string range $line \
+				    [expr [lindex $match 1]+1] end]]
+		    lappend mimeHdr($part=$subpart,hdrs) $cur
+		}
+	    } elseif [regexp -indices {^[	 ]+} $line match] {
+		if {![info exists cur] || [regexp {^[	 ]+$} $line]} {
+		    # No header! an error is about to occur...
+		}
+		append mimeHdr($part=$subpart,hdr,$cur) \n$line
+	    }
+	}
+	if {($numBytes >= 0) && ([string compare --$boundary-- $line] != 0)} {
+	    #MimeMapSunHeaders $tkw $part=$subpart
+	    if [catch {set mimeHdr($part=$subpart,hdr,content-type)} contentType] {
+		set contentType $defType
+	    }
+	    if [catch {set mimeHdr($part=$subpart,hdr,content-transfer-encoding)} encoding] {
+		set encoding 7bit
+	    }
+	    set encoding [string trim [string tolower $encoding] \ \" ]
+	    set type [MimeHeader $part=$subpart $contentType $encoding]
+
+	# The following code *does not* handle nested multiparts.
+
+	    # Body
+            set sep ""
+	    set body ""
+	    while {([set numBytes [gets $fileIO line]] >= 0) &&
+		   ([string compare --$boundary $line] != 0) &&
+		   ([string compare --$boundary-- $line] != 0)} {
+		append body $sep$line
+		set sep \n
+	    }
+	    catch {unset cur}
+
+	    if {[string match text* $type] ||
+		    ![MimeStripPart $part=$subpart $headers $body $out]} {
+		# Didn't strip it, have to restore original part
+		puts $out $headers\n$body
+	    }
+	    puts $out $line	;# Another boundary
+	}
+	if ![info exists contentType] {
+	    # Empty body part
+	    incr subpart -1
+	}
+    }
+    return $subpart
+}
+
+Mime_Strip $msg_path
