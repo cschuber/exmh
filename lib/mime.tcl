@@ -327,7 +327,7 @@ proc MimeHeader {part contentType encoding} {
     set mimeHdr($part,params) {}
     foreach sub [lrange $params 1 end] {
 	if [regexp {([^=]+)=(.+)} $sub match key val] {
-	    regsub -all {[^-/[:print:]]} $key {} key
+	    regsub -all {[^-./[:print:]]} $key {} key
 	    set key [string trim [string tolower $key]]
 	    set val [string trim $val]
 	    # Allow single as well as double quotes

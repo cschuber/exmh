@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 2/9/2005 valdis.kletnieks@vt.edu
+  lib/mime.tcl: resolve (or at least work around) Debian bug 294212
+  as a too-zealous splatting of specials broke some content types.
+  I'm adding '.' to the list, but I'm not comfortable adding the full
+  list of rc2045 chars as it includes some shell metachars...
+
 cvs repository 2/3/2005 cwg-exmh@deepeddy.com
   lib/ftoc.tcl: Reset exwin(ftext) whenever the ftext window changes size.
 
