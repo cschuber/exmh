@@ -156,7 +156,8 @@ proc URI_StartViewer {xuri} {
     string trimright $xuri "."
 
     if [regexp {^mailto:(.*)$} $xuri x address] {
-	Sedit_Mailto $xuri
+#	Sedit_Mailto $xuri
+	Msg_CompTo $address
 	return
     }
     regsub -all {[][$\\,~ ]} $xuri {[scan \\& %c x ; format "%%%02x" $x]} xuri
