@@ -583,7 +583,6 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
     set mode($seq) $which
     set changed($which) 1
     if {$changed(public) == 1} {
-	Exmh_Debug Changed public
 	if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences).new w} out] == 0} {
 	    foreach sequence [array names sequences] {
 		if {[string compare $mode($sequence) "public"] == 0} {
@@ -604,7 +603,6 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
 	}
     }
     if {$changed(private) == 1} {
-	Exmh_Debug Changed private
 	if {[catch {open $mhProfile(context).new w} out] == 0} {
 	    puts $out [join $otherprivate "\n"]
 	    foreach sequence [array names sequences] {
@@ -620,7 +618,6 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
     }
 }
 proc MhSeq { how oldmsgs msgs } {
-    Exmh_Debug MhSeq $how $oldmsgs $msgs
     set new [MhSeqExpand $msgs]
     set old [MhSeqExpand $oldmsgs]
     if {[string compare $how "add"] == 0} {
@@ -649,7 +646,6 @@ proc MhSeq { how oldmsgs msgs } {
 	}
     } elseif {[string compare $how "replace"] == 0} {
 	# replace
-	Exmh_Debug $msgs
 	return $msgs
     } else {
 	return {}
@@ -659,7 +655,6 @@ proc MhSeq { how oldmsgs msgs } {
     return $seq
 }
 proc MhSeqMake { msgs } {
-    Exmh_Debug MhSeqMake $msgs
     set result [lindex $msgs 0]
     set first $result
     set last $result
