@@ -147,7 +147,8 @@ proc Html_Display {markup base} {
     set html(win) [HtmlWindow .html]
     upvar #0 HM$html(win) var
     set var(S_url) $base
-    Url_DisplayHtml $html(win) $base $markup
+    # Do this *after* the environment is complete.
+    after 1 [list Url_DisplayHtml $html(win) $base $markup]
     return $html(win)
 }
 proc Html_MimeShow {win part} {
