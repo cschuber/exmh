@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 12/31/2004 welch@panasas.com
+  lib/exwin.tcl: removed code that explicitly set ftoc and msg window
+    heights that had been added as part of the detatched msg and ftoc
+    changes.  This isn't necessary and causes misinterpretation of the
+    preferences ftoc lines value.
+
 cvs repository 12/29/2004 welch@panasas.com
   lib/mh.tcl: Optimized MhReadSeq to not loop through the mhPriv array in Tcl,
     but instead use the array command's ability to work on subsets of an

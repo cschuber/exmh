@@ -370,12 +370,16 @@ proc ExwinFtocMsgStop {canvas x y} {
 	    }
 	}
 
-        if {!$exwin(toplevelFtoc)} {
-            $exwin(ftocframe) configure -height [expr [winfo height $exwin(ftocframe)] + $dy]
-        }
-        if {!$exwin(toplevelMsg)} {
-            $exwin(msgframe)  configure -height [expr [winfo height $exwin(msgframe)] - $dy]
-        }
+        # Don't update the window sizes directly here, but instead
+        # let the variable traces do it later as a side effect of
+        # the Preferences_Tweak call.
+        
+        # if {!$exwin(toplevelFtoc)} {
+        #     $exwin(ftocframe) configure -height [expr [winfo height $exwin(ftocframe)] + $dy]
+        # }
+        # if {!$exwin(toplevelMsg)} {
+        #     $exwin(msgframe)  configure -height [expr [winfo height $exwin(msgframe)] - $dy]
+        # }
 
 	# Let redisplay kick in
 	after 100 "
