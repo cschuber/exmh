@@ -15,13 +15,26 @@ addresses.</b>
 
 <h3>Storing data in the Address Database</h3>
 
-<p>For the most part you can allow the Address Database to be
-self-maintaining.
+<p>You can choose to make the address database self-maintaining or you
+can maintain it "by hand".
 
-<p>Set "Enable Address Saving" to "on" in the Address
-Database Preference panel.  As you view mail messages the "From"
-address will be automatically extracted and a corresponding Address
-Database entry either created or updated.
+<p>For a self-maintaining address database, set "Enable Address
+Saving" to "on" in the Address Database Preference panel.  As you view
+mail messages the "From" address will be automatically extracted and a
+corresponding Address Database entry either created or updated.
+
+<p>You may also want to enable automatic deletion of old addresses.
+Each address in the database is marked with the date of the last
+message from that address.  You can set a "Remove Old Entries" to "on"
+and set "Days until removal" to the maximum elapsed days from the last
+message from an address and your address database will be "self
+cleaning".  Note that settings related to "Remove Old Entries" will be
+ignored if "Enable Address Saving" is not "on".
+
+<p>For a "hand maintained" address database, set "Enable Address
+Saving" to "off".  When you are viewing a message with a sender whose
+address you wish to keep, press the key defined in the "Key to save an
+address" field (default is Ctrl-Tab).
 
 <h3>Address Expansion: using data from the Address Database</h3>
 

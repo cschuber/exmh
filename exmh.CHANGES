@@ -4,6 +4,8 @@ cvs repository 6/9/1999
     Changed $HOME/.exmhdisplay to $HOME/.exmh/.display in misc scripts -cwg
     Allow ispell preferences to work before sedit has been opened
 	-Kevin.Christian@lsil.com via cwg
+    Change to allow automatic aging and deletion of address book entries
+        -Jim McMaster via haldevore
 
 cvs repository 6/8/1999
     added an auto-copy of old config files to new, with a nice dialog box

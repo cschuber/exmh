@@ -145,6 +145,27 @@ proc Addr_Init {} {
             "Use \"address (Full Name)\" Format"
             "If on, use \"address (Full Name)\" format for expanded addresses.  Otherwise, use \"Full Name <address>\" format."
         }
+        {
+            addr_db(remove_entries)
+            addressdbRemoveEntries
+            OFF
+            "Remove Old Entries"
+            "If on, remove old entries from the database"
+        }
+        {
+            addr_db(remove_days)
+            addressdbRemoveDays
+            {}
+            "Days Until Removal"
+            "Number of days until inactive entry is removed"
+        }
+        {
+            addr_db(remove_invalid_date)
+            addressdbRemoveInvalidDate
+            OFF
+            "Remove Invalid Date"
+            "If on, delete any entry with a non-null, but invalid date"
+        }
     }
 
     #addr_db is an array used for keeping state.
@@ -156,6 +177,9 @@ proc Addr_Init {} {
     set addr_db(lastfound) ""
     set addr_db(changed) 0
     set addr_db(filterstring) ""
+    set addr_db(remove_entries) 0
+    set addr_db(remove_days) ""
+    set addr_db(remove_invalid_date) 0
     trace variable addr_db(hideexcluded) w Addr_Browse_Exclude_Change
     Addr_LoadDB
 }
@@ -293,9 +317,29 @@ proc Addr_SaveFile { {force 0} } {
     if {0 == $addr_db(changed) && 0 == $force} return
 
     Exmh_Status "Saving address database..."
+    if {$addr_db(remove_days) == ""} {
+        set expiration 0
+     
+    } else {
+        set expiration [expr [clock seconds] - (60*60*24*$addr_db(remove_days))]
+    }
     set fd [open "$homeDir/.exmh_addr_tmp" w]
     foreach i [array names addr_list] {
-        puts $fd [list set addr_list($i) $addr_list($i)]
+       if {[catch {if {$addr_db(remove_entries) == 1 &&
+                       $addr_db(enabled) == 1 &&
+                       $expiration > 0 &&
+                       [lindex $addr_list($i) 1] != "" &&
+                       [clock scan [lindex $addr_list($i) 1]] < $expiration} {
+                      unset addr_list($i) 
+                  } else {
+                     puts $fd [list set addr_list($i) $addr_list($i)]
+                  }}]!= 0} {
+          if {$addr_db(remove_invalid_date)} {
+             unset addr_list($i)
+          } else {
+             puts $fd [list set addr_list($i) $addr_list($i)]
+          }
+       }
     }
     close $fd
     #  the first time the address file won`t exist yet...
