@@ -2146,7 +2146,7 @@ proc MimeParseSingle {tkw part fileIO } {
 	    }  else {
 		set tag {}
 	    }
-	    set start [$tkw index end]
+	    set start [$tkw index "end -1line"]
 	    $tkw insert end $firstLine\n $tag
 	    set size [expr $msg(maxsize) / 2]
 	    while {1} {

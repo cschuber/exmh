@@ -6,6 +6,7 @@ cvs repository 07/10/2001 Brent Welch <welch@panasas.com>
     spawned by the exmh-async wrapper script.
     exmh-async.MASTER: Removed a split/join construct that screwed
     up attempts to pass arguments like {cal SetSyn("mail")} to editors.
+    lib/mime.tcl: Fix to highlighting text range from John Beck.
 
 cvs repository 07/09/2001 Brent Welch <welch@panasas.com>
     Makefile:
