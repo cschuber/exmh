@@ -408,8 +408,7 @@ proc Flist_UnseenUpdate { folder } {
     Flist_UnseenMsgs $folder
     if {[string compare $folder $exmh(folder)] == 0} {
 	Scan_FolderUpdate $folder
-    }
-    if {[lsearch $flist(unvisited) $folder] < 0} {
+    } elseif {[lsearch $flist(unvisited) $folder] < 0} {
 	lappend flist(unvisited) $folder
 	set flist(unvisitedNext) $flist(unvisited)
     }

@@ -1,4 +1,13 @@
 HISTORY
+cvs repository 07/15/2002 cwg-exmh@deepeddy.com
+    flist.tcl - in Flist_UnseenUpdate, don't push the folder onto the
+	unvisited list if it's the current folder.
+
+cvs repository 07/15/2002 cwg-exmh@deepeddy.com
+    folder.tcl - Gratitiously change the name of the 'f' variable
+	wherever it's used either to 'folder' or to 'file' to be more
+	consistent with other code.
+
 cvs repository 07/13/2002 cwg-exmh@deepeddy.com
     flist.tcl,folder.tcl - Completely back out the fixpacksort patch
 	from two years ago that hal installed because of the

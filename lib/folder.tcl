@@ -20,10 +20,10 @@ proc Folder_Init {} {
 	#scan named folder
 	set exmh(folder) $argv
     } else {
-	if [catch {exec folder -fast < /dev/null} f] {
+	if [catch {exec folder -fast < /dev/null} folder] {
 	    set exmh(folder) {}
 	} else {
-	    set exmh(folder) $f
+	    set exmh(folder) $folder
 	}
     }
 }
@@ -63,12 +63,12 @@ proc Folder_Summary { folder } {
     }
 }
 
-proc Folder_Change {f {msgShowProc Msg_ShowCurrent}} {
-#    LogStart "Folder_Change $f"
+proc Folder_Change {folder {msgShowProc Msg_ShowCurrent}} {
+#    LogStart "Folder_Change $folder"
     Exmh_Debug ****************
-    Exmh_Debug Folder_Change $f [time [list  FolderChange $f $msgShowProc]]
+    Exmh_Debug Folder_Change $folder [time [list  FolderChange $folder $msgShowProc]]
 }
-proc FolderChange {f msgShowProc} {
+proc FolderChange {folder msgShowProc} {
     global exmh mhProfile ftoc msg
     if {[string compare [wm state .] normal] != 0} {
 	if {$exmh(iconic)} {
@@ -83,23 +83,23 @@ proc FolderChange {f msgShowProc} {
 	return
     }
     # Trim off leading mail path
-    if [regsub ^$mhProfile(path)/ $f {} newf] {
-	set f $newf
+    if [regsub ^$mhProfile(path)/ $folder {} newfolder] {
+	set folder $newfolder
     }
-    if {[string length $f] == 0} {
+    if {[string length $folder] == 0} {
 	return
     }
-    if ![file isdirectory $mhProfile(path)/$f] {
-	Exmh_Status "Folder $f doesn't exist" error
+    if ![file isdirectory $mhProfile(path)/$folder] {
+	Exmh_Status "Folder $folder doesn't exist" error
 	return
     }
     set oldFolder $exmh(folder)
-    Exmh_Status "Changing to $f ..."
+    Exmh_Status "Changing to $folder ..."
     set msg(id) ""
-    if {$f != $exmh(folder)} {
+    if {$folder != $exmh(folder)} {
 	Exmh_Debug Exmh_CheckPoint [time Exmh_CheckPoint]
 	global mhProfile
-	set summary [Mh_Folder $f]	;# Set MH folder state
+	set summary [Mh_Folder $folder]	;# Set MH folder state
     } else {
 	if {$ftoc(folder) == {} && $exmh(started)} {
 	    # pseudo-display -> Checkpoint to set cur msg
@@ -113,27 +113,27 @@ proc FolderChange {f msgShowProc} {
     if [info exists folderHook(leave,$oldFolder)] {
 	$folderHook(leave,$oldFolder) $oldFolder leave
     }
-    Label_Folder $f $summary
-    Fdisp_HighlightCur $f
-    Flist_Visited $f
-    set exmh(folder) $f
+    Label_Folder $folder $summary
+    Fdisp_HighlightCur $folder
+    Flist_Visited $folder
+    set exmh(folder) $folder
     if {$ftoc(autoSort)} {
-	if [Flist_NumUnseen $f] {
+	if [Flist_NumUnseen $folder] {
 	    Ftoc_Sort
 	}
     }
-    Flist_UnseenUpdate $f
+    Flist_UnseenUpdate $folder
     Scan_CacheUpdate
-    Exmh_Status $f
+    Exmh_Status $folder
     # Either Msg_ShowCurrent or Msg_ShowUnseen
     eval $msgShowProc
 
     # Take any required folder-specific action (e.g., for drafts folder)
-    if [info exists folderHook(enter,$f)] {
-	$folderHook(enter,$f) $f enter
+    if [info exists folderHook(enter,$folder)] {
+	$folderHook(enter,$folder) $folder enter
     }
     foreach cmd [info commands Hook_FolderChange*] {
-	$cmd $f
+	$cmd $folder
     }
 }
 
@@ -142,33 +142,33 @@ proc Folder_Unseen {} {
 #    Folder_Change [Flist_NextUnseen]
 }
 
-proc Folder_Target {f} {
+proc Folder_Target {folder} {
     global exmh mhProfile
 
-    if ![file isdirectory $mhProfile(path)/$f] {
-	Exmh_Status "$mhProfile(path)/$f doesn't exist"
+    if ![file isdirectory $mhProfile(path)/$folder] {
+	Exmh_Status "$mhProfile(path)/$folder doesn't exist"
 	return 0
     }
-    if {$exmh(folder) == $f} {
+    if {$exmh(folder) == $folder} {
 	Exmh_Status "Target must be different than current" warning
 	return 0
     }
-    Fdisp_HighlightTarget $f
-    set exmh(target) $f
-    Exmh_Status "$f is target for moves and copies"
+    Fdisp_HighlightTarget $folder
+    set exmh(target) $folder
+    Exmh_Status "$folder is target for moves and copies"
     return 1
 }
-proc Folder_TargetMove { f {moveProc Ftoc_MoveMark} } {
-    if [Folder_Target $f] {
+proc Folder_TargetMove { folder {moveProc Ftoc_MoveMark} } {
+    if [Folder_Target $folder] {
 	Msg_Move $moveProc
-	Fcache_Folder $f
+	Fcache_Folder $folder
     }
 }
 
-proc Folder_TargetCopy { f {copyProc Ftoc_CopyMark} } {
-    if [Folder_Target $f] {
+proc Folder_TargetCopy { folder {copyProc Ftoc_CopyMark} } {
+    if [Folder_Target $folder] {
 	Msg_Move $copyProc advance?
-	Fcache_Folder $f
+	Fcache_Folder $folder
     }
 }
 
@@ -199,9 +199,9 @@ proc Folder_Sort { args } {
 }
 
 proc Folder_Previous {} {
-    set f [Ftoc_LastFolder]
-    if {[string length $f]} {
-	Folder_Change $f
+    set folder [Ftoc_LastFolder]
+    if {[string length $folder]} {
+	Folder_Change $folder
     }
 }
 
@@ -276,10 +276,10 @@ proc Folder_Purge { {folder {}} } {
     }
     set purgesecs [expr $mhProfile(purgeage) * 24 * 60 * 60]
     set n 0
-    foreach f [glob -nocomplain $mhProfile(path)/$folder/$mhProfile(delprefix)*] {
-	if {[file mtime $f] + $purgesecs < $now} {
-	    Exmh_Debug Purge $f
-	    File_Delete $f
+    foreach file [glob -nocomplain $mhProfile(path)/$folder/$mhProfile(delprefix)*] {
+	if {[file mtime $file] + $purgesecs < $now} {
+	    Exmh_Debug Purge $file
+	    File_Delete $file
 	    incr n
 	}
     }
@@ -292,8 +292,8 @@ proc Folder_Purge { {folder {}} } {
 proc Folder_PurgeAll {} {
     global flist
     set n 0
-    foreach f $flist(allfolders) {
-	incr n [Folder_Purge $f]
+    foreach folder $flist(allfolders) {
+	incr n [Folder_Purge $folder]
     }
     if {$n > 0} {
 	Exmh_Status "Folder_PurgeAll $n msgs purged total"
@@ -352,8 +352,8 @@ proc Folder_FindShared {} {
 	Exmh_Debug $in
 	return
     }
-    foreach f [split [read $in] \n] {
-	Folder_IsShared $f
+    foreach folder [split [read $in] \n] {
+	Folder_IsShared $folder
     }
     close $in
 }
