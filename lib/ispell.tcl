@@ -313,7 +313,7 @@ proc IspellWriteSpellBuffer { word } {
 
     puts $ispellVars(spell_buffer) $word
     if { [ catch { flush $ispellVars(spell_buffer) } ] } {
-	puts "Ispell process terminated!!!!!, temp disabling"
+	Exmh_Debug "Ispell process terminated!!!!!, temp disabling"
 	set ispellVars(language) disabled
 	Ispell_Init
 	return "*" ; # return if we had to restart
@@ -354,7 +354,7 @@ proc IspellWords line {
     # we have to put the ^ in front of the line so ispell works correctly
     # see ispell(1) for more details
     if { [ catch { flush $ispellVars(spell_buffer) } ] } {
-	puts "Ispell process terminated!!!!!, restarting"
+	Exmh_Debug "Ispell process terminated!!!!!, restarting"
 	Ispell_Init
 	return "*" ; # return if we had to restart
     }

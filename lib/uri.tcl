@@ -276,6 +276,8 @@ proc Hook_MsgClipParseUri {msgPath t} {
 
 proc URI_ActiveText { w start end URI} {
     global uri
+    # Spaces are optional around the edges of the URI in the <a href> context
+    set URI [string trim $URI]
     # quote percents in URLs because they appear in binding commands
     regsub -all % $URI %% URI
     set id [TextButtonRange $w $start $end [list URI_StartViewer $URI]]
