@@ -525,7 +525,7 @@ proc Ftoc_MsgNumber { L } {
     return [Ftoc_MsgNumberRaw $line]
 }
 proc Ftoc_MsgNumberRaw { line } {
-    if [regexp {( *)([0-9]+)} $line foo foo2 number] {
+    if [regexp {^( *)([0-9]+)} $line foo foo2 number] {
 	return $number
     } else {
 	return ""
