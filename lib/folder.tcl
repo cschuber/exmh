@@ -168,7 +168,7 @@ proc Folder_TargetCopy { f {copyProc Ftoc_CopyMark} } {
     }
 }
 
-proc Folder_TargetClear {{f {}}} {
+proc Folder_TargetClear {} {
     global exmh
 
     Fdisp_HighlightTarget ""
