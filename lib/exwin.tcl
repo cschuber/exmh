@@ -30,6 +30,10 @@ around with the (by default) middle button."}
 	{exwin(scrollAccel) scrollAccel 4 {Drag-Scroll acceleration}
 "How fast things scroll when you drag a text widget
 around with the (by default) middle button with Shift depressed."}
+  	{exwin(wheelEnabled) wheelEnabled OFF "Wheel Mouse"
+"Enables the use of wheel mice, assuming proper
+X Server support (ie, button 4 + 5)
+You must restart exmh for this option to take effect."}
     {widgetText(constrained) textConstrainScroll OFF "Constrained Scrolling"
 "Constrained scrolling clamps the last line
 of text to the bottom of the text widget."} 
@@ -67,10 +71,26 @@ windows."}
     set exwin(ftextLinesSave) $exwin(ftextLines)
     trace variable exwin(ftextLines) w ExwinFixupFtextLines
 #    trace variable exwin(mtextLines) w ExwinFixupMtextLines
+
+    if {$exwin(wheelEnabled)} {
+	mscroll TScroll 5
+    }
+
     if ![info exists exwin(toplevels)] {
 	set exwin(toplevels) [option get . exwinPaths {}]
     }
 }
+
+proc mscroll {bindtag num} {
+    bind $bindtag <Button-5> [list %W yview scroll $num units]
+    bind $bindtag <Button-4> [list %W yview scroll -$num units]
+    bind $bindtag <Shift-Button-5> [list %W yview scroll 1 units]
+    bind $bindtag <Shift-Button-4> [list %W yview scroll -1 units]
+    bind $bindtag <Control-Button-5> [list %W yview scroll 1 pages]
+    bind $bindtag <Control-Button-4> [list %W yview scroll -1 pages]
+}
+
+
 proc ExwinFixupFtextLines { args } {
     global exwin
     Exmh_Debug ExwinFixupFtextLines $exwin(ftextLines)
@@ -116,6 +136,11 @@ proc Exwin_Layout {} {
     set exwin(ftext) [Widget_Text [Widget_Frame . ftoc Ftoc $fixed] \
 				$exwin(ftextLines)]
     Ftoc_Bindings $exwin(ftext)
+
+    if {$exwin(wheelEnabled)} {
+	mscroll $exwin(ftext) 1
+    }
+
     Ftoc_ColorConfigure $exwin(ftext)
 
     # Frame for faces, status, message buttons

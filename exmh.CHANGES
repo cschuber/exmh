@@ -2,6 +2,8 @@ HISTORY
 
 cvs repository 08/17/1999
     PGP without seditpgp works again.  -bmah
+    Wheel mouse support added, enable it in the Windows + Scrolling dialog.
+	- slipcon
 
 cvs repository 08/13/1999
     Don't try to coerce text/plain PGP messages to application/pgp 
