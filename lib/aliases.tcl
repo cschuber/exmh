@@ -172,7 +172,7 @@ proc Aliases_Rebuild {{item {}}} {
     set names [AliasesList]
     eval .aliaspref.alias.listbox insert end $names
     if {$item == {}} {
-	.aliaspref.alias.listbox clear 0 end
+	.aliaspref.alias.listbox selection clear 0 end
 	.aliaspref.alias.listbox see $top
 	set alias {}
     } else {
@@ -222,7 +222,7 @@ proc Address_Rebuild {{item {}}} {
 
     # now select appropriate item from the list
     if {$item == {}} {
-	.aliaspref.addr.listbox clear 0 end
+	.aliaspref.addr.listbox selection clear 0 end
     } else {
 	set index [lsearch -exact $names $item]
 	.aliaspref.addr.listbox select set $index

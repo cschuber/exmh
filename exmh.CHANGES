@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 4/8/1999
+    Fixed minor problem in x-image-url with "~" in path names. -haldevore
+    Fixed bug in alias editor -haldevore
+    Fix address-book lookup/expansion to create a new "To:",
+        "cc:" or whatever line so wrapping isn't a problem. -haldevore
+
 cvs repository 4/4/1999
     Code cleanup:  Removed dead code which only ran in pre tk-4.1 versions.
 	Also, removed the -mono flag since it hasn't actually worked since 

@@ -327,6 +327,14 @@ in all cases.  Change internally using glob but do NOT save the
 "globbed" version.
 
 
+Number: 37
+Priority: Low
+Scope: Narrow
+Complexity: 
+
+Provide support for editing "named" lists in aliases
+
+
 
 $Id$
 
