@@ -230,7 +230,12 @@ proc Msg_CompUse {folder id} {
     }
 }
 # Compose a message to a particular person
-proc Msg_CompTo {url args} {
+proc Msg_CompTo {address args} {
+    eval {Msg_Mailto "mailto:$address"} $args
+}
+
+# Compose a message based on a mailto URL
+proc Msg_Mailto {url args} {
     global mhProfile
     if {![eval MsgComp $args]} {
 	return
@@ -239,40 +244,48 @@ proc Msg_CompTo {url args} {
     if {$draftID == {}} {
 	return
     }
-    # re-write draft with new To: header
+    # See RFC 2368 for mailto: URL syntax
+    regsub mailto: $url {} url
     if [catch {
 	set path $mhProfile(path)/$mhProfile(draft-folder)/$draftID
 	set in [open $path]
 	set X [read $in]
 	close $in
-	if {[regexp -nocase {^(.*)\?} $url address]} {
-	    regsub -nocase {[^\?]*\?(.*)} $url {\1} headers
+	if {[regexp -nocase {\?} $url]} {
+	    regsub -nocase {.*\?} $url {} headers
 	    foreach hdr [split $headers &] {
 		if {[regexp -nocase {body=} $hdr]} {
 		    regsub -nocase {body=} $hdr {} body
-		    set body [DecodeURL $body]
-		    set X "$X$body"
+		    set body [MsgDecodeURL $body]
 		} else {
-		    regsub {=.*} $hdr {} hdr_name
+		    regexp {(.*)=(.*)} $hdr {} hdr_name hdr_value
 		    set hdr_name [string toupper [string range $hdr_name 0 0]][string tolower [string range $hdr_name 1 end]]
-		    regsub {.*=} $hdr {} hdr_value
-		    set hdr_value [DecodeURL $hdr_value]
-		    if {[string compare $hdr_name to] == 0} {
+		    set hdr_value [MsgDecodeURL $hdr_value]
+		    if {[string compare $hdr_name To] == 0} {
 			set to $hdr_value
 		    }
-		    regsub -nocase "(^|\n)$hdr_name:\[^\n\]*\n" $X "\\1$hdr_name: $hdr_value\n" X
+		    if {![regsub -nocase "(^|\n)$hdr_name:\[^\n\]*\n" $X "\\1$hdr_name: $hdr_value\n" X]} {
+			set hend [string last "\n--" $X]
+			set X "[string range $X 0 $hend]$hdr_name: $hdr_value\n[string range $X [expr $hend + 1] end]"
+		    }
 		}
 	    }
 	    regsub -nocase {\?.*} $url {} url
-	    set url [DecodeURL $url]
- 	    if [info exists to] {
+	}
+	if [info exists body] {
+	    append X "\n$body" 
+	}
+	set url [MsgDecodeURL $url]
+	if {[string length $url]>0} {
+	    if [info exists to] {
 		regsub -nocase "(^|\n)to:\[^\n\]*\n" $X "\\1To: $url, $to\n" X
- 	    } else {
+	    } else {
 		regsub -nocase "(^|\n)to:\[^\n\]*\n" $X "\\1To: $url\n" X
- 	    }
+	    }
 	} else {
-	    set address $url
-	    regsub -nocase "(^|\n)to:\[^\n\]*\n" $X "\\1To: $address\n" X
+	    if [info exists to] {
+		regsub -nocase "(^|\n)to:\[^\n\]*\n" $X "\\1To: $to\n" X
+	    }
 	}
 	set out [open $path w]
 	puts -nonewline $out $X
@@ -283,6 +296,7 @@ proc Msg_CompTo {url args} {
     }
     Edit_Draft					;# Run the editor
 }
+
 # Use current selection as To: header
 proc Msg_CompSel {args} {
     global mhProfile
@@ -297,7 +311,6 @@ proc Msg_CompSel {args} {
 proc MsgComp {args} {
     # allow args to include $exmh(folder) $msg(id) $mhProfile(path)
     global exmh msg mhProfile	
-    set exmh(ctype) {comp}
     if [catch {
 	set ix [lsearch $args -form]
 	if {$ix < 0} {
@@ -307,6 +320,7 @@ proc MsgComp {args} {
 	}
 	Exmh_Status "comp $args"
 	eval {MhExec comp -nowhatnowproc} $args
+	set exmh([Mh_Cur $mhProfile(draft-folder)],action) comp
     } err] {
 	Exmh_Status "comp: $err"
 	return 0
@@ -326,7 +340,6 @@ proc Msg_ReplyAll { } {
 
 proc Msg_Reply { args } {
     global exmh msg mhProfile
-    set exmh(ctype) {repl}
     if {[string length $args] == 0} {
 	set args Mh_ReplySetup
     }
@@ -375,7 +388,6 @@ proc Msg_Reply { args } {
 
 proc Msg_Forward { args } {
     global exmh msg mhProfile
-    set exmh(ctype) {forw}
     if {[string length $args] == 0} {
 	set args Mh_ForwSetup
     }
@@ -435,7 +447,6 @@ proc Msg_Forward { args } {
 
 proc Msg_Dist { args } {
     global exmh msg
-    set exmh(ctype) {dist}
     if {[string length $args] == 0} {
 	set args Mh_DistSetup
     }
@@ -646,6 +657,9 @@ proc Msg_Edit {} {
 	    Exmh_Status $err error
 	}
     } else {
+	if {$editor($edittype) == "sedit"} {
+	    set exmh([SeditId $msg(path)],action) auto
+	}
 	EditStart $msg(path) $edittype
     }
 }
@@ -716,3 +730,16 @@ proc Msg_CopySelection {} {
 proc Msg_Trash { {trashFolder TRASH} } {
     Folder_TargetMove $trashFolder
 }
+proc MsgDecodeURL { url } {
+    regsub -all -nocase {%0a} $url {}   url
+    regsub -all -nocase {%0d} $url "\n" url
+    regsub -all         {%20} $url { }  url
+    regsub -all         {%25} $url {%}  url
+    regsub -all -nocase {%2c} $url {,}  url
+    regsub -all -nocase {%3c} $url {<}  url
+    regsub -all -nocase {%3d} $url {=}  url
+    regsub -all -nocase {%3e} $url {>}  url
+    regsub -all -nocase {%3f} $url {?}  url
+    return $url
+}
+
