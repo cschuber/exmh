@@ -1,0 +1,53 @@
+<Html>
+<Head>
+<Title>Preferences</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1 align=center>Preferences</h1>
+<p>
+The Preference settings are divided into a number of subsections. These
+correspond to different modules of the Exmh implementation. Use the
+buttons in the main Preferences window to select various sections.
+
+<p>
+Information about each setting will appear if you click on the short
+description of the preference item. 
+<p>
+There are three types of options you can set through the Preferences
+dialog: 
+<ol>
+<li>Choices are represented by radio-style buttons where only one button
+in the set can be enabled at once. These take effect immediately. <li>Booleans
+are represented by check-sytle buttons. If the checkbox is dark, then
+the option is turned on. This takes effect immediately. 
+<li>Numeric and filename settings have entry widgets in which you can
+type in a new value. The new value takes effect when you type &lt;Return&gt;,
+or when you click "Save". 
+</ol>
+<h2>How Preferences Take Effect</h2>
+<p>
+The preference dialogs are tied more directly to exmh than you might
+expect. If you toggle a radio or check button, the underlying variable
+that controls exmh is changed immediately. The Save button commits
+your settings to disk. 
+<p>
+The Save button will save your settings in a .exmh-defaults file in
+your home directory. This is an Xresources-style file. 
+<p>
+The Reset button will restore the settings from defaults and your last
+saved preferences file. 
+<p>
+The Dismiss button leaves the settings as they are displayed and removes
+the pref window. Thus, those settings that "take effect immediately"
+are still in effect but they are not saved to your pref file. 
+
+<h2><a HREF="index.html">Main Help Index</a></h2>
+
+
+</Body>
+</Html>
+

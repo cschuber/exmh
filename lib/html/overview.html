@@ -1,0 +1,64 @@
+<TITLE>exmh- Brief Overview</TITLE>
+<H1>A Brief Overview of exmh</H1>
+
+<EM>by Brent Welch</EM><P>
+
+The exmh display is divided into three main displays.  At the top is an
+array of labels that correspond to each of your toplevel mail folders.
+These are highlighted in different ways to indicate their state.  The
+blue labels have new messages in them.  The labels with a drop shadow
+have folders nested under them.  In the picture, the exmh folder has a
+little popup that lists the folders nested under it.  The current
+folder is outlined in red.  If you are refiling messages into another
+folder, then the target folder will be yellow.  The Color Legend entry
+under the Help... menu
+brings up a key that explains the highlighting.  On a monochrome
+screen, the highlighting is done with bitmaps, underlining, and
+stippling in order to provide similar feedback.  <P>
+
+(The picture is not up-to-date, but it is pretty close.
+The current exmh version is 1.6beta,
+which was released in March 1995.) <P>
+
+Right under the main folder label display is a cache of recently visited
+folders.  These are equivalent to the labels in the main display and
+are just there for  commonly used folders.  (Right now this is managed
+in a strict LRU fashion, and that needs to be improved.) <P>
+
+The middle part of the display shows the results of the MH scan command
+that summarizes the messages in your folder.  Again, color highlighting
+is used to indicate the current message, unseen messages, and messages
+that are marked for delete or refile into another folder.  These
+pending changes are committed when you click the Commit button, or when
+you change folders and you have the autoCommit preference item
+chosen.<P>
+
+The bottom part of the display shows the current message.  You can set
+up different headers to have different color highlights.  Some of the
+less interesting headers start off scrolled off the top of the
+display.  The facesaver bitmap of the person that sent the message, or
+their company's logo, is displayed just above and to the left of the
+message area.
+<P>
+<IMG SRC="exmh.snap1.gif">
+
+<H2>Preferences</H2>
+
+There are a growing number of knobs and dials for exmh itself, and
+these are controlled via a Preferences user interface.  The preferences
+are saved in your ~/.exmh-defaults file as a set of X resource
+specifications.  In addition, you can tweak colors and fonts and other
+TK widget attributes via X resources.<P>
+
+There are so many knobs and dials, in fact, that they are divided into
+sections that correspond to various modules of the implementation.  The
+whole thing is table driven and you might be interested in using it for
+your own TK application.  The following shows the toplevel preferences
+window and one of the module-specific preferences windows.<P>
+
+<IMG SRC="exmh.pref.gif">
+<P>
+
+<A HREF="index.html">
+<IMG SRC="left-arrow.gif" ALT="">
+Back to the exmh index</A>

@@ -1,0 +1,162 @@
+<pre>
+ABOUT SETTING UP MAIL ON PPP-CONNECTED DIALUP MACHINES.
+=======================================================
+
+# This howto is distributed in the hope that it will be useful,        #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of       #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                 #
+
+This howto is for you if you have a Linux machine that does not have a
+permanent internet connection but rather uses dialup PPP to connect to
+your internet service provider. A common problem is how to masquerade as
+your ISP's mailhost to get
+
+From: me@myispprovider.com
+
+instead of
+
+From: me@mylocalPPPmachine.nowhere
+
+Another problem is how to send and receive mail.
+
+0.) Fixing MH 
+=============
+You just need to add two lines to your MH mail transport configuration
+file.  For original MH this file is called mtstailor (typically
+installed in /usr/local/lib/mh).  For nmh it is mts.conf (typically
+installed in /usr/local/nmh/etc).  In either case you put in two
+entries: "localname" defines the machine name used in From: lines,
+"clientname" the machine name used in the SMTP HELO header.
+(If you don't put a clientname entry then localname gets used, which
+may make your SMTP server unhappy if it tries to verify HELO.)
+
+For example, I have:
+
+localname:      sss.pgh.pa.us
+clientname:     sss.sss.pgh.pa.us
+
+If you do step 0 then you probably do not have to setup sendmail masquerading.
+
+1.) Setting up sendmail for masquerading
+========================================
+
+If you don't use sendmail, you're on your own. If you're using sendmail,
+all you need to do is to replace your /etc/sendmail.cf with a new
+sendmail.cf that you generate using the m4 files that come with any
+(newer) sendmail source distribution.
+
+In that distribution you'll find directories ./cf/cf, ./cf/domain,
+../cf/feature, ... You first have to create an m4 config file for your
+host. The file ./cf/README explains how to do that. If you don't want to
+read it, here is a quick start with an m4 config file (myhost.mc) that
+should be appropriate in most cases (if you don't use procmail, delete
+the lines regarding procmail; BTW, redhat 4.2 uses procmail):
+
+# myhost.mc
+VERSIONID(`Put here some free text describing the version of this config file')
+OSTYPE(linux)
+DOMAIN(generic)
+define(`SMART_HOST', `myispmailhost.com')dnl
+FEATURE(masquerade_envelope)
+MASQUERADE_AS(myispdomain)
+define(`PROCMAIL_MAILER_PATH',`/usr/bin/procmail')dnl
+define(`confCOPY_ERRORS_TO',`mylocalloginname')dnl
+FEATURE(nouucp)
+FEATURE(local_procmail)
+MAILER(local)
+MAILER(smtp)
+MAILER(procmail)
+
+In many cases, myispmailhost.com and myispdomain are the same:
+
+Myispmailhost is the host that accepts SMTP connections on tcp port 25
+and acts as a mail relay to the outer world (smart host). Very often
+the name of a PPP connected machine does not have a valid entry in
+DNS (domain name service), i.e. other machines that try to determine
+your IP address using your hostname will get an error. Some domains
+(notably AOL) won't accept mail from your host if they get such an
+error. Therefore, you need to use a mail relay since otherwise you won't
+be able to send mail to such domains. If you did not get the address of
+a mail relay from your ISP provider, the best bet is to use the same
+host that you were told to use as your POP server.
+
+Myispdomain is what you want to see in your "From:" lines. For example,
+if you choose
+
+MASQUERADE_AS(isp.nowhere.com)
+
+your "From:" lines will appear as
+
+From: loginname@isp.nowhere.com
+
+although the name of your PPP connected Unix machine is completely different.
+
+After editing myhost.mc, put the file into ./cf/cf. Then cd to ./cf, call
+
+m4 m4/cf.m4 cf/myhost.mc > sendmail.cf
+su
+cp sendmail.cf /etc
+touch /etc/sendmail.cw
+
+and restart sendmail. That's all.
+
+
+2.) Setting up fetchmail
+========================
+
+Fetchmail is very good at downloading mail from your mailbox at your ISP
+using POP3 (post office protocol version 3).
+
+First get and install fetchmail (for example, from any sunsite
+mirror). Configuring fetchmail means basically editing a file
+~/.fetchmailrc. Here is my ~/.fetchmailrc:
+
+-------------------------------------------------------------------
+poll sirius.physik.TU-Berlin.DE protocol pop3:
+	user henrik there has password ********, is henrik here;
+-------------------------------------------------------------------
+
+Replace "sirius..." with the name of your POP server (your ISP should
+have told you which server to use). Of course, you have to change the
+login names and the password.
+
+Don't forget to set the file permissions to 600 using "chmod 600
+~/.fetchmailrc" (otherwise other users can read your password).
+
+
+3.) Automatically sending the sendmail queue and fetching mail at dialup
+========================================================================
+
+If you're sending mail while not being connected to the internet,
+sendmail will append this mail to the mail queue. To automatically send
+all mail in the queue whenever you connect to the net using PPP, add
+this line to your /etc/ppp/ip-up:
+
+  PATH=$PATH:/usr/sbin:/sbin
+  export PATH
+  sendmail -q
+
+You probably want to fetch all your new mail whenever you connect,
+so add this to /etc/ppp/ip-up (will fetch your mail on startup and
+afterwards in intervals of 300 seconds):
+
+  su -c 'fetchmail --daemon 300 --syslog;' henrik
+
+(replace "henrik" with your local login name)
+
+and add this to /etc/ppp/ip-down to automatically kill the fetchmail
+daemon when you disconnect:
+
+  PATH=$PATH:/usr/sbin:/sbin
+  export PATH
+  su -c "fetchmail --quit" henrik
+
+That's all.
+
+---------------------------------------------------------------------
+Henrik Seidel, http://satchmo.physik.tu-berlin.de/~henrik/
+TU Berlin, Inst. f. Theor. Physik, Sekr. PN 7-1, Hardenbergstr. 36
+10623 Berlin, GERMANY, tel: +49-30-314-23000 fax: +49-30-314-21130
+use "finger henrik@satchmo.physik.tu-berlin.de" to get my public pgp key
+---------------------------------------------------------------------
+</pre>

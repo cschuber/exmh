@@ -1,0 +1,51 @@
+<Html>
+<Head>
+<Title>PGP</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1 align=center>PGP</h1>
+<h2 align=center>The Pretty Good Privacy package from Zimmermann. </h2>
+<p>
+PGP lets you sign and encrypt messages using public keys. There is
+considerable documentation that comes with PGP itself. PGP is to an
+email message what an envelope is to a letter. 
+<p>
+Exmh allows to conveniently use PGP to encrypt or sign your messages
+and decrypt and check signatures on messages you receive. 
+<p>
+To start using PGP, you have to create a key pair. A key pair consists
+of a public key (that you want to spread around) and a private key
+(that you don't want anybody else than yourself to have). 
+<p>
+The private key is protected by a password. You should be *very* careful
+not to lose that password *and* not to let anybody get access to it.
+PGP can offer a very high level of security, but if people can read
+your file (especially the file that contains the private key) and can
+find your password (reading keystrokes is very easy once you have access
+to the Xserver) then all the great work put into the encryption algorithm
+is totally useless :-) 
+<p>
+This <button -command Pgp_Setup>Make Key</button> button will run PGP
+to create a key pair. It will create a directory where PGP keys will
+be kept (by default ~/.pgp), make a key pair (this can be fairly time
+consuming), sign the key (you should read the PGP documentation to
+find out why this is done. It doesn't explain why it isn't automatically
+done by PGP, tho :-( ) and finally will send the public key to the
+keyserver so that other people can find it (in case they want to send
+you encrypted mail or if they want to check some signature of yours).
+
+<p>
+You must restart exmh after creating your public key. By default, exmh
+does not display any PGP-related menus if you are not yet set up for
+PGP. 
+
+<h2><a HREF="index.html">Main Help Index</a></h2>
+
+
+</Body>
+</Html>
+

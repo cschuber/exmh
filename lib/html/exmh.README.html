@@ -1,0 +1,547 @@
+<Html>
+<Head>
+<Title>exmh README</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1>exmh.README.html </h1>
+<h3>Contents </h3>
+<ul>
+<li><a href="#version">Version 
+</a>
+<li><a href="#newexmhinstallers">New EXMH Installers 
+</a>
+<li><a href="#requiredpkgs">Required Packages 
+</a>
+<li><a href="#optionalpkgs">Optional Packages 
+</a>
+<li><a href="#knownbugs">Known Bugs 
+</a>
+<li><a href="#faq">Getting Help 
+</a>
+<li><a href="#flashes">Flashes 
+</a>
+<li><a href="#performance">Performance Hints 
+</a>
+<li><a href="#reverse">Reverse Video 
+</a>
+<li><a href="#colorized">Colorized Headers 
+</a>
+<li><a href="#mailing">Mailing Lists 
+</a>
+<li><a href="#acks">Acknowledgements 
+</a>
+<li><a href="#features">Features 
+</a>
+<li><a href="#install">Installation
+</a>
+<li><a href="#send">Tk Send Problem
+</a>
+<li><a href="#remark">Concluding Remarks 
+</a>
+<li><a href="#author">Author 
+</a>
+</ul>
+<hr>
+
+<h3><a NAME="version">Version</a></h3>
+Last modified: February 25, 1997
+<br>
+
+exmh version: 2.0.2
+<br>
+
+"Brent Welch" &lt;welch@acm.org&gt;
+<p>
+<i>exmh</i> is a TCL/TK based interface to the MH mail system. 
+<p>
+Version 2.0 requires Tk 4.1 or higher. <i>exmh</i> is known to work
+with MH versions 6.7 and 6.8.* 
+<p>
+Experienced EXMH installers should check FLASHES below and the <i>exmh.CHANGES</i>
+file. 
+<hr>
+
+<h3><a NAME="newexmhinstallers">New EXMH installers</a></h3>
+Please read through *all* of this, thanks, especially the part at the
+end about the TK send command. See also the on-line FAQ file under
+the Help... menu. 
+<p>
+The exmh documentation is now all in HTML and viewable from within
+exmh. 
+<hr>
+<p>
+Please encourage your <i>exmh</i> users to REGISTER via the Register
+menu entry under the Help... menu. This let's me track <i>exmh</i>
+usage and get user feedback. I won't abuse this registration - there
+is no obligation associated with registration, but I would like all
+<i>exmh</i> users to do it. 
+<p>
+All registration does is send me a mail message. You get to add your
+comments, pro and con, about <i>exmh</i>. I've learned a lot from the
+2000+ registrations I have received so far. Thanks! 
+<p>
+EXMH lives "high in the food chain". You'll need some additional software.
+
+<hr>
+
+<h3><a NAME="requiredpkgs">Required Packages</a></h3>
+Find <font COLOR="#FF0000">Tcl</font> and <font COLOR="#FF0000">Tk</font>
+on 
+<pre>
+	<a href="http://www.scriptics.com/download/">http://www.scriptics.com/download/</a>
+	<a href="ftp://ftp.scriptics.com/pub/tcl">ftp.scriptics.com:/pub/tcl</a>
+	<a href="ftp://ftp.sunlabs.com/pub/tcl">ftp.sunlabs.com:/pub/tcl</a>
+	<a href="ftp://ftp.neosoft.com/pub/tcl">ftp.neosoft.com:/pub/tcl</a>
+	<a href="ftp://ftp.cs.berkeley.edu/ucb/tcl">ftp.cs.berkeley.edu:/ucb/tcl</a>
+</pre>Find <font COLOR="#FF0000">MH</font> on 
+<pre>
+	ftp.ics.uci.edu:/pub/mh 
+</pre>Find <font COLOR="#FF0000">Metamail</font> (for MIME support,
+including 8-bit charsets) on 
+<pre>
+	ftp.bellcore.com:/pub/nsb 
+</pre>
+<hr>
+
+<h3><a NAME="optionalpkgs">Optional Packages</a></h3>
+Find <font COLOR="#FF0000">Faces</font> (a.k.a. "Picons") on 
+<pre>
+	cs.indiana.edu:/pub/faces 
+	http://www.cs.indiana.edu/picons/ftp/faq.html
+</pre>
+<p>
+<font COLOR="#FF0000">Expect</font> is available as 
+<pre>
+	pub/expect/expect.tar.Z from ftp.cme.nist.gov 
+</pre>
+<p>
+<font COLOR="#FF0000">Japanization</font> patch for <font COLOR="#FF0000">Tcl</font>
+and <font COLOR="#FF0000">Tk</font> 
+<pre>
+	srawgw.sra.co.jp:/pub/lang/tcl/jp 
+	tcl7.3jp-patch.gz, tcl7.3jp-update1.gz, tcl7.3jp-update2.gz, 
+	tk3.6jp-patch.gz, tk3.6jp-update1.gz, tk3.6jp-update2.gz. 
+	It seems that they will move the archives to ftp.sra.co.jp near future. 
+</pre>
+<p>
+Find <font COLOR="#FF0000">Glimpse</font>, the full text search engine,
+at University of Arizona: 
+<pre>
+	http://glimpse.cs.arizona.edu:1994/ 
+</pre>
+<hr>
+<h4><a NAME="knownbugs">Known Bugs</a></h4>
+<h5>TK 3.6 BUG that causes core dump when iconified</h5>
+There is a bug in TK &gt;= 3.3 in the text widget that <i>exmh</i>
+manages to tickle. It occurs when the <i>exmh</i> window is iconified,
+and it causes a core dump. However, there is a patch that fixes this
+in the <i>misc/tkText.patch</i> file. If you have TK 3.6 and have applied
+Ousterhout's first patch, then you are ok. 
+<h5>AIX BUG that results in no buttons or menus</h5>
+The Aix 3.2 compiler does not compile tkOption.c correctly when optimization
+is turned on. The symptom of this is a message like "exmh: Error in
+./lib/app-defaults: missing colon on line 2" and there are no buttons
+or menus in the interface. 
+<hr>
+<h4><a NAME="faq">Frequently Asked Questions</a></h4>
+See <a HREF="http://www.beedub.com/exmh/exmh-faq.html">exmh-faq.html</a> for answers to some frequently
+asked questions. This information is now available via the FAQ button
+in <i>exmh</i>. 
+<hr>
+<h4><a NAME="flashes">Flashes</a></h4>
+<ul>
+<li>2.0.2 is done as Brent leaves Sun for Scriptics Corp,
+http://www.scriptics.com/.
+I've tried to shift all email contact to &lt;welch@acm.org&gt;, and am
+housing exmh at http://www.beedub.com/exmh/.
+<li>2.0.1 fixes a bug in mime.tcl that prevents temp files from being
+deleted.
+<li>2.0 is finally released.  This collects a host of minor bug fixes, most
+notably to ispell and the address book.
+<li>2.0zeta fixes the exmh-netscape interaction that was added in 2.0epsilon.
+<li>2.0epsilon features cleanup of the address book, the ispell interface,
+and the intelligent signature features. 
+<li>2.0delta is a collection of fixes and features. 
+<li>2.0gamma is more bug fixes, especially in the new HTML code. There
+is also a new Quote package that computes a cleaned up version of the
+message to which you are replying. 
+<li>2.0beta has many bug fixes for the alpha release. The new line-breaking
+behavior of the built-in editor has been made optional, with the old
+line-breaking behavior as the default. 
+<li>2.0alpha folds in many user contributed features and an HTML viewer
+for documentation. This version requires Tk 4.1 for socket support
+and some other features. There is a new Top Ten List in preferences
+that consolidates the most important preference settings into one place.
+<li>1.6.9 fixes to font selector and sedit formatting. 
+<li>1.6.8 is more bug fixes. Cut and paste finally fixed? Font selector
+added. 
+<li>1.6.7 is more bug fixes. Most notable is fixing up of the Paste
+operation in the editor. 
+<li>1.6.6 is a collection of bug fixes and minor improvements. The
+next big release will be a 1.7/or/2.0alpha that rips out support for
+Tk 3.6 and folds in various contributions. There may still also be
+a 1.6.7 to fix bugs in 1.6.6 
+<li>1.6.5 includes an overhaul of the Flist module that highlights
+folders with unseen messages, and counts unseen messages in total.
+This also detects 8-bit characters in all cases within Sedit. CLIPBOARD
+support for OpenWindows users (Tk 4.* only) TMPDIR and EXMHTMPDIR environment
+variables honored to map /tmp 
+<li>1.6.4 has fixes for the bugs in 1.6.3 
+<li>1.6.3 collects many minor enhancements, plus integrated ispell
+support for Sedit, and new faces code from John LoVerso. Check out
+the new "Faces Row" option to display all matching faces. 
+<li>1.6.2 collects several minor enhancements 
+<li>1.6.1 fixes two minor bugs and adds support for Sun Attachments.
+<li>1.6 released as Brent moves from PARC to Sun Labs. <i>Exmh</i>
+lives. This release is stable with Tk 3.6 and Tk 4.0b3. The FTP site
+and WWW Page will migrate to Sun shortly, although parcftp will continue
+to host <i>exmh</i> for a while. Update your bug mail address ("maintainer")
+to Brent.Welch@eng.sun.com (valid after May 1, 1995) 
+</ul>
+<p>
+Multidrop+Inc style inc has been added. Set up your <font COLOR="#FFFFF0">.xmhcheck</font>
+file to use the MyIncTmp folder. Any messages in that folder get sorted
+by slocal. 
+<p>
+The man page has been chopped into 4 documents: 
+<br>
+
+exmh.l - a tutorial 
+<br>
+
+exmh-use.l - a more comprehensive user guide 
+<br>
+
+exmh-custom.l - a guide to <i>exmh</i> customization 
+<br>
+
+exmh-ref.l - a terse description of all buttons and menu entries.
+<br>
+
+
+<hr>
+<h4><a NAME="performance">Performance Hints</a></h4>
+Grab the <a HREF="http://www.scriptics.com/download/relnotes/8.0.html">Tcl/Tk
+8.0 </a>releases for a nice performance boost! 
+<p>
+Squeeze the last drop out of message display by disabling the separator
+bars in message display. (Show Graphic Part Separator under MIME) 
+<p>
+Really large folders make <i>exmh</i> run slowly. Take this as a hint
+to reorganize things into sub-folders if you have more than 500 or
+so messages in a folder. 
+<p>
+Bound the unseen folder search by defining the <font COLOR="#FFFFF0">.mh_profile</font>
+
+<pre>
+	Folder-Unseen: pattern pattern pattern
+</pre>entry to name the folders to search under. The default is
+*, so all folders are searched. 
+<hr>
+<h4><a NAME="reverse">Reverse Video</a></h4>
+It takes just a few resource settings in your <font COLOR="#FFFFF0">~/.exmh-defaults-mono</font>
+file to get reverse video on a black and white display: 
+<pre>
+! For widgets
+*Background: black
+*Foreground: white
+! For highlights
+*c_background: black
+*c_foreground: white
+</pre>
+<hr>
+<h4><a NAME="colorized">Colorized Headers</a></h4>
+Did you know you can colorize rfc822 headers in the message display
+by setting *m_tagnames and related X resources? This feature has been
+around for some time, but seems to be little-known. Here's what I have
+in my <font COLOR="#FFFFF0">~/.exmh-defaults-color</font> file. 
+<pre>
+*m_tagnames:    hidden subject from x-filters-matched content-type x-mailer repl
+ied replied-to
+*m_hidden:      -font 6x10
+*m_subject:     -foreground blue
+*m_x-filters-matched:   -foreground "medium sea green"
+*m_content-type:        -foreground "medium sea green"
+*m_x-mailer:    -foreground "medium sea green"
+*m_from:        -foreground blue
+*m_replied:     -foreground "violet red"
+</pre>The *c_ family of resources has expanded a bit to allow
+control of both foreground and background colors for current, unseen,
+moved, and delete messages. 
+<hr>
+<h4><a NAME="mailing">Mailing Lists</a></h4>
+There are now three exmh-related mailing lists. YOU ONLY NEED TO PICK
+ONE LIST. Send your subscription requests to: 
+<pre>
+	exmh-announce-request 	- to receive release notices 
+	exmh-users-request 	- to get exmh-announce + user discussion 
+	exmh-workers-request 	- to just get exmh hacker discussion 
+</pre>The mailing lists have the following addresses, but please
+send your subscription requests to the -request aliases. If you use
+the menu entries under Help, they format the message automatically.
+<pre>
+	exmh-users@redhat.com
+	exmh-workers@redhat.com
+</pre>
+<hr>
+<h4><a NAME="acks">Acknowledgments</a></h4>
+Thanks go to Ed Oskiewicz for inspiring me with an initial verison,
+which is much modified by now. Thanks also go to many beta testers
+that put up with buggy versions and suggested many features that are
+now part of <i>exmh</i>. Feature requests that come with code diffs
+to implement them are especially nice. 
+<p>
+Thanks to Xerox/PARC for tolerating my work on <i>exmh</i>, and to
+Sun Microsystems Laboratories for continuing to do so. 
+<p>
+Honorable mentions: 
+<ul>
+<li>John LoVerso (<a href="mailto:loverso@osf.org">loverso@osf.org</a>
+) who contributed the popup nested folder display. 
+<li>Chris Garrigues (<a href="mailto:cwg@deepeddy.com">cwg@deepeddy.com</a>
+) who rewrote the mime display code. 
+<li>Marc VanHeyningen (<a href="mailto:mvanheyn@cs.indiana.edu">mvanheyn@cs.indiana.edu</a>
+) who wrote the mailcap parsing code. 
+<li>Allen Downey, <a href="mailto:downey@cs.berkeley.edu">downey@cs.berkeley.edu</a>
+who provided PGP support. 
+<li>Scott Stanton, <a href="mailto:sstanton@eng.sun.com">sstanton@eng.sun.com</a>
+who contributed the alias browser. 
+<li>Anders Klments, <a href="mailto:klements@it.kth.se">klements@it.kth.se</a>
+also updated the PGP code, and more 
+<li>Stefan Monnier, <a href="mailto:monnier@di.epfl.ch">monnier@di.epfl.ch</a>
+updated and maintains the PGP code 
+<li>Martin Hamilton, <a href="mailto:martin@mrrl.lut.ac.uk">martin@mrrl.lut.ac.uk</a>
+who provided the URL highlighting 
+<li>Achim Bohnet, <a href="mailto:ach@rosat.mpe-garching.mpg.de">ach@rosat.mpe-garching.mpg.de</a>
+for cleanup and generalization. 
+<li>Berry Kerchival, <a href="mailto:kerch@parc.xerox.com">kerch@parc.xerox.com</a>
+for the address memorization package. 
+<li>Olly Stephens, who contributed the unseen window display. 
+<li>Ben Escoto, <a href="mailto:bescoto@leland.stanford.edu">bescoto@leland.stanford.edu</a>,
+who contributed the multipart/security code for PGP. 
+<li>Hal DeVore, <a href="mailto:haldevore@geocities.com">haldevore@geocities.com</a>,
+who overhauled the address book.
+</ul>
+<p>
+There are a lot of other folks that contributed code and patches. Without
+them, exmh wouldn't be what it is today. 
+<hr>
+<h4><a NAME="features">Features</a></h4>
+As well as providing the usual layer on top of MH commands, <i>exmh</i>
+has a number of other features: 
+<p>
+<b>MIME support!</b> Displays richtext and enriched directly. Parses
+multipart messages. A popup menu under the right button can invoke
+external viewers (<i>metamail</i>) for things not directly supported.
+Built-in editor allows simple composition of text/enriched format and
+multipart messages (via Insert Part). 
+<p>
+<b>Color feedback</b> in the scan listing so you can easily identify
+unseen messages (blue), the current message (red), deleted messages
+(gray background), and moved messages (yellow background). <i>Xresources</i>
+control these color choices. 
+<p>
+<b>Monochrome displays highlight unseen messages</b> with underline,
+current message in reverse video, deleted messages with cross-hatching
+background, and moved messages with stippled background. 
+<p>
+A <b>folder display</b> with one label per folder. Color highlights
+indicate the current folder (red), folders with unseen messages in
+them (blue), and the target folder for moves (yellow background). Nested
+folders are highlighted by a shadow box. A cache of recently visted
+folder buttons is also maintained. Monochrome highlights are reverse
+video for the current folder, bold box for folders with unseen messages,
+and stippled box for the target of move operations. 
+<p>
+<b>Clever scan caching</b>. MH users know that scan is slow, so <i>exmh</i>
+tries hard to cache the current state of the folder to avoid scanning.
+Moves and deletes within <i>exmh</i> do not invalidate the cache, and
+background incs that add new messages are handled by merging them into
+the scan listing. The scan cache is compatible with <i>xmh</i>. 
+<p>
+<b>Facesaver bitmap display</b>. If you have a facesaver database on
+your system, <i>exmh</i> displays the bitmap face of the person that
+sent the current message (or their organization). Otherwise, it just
+displays a boring EXMH logo. 
+<p>
+<b>Background inc</b>. You can set <i>exmh</i> to run inc periodically,
+or just to periodically count up the messages in your mail spool file.
+(Depends on proper TK send functioning. See notes below.) 
+<p>
+<b>Various inc styles</b>. <i>Exmh</i> knows about three styles of
+inc usage: Inc from your spool file to your inbox folder. Inc from
+your spool file or POP host to a set of dropboxes as specified by your
+<font COLOR="#FFFFF0">~/.xmhcheck</font> file. Inc from your spool
+file directly into folders. <i>exmh</i> can run the MH filtering program
+(<i>slocal</i>) for you, or you can let an external agent presort mail
+into folders for you. 
+<p>
+<b>Searching</b> over folder listing and message body. 
+<p>
+A <b>dialog-box</b> interface to MH pick. 
+<p>
+A <b>simple editor</b> with emacs-like bindings is provided by default.
+It has an interface that lets you tweak key bindings. 
+<p>
+<b>Editor interface</b>. You can hook up <i>exmh</i> to TCL based-editors
+like <i>mxedit</i> quite easily. A script is also provided, <i>exmh-async</i>,
+for using terminal based editors like <i>vi</i>. The <i>emacsclient.README</i>
+file has hand-wavy instructions for using <i>emacsclient</i> to talk
+to an <i>emacs</i> server. 
+<p>
+<b>Glimpse interface</b>. You can index all your mail with <i>glimpse</i>
+and search for messages by content. The search works across all folders
+and runs quite fast. The indexes are only about 10% of the space of
+your mail database. 
+<p>
+<b>User preferences</b>. You can tune <i>exmh</i> through a dialog
+box. The settings are saved in an Xresource-style file named <font COLOR="#FFFFF0">.exmh-defaults</font>.
+You can also put font and color resource specifications in this file,
+plus there are a few random parameters not exposed via preferences.
+
+<p>
+<b>User hacking support</b>. A user library of TCL routines is supported.
+The main implementation is chopped up into many smallish modules. So,
+you can modify a copy of some module to put your favorite mail reader
+hack in without affecting others (or convincing me to put it into the
+main line). There are also a number of places where hook procedures
+are used so you can refine the behavior of things like composing a
+reply message. Details in the man page. 
+<hr>
+
+<h2><a NAME="install">Installation</a></h2>
+Installation is done via the <i>exmh.install</i> script. Invoke it
+as: 
+<pre>
+	wish -f exmh.install
+</pre>This puts up a <b>dialog box</b> that lets you patch various
+file system specific pathnames and enable or disable features that
+your system cannot support (e.g., facesaver, sound). You can test out
+<i>exmh</i> via this dialog before installing it. 
+<p>
+Upon startup, <i>exmh.install</i> looks around for <font COLOR="#FFFFF0">.exmhinstall</font>
+files from previous installations. It will ask you which one you want
+to use, unless there is already one in the current directory. You can
+also use the <b>Conf button</b> to look for config files. This lets
+you maintain a set of config files, <font COLOR="#FFFFF0">.exmhinstall.*</font>
+if you need this for multiple architectures, for example. 
+<p>
+In the install dialog, the "Script Library" and the "Install lib directory"
+are usually the same place. The script library is the run-time value
+of the library directory, while the install lib directory is the install-time
+value. The <b>Test button</b> now automatically changes the run-time
+value to "./lib" in order to test before installing. So, the only reason
+for the distinction between install-time and run-time is for AFS environments
+where writable and read-only volumes might have different names. 
+<p>
+Remember to choose a script library directory that <i>exmh</i> can
+take up all for itself. The install is *not* smart enough to make an
+<i>exmh</i> subdirectory in a common lib dir (e.g., /usr/local/lib).
+
+<p>
+WARNING: you need to specify an alternate location - the install is
+*not yet* smart enough to handle leaving the script library where you
+unpacked the <i>tar</i> file. 
+<p>
+After you set things up in the dialog box, then hit some buttons: 
+<ul>
+<li>Patch - to apply site-dependent patches to <i>exmh</i>. The configuration
+is saved into a <font COLOR="#FFFFF0">.exmhinstall</font> file. 
+<li>TclIndex - to compute the auto-load library index. 
+<li>Test - to run the patched script. 
+<li>Verify - to see what the Install will do. 
+<li>Install - to install <i>exmh</i>. 
+</ul>
+If the install fails to work gracefully on your system, let me know!
+One common error is to get a complaint about the procedure "Exmh" not
+being defined. This happens when the value of the script library is
+not correct. 
+
+<h3><a NAME="send">Tk Send Problems</a></h3>
+<p>
+<font COLOR="#0FFFFF">VERY IMPORTANT. PLEASE READ. SOURCE OF MANY PROBLEMS.
+READ THIS HERE :-)</font> 
+<p>
+<i>exmh</i> depends on the TK send facility for its background processing.
+With TK 3.3, send now uses <i>xauthority</i> mechanisms by default,
+unless you compile TK with -DTK_NO_SECURITY. A manifestation of problems
+are that background processing doesn't work: new messages are not scanned
+into the current folder, the flag icon doesn't behave, and so on. Similarly,
+use of the <i>exmh-async</i> wrapper script also fails. If you cannot
+recompile <i>wish</i>, then the trick is to get your X server process
+started with the right incantation. 
+<p>
+You can easily test send (and my installation process should have...)
+Just run <i>wish</i>, and type in the following command to it: 
+<pre>
+	send exmh {Exmh_Status "Hello world"}
+</pre>Obviously, make sure <i>exmh</i> is running first. 
+<p>
+If you get an error, you need to recompile the TK library, or learn
+how to start up the X server so it does the right Xauthentication stuff.
+
+<p>
+Here is one example, for SunOS openwindows. This is an excerpt from
+an <font COLOR="#FFFFF0">.xserverrc</font> file: 
+<pre>
+    if [ ! \( -d $HOME -a -w $HOME \) ]; then
+      echo "Warning: Can't write X authority file" 1&gt;&amp;2 ;
+      auth_args=""
+    else
+      authfname=$HOME/.xnews.`uname -n`$DISPLAY
+      ${OPENWINHOME}/lib/mkcookie $authfname -auth magic-cookie
+      auth_args="-auth $authfname"
+    fi ;
+    ${OPENWINHOME}/bin/xnews $auth_args $server_args $xnews_config_args ;;
+</pre>The general picture of whats going on is this: 
+<ul>
+<li>some program generates a magic cookie (arbitrary string) and writes
+this to a file. 
+<li>The name of this file is passed to the X server 
+<li>The X server writes an entry for the DISPLAY into your <font COLOR="#FFFFF0">~/.Xauthority</font>
+file. 
+<li>Xlib reads <font COLOR="#FFFFF0">~/.Xauthority</font> when you
+create a window, and passes the cookie value back to the X server.
+</ul>
+If you have the <i>xauth</i> program and your server doesn't like to
+be told about the intermediate file, then you can use <i>xauth</i>
+to write into the <font COLOR="#FFFFF0">~/.Xauthority</font> file for
+you, and apparenty the right thing will happen. If this sounds vague,
+it is. For precise details, do some experimentation or ask your local
+X guru. If you come up with particular solutions, feel free to post
+them to "comp.lang.tcl" so other folks with similar configurations
+can learn how to do the right thing as well. 
+<p>
+See also "misc/Xauthority" for similar info. 
+<hr>
+<h4><a NAME="remarks">Concluding Remarks</a></h4>
+If you end up using <i>exmh</i> on a regular basis, also let me know!
+If I can tell my managers that there are N users of my mail reader,
+there is a greater chance I'll have time to hack up more tools in the
+future (and still get paid). There is a Register User menu entry under
+the Help... menu that you can use for this purpose. Encourage your
+users to do this if you are an administrator at a large site. 
+<p>
+Finally, please take time to read the man page before asking too many
+questions. If <i>exmh</i> gets an internal error it will display a
+dialog box with a TCL trace back and a What Happened: area. You can
+type short note into that area, and then hit the "mail to" button in
+order to file a bug report. I'll consider feature requests, but basically
+I'd appreciate it if you'd code up your feature and send me some diffs
+or just the whole file that is affected. Many of the neat features
+in <i>exmh</i> were originally contributed by its users. 
+<hr>
+<h4><a NAME="author">Author</a></h4>
+-- "Brent Welch" &lt;welch@acm.org&gt;
+<p>
+<a HREF="http://www.beedub.com/exmh/index.html">exmh:The Right Tool
+for the Job </a> 
+ 
+
+</Body>
+</Html>
+

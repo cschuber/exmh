@@ -1,0 +1,277 @@
+<Html>
+<Head>
+<Title>Quick Intro</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1 align=center>Quick Intro to Exmh</h1>
+<p>
+Bugs and comments to Brent Welch, <a href="mailto:Welch@acm.org">Welch@acm.org</a>
+
+
+<h2>Folder Display </h2>
+<p>
+Exmh displays three panes of information. The top pane has a label
+for each of your MH folders. Each label is highlighted to reflect the
+state of the folder. There is one current folder, whose table of contents
+is displayed in the second pane. There is one folder that is the target
+for move operations. There may be several folders that have unread
+messages in them. Select <button -command Help_KeyDisplay>Color Legend</button>
+from the Help menu to display the key of how folder labels are highlighted.
+In addition, folders with nested subfolders have a shadow-box highlight.
+
+
+<h3>Selecting Folders with the Mouse</h3>
+<p>
+Left click on a folder label to <strong>view</strong> the messages
+in it. 
+<p>
+Right click on a folder label to <strong>move</strong> the current
+message(s) to the folder. 
+<p>
+Shift-Right on a label to <strong>link</strong> the current message(s)
+to the folder. 
+<p>
+Middle click on a label to view the nested folders beneath it. 
+
+<h2>Folder Table of Contents</h2>
+<p>
+The middle and bottom panes are text windows. Each of these can be
+scrolled by using the scrollbar or by dragging the display with the
+middle mouse button. 
+<p>
+The middle pane lists the messages in the current folder, which comes
+from the output of the MH <em>scan</em> command. The display indicates
+the state of the message: (See <button -command Help_KeyDisplay>Color
+Legend</button> under Help to see how these are marked on your display)
+
+<ul>
+<li>current message. 
+<li>messages marked for delete. 
+<li>message marked for movement to another folder. 
+<li>unread messages. 
+</ul>
+<h3>Selecting Messages with the Mouse</h3>
+<p>
+Left clicking on an entry causes the message to be displayed in the
+third, or bottom pane. 
+<p>
+Right clicking selects a message but does not display it. 
+<p>
+Dragging a selection with the Left button selects a range of messages.
+You can update a selection with Shift-Left. 
+<p>
+Message operations like Delete, Move, Link Unmark, and Print will operate
+on the whole selected set of messages. 
+
+<h2>Message Display</h2>
+<p>
+The bottom window displays the current message. If you get a MIME message
+(i.e., multipart or multimedia) the right button brings up a menu that
+lets you manipulate the parts of MIME messages. Press the right button
+somewhere over the message part you are interested in. 
+<p>
+Exmh supports a large number of <a HREF="Keys.html">keyboard shortcuts</a>
+so you can keep your hands on the keyboard. 
+
+<h2>Resizing Subwindows</h2>
+<p>
+The black diamond to the right of the status line is used to change
+the boundary between the internal subwindows. To get an idea of how
+it works, press the first mouse button over the diamond. Drag the horizontal
+line up to the top of the window and back down to the bottom. Watch
+the status line to see what subwindow boundary you are changing. 
+
+<h2>Command buttons</h2>
+<p>
+Command buttons are grouped into three sets. The top is for global
+operations. The middle set is for folder operations. The bottom set
+is for message operations. 
+
+<h3>Global Commands</h3>
+<p>
+The top set of buttons is for global commands: Log, Help..., Bindings...,
+Preferences, Aliases and Quit. 
+<p>
+Log appears if you enable logging in your Preferences. The log contains
+a record of actions taken, including debugging info I put in. 
+<p>
+Under Help, Quick Intro gives you this window. FAQ shows the Frequently-Asked-Questions
+file. 
+<p>
+You are encouraged to register as an exmh user, too. All this does
+is open a mail draft to me in which you can send your pro and con opinions
+about exmh. There is no obligation associated with registration. 
+<p>
+The Preferences dialog gives you some control over exmh features. Within
+this dialog you can get more help on setting preferences by clicking
+the Help button that is part of that dialog. 
+
+<h3>Message Commands</h3>
+<p>
+The bottom set of buttons are for message operations: 
+<p>
+Link - link a message into the target folder and go to the next message.
+<br>
+
+Move - move a message to the target folder and go to the next message.
+<br>
+
+Delete - mark the current message for deletion and go to the next
+message. 
+<br>
+
+Next - move to the next message. This will chain to the next folder
+with unread messages if you are at the end of the current folder. <br>
+
+Prev - move to the previous message. 
+<br>
+
+Comp - compose a mail message. In the drafts folder, this opens the
+current message as the draft. 
+<br>
+
+Reply... - a menu of reply choices. There are two choices by default,
+and instructions for adding more. 
+<br>
+
+Reply to sender - reply to the current message (-nocc cc -nocc to)
+<br>
+
+Reply all - reply to the current message (-cc cc -cc to). 
+<br>
+
+Forward - forward the current message. 
+<p>
+More... - a menu with more message operations: 
+<br>
+
+Print - print the current message. 
+<br>
+
+Unmark - cancel a move or delete mark. 
+<br>
+
+Clip - make a new window containing the current message. 
+<br>
+
+First Unseen - show the first unseen message. 
+<br>
+
+Burst Digest - use the MH burst command to explode a digest into messages.
+<br>
+
+Redistribute - use the MH dist command to remail a message. 
+<p>
+And many more. Check out the <a HREF="exmh-ref.n.html">exmh-ref</a>
+man page for details. 
+<h4>UNDO</h4>
+<p>
+The Move, Link, and Delete operations mark a message with a pending
+operation. The way to undo this mark is to reselect the message(s)
+and select the Unmark operation from the More... menu. 
+
+<h3>Folder Commands</h3>
+<p>
+The middle set of buttons are for folder commands: New, Search...,
+Flist, Inc, Commit, and More... 
+<p>
+New brings up a dialog that lets you create new folders. (A Delete
+folder operation is under the More... menu.) 
+<p>
+Find causes a search dialog to appear. You can search over the message
+body (Msg), or the scan listing (FTOC). Radio buttons select which
+one. After typing in the search string, causes the search to begin.
+&lt;Control-s&gt; and &lt;Control-r&gt; cause subsequent forward and
+reverse searches, respectively. 
+<p>
+The Flist button refreshes the display of folder buttons. This counts
+up all the unseen messages in all folders. 
+<p>
+Commit causes pending delete and move operations to occur. This command
+is also bound to keystroke &lt;Return&gt;. 
+<h4>Incorporating Mail</h4>
+<p>
+The Inc button will incorporate new mail from your spool file into
+your mail folders. Exmh knows about three styles of Inc, which you
+choose via the Preferences dialog. 
+<ul>
+<li>"inbox" Inc moves new messages into your inbox folder. 
+<li>"presort" Inc will run the MH filtering hook, slocal, for you if
+there are messages in your spool file. 
+<li>"multidrop" Inc moves new messages into "dropboxes" by means of
+the standard slocal and ~/.maildelivery filtering, and then inc's from
+these dropboxes into folders. For this to work, you need to list your
+dropbox names in a ~/.xmhcheck file. Dropbox names can be hostnames
+(no slashes...) in which case POP is used. 
+<li>Select "none" for inc if you have an external agent that presorts
+mail for you. In this case, "background flist" will highlight folders
+that have new mail in them. 
+</ul>
+<h3>Searching</h3>
+<p>
+Exmh provides several search mechanisms under the Search menu. The
+Search Message command searches for a string in the current message.
+The Search Table of Contents searches the folder table of contents
+for a string. The Glimpse search engine can search all your mail folders.
+
+<h4>Pick</h4>
+<p>
+Pick provides an interface to the MH pick command. The dialog initially
+displays entry widgets labeled Subject, From, To, Cc, Before, and After.
+You can enter a pattern for any of these, and pick selects messages
+that satisfy the logical AND of these pattern specifications. Note
+that the Before and After patterns are date-specific, and pick undstands
+many forms of date patterns. Read the MH man page for pick for the
+complete story. You can build up more complex logical search expressions
+by clicking the Or button. 
+<p>
+The Messages entry lets you limit pick to a specific set of messages.
+In particular, you can specify a sequence name (e.g., "unseen"), and
+have pick find all messages with that sequence identifier. 
+<p>
+After the pick completes, a range of messages is selected that satifies
+the search. If you choose "Add to Sel", then the picked messages will
+be added to the currently selected set. Choose this <em>before</em>
+the Pick. Otherwise a new selection is made. 
+<p>
+If you choose "New FTOC", then the selected messages will replace the
+current list of messages displayed in the folder table of contents.
+"Mark Seen" will remove messages from the unseen sequence. 
+<p>
+Pick uses the MH pick program, which runs a bit slowly, so have patience.
+BUG: if you have projected a New FTOC, a subsequent pick will only
+select messages still on the display. You need to rescan the folder
+to start over. Sigh. 
+
+<h3>Miscellaneous Folder Operations</h3>
+<p>
+The More... menu has more folder operations: 
+<p>
+"Rescan folder" forces a rescan of the folder contents. Exmh maintains
+a cache of the scan output that could get confused. The Rescan button
+forces a full scan. To optimistically rescan the current folder, click
+on its label in the top pane instead. 
+<p>
+"Sort folders" sorts the current folder by message date. 
+<p>
+"Pack folders" renumbers messages in the current folder to eliminate
+any gaps in the number sequence. 
+<p>
+"Find all folders" recurses through the directory structure looking
+for all MH folder directories. 
+<p>
+"Delete folder" lets you delete a folder. 
+<p>
+There are more entries here. Check the <a HREF="exmh-ref.n.html">exmh-ref</a>
+man page for details. 
+
+<h2><a HREF="index.html">Main Help Index</a></h2>
+
+
+</Body>
+</Html>
+

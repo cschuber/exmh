@@ -1,0 +1,807 @@
+<Html>
+<Head>
+<Title>exmh FAQ</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1><font SIZE="+5">exmh</font> Frequently Asked Questions</h1>
+[ <a HREF="index.html">exmh</a> | 
+<a HREF="software.html">software</a> |
+<a HREF="Intro.html">intro</a> |
+<a HREF="exmh.n.html">basics</a> |
+<a HREF="exmh-use.n.html">guide</a> |
+<a HREF="exmh-ref.n.html">reference</a> ] 
+<hr>
+<dl COMPACT>
+<dt>1 
+<dd><a HREF="#1">Is it possible to get the cursor keys working in the
+editor?</a> 
+<dt>1b 
+<dd><a HREF="#1b">Can I paste with the middle mouse button?</a> 
+<dt>2 
+<dd><a HREF="#2">How do I display ISO-8859 fonts so that my special
+characters show up?</a> 
+<dt>2b 
+<dd><a HREF="#2b">How do I insert special 8-bit characters (latin-1)</a>
+<dt>3 
+<dd><a HREF="#3">I can't get background incorporate to work. What am
+I doing wrong?</a> 
+<dt>4a 
+<dd><a HREF="#4a">How do I get Tk send to work?</a> 
+<dt>4b 
+<dd><a HREF="#4b">How do I start my X server so it does Xauthority
+right?</a> 
+<dt>4c 
+<dd>
+<a HREF="#4c">How do I just disable the xauth stuff in exmh?</a>
+<dt>4d
+<dd>
+<a HREF="#4d">
+rsh
+commands don't work between home and work, because the accounts are
+different on the two machines.</a>
+<dt>5 
+<dd><a HREF="#5">Where do I find Faces and Metamail packages?</a> 
+<dt>6 
+<dd><a HREF="#6">How do you get an X-Face: line into your outgoing
+mail messages?</a> 
+<dt>6b 
+<dd><a HREF="#6b">How do you display an X-Face: header line?</a> 
+<dt>7 
+<dd><a HREF="#7">Can I use EXMH as a news reader?</a> 
+<dt>8 
+<dd><a HREF="#8">How do I change those default wheat-colors for the
+widgets in EXMH?</a> 
+<dt>9 
+<dd><a HREF="#9">What's the difference between presort and multidrop
+inc-styles?</a> 
+<dt>10 
+<dd><a HREF="#10">How do I fix the "exmh-bg lost UI {process XXXX}"
+message?</a> 
+<dt>10b 
+<dd><a HREF="#10b">What does "exmh-bg cannot rendez-vous with UI -
+exiting" mean?</a> 
+<dt>11 
+<dd><a HREF="#11">How come messages are not really removed when I delete
+them?</a> 
+<dt>12 
+<dd><a HREF="#12">Why doesn't the flag go up when there is new mail
+in the spool file?</a> 
+<dt>13 
+<dd><a HREF="#13">Why isn't there a Reply button, but only a reply
+menu?</a> 
+<dt>14 
+<dd><a HREF="#14">Are there newsgroups or mailing lists for discussion
+of exmh?</a> 
+<dt>15 
+<dd><a HREF="#15">How do I set up the templates for mail messages.</a>
+<dt>16 
+<dd><a HREF="#16">How do I get a copy of mail I sent saved into a folder
+(easily).</a> 
+<dt>17 
+<dd><a HREF="#17">What is a good alternate Print command to get good
+formatting?</a> 
+<dt>18. 
+<dd><a HREF="#18">How do I change the folder table of contents listing?
+</a> 
+<dt>18a. 
+<dd><a HREF="#18a">Remove the leading words of the message </a> 
+<dt>18b. 
+<dd><a HREF="#18b">Handle message numbers &gt; 9999 </a> 
+<dt>18c. 
+<dd><a HREF="#18c">Add annotations to messages that have been replied
+to. </a> 
+<dt>18d. 
+<dd><a HREF="#18d">Colorize message headers. </a> 
+<dt>19. 
+<dd><a HREF="#19">How do signatures work? </a> 
+<dt>20. 
+<dd><a HREF="ppp.howto.html">How do I set up sendmail and my PPP dialup account? </a> 
+</dl>
+<dd>
+<hr>
+<dl COMPACT>
+<dl COMPACT>
+
+<h3><a NAME="1">1. Is it possible to get the cursor keys working in
+the editor?</h3>
+<p>
+Use the Bind dialog to set additional keystroke bindings for various
+editing functions. For cursor keys, you first need to figure out what
+their X Keysyms are. I use the "xev" program for this. Assuming the
+keysyms are Up, Down, Left, and Right, then you'd add &lt;Key-Up&gt;;
+to the up1line function, etc. The Bind dialog lets you have multiple
+sequences for a function - just space separate them. You may have to
+drag the entry widget with the middle mouse button to make room to
+add stuff to the end. </a><a NAME="1b"> 
+</dl>
+<dl COMPACT>
+
+<h3>1b. Can I paste with the middle mouse button?</a></h3>
+</dl>
+<dl COMPACT>
+<p>
+<a NAME="1b">This is now the default after versions 1.5.1 </a> 
+<p>
+<a NAME="1b">Answer for older versions: Select Simple Edit from the
+Bindings menu and do two things. </a> 
+</dl>
+</dl>
+<ol>
+<li>
+<dl COMPACT><a NAME="1b">Use the "Scroll Button" setting to change
+the drag scrolling binding from Middle to one of the other choices:
+ShiftMiddle, Right, or None. This binding lets you "drag" a text window
+around without having to hit the scrollbar. </a> 
+</dl>
+<li>
+<dl COMPACT>C<a NAME="1b">hange the selpaste binding to &amp;LT;Button-2&amp;GT;
+so you can paste with middle click. </a> 
+</dl>
+</ol>
+<dl COMPACT>
+
+<h3><a NAME="2">2. How do I display ISO-8859 fonts so that my special
+characters show up?</a></h3>
+<p>
+<a NAME="2">Put an Xresource specification into your ~/.exmh-defaults
+file: 
+<br>
+
+<code>*Text*font: -*-courier-*-*-*-*-*-*-*-*-*-*-iso8859-* 
+<br>
+
+*Ftoc*Text*font: -*-courier-*-*-*-*-10-*-*-*-*-*-iso8859-* </code></a>
+
+
+<h3><a NAME="2b">2b. How do I insert special (8-bit) characters?</a></h3>
+<p>
+<a NAME="2b">There are many Compose key sequences that are defined
+to let you do this. Your X environment may also specially map some
+keys. For a list of the Compose key sequences, select the Compose Key
+menu entry under Bindings. Press the Compose key and then the two characters
+in the left list in order to get the special character on the right
+hand side. You can redefine what the Compose key is mapped to in the
+Simple Edit Bindings... dialog. </a><a NAME="3"> 
+
+<h3>3. I can't get background incorporate to work. What am I doing
+wrong?</a></h3>
+<p>
+The most likely cause is that the TK send facility does not work for
+you because of Xauthority issues. See FAQ <a HREF="#4a">4a</a> &amp;
+<a HREF="#4b">4b</a>. If you cannot get send working, you have two
+options. First, disable the background process so that all periodic
+activity is done in the front-end. Do this via the preferences entry
+for Background Processing. 
+<p>
+Another cause that might disable inc completely is lack of the MAILDROP
+environment variable. This should be set to the name of the spool file
+that contains incoming mail (unless you are using POP). The latest
+Exmh will warn you about this and try to choose a default value, but
+to be safe you should set this up properly. 
+
+<h3><a NAME="4a">4a. How do I get Tk send to work?</a></h3>
+<p>
+<a NAME="4a">Tk "send" lets two TCL interpreters issue commands to
+each other, and it uses the X server for communication. Beginning with
+TK 3.3, this also honors the Xauthority protocol, unless you compile
+TK with -DTK_NO_SECURITY. You can test this by running "wish" and trying
+out the following command: </a> 
+<p>
+<a NAME="4a"><code>send exmh {Exmh_Status "Hello, world!"} </code></a>
+
+<p>
+<a NAME="4a">If this fails you need to recompile or learn how to start
+your X server so that it does Xauthority right. Note that even if you
+set up Xauthority right, you need to make sure the old-fashioned xhost
+list is empty. Do this: </a> 
+<p>
+<a NAME="4a"><code>xhost - </code></a> 
+<p>
+In addition, if there are any hosts explicitly lists, you must explicitly
+remove them: 
+<p>
+<code>xhost -localhost</code> 
+<p>
+There is a Background Processing preferences setting to clear out your
+xhost list automatically. You need to restart exmh for this setting
+to take effect. 
+
+<h3><a NAME="4b">4b. How do I start my X server so it does Xauthority
+right?</a></h3>
+<p>
+<a NAME="4b">The general picture of whats going on is this:</a> 
+</dl>
+<ol>
+<li>
+<dl COMPACT><a NAME="4b">Some program generates a magic cookie (arbitrary
+string) and writes this to a file. </a> 
+</dl>
+<li>
+<dl COMPACT><a NAME="4b">The name of this file (often ~/.Xauthority)
+is passed to the X server </a> 
+</dl>
+<li>
+<dl COMPACT><a NAME="4b">The X server writes an entry for the DISPLAY
+into your ~/.Xauthority file. </a> 
+</dl>
+<li>
+<dl COMPACT><a NAME="4b">Xlib reads ~/.Xauthority when you create a
+window, and passes the cookie value back to the X server. </a> 
+</dl>
+</ol>
+<dl COMPACT>
+<p>
+<a NAME="4b">The specific details vary from server to server. For SunOS
+and openwin, you should just be able to start up with:</a> 
+<p>
+<a NAME="4b"><code>openwin -auth magic-cookie </code></a> 
+<p>
+<a NAME="4b">Another person says,</a> 
+<p>
+T<a NAME="4b">he Xauthority stuff seems to work now. All I did was
+declare and export XAUTHORITY from my .profile. I had't done it before
+since the value ($HOME/.Xauthority) is supposed to be the default.
+We're using XDM. In more detail, here is what happens under the covers...
+</a> 
+<pre>
+    if [ ! \( -d $HOME -a -w $HOME \) ]; then
+      echo "Warning: Can't write X authority file" 1&gt;&amp;2 ;
+      auth_args=""
+    else
+      authfname=$HOME/.xnews.`uname -n`$DISPLAY
+      ${OPENWINHOME}/lib/mkcookie $authfname -auth magic-cookie
+      auth_args="-auth $authfname"
+    fi ;
+    ${OPENWINHOME}/bin/xnews $auth_args $server_args $xnews_config_args ;;
+</pre>
+<p>
+<a NAME="4b">There is a more lengthy example given in the misc/Xauthority
+file that comes with the exmh distribution. </a><a NAME="5"> </a> 
+
+<h3><a NAME="4c">4c. How do I just disable the xauth stuff in exmh?</a></h3>
+</dl>
+<ul>
+<li>
+<dl COMPACT>You can't. 8-) That's because it's in Tk, not exmh. 
+</dl>
+<li>
+<dl COMPACT>It's there because Tk requires xauth for its interprocess
+communication. Otherwise, there would be a *serious* security hole,
+allowing any host to run arbitrary scripts in any Tk window it can
+find. (ANY host -- not just those listed in xhost -- ever hear of IP
+packet spoofing?) 
+</dl>
+<li>
+<dl COMPACT>If you're gutsy, tkSend.c allows you to #define TK_NO_SECURITY,
+which disables the xauth checks and hopes for the best. If you're desperate,
+rebuilding Tk with this definition might be the thing to do. 
+</dl>
+<li>
+<dl COMPACT>A better solution would be to arrange for resynchronizing
+the key. Check out: 
+</dl>
+</ul>
+<dl COMPACT>
+<p>
+<a href="http://ce-toolkit.crd.ge.com/tkxauth/">http://ce-toolkit.crd.ge.com/tkxauth/</a>
+
+<p>
+for how to set up xauth on your server. When you log into work, just
+set up a local script that does: 
+<p>
+xauth nlist $DISPLAY | rsh host.at.work.com xauth nmerge - 
+<p>
+to resynchronize the session key. 
+
+<h3><a NAME="4d">4d. rsh commands don't work between home and work,
+because the accounts are different on the two machines.</a></h3>
+<p>
+You *can* set up rsh to work correctly. In your .rhosts at work, put
+a line like: 
+<p>
+host.at.home.net homeuser 
+<p>
+and change the command above to read: 
+<p>
+xauth nlist $DISPLAY | rsh host.at.work.com -l workuser xauth nmerge
+- 
+<p>
+I have had mismatched accounts on lots of hosts, and nary a problem
+keeping the session keys in sync. 
+
+<h3><a NAME="5">5. Where do I find Faces and Metamail packages?</a></h3>
+<p>
+There are pointers to these packages in the <a HREF="software.html">software
+page</a>. 
+
+<h3><a NAME="6">6. How do you get an X-Face: line into your outgoing
+mail messages?</a></h3>
+T<a NAME="6">he compface program that is part of the faces package
+will generate the X-Face hex string for you. Check its man page for
+details. If you have a 48x48 X bitmap image in X bitmap .xbm format,
+then you can convert that into an ikon format using some programs from
+the pbmplus package. The pipeline looks like 
+<pre>
+xbmsize48 | xbm2ikon | compface
+</pre>If you put an X-Face header in your replcomps file (see
+</a><a HREF="#15">15</a>) then you need to double any % and \ in the
+X-Face string. For example, 
+<pre>
+abc%def\efg
+</pre>needs to be written as 
+</dl>
+<pre><dl COMPACT>abc%%def\\xyz
+</dl></pre>
+<dl COMPACT>in the X-Face header of your replcomps files. 
+</dl>
+<pre></pre>
+<dl COMPACT>
+
+<h3><a NAME="6b">6b. How do you display an X-Face: header line?</a></h3>
+</dl>
+<pre></pre>
+<dl COMPACT>U<a NAME="6b">nder the Faces preferences, set the X-Face
+pipeline to be similar to: 
+</dl>
+<pre><dl COMPACT>
+uncompface | ikon2xbm
+</dl></pre>
+<dl COMPACT>(You might need absolute pathnames if these programs are
+not otherwise on your PATH). uncompface comes with the faces package.
+ikon2xbm comes with exmh as misc/ikon2xbm.c Just compile it with </a>
+</dl>
+<pre><dl COMPACT><a NAME="6b">
+cc -o ikon2xbm ikon2xbm.c
+</a></dl></pre>
+<dl COMPACT><a NAME="6b">Note, this is slower than I'd like, plus the
+results are not saved anywhere. The intended use of the X-Face header
+was that the mail agent would update the facesaver database in the
+background using it. </a> 
+</dl>
+<pre></pre>
+<dl COMPACT>
+
+<h3><a NAME="7">7. Can I use EXMH as a news reader?</a></h3>
+W<a NAME="7">ell, it actually works ok, but there are various things
+that would make it better at reading news. To get started, just make
+a symbolic link from your ~/Mail directory into the news spool file
+system. This requires access (e.g., NFS) to the news spool file system,
+of course. You can do it for a single newsgroup, i.e. clari.feature.dilbert.
+My symlink looks like: 
+<pre>
+Mail/dilbert -&gt; /net/news/news-1/news/spool/clari/feature/dilbert
+</pre>Or, you can link into the interior of the news hierarchy.
+You might run into a problem from the MH folders command that limits
+it to about 300 folders. Change the NFOLDERS constant in MH src/h/mh.h
+from 300 to 30,000 and you shouldn't have any more trouble ;-) </a>
+<h3><a NAME="8">8. How do I change those default wheat-colors for the
+widgets in EXMH?</a></h3>
+(See also exmh.COLORS for more color schemes...) Here is a set of Xresources
+that I use to get a grey-family for my TK-based applications. You can
+put this into your ~/.exmh-defaults, or into your ~/.Xdefaults. This
+works ok on a monochrome screen, although buttons do not highlight
+when you pass the mouse over them. 
+<pre>
+*activeBackground:			#efefef
+*activeForeground:			black
+*selector:				black
+*background:				#dfdfdf
+*foreground:				black
+*selectBackground:			#bfdfff
+*Scale.activeForeground:		#efefef
+*Scale.sliderForeground:		#dfdfdf
+*Scrollbar.foreground:			#dfdfdf
+*Scrollbar.activeForeground:		#efefef
+*Button.disabledForeground:		#7f7f7f
+*Checkbutton.disabledForeground:	#7f7f7f
+*Radiobutton.disabledForeground:	#7f7f7f
+*Menu.disabledForeground:		#7f7f7f
+</pre>
+
+<h3><a NAME="9">9. What's the difference between presort and multidrop
+inc-styles?</a></h3>
+The main difference between presort and multidrop is: with presort,
+you don't need a ~/.forward that pipes your messages to slocal because
+exmh will run slocal for you. The second difference is that the presort
+scheme assumes that messages are completely routed into folders, either
+with the + syntax (slocal patch required) or by piping messages through
+rcvstore in the .maildelivery specification. The multidrop scheme assumes
+you append messages to dropbox files with the '&amp;GT;' or 'file'
+command in your .maildelivery file. Thus your options are: 
+</dl>
+<ul>
+<li>
+<dl COMPACT>Use slocal in your .forward, pipe your messages to rcvstore
+in .maildelivery, and have exmh do background flist updates. 
+</dl>
+<li>
+<dl COMPACT>Use slocal in your .forward, append messages to files in
+.maildelivery, specify files to folders mapping in .xmhcheck, and have
+exmh do background multidrop. 
+</dl>
+<li>
+<dl COMPACT>Empty .forward, pipe your messages to rcvstore in your
+.maildelivery, and have exmh do background presort. 
+</dl>
+<li>
+<dl COMPACT>Note that the following DOES NOT WORK empty .forward, append
+messages to files in .maildelivery, specify file to folder mapping
+in .xmhcheck, and have exmh do background presort. WON'T WORK 
+</dl>
+</ul>
+<dl COMPACT>
+
+<h3><a NAME="10">10. How do I fix the "exmh-bg lost UI {process XXXX}"
+message?</a></h3>
+First - see <a HREF="#4a">#4a</a> about Tk send and Xauthority. is most
+like a problem with the Tk send command. Second - if Tk send works
+for you, then perhaps it is a problem with the ps command setting for
+exmh(psCmd). This is set up when exmh is installed and is used to query
+the existence of other processes. On Berkeley-style systems you can
+just do 
+<pre>
+/bin/ps $pid
+</pre>While on SysV-style systems you need the -p flag 
+<pre>
+/bin/ps -p $pid
+</pre>
+
+<h3><a NAME="10b">10b. What does "exmh-bg cannot rendez-vous with
+UI - exiting" mean?</a></h3>
+This is a related problem. Tk send is not working so the background
+process cannot hook up with the user interface. See <a HREF="#4a">#4a</a>
+<h3><a NAME="11">11. How come messages are not really removed when
+I delete them?</a></h3>
+By default, MH only renames a message when you delete it. It is either
+named ,N or #N, depending on how your system is configured. You can
+take a few different approaches to cleaning up these files. 
+</dl>
+<ol>
+<li>
+<dl COMPACT>Set up a cron job to periodically remove them. 
+</dl>
+<li>
+<dl COMPACT>Remove them by hand, or add a Purge menu entry to do it.
+</dl>
+<li>
+<dl COMPACT>In your ~/.mh_profile, add a line like: 
+<pre>
+      rmmproc: /bin/rm
+      </pre>This causes the MH rmm command to invoke /bin/rm to nuke
+the message 
+</dl>
+</ol>
+<dl COMPACT>
+
+<h3><a NAME="12">12. Why doesn't the flag go up when there is new
+mail in the spool file?</a></h3>
+The appearance of the exmh icon relates to the contents of your mail
+folders, not your spool file. This reflects a bias towards background
+inc'ing, which periodically transfers (and maybe sorts) mail into your
+folders. Check out flag.tcl for the details. 
+
+<h3><a NAME="13">13. Why isn't there a Reply button, but only a menu?</a></h3>
+There are really lots of variations on reply, that's why. You should
+pick your favorite one and define a personal button for it so that
+*you* get what *you* want. You can define a repl button by putting
+these resources into your ~/.exmh-defaults file 
+<pre>
+*Mops.ubuttonlist: myrepl
+*Mops.myrepl.text: Repl
+*Mops.myrepl.command: Msg_Reply {any valid repl arguments here}
+</pre>See the MH man page on repl for more details. Common flags
+include 
+<pre>
+    -cc me -nocc me -cc all -nocc all -filter form
+</pre>
+
+<h3><a NAME="14">14. Are there newsgroups or mailing lists for discussion
+of exmh?</a></h3>
+There are three mailing lists, and an archive. First, and this is important,
+send subscription requests to the corresponding -request address, not
+the main lists. Please. 
+</dl>
+<ul>
+<li>
+<dl COMPACT>exmh-announce@redhat.com - subscribe to this to receive
+announcements about new exmh releases. Send a message to exmh-announce-request@redhat.com
+with the word Subscribe in the subject to be added to the list.
+Say "unsubscribe" to be removed from the list. 
+</dl>
+<li>
+<dl COMPACT>exmh-users@redhat.com - subscribe to this to join a
+discussion of exmh. This list also gets announcement messages. Subscribe
+by sending a message to exmh-users-request. 
+</dl>
+<li>
+<dl COMPACT>exmh-workers@redhat.com - subscribe to this to join
+a discussion among hackers that are interested in programming new stuff
+for exmh. 
+</dl>
+<li>
+<dl COMPACT>The comp.mail.mh newsgroup has more information about basic
+MH stuff. 
+</dl>
+</ul>
+
+<h3><a NAME="15">15. How do I set up the templates for mail messages.</a></h3>
+MH uses 4 template files depending on the operation. Default versions
+of the files are in the MH library directory. Copy these defaults into
+your ~/Mail directory so you can customize them. The files are: 
+</dl>
+<ul>
+<li>
+<dl COMPACT>components - used when you send a new message. Put the
+headers and any text you want in your message. Remember to leave either
+a blank line between the headers and the body, or a line of all dashes.
+</dl>
+<li>
+<dl COMPACT>replcomps - used when you reply to a message. This file
+is complex because it contains directives that indicate how to fill
+in the headers based on the content of the mail you are replying to.
+See the repl man page for details. If you want to put literal values
+in the headers, you have to double any occurrences of % or \ because
+these are special characters in the formatting commands. If you want
+plain text in the body, you have to begin these lines with a colon.
+Otherwise the lines after the header are discarded. The same rules
+about separating the headers and the body apply. If you want to add
+comments to the template, start the line with a semi-colon. 
+</dl>
+<li>
+<dl COMPACT>reply filters - the -filter argument to repl specifies
+a filter that inserts and formats the body of the message to which
+you are replying. See the repl man page for details. 
+</dl>
+<li>
+<dl COMPACT>forwcomps -- used when forwarding a message. This is more
+like the components file than the replcomps file. 
+</dl>
+<li>
+<dl COMPACT>forward filters -- these control what headers are retained
+in the forwarded messages, and how those messages are forwarded. 
+</dl>
+</ul>
+<pre><dl COMPACT>
+    ---------cut here for sample components file-----------
+To: 
+Subject: 
+Fcc: outbox
+Cc: 
+X-Face: "HxE|?EnC9fVMV8f70H83&amp;AMP;{fgLE.|FZ^$&amp;GT;@Q(yb#N,Eh~N]e&amp;AMP;]=&amp;GT;r5~UnRml1:4EglY{9B+
+ :'wJq$@c_C!l8@&amp;LT;$t,{YUr4K,QJGHSvS~U]H`&amp;LT;+L*x?eGzSk&amp;GT;XH\W:AK\j?@?c1o&amp;LT;k;j'Ei/UL)!*0
+ ILwSR)J\bc)gjz!rrGQ2#i*f:M:ydhK}jp4dWQW?;0{,#iWrCV$4~%e/3)$1/D
+
+
+	Brent Welch	Xerox-PARC
+    ------------end sample components file-----------------
+
+    ---------cut here for replcomps - compare X-Face-Header differences------
+%(lit)%(formataddr %&amp;LT;{reply-to}%|%&amp;LT;{from}%|%{sender}%&amp;GT;%&amp;GT;)\
+%&amp;LT;(nonnull)%(void(width))%(putaddr To: )\n%&amp;GT;\
+%(lit)%(formataddr{to})%(formataddr{cc})%(formataddr(me))\
+%&amp;LT;(nonnull)%(void(width))%(putaddr cc: )\n%&amp;GT;\
+%&amp;LT;{subject}Subject: Re: %{subject}\n%&amp;GT;\
+%&amp;LT;{date}In-reply-to: %&amp;LT;(mbox{from})%(mbox{from})%|%(friendly{from})%&amp;GT;\
+'s message of \
+%&amp;LT;(nodate{date})%{date}%|%(tws{date})%&amp;GT;.%&amp;LT;{message-id}
+	     %{message-id}%&amp;GT;\n%&amp;GT;\
+X-Face: "HxE|?EnC9fVMV8f70H83&amp;AMP;{fgLE.|FZ^$&amp;GT;@Q(yb#N,Eh~N]e&amp;AMP;]=&amp;GT;r5~UnRml1:4EglY{9B+
+ :'wJq$@c_C!l8@&amp;LT;$t,{YUr4K,QJGHSvS~U]H`&amp;LT;+L*x?eGzSk&amp;GT;XH\\W:AK\\j?@?c1o&amp;LT;k;j'Ei/UL)!*0
+ ILwSR)J\\bc)gjz!rrGQ2#i*f:M:ydhK}jp4dWQW?;0{,#iWrCV$4~%%e/3)$1/D
+Fcc: outbox\n
+
+    --------------end sample replcomps file----------------
+
+    --------cut here for sample reply filter---------------
+from:nocomponent,formatfield=\
+"&amp;GT;&amp;GT;&amp;GT;%(friendly{text}) said:" 
+body:component="&amp;GT; ",offset=1,overflowoffset=4
+:
+:---------------------------------
+:	Brent Welch	Xerox PARC
+    ----------end of sample reply filter-------------------
+
+    ----------cut here for sample forwcomps file-----------
+To:
+Cc:
+Subject:
+Fcc: outbox
+
+    ----------end of forwcomps file------------------------
+
+    ----------cut here for sample forward filter-----------
+width=80,overflowtext=,overflowoffset=10
+leftadjust,compress,compwidth=9
+Date:formatfield="%&amp;LT;(nodate{text})%{text}%|%(tws{text})%&amp;GT;"
+From:
+To:
+cc:
+Subject:
+:
+body:nocomponent,overflowoffset=0,noleftadjust,nocompress
+    ----------end of sample forward filter-----------------
+</pre>
+
+<h3><a NAME="16">16. How do I get a copy of mail I sent saved into
+a folder (easily).</a></h3>
+</dl>
+<pre></pre>
+<dl COMPACT>
+<p>
+Use the Fcc: header, which puts a copy of your out-going mail into
+a folder. You can get this to appear in your messages in two ways.
+
+</dl>
+<pre></pre>
+<ol>
+<li>
+<dl COMPACT>Add the Fcc: header to the various component files described
+in <a HREF="#15">#15</a>. 
+</dl>
+<li>
+<dl COMPACT>Add a "-fcc sent-mail" argument to your MH profile entries
+for comp, repl, and forw 
+</dl>
+</ol>
+<dl COMPACT>
+
+<h3><a NAME="17">17. What is a good alternate Print command to get
+good formatting?</a></h3>
+<p>
+&lt;Ethan Miller says:&gt; I use the mp package to print mail (and
+other files as well). Mailp (one of the commands in mp) prints mail
+nicely. My print command is: 
+<pre>
+mailp -landscape -twosided -bsdprinter $file
+</pre>&lt;Anne Possoz adds:&gt; But without metamail piped to
+mp, in certain circumstances like mail coming from MacIntosh (is0-8859,
+quote-printable) the accents do not come right. That is why we use:
+<pre>
+metamail $file | mp -l | lp
+</pre>You can get mp at ftp.x.org in contrib/utilities. 
+
+<h3><a NAME="18">18. How do I change the folder table of contents
+listing?</a></h3>
+<p>
+This is a feature of the scan and inc MH programs. They take a macro
+file that describes how to generate this display. The default is buried
+in your MH lib directory as scan.form, or scan.default 
+<p>
+Here is what I have for the default: 
+<p>
+<code>%; NOTE: This file is supplied for reference only; it shows the
+default 
+<br>
+
+%; format string (for non-UK sites) which was compiled into "scan".
+<br>
+
+%; See the source file "h/scansbr.h" for details. 
+<br>
+
+%4(msg)%&lt;(cur)+%| %&gt;%&lt;{replied}-%?{encrypted}E%| %&gt;\ 
+<br>
+
+%02(mon{date})/%02(mday{date})%&lt;{date} %|*%&gt;\ %&lt;(mymbox{from})%&lt;{to}To:%14(friendly{to})%&gt;%&gt;%&lt;(zero)%17(friendly{from})%&gt;
+\ %{subject}%&lt;{body}&lt;&lt;%{body}&gt;&gt;%&gt;</code> 
+<p>
+Copy this into ~/Mail/scan.form Add 
+<pre>
+scan: -form scan.form
+inc: -form scan.form
+</pre>to your .mh_profile 
+<p>
+NOTE: Exmh depends on the output of the scan form to have the message
+number come first, followed by a character that can be either a space
+or a plus '+' to mark the current message So - leave this magic at
+the front (you can change the 4 as noted below) 
+<p>
+<code>%4(msg)%&lt;(cur)+%| %&gt;</code> 
+<p>
+Now edit the form as described below. 
+
+<h3><a NAME="18a">18a. Remove the leading words of the message</a></h3>
+<p>
+Remove the trailing "%&lt;{body}&lt;&lt;%{body}&gt;&gt;%&gt;" from
+the scan.form 
+
+<h3><a NAME="18b">18b. Handle message numbers &gt; 9999</a></h3>
+<p>
+Change the leading "%4(msg)" to "%5(msg)" (or %6 to allow &gt; 99999
+
+
+<h3><a NAME="18c">18c. Add annotations to messages that have been
+replied to.</a></h3>
+<p>
+MH provides an annotation facility that will cause new message headers
+to be added to a message when you reply to or forward the message.
+In addition, the default scan.form adds a dash (-) to the scan listing
+for annotated messages so you can see their status in the folder table
+of contents. 
+<p>
+To get annotations you must add to your .mh_profile. 
+<pre>
+repl: -annotate
+</pre>If you have other profile options for repl, just add -annotate.
+Note: it won't work to abbreviate it as -anno. 
+
+<h3><a NAME="18d">18d. Colorize message headers.</a></h3>
+<p>
+Did you know you can colorize rfc822 headers in the message display
+by setting *m_tagnames and related X resources? This feature has been
+around for some time, but seems to be little-known. Here's what I have
+in my ~/.exmh-defaults-color file. 
+<p>
+<code>*m_tagnames: hidden subject from x-filters-matched content-type
+x-mailer replied replied-to</code> 
+<p>
+m_tagnames lists headers that have display resources associated with
+them. There are two special ones, "hidden" applies to the headers that
+are scrolled off the top of the display. "general" applies to the ones
+that are visible by default. The rest are just literal names of headers.
+
+<p>
+The display resources are anything that is valid for the Tk text widget
+tag facility. The most useful ones are font and foreground, but you
+can check out the Tk text widget man page for all the possibilities.
+Here is what I use: 
+<p>
+<code>*m_hidden: -font 6x10 
+<br>
+
+*m_subject: -foreground blue 
+<br>
+
+*m_x-filters-matched: -foreground "medium sea green" 
+<br>
+
+*m_content-type: -foreground "medium sea green" 
+<br>
+
+*m_x-mailer: -foreground "medium sea green" 
+<br>
+
+*m_from: -foreground blue 
+<br>
+
+*m_replied: -foreground "violet red"</code> 
+
+<h3><a NAME="19">19. How do signatures work?</a></h3>
+<p>
+Create a file called .signature in your home directory. Then when you hit the
+Sign button, sedit will add the contents of that file to the end of your
+message. To create multiple signatures, just create multiple files with
+.signature as a prefix (for example, .signature and .signature.rant).  Then
+the Sign button becomes a Sign... menu.
+<p>
+If you have Auto-sign enabled in the Simple Editor Preferences section, your
+signature will be added to the message when you hit Send rather than when
+you hit the Sign button.  In this case, the "(intelligent)" option on the
+Sign... menu causes messages being sent solely within the local domain to be
+signed using a different file from those being sent outside of it; the
+Intelligent Signatures Preferences section allows you to specify which files
+to use.
+<p>
+Another trick is to create an executable program that outputs your signature
+text. If you call this program .signature.something, sedit will append the
+output of the program to the end of your message when you choose that
+signature file.  Three arguments will be passed to this program (in this
+order): the command used to create that message (i.e. one of [comp, repl,
+forw, dist, unknown]), the name of the current folder when composition was
+started, and the filename of the draft message.  You can then use these
+arguments in your program to decide what signature text to output: for
+example, you might look inside the draft message to find out who it is being
+sent to, or what its subject line says.
+<p>
+<a HREF="index.html"><img SRC="left-arrow.gif" ALT="">Back to the exmh
+index</a> 
+</dl>
+
+
+</Body>
+</Html>
+

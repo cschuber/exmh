@@ -1,0 +1,288 @@
+<Html>
+<Head>
+<Title>Address DB Browser and Editor Help</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1 align=center>Address DB Browser Help</h1>
+<p>
+The Address DB Browser window is accessed from the Addresses.../Address
+Book menu item in the exmh main window. This window allows you to view
+the contents of the Address Database and operate on the contents of
+the database.
+<p>
+The Browser window shows a formatted and sorted list of mail addresses
+as in the example below. The full name and email address are shown.
+In addition the presence of a "-" preceding the email address indicates
+that the record is marked for exclusion from searches. 
+<pre>
+Brent B. Welch            &lt;welch@acm.org&gt;
+Brent B. Welch          - &lt;brent.welch@scriptics.com&gt;
+</pre>
+
+<p>
+At the bottom of the Address DB Browser window is an entry field
+labelled <b>Find</b>.  Text entered in the Find field will applied as
+a case-insensitive regular expression filter to the records in the
+Address Database and only matching records will be displayed.
+
+<p>After using <b>Find</b>, to return to viewing all records it is
+necessary to delete any text entered in the Find field and press enter.
+
+<br>
+
+<br>
+
+
+
+<h3>Address DB Browser Buttons</h3>
+<p>
+The following buttons are available in the Address DB Browser window:
+
+<dl>
+<br>
+<dt>Help
+<dd>Shows this help.
+
+<br>
+<br>
+<dt><a href=#dbmenu>Database...</a>
+<dd>Pops up the 
+<a href=#dbmenu>Database... menu</a>, 
+a group of operations on the entire database.
+
+<br>
+<br>
+<dt><a href=#selmenu>Selected...</a>
+<dd>Pops up the
+<a href=#selmenu>Selected Records menu</a>.
+Items available in this menu operate on the currently selected record
+or records in the database.  
+
+<br>
+<br>
+<p>
+This menu is disabled when no records are
+selected.  Selection of records is accomplished by clicking or
+dragging using mouse button 1 and may also be done using the keyboard
+arrow keys and spacebar.
+
+<br>
+<br>
+<dt>Dismiss
+<dd>Closes the Address Database Browser window
+
+</dl>
+
+<br>
+<br>
+
+<h4><a name=dbmenu>Database... menu</a></h1>
+<br>
+<dl>
+<dt>Save &lt;Meta-s&gt;
+<dd>
+<p>
+Pressing the <b>Save</b> button or the &lt;Meta-s&gt; key unconditionally
+writes the current contents of the complete Address Database to disk.
+Note that the Address Database will also be saved when exmh exits
+normally and <i>may</i> optionally be saved each time you change the
+current folder if the database has changed <b>and</b> if "Checkpoint
+on folder change" is set to "on" in the Address Database Preference
+panel.
+<br>
+
+
+<br>
+
+
+<dt>Reload &lt;Meta-r&gt;
+<dd>
+<p>
+Pressing the <b>Reload</b> button or the &lt;Meta-r&gt; key causes the
+current contents of the complete address database to be discarded and
+the last saved file to be reread.  If the database has changed you
+will be prompted to confirm the reload to prevent inadvertent loss of
+changes.
+<br>
+
+
+<br>
+
+
+<dt>Sort &lt;Meta-t&gt;
+<dd>
+<p>
+Pressing the <b>Sort</b> button or the &lt;Meta-t&gt; key causes the
+contents of the address browser list to be resorted.  This may
+occasionally be desirable since new database entries are added to the
+end of the browser list for performance reasons.
+<br>
+
+
+<br>
+
+</dl>
+<br>
+<br>
+
+<h4><a name=selmenu>Selected Records menu</a></h1>
+<p>
+Items in the <b>Selected...</b> menu operate on the currenltly
+selected record or records and are only available when records have
+been selected in the Address Browser listbox.
+
+<br>
+<br>
+<dl>
+<dt>Edit 
+<dd>
+<p>
+Pressing the <b>Edit</b> button will open an <a href=#dbedit>Address
+DB Editor</a> window for each selected record.  A single record can be
+quickly editted by double-clicking mouse button 1 on a record in the
+Address DB Browser.
+
+<br>
+<br>
+<dt>Delete &lt;Control-w&gt;
+<dd>
+<p>
+Pressing the <b>Delete</b> button or the &lt;Control-w&gt; key removes all
+the selected record from the database.  No confirmation will be
+requested but the change is not committed to disk until the Address DB
+is saved.
+
+<br>
+<br>
+<dt>Toggle Excluded &lt;Meta-x&gt;
+<dd>
+<p>
+Pressing the <b>Toggle Excluded</b> button or the &lt;Meta-x&gt; key will
+invert the "excluded" flag for all selected records.  This can also be
+done by clicking mouse button 2 in the list box with records selected.
+No confirmation will be requested but the change is not committed to
+disk until the Address DB is saved.
+
+<br>
+<br>
+<dt>View Last Msg 
+<dd>
+<p>
+Pressing the <b>View Last Msg</b> button will cause a new window to be
+opened for each selected address.  The windows will contain the last
+message received from the selected address(es).  Note that this may
+give incorrect results if the selected message was moved, the folder
+was packed, or the message was deleted.  The Address Database field
+containing the last message information is only updated when an
+address is saved.
+
+<br>
+
+
+<br>
+
+
+</dl>
+<p>
+
+<br>
+<br>
+<br>
+<h1 align=center><a name=dbedit>Address DB Editor Help</a></h1>
+<p>
+The <b>Address DB Editor</b> is used to change the contents or exclusion
+status of a single record in the Address Database. 
+
+<h3>Address DB Editor Fields</h3>
+<p>
+The following fields are available and may be altered. No checking
+of contents is done so preserving valid data is strictly up to you.
+
+<dl>
+<dt>Full Name 
+<dd>The "text name" of the person associated with this email address.
+This may be blank. It is not necessary to provide quotation marks around
+addresses containing commas or other restricted characters as the Address
+Database will automatically provide them when needed. 
+
+<br>
+<br>
+<dt>Address 
+<dd>This will display the fully formatted address containing the full
+name (quoted if necessary) and the email address. The email address
+will be enclosed in angle brackets ("&lt;&gt;") if there is a full
+name. 
+
+<br>
+<br>
+<p>
+<b>If you alter this field you should <i>only</i> enter a valid email
+address.</b> 
+
+<br>
+<br>
+<dt><a name=lastmsgfield>Last Message</a> 
+<dd>This field will contain the fully qualified filename of the last
+message received from this address. It will only be correct if you
+have not packed the folder, moved the message, or deleted the message.
+This field is used when you press the <b>Last Msg</b> button in the
+Address DB Browser. 
+
+<br>
+<br>
+<dt>Date 
+<dd>This field will contain the contents of the Date: header from the
+message pointed to by the <a href=#lastmsgfield>Last Message</a> field
+above. When displaying messages in exmh this field is used to determine
+if the <a href=#lastmsgfield>Last Message</a> field should be updated.
+</dl>
+
+<h3>Address DB Editor buttons</h3>
+
+<dl>
+
+<br>
+<br>
+<dt>Exclude / Include 
+<dd>If the record being edited is marked for exclusion from searches
+then the <b>Include</b> button will be available to unmark it. If it
+is not currently marked for exclusion the <b>Exclude</b> button will
+be available to so mark it. 
+
+<br>
+<br>
+<dt>ViewLastMsg 
+<dd>Pressing the <b>ViewLastMsg</b> button will open a window containing
+the last message (as listed in the <a href=lastmsgfield>Last Message</a>
+field). 
+
+<br>
+<br>
+<dt>Delete 
+<dd>Pressing the <b>Delete</b> button will remove the current record
+from the Address Database and close the Address DB Editor window. <dt>Save
+<dd>Pressing the <b>Save</b> button will save changes from the window
+to the in-memory Address Database. This does not commit the changes
+to disk. 
+
+<br>
+<br>
+<dt>Dismiss 
+<dd>Pressing the <b>Save</b> button will close the Address DB Editor
+window, discarding any changes made in the window. 
+</dl>
+
+<br>
+<br>
+<br>
+<h2><a HREF="AddressBk.html">Address Database Help</a></h2>
+<h2><a HREF="index.html">Main Help Index</a></h2>
+
+
+</Body>
+</Html>
+

@@ -1,0 +1,93 @@
+<Html>
+<Head>
+<Title>Font Help</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1 align=center>The Font Interface </h1>
+<p>
+The interface has two main parts. Along the top is a set of menus that
+correspond to the different components of an X font name. 
+<br>
+
+-foundary-family-... 
+<br>
+
+You can select values via these menus. The second part is a listbox
+that displays all possible fonts on your system. When you make a menu
+selection, the first matching font is selected in the listbox. A sample
+of the font is shown at the bottom of the interface. You can also just
+select a font directly from the listbox. At the end of the listbox
+is a set of short names for fonts. If you want to easily find a bigger
+font, try fonts like 9x15 or 8x13. 
+<p>
+When you find a font you like, select the resource you want to set
+from the Widgets... menu. The Widgets... menu lists resources, and
+in turn the resources affect the widgets. You can set the font for
+everything by setting the *font resource, which is at the top of the
+list. 
+
+<h2>Font Resources </h2>
+<dl>
+<dt>
+<br>
+
+*font 
+<dd>Default font for all widgets 
+<dt>*Button.font 
+<dd>All: button, menubutton, checkbutton, radiobutton, menu 
+<dt>*Entry.font 
+<dd>One-line text entry 
+<dt>*Label.font 
+<dd>Text labels 
+<dt>*Message.font 
+<dd>Messages (not used much in exmh) 
+<dt>*Listbox.font 
+<dd>Listboxes 
+<dt>*Text.font 
+<dd>Default for text areas 
+<dt>*fl_font 
+<dd>Folder display labels 
+<dt>*Ftoc*Text.font 
+<dd>Scan listing text 
+<dt>*Msg*Text.font 
+<dd>Message display text 
+<dt>*Sedit*Text.font 
+<dd>Built in editor text 
+</dl>
+<h2>Hints</h2>
+<p>
+*font sets the font for everything. You can then adjust the font for
+more specific widgets with the other settings. 
+<p>
+*Button.font sets the font for all kinds of buttons, plus menus. If
+you really want different fonts for different kinds of buttons or menus,
+then you'll have to set the resources by hand. You'll need to tweak
+<br>
+
+*Checkbutton.font 
+<br>
+
+*Radiobutton.font 
+<br>
+
+*Menubutton.font 
+<br>
+
+*Menu.font 
+<p>
+Note that there are some additional preference settings under MIME
+that affect the font size of certain MIME messages. If you really want
+to get into the details, consult the app-defaults file for ways to
+define fonts for different character sets. The overall font situation
+in exmh is somewhat messy, so I apologize for the clutter. 
+
+<h2><a HREF="index.html">Main Help Index</a></h2>
+
+
+</Body>
+</Html>
+

@@ -1,0 +1,75 @@
+<Html>
+<Head>
+<Title>Aliases Help</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1 align=center>Aliases Help</h1>
+<p>
+Aliases are short names for email addresses. You can have multiple
+address as part of one alias. Aliases can refer to other aliases that
+are defined <em>after</em> them. 
+<p>
+The email address can include rfc822 comments in parenthesis, like:
+(Brent Welch) welch@acm.org
+<p>
+BUG WARNING: the addresses are not really parsed, and if you have a
+comma inside a comment, it screws up. Don't use this browser in that
+case. 
+<p>
+Use Import to import aliases from .mailrc files. 
+<p>
+Search lists by typing in the entry below them. Hit space when the
+correct alias is selected. (Use &lt;control-space&gt; when the correct
+address is selected. That'll work for alias completion, too.) &lt;space&gt;
+
+<p>
+will define a new alias if what you have typed does not match an existing
+alias. &lt;control-c&gt; 
+<p>
+will delete the matching alias. 
+<p>
+You can select and paste out of the Alias list. The selection is not
+exported from the Address list. This asymmetry means you can select
+an address, then select and paste another version of that address into
+the entry widget below the address list, and (finally) click Change
+to update that address. 
+<p>
+Your aliases are usually stored in ~/.mh_aliases For the truth, check
+your AliasFile: MH profile entry. 
+<p>
+Exmh remembers the placement of the window, but not necessarily its
+size. For best results, play with the following resources. 
+<p>
+For Tk 3.6 and earlier: 
+<br>
+
+*Alias*alias.listbox.geometry: 20x10 
+<br>
+
+*Alias*addr.listbox.geometry: 30x10 
+<p>
+For Tk 4.0 and after: 
+<br>
+
+*Alias*alias.listbox.width: 20 
+<br>
+
+*Alias*alias.listbox.height: 10 
+<br>
+
+*Alias*addr.listbox.width: 30 
+<br>
+
+*Alias*addr.listbox.height: 10 
+
+<h3>See also: <a HREF="AliasAddr.html">Aliases and Addresses</a></h2>
+<h2><a HREF="index.html">Main Help Index</a></h2>
+
+
+</Body>
+</Html>
+

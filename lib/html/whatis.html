@@ -1,0 +1,76 @@
+<Html>
+<Head>
+<Title>Exmh</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1><center>What is exmh?</center> </h1>
+<em>An Introduction by the author, <a HREF="http://www.beedub.com/">Brent
+Welch</a> , welch@acm.org</em> 
+<p>
+Exmh is an X user interface for MH mail. MH provides a set of UNIX
+commands that manage folders and mail messages. MH has a zillion features
+as a result of several years of availability. Exmh provides a graphical
+interface to many of these features, but not everything. You can do
+all the ordinary things like viewing the messages in a folder, and
+reading, deleting, and refiling messages. In addition, the interface
+handles arbitrary nesting of your folder hierarchy. 
+<p>
+What exmh supports well is sorting arriving mail into different folders
+before you even read them. You can sort with the MH .maildelivery filtering
+mechanism, procmail, or any system that adds new messages to the unseen
+sequence of a folder. exmh provides an easy way to find newly arrived
+messages after they have been squirreled away. It highlights what folders
+have new mail, and within a folder it indicates which messages have
+not yet been read. 
+<p>
+MIME format messages are parsed and displayed. <a HREF="http://www.oac.uci.edu/indiv/ehood/MIME/MIME.html">MIME</a>
+is a multi-media mail standard that allows transmission of images,
+audio, enriched text, FTP pointers, etc. via email. While there is
+some support for composing MIME messages in the current version, the
+composition facilities need a little more work. 
+<p>
+You can use your favorite editor to compose mail messages, or you can
+use a simple built-in editor that provides some Emacs-like keybindings.
+With the built-in editor you can compose text/enriched (<b>bold</b>,
+<i>italic</i>, underline, etc.), and you can create multipart messages
+by inserting files of various MIME types. 
+<p>
+Exmh is written in <a HREF="http://sunscript.sun.com/">TCL/TK</a>
+. The implementation is open and flexible. There are several levels
+of customization: 
+<ul>
+<li>Each module of the implementation exports a few knobs and dials
+in a preference interface. There about 20 modules, so there are altogether
+way to many knobs at this point. But, hey, the table-driven implementation
+makes it easy to export settings. 
+<li>The button and menu structure is defined via X resources, You can
+easily add more buttons or menus to invoke new functionality that you
+add to exmh. 
+<li>TK widget attributes such as colors, fonts, and cursors, are controlled
+by X resources. You add make site-wide or personal resource definitions
+to tune the appearance of exmh. 
+<li>Exmh supports a personal library of Tcl extensions. You can provide
+new functionality and add a button for it. In addition you can override
+parts of the implementation. This area could be stronger with the addition
+of more hook points so you do not have to override a whole module,
+but this will improve over time. 
+</ul>
+<h2>THANKS</h2>
+To Sun Microsystems Laboratories and my manager, John Ousterhout, for
+supporting my current exmh work, and to the Computer Science Lab at
+Xerox PARC, which supported the initial development of exmh. 
+<p>
+Many thanks to <a HREF="http://habanero.ucs.indiana.edu/~shutton">Scott
+Hutton</a> who took my feeble attempt at an exmh home page, plus my
+on-line manuals, and produced a nice set of web pages. 
+<p>
+<a HREF="index.html"><img SRC="left-arrow.gif" ALT="">Back to the exmh
+index</a> 
+
+</Body>
+</Html>
+
