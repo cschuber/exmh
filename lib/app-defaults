@@ -284,21 +284,21 @@ exmh.iconic:		0
 *Fops.more.m.uentrylist:
 
 *Fops.more.m.l_rescan: 	Rescan folder
-*Fops.more.m.c_rescan:	busy Scan_FolderForce ; Msg_ShowSomething
+*Fops.more.m.c_rescan:	busy Scan_FolderForce
 *Fops.more.m.l_project: List only selected messages
 *Fops.more.m.c_project:	Ftoc_NewFtoc
 *Fops.more.m.l_pack:	Pack folder
-*Fops.more.m.c_pack:	busy Folder_Pack ; Msg_ShowSomething
+*Fops.more.m.c_pack:	busy Folder_Pack
 *Fops.more.m.l_sort:	Sort folder...
 *Fops.more.m.t_sort:	cascade
 *Fops.more.m.m_sort:	sort
 *Fops.more.m.sort.entrylist:	date subject from
 *Fops.more.m.sort.l_date:	By Date
-*Fops.more.m.sort.c_date:	busy Folder_Sort -datefield date; Msg_ShowSomething
+*Fops.more.m.sort.c_date:	busy Folder_Sort -datefield date
 *Fops.more.m.sort.l_subject:	By Subject
-*Fops.more.m.sort.c_subject:	busy Folder_Sort -textfield subject -limit 0 ; Msg_ShowSomething
+*Fops.more.m.sort.c_subject:	busy Folder_Sort -textfield subject -limit 0
 *Fops.more.m.sort.l_from:	By Sender
-*Fops.more.m.sort.c_from:	busy Folder_Sort -textfield from ; Msg_ShowSomething
+*Fops.more.m.sort.c_from:	busy Folder_Sort -textfield from
 *Fops.more.m.l_thread:	Thread
 *Fops.more.m.c_thread:	busy Thread_DisplayAll 20 +->
 *Fops.more.m.l_find:	Find all folders

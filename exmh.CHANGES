@@ -4,6 +4,10 @@ cvs repository 5/4/1999
     Fixed Help...>Color Legend crash -cwg
     Fixed crash when aborting out of PGP Password window -cwg
     Made menubuttons and regular buttons the same size when using tkstep -cwg
+    Fixed the actions for Rescan, Pack, and the various Sorts not to call
+	Msg_ShowSomething afterwards.  This had the unintended side-effect
+	of, if no current message was set, setting the current message to
+	the first unseen message. -jbeck
 
 cvs repository 5/3/1999
     Added code and doc for "New" button in address database browser
