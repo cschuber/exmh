@@ -134,11 +134,14 @@ proc FdispMake {} {
 proc FdispMakeToplevel { } {
     global fdisp
     Exwin_Toplevel .fl "Folder list" Fltop nomenu
+    wm protocol .fl WM_TAKE_FOCUS {
+	global exwin
+	focus $exwin(mtext)
+    }
     set fdisp(topWidget) .fl
     wm minsize $fdisp(topWidget) 100 30
     wm protocol .fl WM_DELETE_WINDOW FdispDeleted
     FdispMakeCanvas $fdisp(topWidget)
-    focus $fdisp(canvas)
     set icon [option get $fdisp(topWidget) iconposition IconPosition]
     catch {
 	Exwin_IconPosition $fdisp(topWidget) $icon

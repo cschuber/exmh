@@ -738,7 +738,9 @@ proc HMsubmit_form {win param query} {
 		raise .submit
 	    } else {
 		toplevel .submit -bd 4 -relief raised
+		wm group .submit .
 		wm title .submit "Submit Results"
+		wm iconname .submit "Submit Results"
 		text $t -width 50 -height 30 -yscrollcommand {.submit.s set}
 		scrollbar .submit.s -command "$t yview"
 		pack .submit.s -side right -fill y

@@ -52,6 +52,7 @@ proc tkerror { msg } {
 	Widget_Toplevel $name Error $wx $wx
 
 	wm title $name $title
+	wm iconname $name $title
 	wm minsize $name 20 5
     
 	frame $name.buttons

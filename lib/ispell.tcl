@@ -742,6 +742,7 @@ proc Ispell_CheckEntireWindow { text } {
     set ispellVars(label) "Stop Spell Checking"
     catch { destroy .ispellStopWindow }
     set top [ toplevel .ispellStopWindow ] 
+    wm group .ispellStopWindow .
     button $top.b  -textvariable ispellVars(label) -command { 
 	set ispellVars(label) "" 
     }

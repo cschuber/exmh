@@ -43,6 +43,7 @@ proc HeadTitle {win title} {
     set top [winfo toplevel $win]
     if {[winfo class $top] == "Html"} {
 	wm title [winfo toplevel $win] $title
+	wm iconname [winfo toplevel $win] $title
     }
 }
 

@@ -834,6 +834,16 @@ Warp:        Raise then change to the folder clicked on
 Warp & Show: Warp then select the first unseen message"
     }
 
+    { unseenwin(b2mode) unseenWinButton2
+      {CHOICE Nothing Inc}
+      {Button 2 Mode}
+"The behaviour when you press mouse button 2 depends on
+this setting.
+
+Nothing:     Does nothing
+Inc:         Just like clicking the Inc button
+    }
+
     { unseenwin(mb1mode) unseenWinModifiedButton1
       {CHOICE None Raise Warp {Warp & Show}}
       {Modified Button 1 Mode}

@@ -344,7 +344,8 @@ proc Exmh_Done {{exit 1}} {
 	} else {
 	    # Tell the session manager we are done saving state
 	    global argv0 argv
-	    wm command . "$argv0 $argv"
+	    wm command . [concat $argv0 $argv]
+	    wm group . .
 	}
     }
 }

@@ -614,6 +614,7 @@ proc installFake {} {
     global exmh install
     toplevel .fake
     wm title .fake "Install Actions"
+    wm iconname .fake "Install Actions"
     frame .fake.top
     button .fake.top.quit -text "Dismiss" -command {destroy .fake}
     label .fake.top.label -text "  Pending install actions"
@@ -635,6 +636,7 @@ proc install_dialog {} {
     global install tk_version
 
     wm title . "Exmh Install"
+    wm iconname . "Exmh Install"
     wm minsize . 200 200
 
     update idletasks
@@ -744,6 +746,7 @@ proc installBindKeys {} {
     global install tk_version
     toplevel .keys
     wm title .keys "Install Edit Preferences"
+    wm iconname .keys "Install Edit Preferences"
     frame .keys.b
     pack .keys.b -side top -fill x
     button .keys.b.quit -text Dismiss -command {destroy .keys}

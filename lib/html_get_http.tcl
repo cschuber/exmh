@@ -469,7 +469,9 @@ proc HttpTrace {} {
     set f $Http(listbox)
     if ![winfo exists $f] {
 	toplevel $f 
+	wm group $f .
 	wm title $f "HTTP Queue"
+	wm iconname $f "HTTP Queue"
 	label $f.label -text "HTTP Queue"
 	button $f.quit -text "Dismiss" -command {destroy .httpbox}
 	label $f.status -text "(status line)" -textvar Http(dbg_status)

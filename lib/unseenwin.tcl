@@ -23,6 +23,11 @@ proc UnseenWinToggle {args} {
 if [catch {
   if {$unseenwin(on) && ![winfo exists .unseen]} {
     Exwin_Toplevel .unseen "exmhunseen" UnseenWin no
+    wm protocol .unseen WM_TAKE_FOCUS {
+	global exwin
+	focus $exwin(mtext)
+    }
+    wm protocol .unseen WM_DELETE_WINDOW UnseenWinDeleted
     listbox .unseen.lb -exportselection no -font $unseenwin(font) \
                        -relief flat -bd 2
     .unseen.lb configure -highlightthickness 0
@@ -38,6 +43,8 @@ if [catch {
                 3 B3-Motion Control-3 Control-Shift-3 } {
       bind .unseen.lb <$b> {;}
     }
+    bind .unseen.lb <ButtonPress-2> {UnseenWinButton2 press %X %Y}
+    bind .unseen.lb <Any-ButtonRelease-2> {UnseenWinButton2 release}
     bind .unseen.lb <ButtonPress-3> {UnseenWinButton3 press %X %Y}
     bind .unseen.lb <Any-ButtonRelease-3> {UnseenWinButton3 release}
 
@@ -70,6 +77,10 @@ if [catch {
 }
 }
 
+proc UnseenWinDeleted {} {
+    wm iconify .unseen
+    Exmh_Status "Unseen window closed, not destroyed"
+}
 proc UnseenWinTrace {array elem op} {
   global flist unseenwin
 
@@ -371,6 +382,21 @@ proc UnseenWinClick {y mode} {
   wm deiconify .
   raise .
   update idletasks
+}
+
+proc UnseenWinButton2 {action {x 0} {y 0}} {
+  global unseenwin
+
+  switch $unseenwin(b2mode) {
+    Nothing {
+      return
+    }
+    Inc {
+      if {[string compare $action release] == 0} {
+        Inc
+      }
+    }
+  }
 }
 
 proc UnseenWinButton3 {action {x 0} {y 0}} {

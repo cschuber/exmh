@@ -373,6 +373,7 @@ proc !HMtag_title {win param text} {
 	upvar $text data
 	dputs $data
 	wm title [winfo toplevel $win] $data
+	wm iconname [winfo toplevel $win] $data
 	set data ""
 }
 

@@ -67,6 +67,7 @@ tlog-add .t Drag_Start $dragdrop(text)
 	set w [set dragdrop(w) .drag]
 	if ![winfo exists $w] {
 		toplevel $w -cursor hand2
+	        wm group $w .
 		wm transient $w .
 		wm override $w 1
 		wm withdraw $w

@@ -24,6 +24,7 @@ proc Widget_Toplevel { path name {class Dialog} {x {}} {y {}} } {
 	}
     }
     wm title $self $name
+    wm iconname $self $name
     wm group $self .
     return $self
 }
