@@ -1,4 +1,8 @@
 HISTORY
+
+2.6.2 Tarball created 3/21, uploaded 3/25
+exmh-2-6-2 CVS tag
+
 cvs repository 03/21/2003 welch@panasas.com
     scan.tcl - Added -noheader to the scan invocation.
     ftoc.tcl - protected against unfound message in Ftoc_MoveFeedback,
