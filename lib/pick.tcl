@@ -215,3 +215,21 @@ proc Pick_MarkSeen {} {
     busy PickMarkSeen
     Exmh_Status ok
 }
+
+# Ted Cabeen's Catchup-to-current
+# http://www.xray.mpe.mpg.de/mailing-lists/exmh/2002-09/msg00100.html
+proc Pick_Mark2CurSeen {} {
+    global exmh mhProfile msg
+    set results {}
+    Exmh_Status "Clearing unseen up to cur..." warning
+    Mh_SetCur $exmh(folder) $msg(id)
+    set unseen [Mh_Sequence $exmh(folder) $mhProfile(unseen-sequence) ]
+    foreach elem $unseen {
+         if { $elem <= $msg(id) } {
+            lappend results $elem
+         }
+    }
+    busy Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $results
+    Ftoc_ShowSequence $mhProfile(unseen-sequence) $results
+    Exmh_Status ok
+}
