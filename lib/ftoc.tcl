@@ -457,7 +457,15 @@ proc Ftoc_BindRight { cmd } {
 }
 
 proc Ftoc_FindMsg { msgid {line {}} } {
-    global ftoc
+    global ftoc msgtolinecache
+    if {[array get msgtolinecache $msgid] != {}} {
+	set L $msgtolinecache($msgid)
+	if {$L == -1} {
+	    return ""
+	} else {
+	    return $L
+	}
+    } 
     if {$line != {}} {
 	switch -glob -- $line {
 	    first  {return 1}
@@ -487,51 +495,64 @@ proc Ftoc_FindMsg { msgid {line {}} } {
         return {}
     }
 
-    set min 1
-    set max $ftoc(numMsgs)	;# Ignore trailing blank line
+    set minLine 1
+    set minMsg [Ftoc_MsgNumber $minLine]
+    set maxLine $ftoc(numMsgs)	;# Ignore trailing blank line
+    set maxMsg [Ftoc_MsgNumber $maxLine]
     while (1) {
-	set m1 [Ftoc_MsgNumber $min]
-	if {$msgid == $m1} {
-	    return $min
+	if {$msgid == $minMsg} {
+	    return $minLine
 	}
-	set m2 [Ftoc_MsgNumber $max]
-	if {$msgid == $m2} {
-	    return $max
+	if {$msgid == $maxMsg} {
+	    return $maxLine
 	}
-	if {$msgid > $m2 || $msgid < $m1} {
-	    Exmh_Status "Cannot find $msgid ($m1,$m2)" warn
+	if {$msgid > $maxMsg || $msgid < $minMsg} {
+	    Exmh_Status "Cannot find $msgid ($minMsg,$maxMsg)" warn
+	    set msgtolinecache($msgno) -1
 	    return "" ;# new message not listed
 	}
-	if {$max == $min} {
+	if {$maxLine == $minLine} {
+	    set msgtolinecache($msgno) -1
 	    return ""	;# not found
 	}
-	set next [expr int(($max+$min)/2)]
-	set m3 [Ftoc_MsgNumber $next]
-	if {$m3 > $msgid} {
-	    set max $next
-	} elseif {$min == $next} {
+	set nextLine [expr int(($maxLine+$minLine)/2)]
+	set nextMsg [Ftoc_MsgNumber $nextLine]
+	if {$nextMsg > $msgid} {
+	    set maxLine $nextLine
+	    set maxMsg $nextMsg
+	} elseif {$minLine == $nextLine} {
 	    Exmh_Status "Cannot find $msgid" warn
 	    return "" ;# new message not listed
 	} else {
-	    set min $next
+	    set minLine $nextLine
+	    set minMsg $nextLine
 	}
     }
     # not reached
 }
 proc Ftoc_ClearMsgCache {} {
-    global msgcache
-    array unset msgcache
+    global linetomsgcache msgtolinecache
+    array unset linetomsgcache
+    array unset msgtolinecache
 }
 proc Ftoc_MsgNumber { L } {
-    global exwin msgcache
-    if {[array get msgcache $L] != {}} {
-	return $msgcache($L)
+    global exwin linetomsgcache msgtolinecache
+    if {[array get linetomsgcache $L] != {}} {
+	set msgno $linetomsgcache($L)
+	if {$msgno == -1} {
+	    return {}
+	} else {
+	    return $msgno
+	}
     } 
     if [catch {$exwin(ftext) get $L.0 $L.end} line] {
+	set linetomsgcache($L) -1
 	return ""
     }
-    set msgcache($L) [Ftoc_MsgNumberRaw $line]
-    return $msgcache($L)
+    set msgno [Ftoc_MsgNumberRaw $line]
+    set msgtolinecache($msgno) $L
+    set linetomsgcache($L) $msgno
+    return $msgno
 }
 proc Ftoc_MsgNumberRaw { line } {
     if [regexp {^( *)([0-9]+)} $line foo foo2 number] {
