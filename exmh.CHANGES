@@ -2,6 +2,9 @@ HISTORY
 cvs repository 1/4/2005 welch@panasas.com
   exmh-strip.MASTER: Added stub for "winfo" so I could run this with
    tclsh instead of wish.  Updated comments.
+   Made the search for filename hints more aggresive.
+   Added exit if the output file already exists.
+   Added some safety checking on the file name
   lib/app-defaults: Eliminated " " from the {Save "From" addr} menu entry
     because it looks like that entry raises errors sometimes.
 

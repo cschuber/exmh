@@ -281,11 +281,36 @@ proc MimeParseSingle {part fileIO out} {
 proc MimeStripPart {part headers body out} {
     global mimeHdr doc_directory uniq
 
-    if {![info exist mimeHdr($part,param,filename)]} {
+    # Grab a hint for the filename from the part headers
+    # The param,* are parameters to the Content-Type header
+    #  and other headers, especially Content-Disposition
+    # The hdr,* are other headers.
+
+    foreach hint {
+        param,filename
+        hdr,content-description
+        param,name
+    } {
+      if {[info exist mimeHdr($part,$hint)]} {
+        set path $mimeHdr($part,$hint)
+        break
+      }
+    }
+    if {![info exist path]} {
 	# Not an interesting thing - e.g., "vcard" junk or text
 	return 0
     }
-    set path [file join $doc_directory $mimeHdr($part,param,filename)]
+    set path [file tail $path]
+    set path [string trim $path]
+    if {[regexp {^\|} $path]} {
+      catch {puts stderr "Bad filename $path"}
+      exit 1
+    }
+    set path [file join $doc_directory $path]
+    if {[file exists $path]} {
+      catch {puts stderr "$path exists"}
+      exit 1
+    }
     if {[catch {open $path w} newout]} {
 	# Cannot save to suggested file name
 	Exmh_Debug "exmh-strip:MimeStripPart can't open $newout"
