@@ -44,7 +44,7 @@ proc SeditSigfileDefault {} {
     return $propersig
 }
 proc Sedit_Start { draft } {
-    global sedit intelligentSign quote
+    global sedit intelligentSign quote msg
     global exmh	;# for menu references to $exmh(...)
     if ![info exists sedit(init)] {
 	Sedit_Init
@@ -82,7 +82,8 @@ proc Sedit_Start { draft } {
 
 	# Send has command defined by app-defaults, but we
 	# need to fix it up with an eval here
-	Widget_AddButDef $b send
+	Widget_AddButDef $b send 
+	pack [frame $b.sendpad -width 6 -height 1] -side right -fill y
 	Widget_ReEvalCmd $b.send	;# expand variables now
 
 	if [catch {glob ~/.signature*} sigFiles1] {
@@ -136,7 +137,7 @@ proc Sedit_Start { draft } {
 	    }
 	}
 	foreach but [Widget_GetButDef $b] {
-	    if [regexp (abort|save) $but] {
+	    if {[regexp (abort|save) $but]} {
 		Widget_AddButDef $b $but {left padx 5}
 	    } else {
 		Widget_AddButDef $b $but {right padx 1}
@@ -171,8 +172,11 @@ proc Sedit_Start { draft } {
 
     SeditTextBindings $draft $t		;# set up sendMsg binding
     if [file readable $quote(filename)] {
-	$b.repl configure -state normal -command \
-		[list SeditInsertFile $draft $t $quote(filename)]
+		$b.repl configure -state normal
+		$b.repl.m entryconfigure 1 -command \
+		 [list SeditInsertFile $draft $t $quote(filename)]
+		$b.repl.m entryconfigure 2 -command \
+		 [list SeditAttachQuotedMessage $draft $t $msg(path)]
     } else {
 	$b.repl configure -state disabled
     }
