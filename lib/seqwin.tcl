@@ -140,10 +140,10 @@ proc SeqWinHideSeqPane {seq} {
 		catch {wm withdraw .sequences}
 		return
 	    } elseif {!$seqwin(icon)} {
-                SeqWinShow
+                SeqWinDeiconify
 	    }
 	} else {
-            SeqWinShow
+            SeqWinDeiconify
 	}
     }
 }

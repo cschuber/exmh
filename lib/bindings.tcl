@@ -73,11 +73,14 @@ proc BindingsReset { w } {
     if {[info command User_Bindings] != ""} {
 	User_Bindings $w
     }
+    # This is a round about way to add in the user's custom bindings.
+    # They'll be defined in the bindings array, but not have a default binding
     foreach item [array names bindings] {
 	if [regexp ^key $item match] {
 	    set cmd [lindex [split $item ,] 1]
-	    # This will just install any extras from the users .exmhbindings
-	    Bind_Key $w {} $cmd 
+            if {![info exist bindings(default,$cmd)] || $bindings(default,$cmd) == ""} {
+                Bind_Key $w {} $cmd 
+            }
 	}
     }
 }
@@ -134,6 +137,7 @@ proc Bind_Key { w defaultSeq cmd } {
     } elseif {! [info exists bindings(default,$cmd)]} {
 	set bindings(default,$cmd) {}
     }
+Exmh_Debug Bind_Key $seqs $cmd default $bindings(default,$cmd)
 }
 
 proc Bind_Pref {} {

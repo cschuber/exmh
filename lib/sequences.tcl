@@ -168,7 +168,7 @@ Compose:       Starts a mail composition"
 }
 proc Seq_Trace {array elem op} {
     global flist seqwin
-
+Exmh_Debug "Seq_Trace $array $elem $op"
     set indices [split $elem ,]
     set var [lindex $indices 0]
     if {$var == {seqcount}} {

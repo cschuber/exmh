@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 03/14/2003 welch@panasas.com
+    sequences.tcl, seqwin.tcl - Bug fixes for previous submit
+    bindings.tcl - fixed this to properly allow users to override bindings.
+      This is an ancient bug!
+
 cvs repository 03/12/2003 welch@panasas.com
     sequences.tcl, seqwin.tcl - Delay the initial display of the sequences window.
 
