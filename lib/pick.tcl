@@ -128,7 +128,7 @@ proc PickAddOrField {pane who} {
 }
 proc Pick_It {} {
     global pick exmh
-    set cmd [list exec pick +$exmh(folder) -list]
+    set cmd [list exec pick +$exmh(folder)]
     set inpane 0
     set hadpane 0
     for {set pane 1} {$pane <= $pick(panes)} {incr pane} {
@@ -173,13 +173,13 @@ proc Pick_It {} {
 	}
 	if {$inpane == $pane} {lappend cmd -rbrace}
     }
-    set msgs $pick(msgs)
     foreach s $pick(sequence) {
-	lappend msgs -sequence $s
+	lappend cmd -sequence $s
     }
+    lappend cmd -list
 
-    Exmh_Debug Pick_It $cmd $msgs
-    busy PickInner $cmd $msgs
+    Exmh_Debug Pick_It $cmd $pick(msgs)
+    busy PickInner $cmd $pick(msgs)
     Ftoc_ShowSequences $exmh(folder)
     Exmh_Focus
 }
