@@ -1,3 +1,0 @@
-If you add code in the update_unseen_sequence 
-file to your ~/.exmh/lib/user.tcl Exmh will
-sync your unseen sequence immediately. 
