@@ -44,7 +44,7 @@ proc SeditSigfileDefault {} {
     return $propersig
 }
 proc Sedit_Start { draft } {
-    global sedit intelligentSign quote msg
+    global sedit intelligentSign quote msg pgp
     global exmh	;# for menu references to $exmh(...)
     if ![info exists sedit(init)] {
 	Sedit_Init
@@ -68,6 +68,10 @@ proc Sedit_Start { draft } {
 
 	Drop_Attach $t SeditDragDrop
 
+	# PGP version-setting moved out from seditpgp code
+	if {![info exists pgp($pgp(version,$id),myname,$id)]} {
+	    set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
+	}
 	EditAddPassPhrasePane $id .sedit$id
 
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]

@@ -153,9 +153,6 @@ proc EditDialog {draftID} {
 proc EditAddPassPhrasePane {id w} {
     global pgp
     if {$pgp(enabled) && $pgp(seditpgp)} {
-	if {![info exists pgp($pgp(version,$id),myname,$id)]} {
-	    set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
-	}
 	Pgp_SetSeditPgpName $pgp($pgp(version,$id),myname,$id) $id
 	set pgp(fullName,$id) $pgp($pgp(version,$id),fullName)
 
@@ -201,6 +198,10 @@ proc EditShowDialog {id text} {
 	wm transient $d
 	$d config -relief raised -borderwidth 2
 
+	# PGP version-setting moved out from seditpgp code
+	if {![info exists pgp($pgp(version,$id),myname,$id)]} {
+	    set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
+	}
 	EditAddPassPhrasePane $id $d
 
 	foreach but [Widget_GetButDef $d] {
