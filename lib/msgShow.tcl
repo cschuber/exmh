@@ -413,7 +413,6 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
     set in_msheader 0
     set in_listsig 0
     set in_udiff 0
-    set in_bugrpt 0
 
     set endx [$t index end]
     for {set idx [expr int($start)]} {$idx <= $endx} {incr idx} {
@@ -426,7 +425,7 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 	    set in_udiff 0
 	} 
 
-	if {[regexp {^------+$} $txt] || [regexp {^______+$} $txt]} {
+	if {[regexp {^---------+$} $txt] || [regexp {^______+$} $txt]} {
 	    set in_listsig 1
 	    set in_msheader 0
 	    set in_signature 0
@@ -530,16 +529,19 @@ proc Hook_MsgShow_BugReport {msg mimeHdr} {
 }
 proc MsgShow_BeautifyBugrpt {t {start 1.0} {end end}} {
 
-    set in_header 1
     set in_bugrpt 0
+    set in_header 1
 
     set endx [$t index end]
     for {set idx [expr int($start)]} {$idx <= $endx} {incr idx} {
 	set txt [$t get $idx.0 $idx.end]
 	
-	if {$txt == "" || [regexp {^------+$} $txt] || [regexp {^______+$} $txt]} {
+	if {$txt == "" && $in_header} {
 	    # End of headers
-	    return
+	    set in_header 0
+	    if {$in_bugrpt == 0} {
+		return
+	    }
 	} 
 
 	if {[regexp {^Subject: BugId [0-9].* Has been Updated .*$} $txt] ||\
