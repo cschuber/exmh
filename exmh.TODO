@@ -10,11 +10,6 @@ thru the mailing list archive for other patches
 Here's the 2.0.2 patch list:
 
 - PGP 5.0 support
-- Folder purge patch
-- Space in file names patch for Sedit
-- Mime menu in long messages patch
-- Sequences bookkeeping patch
-- Add (fwd) to subject on forwarding
 
 
 Number: 2

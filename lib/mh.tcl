@@ -34,6 +34,18 @@ your interaction with send to complete."} \
 "When \"Send in xterm window\" is selected,
 this option controls extra parameters provided
 to the xterm program to control how it is started."} \
+	{mhProfile(forwtweak) forwTweak ON {Tweak subject lines of forwarded messages}
+"If this option is enabled, the subject line of forwarded messages
+will be tweaked, in a similar manner to the prefixing of \"Re:\" to
+the subject of replies.  This is only performed if the draft message
+does not already contain a subject line (or if it is empty), as given
+in your forwcomps file."} \
+	{mhProfile(forwsubj) forwSubj {$subj (fwd)} {Subject line for forwarded messages}
+"When \"Tweak subject lines of forwarded messages\" is enabled, this
+option specifies the particular tweak to perform.  This usually consists
+of suffixing \"(fwd)\" or prefixing \"Fw:\" (both of which are removed
+if present in the original subject line).  The variable \$subj here is
+replaced with the subject of the original message."} \
 	[list mhProfile(delprefix) delPrefix [MhBackup] {Prefix of rmm'd files} \
 "The Delete operation in MH really only renames a message file to have
 a prefix like # or , (comma).  This prefernce setting is used to
@@ -143,6 +155,48 @@ proc Mh_ReplyAllSetup { folder msg } {
     }
     MhAnnoSetup $folder $msg repl
 }
+proc Mh_Forw_MungeSubj { folder msgs } {
+    global mhProfile
+    set draftID [Mh_Cur $mhProfile(draft-folder)]
+    if ![catch {eval exec scan +$folder -format "%{subject}" $msgs} subj] {
+	# just take the first line of $subj (in case of >1 messages)
+	set subj [lindex [split $subj "\n"] 0]
+	# strip off leading and trailing "fw:", "(fwd)", "<fwd>" and whitespace
+	regsub -nocase "^(\[ 	\]*((fwd?:)|(\\(fwd?\\))|(<fwd?>)))*" $subj {} subj
+	regsub -nocase "(((\\(fwd?\\))|(<fwd?>))\[ 	\]*)*$" $subj {} subj
+	set subj [string trim $subj]
+	# quote any rogue \'s or &'s in the subject line
+	regsub -all {\\} $subj {\\\\} subj
+	regsub -all {&} $subj {\\\&} subj
+	# now do the required munging, and quote \'s and &'s again
+	regsub -all {\$subj} $mhProfile(forwsubj) $subj subj
+	regsub -all {\\} $subj {\\\\} subj
+	regsub -all {&} $subj {\\\&} subj
+	catch {
+	    set fd [open $mhProfile(path)/$mhProfile(draft-folder)/$draftID r]
+	    set msgtxt [read $fd]
+	    close $fd
+	    if [regexp -indices "\n(--+)?(\n|\$)" $msgtxt posn] {
+		set cpos [lindex $posn 0]
+		set hdrtxt [string range $msgtxt 0 [expr $cpos-1]]
+		set bodytxt [string range $msgtxt $cpos end]
+	    } else {
+		set hdrtxt $msgtxt
+		set bodytxt {}
+	    }
+	    unset msgtxt
+	    if [regexp "^|\n\[Ss\]ubject:" $hdrtxt] {
+		regsub "(^|\n)(\[Ss\]ubject:)\[ 	\]*(\n|\$)" $hdrtxt "\\1\\2 $subj\\3" nhdrtxt
+	    } else {
+		set nhdrtxt "$hdrtxt\nSubject: $subj"
+	    }
+	    set fd [open $mhProfile(path)/$mhProfile(draft-folder)/$draftID w]
+	    puts -nonewline $fd $nhdrtxt
+	    puts -nonewline $fd $bodytxt
+	    close $fd
+	}
+    }
+}
 proc Mh_ForwSetup { folder msgs } {
     global mhProfile exmh
     if [file exists $mhProfile(path)/$exmh(folder)/forwcomps] {
@@ -153,6 +207,9 @@ proc Mh_ForwSetup { folder msgs } {
 	eval {MhExec forw +$folder} $msgs -nowhatnowproc
     }
     MhAnnoSetup $folder $msgs forw
+    if {$mhProfile(forwtweak)} {
+	Mh_Forw_MungeSubj $folder $msgs
+    }
 }
 proc Mh_DistSetup { folder msg } {
     global exmh mhProfile

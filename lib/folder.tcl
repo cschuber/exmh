@@ -184,6 +184,7 @@ proc Folder_Sort { args } {
 	Background_Wait
 	Exmh_Status "Sorting folder..." blue
 	eval {Mh_Sort $exmh(folder)} $args
+ 	Flist_ResetUnseen $exmh(folder)	 ;# unseen sequence might have changed
 	Scan_FolderForce
 	set id [Mh_Cur $exmh(folder)]
 	if {$id != {}} {
@@ -201,6 +202,7 @@ proc Folder_Pack {} {
 	Background_Wait
 	Exmh_Status "Packing folder..." blue
 	Mh_Pack $exmh(folder)
+ 	Flist_ResetUnseen $exmh(folder)	 ;# unseen sequence might have changed
 	Scan_FolderForce
 	set id [Mh_Cur $exmh(folder)]
 	if {$id != {}} {

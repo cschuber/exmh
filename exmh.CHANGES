@@ -5,6 +5,14 @@ cvs repository 4/1/1999
         receipt-notification message. -jbeck@eng.sun.com via haldevore
     Header Encoding patch that fixes the way whitespace is encoded in
         header lines. -Ola Stromfors via haldevore
+    Mime patch to restore the "Invoke menu with right button"
+        message for large messages. -patch page via haldevore
+    Pack/Sort unseen sequence patch to make sure the unseen
+        sequence bookkeeping is correct after a sort or pack.
+        -patch page via haldevore
+    Forward Subject patch that optionally adds (fwd) to the
+        subject of forwarded messages. 
+        -Chris Keane via haldevore
 
 cvs repository 3/31/1999
     New interface for PGP composition -cwg

@@ -401,6 +401,7 @@ proc Flist_Done {} {
 
 proc Flist_UnseenUpdate { folder } {
     global exmh flist
+    Flist_ResetUnseen $folder
     Flist_UnseenMsgs $folder
     if {[string compare $folder $exmh(folder)] == 0} {
 	Scan_FolderUpdate $folder
@@ -411,6 +412,14 @@ proc Flist_UnseenUpdate { folder } {
     }
     # This wiggles the flag and sorts flist(unvisited)
     Flist_Done
+}
+proc Flist_ResetUnseen { folder } {
+    global flist
+    if [Flist_NumUnseen $folder] {
+	incr flist(newMsgs) -$flist(new,$folder)
+	set flist(newseq,$folder) {}
+	set flist(new,$folder) 0
+    }
 }
 proc Flist_UnseenMsgs { folder } {
     global flist

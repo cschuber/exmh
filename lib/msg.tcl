@@ -330,7 +330,7 @@ proc Msg_Reply { args } {
 }
 
 proc Msg_Forward { args } {
-    global exmh msg
+    global exmh msg mhProfile
     set exmh(ctype) {forw}
     if {[string length $args] == 0} {
 	set args Mh_ForwSetup
@@ -372,6 +372,9 @@ proc Msg_Forward { args } {
 		}
 		eval {MhExec forw +$exmh(folder)} $ids -nowhatnowproc $args
 		MhAnnoSetup $exmh(folder) $ids forw
+		if {$mhProfile(forwtweak)} {
+		    Mh_Forw_MungeSubj $exmh(folder) $ids
+		}
 	    } err] {
 		Exmh_Status "forw: $err" purple
 		return

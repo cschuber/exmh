@@ -446,6 +446,10 @@ proc MimeWithDisplayHiding {tkw part body} {
 	    -variable mimeHdr($part,display)
     if {$mimeHdr($part,display)} {
 	uplevel $body
+    } else {
+        $tkw insert insert ". . .\t\t\t\t\t\t"
+        MimeInsertNote $tkw [MimeLabel $part part] \
+                "Invoke menu with right button."
     }
 }
 proc MimeSetPartVars {descVar displayedPartVar tkw part partTag} {
