@@ -777,7 +777,7 @@ exmh.iconic:		0
 !
 ! buttons is standard buttons
 ! ubuttons is for extra user-specific buttons
-*Sedit.Menubar.buttonlist:	help repl abort save
+*Sedit.Menubar.buttonlist:	help abort save
 *Sedit.Menubar.ubuttonlist:
 *Sedit.Menubar.help.text:	Help
 *Sedit.Menubar.help.command:	SeditHelp
@@ -787,13 +787,17 @@ exmh.iconic:		0
 *Sedit.Menubar.save.command: 	SeditSave $draft $t SeditNuke
 
 ! The repl button is well-known.  It is disabled except when replying.
-*Sedit.Menubar.repl.text:	Quote
-*Sedit.Menubar.repl.command:	SeditInsertFile $draft $t $quote(filename)
+*Sedit.Menubar.repl.text:	Quote...
+*Sedit.Menubar.repl.m.entrylist:	quote attach
+*Sedit.Menubar.repl.m.l_quote:		Quote
+*Sedit.Menubar.repl.m.c_quote:		SeditInsertFile $draft $t $quote(filename)
+*Sedit.Menubar.repl.m.l_attach:		Quote MIME
+*Sedit.Menubar.repl.m.c_attach:		SeditAttachQuotedMessage $draft $t $msg(path)
 !
 ! menus is for standard menus
 ! umenus is for extra user-specific menus
 !*Sedit.Menubar.menulist:	text mime more pgp
-*Sedit.Menubar.menulist:	text more pgp
+*Sedit.Menubar.menulist:	repl text more pgp
 *Sedit.Menubar.umenulist:
 
 *Sedit.Menubar.text.text:	Text...
@@ -854,13 +858,15 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.l_attach: Attachment
 *Sedit.Menubar.more.m.t_attach: cascade
 *Sedit.Menubar.more.m.m_attach: attach
-*Sedit.Menubar.more.m.attach.entrylist: part insert external keys
+*Sedit.Menubar.more.m.attach.entrylist: part message external insert keys
 *Sedit.Menubar.more.m.attach.l_part: Attach File...
 *Sedit.Menubar.more.m.attach.c_part: SeditInsertFileDialog $draft $t
-*Sedit.Menubar.more.m.attach.l_insert: Insert File...
-*Sedit.Menubar.more.m.attach.c_insert: SeditInsertFileDirect $draft $t
+*Sedit.Menubar.more.m.attach.l_message: Attach Message...
+*Sedit.Menubar.more.m.attach.c_message: SeditInsertMessageDialog $draft $t
 *Sedit.Menubar.more.m.attach.l_external: Attach Reference...
 *Sedit.Menubar.more.m.attach.c_external: SeditInsertExternalDialog $draft $t
+*Sedit.Menubar.more.m.attach.l_insert: Insert File...
+*Sedit.Menubar.more.m.attach.c_insert: SeditInsertFileDirect $draft $t
 *Sedit.Menubar.more.m.attach.l_keys:   Attach PGP Keys...
 *Sedit.Menubar.more.m.attach.c_keys:   Pgp_InsertKeys $draft $t
 *Sedit.Menubar.more.m.l_whom:	Whom
@@ -1077,7 +1083,7 @@ exmh.iconic:		0
 	composechar bof eof linestart lineend up1line down1line \
 	backword forwword backchar forwchar up1page down1page \
 	addrexpand format \
-	selclear selstart selforw selback selend \
+	selclear selstart selforw selback selextend \
 	abortMsg quoteMsg
 
 *sedit_key_selpaste:	 <Control-y> <Key-F18>
