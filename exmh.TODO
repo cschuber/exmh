@@ -342,22 +342,6 @@ Status:
 Ensure that all toplevel windows have handlers for WM_* messages.
 
 ----------------------------------------------------------------------
-Number: 42
-Priority: Med
-Scope: 
-Complexity: 
-Status: 
-
-Apply patches from Valdis Kletnieks
-  - horizontal scroll bar patch from Valdis Kletnieks
-  - MDN patch 
-  - Delivery Service Notification
-
-NOTE: these are all "on hold".  The first two need documentation
-patches, the third requires a modified MH or nmh and will be held
-until that is distributed.
-                                   
-----------------------------------------------------------------------
 Number: 43
 Priority: Low
 Scope: Narrow
@@ -371,7 +355,7 @@ Number: 44
 Priority: Low
 Scope: Narrow
 Complexity: Medium
-Status: 
+Status: Now less of a problem with the addition of 'Extract Message'
 
 Provide the ability to reply, forward, etc, an attached message (from
 a digest or forwarded or wherever).
