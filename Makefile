@@ -41,7 +41,7 @@ version:
 	mv exmh.install.new exmh.install
 
 ftpdist:
-	scp /home/welch/download/exmh-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
+	scp exmh-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
 	scp html-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
 	scp exmh.README www:~ftp/pub/tcl/exmh
 	scp lib/html/exmh.README.html www:~ftp/pub/tcl/exmh
