@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 10/18/2004 welch@panasas.com
+  lib/seditExtras.tcl: patch from George Ross to fix attachments of plain files
+    with no encoding.
+
 cvs repository 10/11/2004 welch@panasas.com
   lib/mime.tcl:
   lib/seditExtras.tcl
