@@ -71,7 +71,7 @@ proc Sedit_Start { draft } {
 
 	# PGP version-setting moved out from seditpgp code
  	if {$pgp(enabled)} {
- 	    if {[info exits pgp(version,$id)]
+ 	    if {[info exists pgp(version,$id)]
 		&& ![info exists pgp($pgp(version,$id),myname,$id)]} {
  		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
  	    }
