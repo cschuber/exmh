@@ -1,5 +1,8 @@
 HISTORY
 cvs repository 06/11/2003 haldevore@acm.org
+  Modified misc/mybogo.tcl to save and restore target
+
+cvs repository 06/11/2003 haldevore@acm.org
   Added code, and a README for Patrick Carr's Bogofilter stuff to misc directory
   
 cvs repository 06/11/2003 haldevore@acm.org

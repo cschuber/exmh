@@ -48,7 +48,9 @@ this is the destination folder."}
 
 proc MyBogoFilter {{spam spam}} {
     global exmh msg bogo
+    Exmh_Debug Bogo $spam
     if {$spam == "spam"} {
+        Exmh_Debug Bogo spamprog="$bogo(spamprog)", message="$msg(path)", action="$bogo(spammessage)"
 	if [catch "exec $bogo(spamprog) <$msg(path)" in] {
 	    Exmh_Status $in
 	    return
@@ -57,18 +59,25 @@ proc MyBogoFilter {{spam spam}} {
 	    Msg_Remove Ftoc_RemoveMark show
 	}
 	if {$bogo(spammessage) == "refile"} {
+            set oldtarget $exmh(target)
 	    set exmh(target) $bogo(spamfolder)
-	    Msg_Move Ftoc_MoveMark 1 show
+            Exmh_Debug Bogo refile spam to $exmh(target)
+	    Msg_Move Ftoc_MoveMark 1 noshow
+            set exmh(target) $oldtarget
 	}
 	return
     } elseif {$spam == "ham"} {
+        Exmh_Debug Bogo hamprog="$bogo(hamprog)", message="$msg(path)", action="$bogo(hammessage)"
 	if [catch "exec $bogo(hamprog) <$msg(path)" in] {
 	    Exmh_Status $in
 	    return
 	}
 	if {$bogo(hammessage) == "refile"} {
+            set oldtarget $exmh(target)
 	    set exmh(target) $bogo(hamfolder)
+            Exmh_Debug Bogo refile ham to $exmh(target)
 	    Msg_Move Ftoc_MoveMark 1 noshow
+            set exmh(target) $oldtarget
 	}
 	return
     } else {
@@ -76,4 +85,3 @@ proc MyBogoFilter {{spam spam}} {
 	return
     }
 }
-
