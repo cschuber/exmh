@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.21  1999/08/25 15:42:23  bmah
+# exmh now times out passphrases for PGP subkeys correctly.
+#
 # Revision 1.20  1999/08/22 18:17:08  bmah
 # Email PGP queries now go out correctly.  Use Exmh_Status to inform
 # user of state of an outgoing email key query.
@@ -355,24 +358,33 @@ proc Misc_PostProcess { srcfile } {
 	if {$pgp(encrypt,$id) || $pgp(sign,$id)} {
 	    set v $pgp(version,$id)
 	    set keyid [lindex $pgp($v,myname,$id) 0]
-	    # If there's a passphrase from sedit and it's non-empty, use it
-	    if {[info exists pgp(cur,pass,$id)] && ([string length $pgp(cur,pass,$id)] > 0) && [info exists pgp($v,myname,$id)]} {
-		Pgp_SetPassTimeout cur $id
-		set pgp($v,pass,$keyid) $pgp(cur,pass,$id)
-	    } else {
-		set pgp($v,pass,$keyid) ""
-	    }
+	    set subkeyid [lindex $pgp($v,myname,$id) 2]
 
-	    # if non-seditpgp
-	    if {!$pgp(seditpgp)} {
+	    # If there's a passphrase from sedit and it's non-empty, use it
+	    if {$pgp(seditpgp)} {
+		if {[info exists pgp(cur,pass,$id)] && ([string length $pgp(cur,pass,$id)] > 0) && [info exists pgp($v,myname,$id)]} {
+		    set pgp($v,pass,$keyid) $pgp(cur,pass,$id)
+		    Pgp_SetPassTimeout cur $id
+		} else {
+		    set pgp($v,pass,$keyid) ""
+		}
+	    } else {
 		set pgp($v,pass,$keyid) [Pgp_GetPass $v $pgp($pgp(version,$id),myname,$id)]
 	    } 
+
+	    # Set timeouts
 	    Pgp_SetPassTimeout $pgp(version,$id) $keyid
+	    # Because of DecryptExpect we need to store passphrase
+	    # for mainkey and subkey
+	    if {[string length $subkeyid] > 0} {
+		Pgp_SetPassTimeout $pgp(version,$id) $subkeyid
+	    }
+
 # Danger Wil Robinson!
 	    #Exmh_Debug pass=>$pgp($v,pass,$keyid)<
 	    if {([info exists pgp($v,pass,$keyid)]) && ([string length $pgp($v,pass,$keyid)] != 0)} {
-		    Pgp_Process $pgp(version,$id) $curfile $dstfile
-		    set curfile $dstfile
+		Pgp_Process $pgp(version,$id) $curfile $dstfile
+		set curfile $dstfile
 	    }
 	}
     }

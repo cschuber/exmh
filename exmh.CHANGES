@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 08/25/1999
+    Fixed some problems with not timing out PGP subkeys (e.g. DSS keys
+	for PGP5/GPG).  --bmah.
+
 cvs repository 08/24/1999
     Importing keys from email keyserver queries now works.  Attaching 
 	keys to an email message is now RFC 2015 compliant 
