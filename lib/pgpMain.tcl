@@ -19,6 +19,10 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.24  2001/12/06 16:38:04  kchrist
+# Fixed the "Always choose the sign key." option. Fixed a clearsigning
+# bug. Modified interpretation of app/pgp header to avoid hang.
+#
 # Revision 1.23  2001/07/11 18:13:59  welch
 # ftp.expect.MASTER:
 # inc.expect.MASTER: Changed to a #!/bin/sh header with exec hack
@@ -403,13 +407,20 @@ proc Pgp_ExmhEncrypt { v } {
 
     Exmh_Status "pgp -e $exmh(folder)/$msg(id)"
 
-#    set pgp(param,recipients) [lindex $pgp($v,myname) 0]
+    set pgp(param,recipients) [lindex $pgp($v,myname) 0]
     set id [SeditId $file]
     set pgp(encrypt,$id) 1;
     set pgp(sign,$id) "none";
     set pgp(format,$id) "pm";
+    set pgp(version,$id) $v
 
     Pgp_Process $v $file $tmpfile
+
+    unset pgp(param,recipients)
+    unset pgp(encrypt,$id)
+    unset pgp(sign,$id)
+    unset pgp(format,$id)
+    unset pgp(version,$id)
 
     Mh_Rename $tmpfile $file
 
@@ -644,11 +655,11 @@ proc Pgp_Process { v srcfile dstfile } {
     
     set mimeheaders [lindex $allheaders 0]
     set mailheaders [lindex $allheaders 1]
-	
+
     if {[lsearch -glob $mimeheaders "content-type:*"] < 0} {
 	lappend mimeheaders "content-type: text/plain; charset=us-ascii"
     }
-    
+
     # if there is nothing to do, stop here
     if {!$pgp(encrypt,$id) && $pgp(sign,$id)=="none"} {
 	close $orig
@@ -678,10 +689,18 @@ proc Pgp_Process { v srcfile dstfile } {
     # setup the originator (if necessary)
     if {$pgp(sign,$id) != "none"} {
 	Exmh_Debug PGP signing
-	if [info exists pgp(param,originator)] {
-	    set originator [PgpMatch_Simple $pgp(param,originator) $pgp(secring)]
+	if { [set pgp($v,choosekey)] && [llength $pgp($v,privatekeys)]>1} {
+	    set originator [lindex [Pgp_ChoosePrivateKey $v \
+	        "Please select a $pgp($v,fullName) key to use for signing"] 0]
+	    if {[string length $originator] == 0} {
+		error "A valid key is required for signing."
+	    }
 	} else {
-	    set originator $pgp($v,myname,$id)
+	    if [info exists pgp(param,originator)] {
+		set originator [Pgp_Match_Simple $v $pgp(param,originator) $pgp(secring)]
+	    } else {
+		set originator $pgp($v,myname,$id)
+	    }
 	}
 	if {$pgp(format,$id) == "app"} {
 	    append typeparams "; x-originator=[string range [lindex $originator 0] 2 end]"
@@ -692,7 +711,7 @@ proc Pgp_Process { v srcfile dstfile } {
     if {$pgp(encrypt,$id) || $pgp(sign,$id) == "encryptsign"} {
 	Exmh_Debug PGP encrypting
 	if [info exists pgp(param,recipients)] {
-	    set ids [Pgp_Misc_Map id {PgpMatch_Simple $id $pgp($v,pubring)} \
+	    set ids [Pgp_Misc_Map key {Pgp_Match_Simple $v $key $pgp($v,pubring)} \
 		    [split $pgp(param,recipients) ","]]
 	} else {
 	    set hasfcc [expr {[lsearch -glob $mailheaders "fcc:*"] >= 0}]
@@ -717,14 +736,18 @@ proc Pgp_Process { v srcfile dstfile } {
 		[list "mime-version: 1.0"] \
 		$mimeheaders]
     } else {
-	set pgpheaders $mimeheaders
+	if {$pgp(format,$id) == "pm"} {
+	    set pgpheaders $mimeheaders
+	} else {
+	    set pgpheaders {}
+	}
     }
 
     # write the message to be encrypted
     set msgfile [Mime_TempFile "msg"]
     set msg [open $msgfile w 0600]
     foreach line $pgpheaders { puts $msg [Pgp_Misc_FixHeader $line] }
-    puts $msg ""
+    if {[llength $pgpheaders] > 0} { puts $msg "" }
     puts -nonewline $msg [read $orig]
     close $orig
     close $msg
@@ -740,17 +763,24 @@ proc Pgp_Process { v srcfile dstfile } {
 		    # Depending on format standard may mean different
 		    # things. It was decided to keep this ambiguity
 		    # internal instead of exporting it via the GUI.
-		    if {$pgp(format,$id) == "plain"} {
-			Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
-				$originator standard
-		    } else {
+		    if {$pgp(format,$id) == "pm"} {
 			Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
 				$originator detached
+		    } else {
+			Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
+				$originator standard
 		    }
 		}
 		clearsign {
-		    Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
+		    # There is only one correct way of signing 
+		    # multipart/signed messages and that is "detached".
+		    if {$pgp(format,$id) == "pm"} {
+			Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
+				$originator detached
+		    } else {
+			Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
 			    $originator clearsign
+		    }
 		}
 		encryptsign {
 		    Pgp_Exec_EncryptSign $pgp(version,$id) $msgfile $pgpfile \
@@ -1225,6 +1255,19 @@ proc Pgp_ShowMessage { tkw part } {
 	    }
 	} else {
 	    set action $mimeHdr($part,param,x-action)
+	    # For signed messages we expect 'x-action=signclear' or 
+	    # 'x-action=signbinary' but some mailers only use 
+	    # 'x-action=sign'. Since application/pgp never made it 
+	    # to a valid content-type is hard to tell who is right.
+	    if {"$action" == "sign"} {
+		if [regexp $miscRE(beginpgpclear) $firstLine] {
+		    set action signclear
+		    set mimeHdr($part,param,x-action) signclear
+		} else {
+		    set action signbinary
+		    set mimeHdr($part,param,x-action) signbinary
+		}		    
+	    }
 	}
     } else {
 	set action "keys-only"
