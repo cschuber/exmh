@@ -484,7 +484,7 @@ proc Mh_Sequence { f seq } {
 	close $in
 	foreach line [split $old \n] {
 	    if {[regexp "^$seq: (.*)" $line x msgs]} {
-		set result [MhSeqExpand $msgs]
+		set result $msgs
 	    }
 	}
     }
@@ -502,7 +502,7 @@ proc Mh_Sequence { f seq } {
 	    }
 	}
     }
-    return $result
+    return [MhSeqExpand $result]
 }
 proc MhSeqExpand { msgs } {
     set result {}
