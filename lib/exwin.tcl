@@ -18,8 +18,11 @@ proc Exwin_Init {} {
 Contrained scrolling keeps the last line of text in a window stuck
 to the bottom of the window.  This can be set independently for
 the scan listing (FTOC)." {
-	{exwin(scrollbarSide) scrollbarSide {CHOICE left right} {Scrollbar side}
-"Which side the scrollbars appear on.  This
+	{exwin(scrollbarSide) scrollbarSide {CHOICE left right} {Vertical Scrollbar Side}
+"Which side the vertical scrollbars appear on.  This
+only takes effect after you restart exmh."}
+	{exwin(hscrollbarSide) hscrollbarSide {CHOICE none top bottom} {Horizontal Scrollbar Side}
+"Which side the horizontal scrollbars appear on.  This
 only takes effect after you restart exmh."}
 	{exwin(scrollSpeed) scrollSpeed 1 {Drag-Scroll speed}
 "How fast things scroll when you drag a text widget

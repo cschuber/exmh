@@ -31,8 +31,19 @@ proc Widget_Text {frame height args} {
     } else {
 	set side $exwin(scrollbarSide)
     }
-    set cmd [list text $frame.t -relief raised -bd 2  \
+    if ![info exists exwin(hscrollbarSide)] {
+	set hside none
+    } else {
+	set hside $exwin(hscrollbarSide)
+    }
+    if { $hside == "none" } {
+        set cmd [list text $frame.t -relief raised -bd 2  \
 		-yscroll [list WidgetScrollSet $frame.sv $frame.t]]
+    } else {
+	set cmd [list text $frame.t -relief raised -bd 2  \
+		-yscroll [list WidgetScrollSet $frame.sv $frame.t] \
+		-xscroll [list WidgetScrollSet $frame.sh $frame.t]]
+    }
     if [catch [concat $cmd $args] t] {
 	puts stderr "Widget_Text (warning) $t"
 	set t [eval $cmd $args {-font fixed}]
@@ -44,7 +55,15 @@ proc Widget_Text {frame height args} {
 	$frame.t configure -height $height
     }
     scrollbar $frame.sv -command [list WidgetTextYview $t]
-    pack append $frame $frame.sv [list $side filly] $t {expand fill}
+
+    if { $hside != "none" } {
+	scrollbar $frame.sh -command "$frame.t xview" -orient horizontal
+	pack append $frame $frame.sv [list $side filly] \
+		$frame.sh [list $hside fillx] $t {expand fill}
+    } else {
+	pack append $frame $frame.sv [list $side filly] $t {expand fill}
+    }
+
     $t mark set insert 0.0
 
     Widget_TextInitText $t	;# Init state variables

@@ -6,6 +6,8 @@ cvs repository 6/10/1999
     Re-enabled the timeout of PGP passwords -cwg
     Fix for problems with annotation settings
         -Michiel de Vries via haldevore
+    Add optional horizontal scroll bars
+        -Valdis Kletnieks via haldevore
     
 cvs repository 6/9/1999
     Changed $HOME/.exmhdisplay to $HOME/.exmh/.display in misc scripts -cwg
