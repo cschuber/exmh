@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 10/16/2002 haldevore@acm.org
+    pick.tcl - Adaptation of Ted Cabeen's "catch up to current" code
+
 cvs repository 09/23/2002 cwg-exmh@deepeddy.com
     mh.tcl - some bulletproofing in MhReadSeqs.
 
