@@ -943,13 +943,13 @@ proc MimeMetaMail {contentType encoding fileName} {
 }
 
 proc Mime_ShowText {tkw part} {
-    global mimeHdr mime miscRE
+    global mimeHdr mime miscRE pgp
 
     MimeWithDisplayHiding $tkw $part {
 	set subtype [file tail $mimeHdr($part,type)]
 	Mime_WithTextFile fileIO $tkw $part {
 	    gets $fileIO firstLine
-	    if [regexp $miscRE(beginpgp) $firstLine] {
+	    if {$pgp(enabled) && [regexp $miscRE(beginpgp) $firstLine]} {
 		set mimeHdr($part,type) "application/pgp"
 		catch { unset mimeHdr($part,typeDescr) }
 		Pgp_ShowMessage $tkw $part

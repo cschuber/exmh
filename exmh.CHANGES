@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 08/13/1999
+    Don't try to coerce text/plain PGP messages to application/pgp 
+	unless PGP is actually enabled.  --bmah
+
 cvs repository 08/12/1999
     Fix a number of key/passphrase management problems:  pgpsedit now
 	manages PGP versions, keys, and passphrases on a per-window 
