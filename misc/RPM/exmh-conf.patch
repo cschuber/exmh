@@ -27,7 +27,7 @@
   # The following lines are patched by exmh.install
   #CONFIGURATION
 + set wish /usr/bin/wish
-+ set exmh(version) {version VERSION 06/23/2000}
++ set exmh(version) {version VERSION 01/15/2001}
 + set exmh(name) exmh
 + set exmh(maintainer) welch@acm.org
 + set mh_path /usr/bin
@@ -78,7 +78,7 @@ child process exited abnormally
   
   #CONFIGURATION
 + set wish /usr/bin/wish
-+ set exmh(version) {version VERSION (06/23/2000)}
++ set exmh(version) {version VERSION (01/15/2001)}
 + set exmh(name) exmh
 + set exmh(maintainer) welch@acm.org
 + set mh_path /usr/bin
