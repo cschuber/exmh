@@ -1,5 +1,10 @@
 HISTORY
 cvs repository 01/03/2001 Hal DeVore <haldevore@acm.org>
+    exmh.TODO removed item 24 - support for nmh 1.0, already done
+              removed item 33 - change name of /tmp/scancmds,
+                                it's already dependent on [Env_Tmp]
+
+cvs repository 01/03/2001 Hal DeVore <haldevore@acm.org>
     lib/error.tcl - Remove file [Env_Tmp]/exmhErrorMsg if it exists
     prior to writing to it.  Addresses a bug reported to BUGTRAQ.
 

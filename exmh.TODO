@@ -141,15 +141,6 @@ Status:
 Support for group addresses (address lists) in the address book.
 
 ----------------------------------------------------------------------
-Number: 24
-Priority: 
-Scope: 
-Complexity: 
-Status: 
-
-Support for nmh 1.0 (any changes necessary?)
-
-----------------------------------------------------------------------
 Number: 25
 Priority: High
 Scope: varies
@@ -221,22 +212,6 @@ The html documentation says:
     version it just writes the file to /tmp/FACES.[pid].
 
 Since it says this will happen, I think it belongs on the todo list.
-
-----------------------------------------------------------------------
-Number: 33
-Priority: High
-Scope: Narrow
-Complexity: Low
-Status: 
-
-Review patch from Mark Mabry:
-Description: 
-When there are 2 different users running exmh on the same machine, update 
-(all) scan caches doesn't work because both users wanted to read/write the 
-/tmp/scancmds file.  The patch changes file to /tmp/scancmds-$USER.
-
-If it doesn't already the location of scancmds should be dependent on
-the tempdir environment variable.  Consider whether pid should be there.
 
 ----------------------------------------------------------------------
 Number: 34
