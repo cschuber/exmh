@@ -687,18 +687,18 @@ proc Ftoc_RescanLine { ix {plus none} } {
 	case $plus {
 	    "none" {
 		# Replace + (current marker) with blank
-		set ok [regsub {( *[0-9]+)(\+)} $text {\1 } newtext]
+		set ok [regsub {^( *[0-9]+)(\+)} $text {\1 } newtext]
 	    }
 	    "+" {
 		# Stick a + after the number, if needed
-		if ![regexp {( *)([0-9]+)(\+)} $text] {
-		    set ok [regsub {( *[0-9]+)( )} $text {\1+} newtext]
+		if ![regexp {^( *)([0-9]+)(\+)} $text] {
+		    set ok [regsub {^( *[0-9]+)( )} $text {\1+} newtext]
 		}
 	    }
 	    "dash" {
 		# Stick a - after the number, if needed
-		if ![regexp {( *)([0-9]+).-} $text] {
-		    set ok [regsub {( *[0-9]+.)(.)} $text {\1-} newtext]
+		if ![regexp {^( *)([0-9]+).-} $text] {
+		    set ok [regsub {^( *[0-9]+.)(.)} $text {\1-} newtext]
 		}
 		# Annotations result in writes to the directory.
 		# Here we mark the display dirty to force an update

@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 4/26/1999
+    Fix error in regexps in ftoc.tcl where digits followed by a "+"
+        would confuse the marking of current message
+        -Jan L. Peterson via haldevore
+
 cvs repository 4/23/1999
     Remove unused argument from Folder_TargetClear proc 
         -steve rader via haldevore
