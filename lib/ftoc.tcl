@@ -626,6 +626,9 @@ proc Ftoc_ClearCurrent {} {
     set ftoc(pickone) 1
     set ftoc(lineset) {}
 
+    if {$ftoc(curLine) == {}} {
+	set ftoc(curLine) [Mh_Cur $ftoc(folder)]
+    }
     if {$ftoc(curLine) != {}} {
 	$exwin(ftext) tag remove cur $ftoc(curLine).0 $ftoc(curLine).end
 	Ftoc_RescanLine $ftoc(curLine)

@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 07/10/2001 cwg-exmh@deepeddy.com
+    ftoc.tcl - In Ftoc_ClearCurrent, if ftoc(curLine) isn't set use
+	Mh_Cur to find where we're clearing.
+
 cvs repository 07/03/2001 cwg-exmh@deepeddy.com
     folder.tcl, ftoc.tcl - Don't call Scan_Folder in FolderChange;
 	properly initialize ftoc(displayValid) to 1 so that

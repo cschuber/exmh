@@ -245,7 +245,9 @@ proc Scan_CacheValid {F} {
 }
 proc Scan_CacheUpdate {} {
     global exmh mhProfile exwin ftoc
+    Exmh_Debug Scan_CacheUpdate
     set folder $exmh(folder)
+    Exmh_Debug folder: $folder
     if {$folder == {}} {
 	return
     }
