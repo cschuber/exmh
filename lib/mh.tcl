@@ -420,9 +420,14 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} } {
 	    Exmh_Debug New sequences: $mhProfile(path)/$f/$mhProfile(mh-sequences)
 	    Exmh_Debug $new
 	    puts -nonewline $out $new
-	    close $out
-	    Mh_Rename $mhProfile(path)/$f/$mhProfile(mh-sequences).new \
-		    $mhProfile(path)/$f/$mhProfile(mh-sequences)
+	    if [catch {
+		close $out
+	    } err] {
+		Exmh_Status "Cannot close $mhProfile(path)/$f/$mhProfile(mh-sequences).new: $err"
+	    } else {
+		Mh_Rename $mhProfile(path)/$f/$mhProfile(mh-sequences).new \
+			$mhProfile(path)/$f/$mhProfile(mh-sequences)
+	    }
 	    return
 	}
     }
