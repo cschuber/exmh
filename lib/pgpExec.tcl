@@ -6,6 +6,13 @@
 # 
 
 # $Log$
+# Revision 1.8  1999/08/13 00:39:05  bmah
+# Fix a number of key/passphrase management problems:  pgpsedit now
+# manages PGP versions, keys, and passphrases on a per-window
+# basis.  Decryption now works when no passphrases are cached.
+# One timeout parameter controls passphrases for all PGP
+# versions.  seditpgp UI slightly modified.
+#
 # Revision 1.7  1999/08/04 22:43:39  cwg
 # Got passphrase timeout to work yet again
 #
@@ -107,7 +114,8 @@ proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
 	    return [Pgp_Exec_Batch $v $exectype $arglist output]
 	} else {
 	    Exmh_Debug v=$v
-	    set keyid [lindex $pgp($v,myname) 0]
+
+	    set keyid [lindex $privatekey 0]
 	    Exmh_Debug keyid=$keyid
 	    if {!$pgp(seditpgp)} {
 		Exmh_Debug "<Pgp_Exec> Pgp_GetPass $v $privatekey"
@@ -445,6 +453,7 @@ proc Pgp_Exec_GetDecryptKey {v in recipients} {
         # SYMMETRIC ENCRYPTION
         set key [list SYM {} {} {} "symmetrically encrypted message"]
       } else {
+	  # One of user's private keys?  If so, than use it.
         foreach key [set pgp($v,privatekeys)] {
           if {[regexp $keyid [lindex $key 0]]} {
             return $key
@@ -507,6 +516,15 @@ proc Pgp_Exec_Decrypt { v in out outvar recipients } {
     set key [Pgp_Exec_GetDecryptKey $v $in $recipients]
     Exmh_Debug "<Pgp_Exec_Decrypt> $key"
     
+    # See if we have a passphrase for this key.  If not, go get it.
+    set keyid [lindex $key 0]
+    if {![info exists pgp($v,pass,$keyid)]} {
+	set p [Pgp_GetPass $v $key]
+	if {[string length $p] == 0} {
+	    set pgp($v,pass,$keyid) $p
+	}
+    }
+
     Pgp_Exec $v verify [subst [set pgp($v,args_decrypt)]] output $key
 }
 
@@ -639,7 +657,7 @@ proc Pgp_GetPass { v key } {
                 if {[string length $subkeyid] > 0} {
                     set pgp($v,pass,$subkeyid) $password
                 }
-                after [expr [set pgp($v,passtimeout)] * 60 * 1000] \
+                after [expr [set pgp(passtimeout)] * 60 * 1000] \
                         [list Pgp_ClearPassword $v $keyid]
             }
             return $password
@@ -655,9 +673,9 @@ proc Pgp_SetPassTimeout {v keyid} {
 	after cancel $pgp(timeout,$keyid)
 	unset pgp(timeout,$keyid)
     }
-    Exmh_Debug "Setting timeout for $keyid ($v) in $pgp($v,passtimeout) minutes"
+    Exmh_Debug "Setting timeout for $keyid ($v) in $pgp(passtimeout) minutes"
     set pgp(timeout,$keyid) \
-	    [after [expr $pgp($v,passtimeout) * 60 * 1000] \
+	    [after [expr $pgp(passtimeout) * 60 * 1000] \
 	           [list Pgp_ClearPassword $v $keyid]]
 }
 
@@ -733,6 +751,10 @@ proc Pgp_Exec_Init {} {
                 set myname [string tolower [set pgp($v,config,myname)]]
                 foreach key [set pgp($v,privatekeys)] {
                     if {[string first $myname [string tolower $key]] >= 0} {
+			# pgp($v,myname) holds the default key to use
+			# for each version of PGP.  It will be used
+			# to initialize pgp($v,myname,$id) in each
+			# sedit window.
                         set pgp($v,myname) $key
                         break
                     }

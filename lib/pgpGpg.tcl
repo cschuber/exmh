@@ -1,6 +1,13 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.4  1999/08/13 00:39:05  bmah
+# Fix a number of key/passphrase management problems:  pgpsedit now
+# manages PGP versions, keys, and passphrases on a per-window
+# basis.  Decryption now works when no passphrases are cached.
+# One timeout parameter controls passphrases for all PGP
+# versions.  seditpgp UI slightly modified.
+#
 # Revision 1.3  1999/08/11 04:09:20  bmah
 # Fix problems caused by GPG returning key IDs that are 8 bytes long,
 # when exmh (and keyservers) like to work with 4-byte key IDs.
@@ -46,7 +53,7 @@ Give here a hkp server name." }
 
 # Needed for Preferences
 set pgp(gpg,description) "GNUPG is a free GPLed PGP clone written by Werner Koch"
-set pgp(gpg,prefs) [list keeppass echopass grabfocus passtimeout rfc822 \
+set pgp(gpg,prefs) [list keeppass echopass grabfocus rfc822 \
                          choosekey runtwice cacheids minmatch showinline \
                          shortmsgs autoextract \
                          keyserver keyquerymethod HKPkeyserverUrl keyserverUrl \

@@ -6,6 +6,13 @@
 # 
 
 # $Log$
+# Revision 1.8  1999/08/13 00:39:05  bmah
+# Fix a number of key/passphrase management problems:  pgpsedit now
+# manages PGP versions, keys, and passphrases on a per-window
+# basis.  Decryption now works when no passphrases are cached.
+# One timeout parameter controls passphrases for all PGP
+# versions.  seditpgp UI slightly modified.
+#
 # Revision 1.7  1999/08/03 04:05:55  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -88,6 +95,7 @@ proc Pgp_Match_Whom { v draft {hasfcc 0} } {
 	}
 	set id [string trim $id]
 	regsub { at } $id {@} id
+	regsub {\.\.\.\ .*$} $id {} id
 	# Match_Email return list of matched keys
 	set ids [concat $ids [Pgp_Match_Email $v $id Pub]]
     }
@@ -161,12 +169,12 @@ proc Pgp_Match_Email { v email keyringtype } {
 	   ((100 * ($bestmatches + 1)) / ($maxmatches + 1) < [set pgp($v,minmatch)])} {
        set pgpbestkeys [concat $pgpbestkeys $pgpnextkeys]
        ExmhLog "<Pgp_Match_Email> $id is ambiguous: [join $pgpbestkeys ", "]"
-       set result [Pgp_KeyBox $v "Please select the keys of $id" $keyringtype $pgpbestkeys]
+       set result [Pgp_KeyBox $v "Please select a $pgp($v,fullName) key for $id" $keyringtype $pgpbestkeys]
     } else {
        set result $pgpbestkeys
     }
     while {$result == {}} {
-	set result [Pgp_KeyBox $v "You didn't select keys for $id" $keyringtype $pgpbestkeys]
+	set result [Pgp_KeyBox $v "You didn't select a $pgp($v,fullName) key for $id" $keyringtype $pgpbestkeys]
     }
     set pgp($v,match,$email) $result
     foreach key $result {

@@ -1,6 +1,13 @@
 # pgpPgp5.tcl
 
 # $Log$
+# Revision 1.3  1999/08/13 00:39:06  bmah
+# Fix a number of key/passphrase management problems:  pgpsedit now
+# manages PGP versions, keys, and passphrases on a per-window
+# basis.  Decryption now works when no passphrases are cached.
+# One timeout parameter controls passphrases for all PGP
+# versions.  seditpgp UI slightly modified.
+#
 # Revision 1.2  1999/08/03 04:05:56  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -42,7 +49,7 @@ Give here a hkp server name." }
 
 # Needed for Preferences
 set pgp(pgp5,description) "PGP5 is the new Pretty Good Privacy Package from Zimmermann."
-set pgp(pgp5,prefs) [list keeppass echopass grabfocus passtimeout rfc822 \
+set pgp(pgp5,prefs) [list keeppass echopass grabfocus rfc822 \
                           choosekey useexpectk cacheids minmatch showinline \
                           shortmsgs autoextract \
                           keyserver keyquerymethod HKPkeyserverUrl keyserverUrl keyothermethod ]

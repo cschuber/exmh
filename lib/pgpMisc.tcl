@@ -8,6 +8,13 @@
 # todo:
 
 # $Log$
+# Revision 1.19  1999/08/13 00:39:05  bmah
+# Fix a number of key/passphrase management problems:  pgpsedit now
+# manages PGP versions, keys, and passphrases on a per-window
+# basis.  Decryption now works when no passphrases are cached.
+# One timeout parameter controls passphrases for all PGP
+# versions.  seditpgp UI slightly modified.
+#
 # Revision 1.18  1999/08/04 22:43:39  cwg
 # Got passphrase timeout to work yet again
 #
@@ -340,18 +347,18 @@ proc Misc_PostProcess { srcfile } {
     if {$pgp(enabled)} {
 	if {$pgp(encrypt,$id) || $pgp(sign,$id)} {
 	    set v $pgp(version,$id)
-	    set keyid [lindex $pgp($v,myname) 0]
+	    set keyid [lindex $pgp($v,myname,$id) 0]
 	    # If there's a passphrase from sedit and it's non-empty, use it
-	    if {[info exists pgp($v,pass,cur)] && ([string length $pgp($v,pass,cur)] > 0) && [info exists pgp($v,myname)]} {
-		Pgp_SetPassTimeout $v cur
-		set pgp($v,pass,$keyid) $pgp($v,pass,cur)
+	    if {[info exists pgp(cur,pass,$id)] && ([string length $pgp(cur,pass,$id)] > 0) && [info exists pgp($v,myname,$id)]} {
+		Pgp_SetPassTimeout cur $id
+		set pgp($v,pass,$keyid) $pgp(cur,pass,$id)
 	    } else {
 		set pgp($v,pass,$keyid) ""
 	    }
 
 	    # if non-seditpgp
 	    if {!$pgp(seditpgp)} {
-		set pgp($v,pass,$keyid) [Pgp_GetPass $v $pgp($pgp(version,$id),myname)]
+		set pgp($v,pass,$keyid) [Pgp_GetPass $v $pgp($pgp(version,$id),myname,$id)]
 	    } 
 	    Pgp_SetPassTimeout $pgp(version,$id) $keyid
 # Danger Wil Robinson!

@@ -1,6 +1,13 @@
 # pgpShared.tcl
 
 # $Log$
+# Revision 1.4  1999/08/13 00:39:06  bmah
+# Fix a number of key/passphrase management problems:  pgpsedit now
+# manages PGP versions, keys, and passphrases on a per-window
+# basis.  Decryption now works when no passphrases are cached.
+# One timeout parameter controls passphrases for all PGP
+# versions.  seditpgp UI slightly modified.
+#
 # Revision 1.3  1999/08/03 18:32:02  bmah
 # Cosmetic fixes:  PGP 2 is now specified explicitly in all prompts
 # (instead of old "PGP").  The term "passphrase" is now used
@@ -82,12 +89,6 @@ focus if this is on.  Some users like it because they don't need to
 select the popup dialog or because it lessens the risk they will type
 their passphrase in the wrong window.  It annoys or does not work for
 other people." }
-#
-set pgp(pref,passtimeout) { passtimeout PassTimeout  60
-{Minutes to cache <label> passphrase}
-"Exmh will clear its memory of the <label> passphrase after
-this time period, in minutes, has elapesed.  If you use
-different keys, they have their own timeout period." }
 #
 set pgp(pref,rfc822) { rfc822 Rfc822 OFF {Encrypt headers}
 "Used to encrypt the whole message, instead of only encrypting

@@ -547,6 +547,9 @@ This can be changed on the fly from the sedit window" }
     PGP5:   Pretty Good Privacy, Version 5
     GPG:    GNU Privacy Guard
 This can be changed on the fly from the sedit window" }
+    {pgp(passtimeout) PassTimeout 60 {Minutes to cache PGP passphrase}
+"Exmh will clear its memory of PGP passphrases after
+this time period, in minutes, has elapesed." }
     }
 
     # And now load the version specific stuff

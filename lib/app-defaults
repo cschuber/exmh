@@ -909,7 +909,7 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.t_pgpclearsign:	check
 *Sedit.Menubar.pgp.m.v_pgpclearsign:	pgp(clearsign,$id)
 *Sedit.Menubar.pgp.m.l_pgpchoosekey:	Choose Key
-*Sedit.Menubar.pgp.m.c_pgpchoosekey:	Pgp_SetMyName $pgp(version,$id)
+*Sedit.Menubar.pgp.m.c_pgpchoosekey:	Pgp_SetMyName \$pgp(version,$id) $id
 *Sedit.Menubar.pgp.m.l_pgpformat:	Format
 *Sedit.Menubar.pgp.m.t_pgpformat:	cascade
 *Sedit.Menubar.pgp.m.m_pgpformat:	format
@@ -948,7 +948,7 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.version.x_gpg:	gpg
 
 *Sedit.Menubar.pgp.m.l_signkey:	Change Default Key
-*Sedit.Menubar.pgp.m.c_signkey:	Pgp_SetMyName
+*Sedit.Menubar.pgp.m.c_signkey:	Pgp_SetMyName \$pgp(version,$id) $id
 *Sedit.Menubar.pgp.m.l_clear:	Clear Cached Password
 *Sedit.Menubar.pgp.m.c_clear:	Pgp_ClearPassword
 
@@ -1112,7 +1112,7 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.t_pgpclearsign:	check
 *WhatNow.more.m.encrypt.v_pgpclearsign:	pgp(clearsign,$id)
 *WhatNow.more.m.encrypt.l_pgpchoosekey:	Choose Key
-*WhatNow.more.m.encrypt.c_pgpchoosekey:	Pgp_SetMyName
+*WhatNow.more.m.encrypt.c_pgpchoosekey:	Pgp_SetMyName \$pgp(version,$id) $id
 *WhatNow.more.m.encrypt.l_pgpformat:	Format
 *WhatNow.more.m.encrypt.t_pgpformat:	cascade
 *WhatNow.more.m.encrypt.m_pgpformat:	format
@@ -1148,7 +1148,7 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.version.x_gpg:	gpg
 
 *WhatNow.more.m.encrypt.l_signkey:	Change Default Key
-*WhatNow.more.m.encrypt.c_signkey:	Pgp_SetMyName
+*WhatNow.more.m.encrypt.c_signkey:	Pgp_SetMyName \$pgp(version,$id) $id
 *WhatNow.more.m.encrypt.l_clear:	Clear Cached Password
 *WhatNow.more.m.encrypt.c_clear:	Pgp_ClearPassword
 

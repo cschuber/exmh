@@ -153,28 +153,41 @@ proc EditDialog {draftID} {
 proc EditAddPassPhrasePane {id w} {
     global pgp
     if {$pgp(enabled) && $pgp(seditpgp)} {
-	Pgp_SetSeditPgpName $pgp($pgp(version,$id),myname)
+	if {![info exists pgp($pgp(version,$id),myname,$id)]} {
+	    set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
+	}
+	Pgp_SetSeditPgpName $pgp($pgp(version,$id),myname,$id) $id
+	set pgp(fullName,$id) $pgp($pgp(version,$id),fullName)
 
 	if {![winfo exists $w.pgp]} {
 	    pack [frame $w.pgp] -side bottom -fill x -ipady 2
 	}
 	if {![winfo exists $w.pgp.l1]} {
-	    pack [label $w.pgp.l1 -text "Passphrase for "] \
-		    -side left
-	}
-	if {![winfo exists $w.pgp.b]} {
-	    pack [button $w.pgp.b -textvariable pgp(sedit_label) \
-		    -command "Pgp_SetMyName \$pgp(version,$id)"] -side left -ipady 2
-	}
-	if {![winfo exists $w.pgp.l2]} {
-	    pack [label $w.pgp.l2 -text ": "] \
+	    pack [label $w.pgp.l1 -text "Passphrase: "] \
 		    -side left
 	}
 	if {![winfo exists $w.pgp.e]} {
 	    set v $pgp(version,$id)
-	    pack [entry $w.pgp.e -textvariable pgp($v,pass,cur) -show *] \
+	    pack [entry $w.pgp.e -textvariable pgp(cur,pass,$id) -show *] \
 		    -side left -expand yes -fill x -ipady 2
 	}
+	if {![winfo exists $w.pgp.b]} {
+	    pack [button $w.pgp.b -text "Change key" \
+		    -command "Pgp_SetMyName \$pgp(version,$id) $id"] -side right -ipady 2
+	}
+	if {![winfo exists $w.pgp2]} {
+	    pack [frame $w.pgp2] -side bottom -fill x
+	}
+	if {![winfo exists $w.pgp2.l1]} {
+	    pack [label $w.pgp2.l1 -textvariable pgp(fullName,$id)] -side left
+	}
+	if {![winfo exists $w.pgp2.l2]} {
+	    pack [label $w.pgp2.l2 -text " key: "] -side left
+	}
+	if {![winfo exists $w.pgp2.l3]} {
+	    pack [label $w.pgp2.l3 -textvariable pgp(sedit_label,$id)] -side left
+	}
+
     }
 }
 proc EditShowDialog {id text} {

@@ -19,6 +19,13 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.9  1999/08/13 00:39:05  bmah
+# Fix a number of key/passphrase management problems:  pgpsedit now
+# manages PGP versions, keys, and passphrases on a per-window
+# basis.  Decryption now works when no passphrases are cached.
+# One timeout parameter controls passphrases for all PGP
+# versions.  seditpgp UI slightly modified.
+#
 # Revision 1.8  1999/08/11 06:16:39  bmah
 # Properly decode multipart/signed PGP messages whose boundary strings
 # contain characters that are interpreted as special regexp characters.
@@ -334,6 +341,7 @@ proc Pgp_SeditEncrypt { action v draft t } {
        if { [set pgp($v,choosekey)] && [llength [set pgp($v,privatekeys)]] > 1} {
 	  set signkey [Pgp_ChoosePrivateKey $v "Please select the key to use for signing"]
        } else {
+# XXX fix this
 	  set signkey [set pgp($v,myname)]
        }
        append pgpaction ";\n\toriginator=\"[lindex $signkey 0]\""
@@ -385,7 +393,7 @@ proc Pgp_EncryptDebug { srcfile } {
 	if [info exists pgp(param,originator)] {
 	    set originator [PgpMatch_Simple $pgp(param,originator) $pgp(secring)]
 	} else {
-	    set originator $pgp($v,myname)
+	    set originator $pgp($v,myname,$id)
 	}
 	Exmh_Debug "Pgp_EncryptDebug: Signed by: $originator"
     }
@@ -425,40 +433,42 @@ proc Pgp_ChoosePrivateKey { v text } {
     }
 }
 
-proc Pgp_SetMyName { v } {
+proc Pgp_SetMyName { v id } {
    global pgp
 
 # first, save old pgp passphrase if set
-   if {[info exists pgp($v,pass,cur)] && [info exists pgp($v,myname)]} {
-      set keyid [lindex $pgp($v,myname) 0]
-      set pgp($v,pass,$keyid) $pgp($v,pass,cur)
+   if {[info exists pgp($v,pass,cur$id)] && [info exists pgp($v,myname,$id)]} {
+      set keyid [lindex $pgp($v,myname,$id) 0]
+      set pgp($v,pass,$keyid) $pgp($v,pass,cur$id)
    }
 
    set newname [Pgp_ChoosePrivateKey $v \
-	 "Please select the default key to use for signing"]
+	 "Please select a $pgp($v,fullName) key to use for signing"]
    if ([string length $newname]) {
-       set pgp($v,myname) [lindex $newname 0]
+       set pgp($v,myname,$id) [lindex $newname 0]
 
-       Exmh_Debug "Pgp_SetMyName: myname now $pgp($v,myname)"
+       Exmh_Debug "Pgp_SetMyName: myname now $pgp($v,myname,$id)"
 
-       set keyid [lindex $pgp($v,myname) 0]
+       set keyid [lindex $pgp($v,myname,$id) 0]
        if [info exists pgp($v,pass,$keyid)] {
-	   set pgp($v,pass,cur) $pgp($v,pass,$keyid)
+	   set pgp($v,pass,cur$id) $pgp($v,pass,$keyid)
+       } else {
+	   set pgp($v,pass,cur$id) {}
        }
-       Pgp_SetSeditPgpName $pgp($v,myname)
+       Pgp_SetSeditPgpName $pgp($v,myname,$id) $id
    }
 }
 
 # Set seditpgp name (PGP key name gets set in multiple places
 # so we should collapse them all here)
-proc Pgp_SetSeditPgpName { myname } {
+proc Pgp_SetSeditPgpName { myname id } {
     global pgp
 
     set keyid [lindex $myname 0]
     set keyalg [lindex $myname 1]
     set keyname [lindex $myname 4]
 	
-    set pgp(sedit_label) "$keyid $keyalg $keyname"
+    set pgp(sedit_label,$id) "$keyid $keyalg $keyname"
 }
 
 # Update seditpgp PGP version
@@ -467,23 +477,28 @@ proc Pgp_SetSeditPgpVersion { v id } {
 
     # Get old PGP passphrase and save it away if it exists.
     set oldv $pgp(version,$id)
-    if {[info exists pgp($oldv,pass,cur)] && [info exists pgp($oldv,myname)]} {
-	set keyid [lindex $pgp($oldv,myname) 0]
-	set pgp($oldv,pass,$keyid) $pgp($oldv,pass,cur)
+    if {[info exists pgp(cur,pass,$id)] && [info exists pgp($oldv,myname,$id)]} {
+	set keyid [lindex $pgp($oldv,myname,$id) 0]
+	set pgp($oldv,pass,$keyid) $pgp(cur,pass,$id)
     }
 
-    Exmh_Debug "Pgp_SetSeditPgpVersion: myname now $pgp($v,myname)"
+    # If we didn't pick a key for this PGP version yet in this
+    # window, then set one from the default.
+    if {![info exists pgp($v,myname,$id)]} {
+	set pgp($v,myname,$id) $pgp($v,myname)
+    }
+
+    Exmh_Debug "Pgp_SetSeditPgpVersion: myname now $pgp($v,myname,$id)"
 
     # Now behave as if we'd just chosen a new key (with new version $v)
-    set keyid [lindex $pgp($v,myname) 0]
+    set keyid [lindex $pgp($v,myname,$id) 0]
     if [info exists pgp($v,pass,$keyid)] {
-	set pgp($v,pass,cur) $pgp($v,pass,$keyid)
+	set pgp(cur,pass,$id) $pgp($v,pass,$keyid)
+    } else {
+	set pgp(cur,pass,$id) {}
     }
-    Pgp_SetSeditPgpName $pgp($v,myname)
-
-    # XXX Need to frob current password in sedit passphrase field.
-    # How can we do this, seeing that $v just changed, and $v for
-    # the field was set at the time it was first packed?
+    Pgp_SetSeditPgpName $pgp($v,myname,$id) $id
+    set pgp(fullName,$id) $pgp($v,fullName)
 
 }
 
@@ -542,7 +557,7 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
 	if [info exists pgp(param,originator)] {
 	    set originator [PgpMatch_Simple $pgp(param,originator) $pgp(secring)]
 	} else {
-	    set originator $pgp($v,myname)
+	    set originator $pgp($v,myname,$id)
 	}
 	if {$pgp(format,$id) == "app"} {
 	    append typeparams "; x-originator=[string range [lindex $originator 0] 2 end]"
@@ -877,8 +892,6 @@ proc Pgp_MimeShowMultipartSignedPgp {tkw part} {
     }
     MimeShowPart $tkw $part=1 [MimeLabel $part part] 1
 }
-
-# proc MimeShowMultipartEncryptedPgp_XXX {tkw part} {
 
 # Show multipart/encrypted
 proc Pgp_MimeShowMultipartEncryptedPgp {tkw part} {
@@ -1222,8 +1235,6 @@ proc Pgp_InsertKeys { draft t } {
 	}
     }
 }
-
-#proc Pgp_GetTextAttributes_XXX { summary } {
 
 proc Pgp_GetTextAttributes { summary } {
     global pgp
