@@ -193,14 +193,15 @@ proc Addr_Init {} {
     #make this an array from the get-go and set the default pref...
     global addr_db
     set addr_db(init) 1;  
-    set addr_db(curmethod) 0
-    set addr_db(laststring) ""
-    set addr_db(lastfound) ""
-    set addr_db(changed) 0
-    set addr_db(filterstring) ""
-    set addr_db(remove_entries) 0
-    set addr_db(remove_days) ""
-    set addr_db(remove_invalid_date) 0
+    if ![info exists addr_db(curmethod)]            {set addr_db(curmethod) 0}
+    if ![info exists addr_db(laststring)]           {set addr_db(laststring) ""}
+    if ![info exists addr_db(lastfound)]            {set addr_db(lastfound) ""}
+    if ![info exists addr_db(changed)]              {set addr_db(changed) 0}
+    if ![info exists addr_db(filterstring)]         {set addr_db(filterstring) ""}
+    if ![info exists addr_db(remove_entries)]       {set addr_db(remove_entries) 0}
+    if ![info exists addr_db(remove_days)]          {set addr_db(remove_days) ""}
+    if ![info exists addr_db(remove_invalid_date)]  {set addr_db(remove_invalid_date) 0}
+
     trace variable addr_db(hideexcluded) w Addr_Browse_Exclude_Change
     Addr_LoadDB
 }

@@ -1,5 +1,9 @@
 HISTORY
 
+cvs respository 09/07/2000 Hal DeVore <haldevore@earthling.net>
+    lib/addr.tcl Fixed problem with some address book preferences
+    getting clobbered.
+
 cvs respository 08/30/2000 Hal DeVore <haldevore@earthling.net>
     lib/seditMime.tcl applied patch from Chris Garrigues 
     <cwg-exmh@deepeddy.com> to prevent flowing of mhn directives
