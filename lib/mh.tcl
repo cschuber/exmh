@@ -846,7 +846,7 @@ proc MhSetupNewUser {} {
     Widget_Message .newuser msg -aspect 1000 -text "
 Exmh is a front end to the MH mail handling system.
 Feel free to send comments and bug reports to
-	Brent.Welch@eng.sun.com
+	Brent.Welch@acm.org
 
 It appears you have not used the MH mail system before.
 (Your [file tail $mhProfile(profile)] is missing or incomplete.)
