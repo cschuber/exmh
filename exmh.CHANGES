@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 1/2/2005 welch@panasas.com
+  lib/app-defaults: added "Save/Extract Attachments" that calls
+    Mime_SaveAttachments.
+  lib/mime.tcl: Added Mime_SaveAttachements that uses exmh-strip
+    to pull an attachment out of an email message.  There is a new
+    preference item under "Mime" where you specify the default location
+    for the resulting files.  The default is ~/attachments.
+
 cvs repository 1/1/2005 welch@panasas.com (for Alexander Zangerl)
   lib/pgpGpg.tcl:
   lib/pgpPgp5.tcl:

@@ -401,7 +401,7 @@ exmh.iconic:		0
 *Mops.spam.m.c_f_no:	Bogo_FilterFolder ham
 
 *Mops.more.text: 	More...
-*Mops.more.m.entrylist: 	print unmark clip xunseen burst distrib save use edit uudecode postscript apply1 apply2 munseen pgp uriscan uriopen partial ref post grabaddr
+*Mops.more.m.entrylist: 	print unmark clip xunseen burst distrib save use edit uudecode postscript apply1 apply2 munseen pgp uriscan uriopen partial ref post grabaddr attach
 *Mops.more.m.uentrylist:
 
 *Mops.more.m.l_print: 	Print
@@ -452,6 +452,8 @@ exmh.iconic:		0
 *Mops.more.m.c_post: Post
 *Mops.more.m.l_grabaddr: Save "From" address
 *Mops.more.m.c_grabaddr: Address_Save
+*Mops.more.m.l_attach: Save/Extract Attachments
+*Mops.more.m.c_attach: Mime_SaveAttachments
 
 *Mops.more.m.pgp.entrylist: decrypt extract
 *Mops.more.m.pgp.l_decrypt: Decrypt in Place

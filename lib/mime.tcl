@@ -212,6 +212,10 @@ The following line makes exmh display the text/plain part in favour
 of the text/html part if both are present in a multipart/alternative:
 
 text/plain text/html"}
+{mime(saveDir) mimeSaveDir {~/attachments} {Save directory for attachments}
+"This defines the directory to use when saving attachments.  Attachments
+are saved by extracting them from the message and replacing the
+attachment with a message/external-body reference to the saved file."}
     }
     set i 0
     foreach char {A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \
@@ -2895,4 +2899,15 @@ proc Mime_ShowXApp { tkw part } {
     TextButton $tkw "Save..." \
      [list Mime_SavePiece $part $mimeHdr($part,type)]
     $tkw insert insert \n
+}
+
+proc Mime_SaveAttachments {{dir {}}} {
+    global msg mime install
+
+    if {$dir == ""} {
+      set dir [glob $mime(saveDir)]
+    }
+    file mkdir $dir
+    exec $install(dir,bin)/exmh-strip $msg(path) $dir
+    Msg_ShowCurrent
 }
