@@ -1,0 +1,53 @@
+#!/usr/local/bin/perl -w
+
+$MHPATH = "/usr/local/nmh/bin";
+$MHLIB = "/usr/local/nmh/lib";
+
+open(FOLDERS, "$MHPATH/folder -recurse -all -fast|") or 
+    die "Couldn't read folders: $!";
+@folders = grep !/\/old/, <FOLDERS>;
+close(FOLDERS);
+chomp @folders;
+
+foreach $folder (@folders) {
+    print "$folder:\n";
+    open(OLDMSGS, "$MHPATH/pick +$folder -before -60|") or 
+	die "Couldn't pick messages from $folder: $!";
+    @msgids = grep !/^0$/, <OLDMSGS>;
+    close(OLDMSGS);
+    chomp @msgids;
+    if (@msgids) {
+	foreach $msgid (@msgids) {
+	    open(MSG, "$MHPATH/show +$folder $msgid -nocheckmime -noheader -showproc cat|") or
+		die "Couldn't show $msgid in $folder: $!";
+	    while (<MSG>) {
+		chomp;
+		last if (/^$/);
+		if (/^Date:(.*)$/i) {
+		    $date = $1;
+		    last;
+		}
+	    }
+	    close(MSG);
+	    $subdir = `$MHLIB/dp '$date' -format 'old/%(putnum(year{text}))/%(putstr(month{text}))'`;
+	    chomp($subdir);
+	    print "refile $msgid -src +$folder -nolink +$folder/$subdir\n";
+	    system "$MHPATH/refile $msgid -src +$folder -nolink +$folder/$subdir";
+	}
+	$exmhdisplayfile = "$ENV{'HOME'}/.exmhdisplay";
+	if (-f $exmhdisplayfile) {
+	    $exmhdisplay = `cat $exmhdisplayfile`;
+	    chomp $exmhdisplay;
+	    if ($exmhdisplay) {
+		print "Telling exmh\n";
+		open(WISH, "|wish -f -display $exmhdisplay") or
+		    die "Couldn't open wish on $exmhdisplay: $!";
+		print WISH <<EOF;
+catch { send exmh { Scan_FolderForce $folder } } err
+exit 0
+EOF
+                close(WISH);
+	    }
+	}
+    }
+}

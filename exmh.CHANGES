@@ -1,7 +1,10 @@
 HISTORY
 
+cvs repository 5/12/1999
+    Added another hack to the misc directory. -cwg
+
 cvs repository 5/11/1999
-    Added several hacks to the misc directory -cwg
+    Added several hacks to the misc directory. -cwg
 
 cvs repository 5/7/1999
     Fix oddities introduced during tkstep patch; also eliminate

@@ -1,0 +1,31 @@
+			README.archiveoldmail
+      Perl script to walk through all your folders and move old
+		      messages into subfolders.
+
+
+Purpose of Hack
+---------------
+exmh gets slower and slower as folders get large.  This is a script
+you can run from cron to move old messages into subfolders
+
+What You'll Need
+----------------
+It's written in perl and uses mh/nmh.
+
+Instructions
+------------
+Take a lok at the script and make sure the MHPATH and MHLIB variables
+are correct for your environmment.  There is a hardcoded "60" which
+says that any messages more than 60 days old will be moved.  That can
+be changed.  The naming of the subfolders is done using a -format
+argument to 'dp'.  This can be changed easily.
+
+The script uses refile, so it has the same characteristics as that
+script in prompting you to create new directories if called
+interactively, but not if stdin is not a tty.
+
+I call it from a cronjob which runs at the start of each month.
+
+Author
+------
+Chris Garrigues <cwg-exmh@DeepEddy.Com>
