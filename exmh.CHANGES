@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 6/1/1999
+    Sedit was not inserting Mime-version header when it should have.
+       -Chris Hibbert via haldevore
+
 cvs repository 5/18/1999
     Clear List... button in MsgClear -Kevin.Christian@lsil.com via cwg
 

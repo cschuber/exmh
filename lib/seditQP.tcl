@@ -130,6 +130,7 @@ proc SeditFixupEncoding { draft t quote } {
 	    if {$needCoder} {
 		set needCoder 0
 		Exmh_Debug coding
+                puts $out "Mime-Version: 1.0"
 		if {$quote} {
 		    puts $out "Content-Transfer-Encoding: quoted-printable"
 		    puts $out $savedLine
