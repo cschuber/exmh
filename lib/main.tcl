@@ -12,29 +12,9 @@
 # any specification.
 
 proc Exmh {} {
-    global exmh argv nmh
+    global exmh argv 
 
-    set nmh 0
-    catch {string match *group* [exec repl -help] } nmh
-
-    # set $exmh(mh_vers) to a pretty-printable string...
-    set exmh(mh_vers) "unknown"
-    if { $nmh } {
-	# 'repl -- version [compiled etc etc]' - catch version
-	catch {exec repl -version} d
-	regexp {.*-- *([^ ]*)[ ]} $d {} exmh(mh_vers) 
-    } else {
-	# UCI MH - 'version: .*'
-	# weirdness - 6.8 puts 'version (build on ...)', 6.6 (blech) doesnt.
-	catch {exec repl -help} d
-	set d1 [ split $d "\n"]
-	foreach line $d1 {
-	    regexp {^version:[ ]*([^(]*)} $line d2
-	    if [info exists d2] { set exmh(mh_vers) [string trim $d2] }
-	}
-    }
-
-    Mh_Init		;# Defines mhProfile
+    Mh_Init		;# Defines mhProfile and identifies mh vs nmh
 
     Preferences_Init "~/.exmh/exmh-defaults" "$exmh(library)/app-defaults"
 

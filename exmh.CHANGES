@@ -1,4 +1,14 @@
 HISTORY
+cvs repository 05/14/2001 kchrist
+    Fixed a bug in which a corrupt context would prevent exmh from
+    starting. Problem was caused by direct calls to 'repl' instead of
+    wrapping them inside a (context-aware) MhExec call.
+
+    lib/main.tcl: Moved nmh-vs-mh identification to Mh_Init procedure
+    lib/mh.tcl    and replaced 'exec repl...' calls with 'MhExec repl...'
+                  calls. Note that MhParseProfile is called first since
+                  MhExec may need $phProfile(path).
+
 cvs repository 05/11/2001 kchrist
     A bunch of changes having to do with making sure exmh($id,action)
     is there when we need it. Also... Replaced Sedit_Mailto with 

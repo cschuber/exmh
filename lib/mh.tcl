@@ -13,8 +13,30 @@
 # any specification.
 
 proc Mh_Init {} {
+    global exmh nmh
     MhParseProfile
+
+    set nmh 0
+    catch {string match *group* [MhExec repl -help] } nmh
+
+    # set $exmh(mh_vers) to a pretty-printable string...
+    set exmh(mh_vers) "unknown"
+    if { $nmh } {
+	# 'repl -- version [compiled etc etc]' - catch version
+	catch {MhExec repl -version} d
+	regexp {.*-- *([^ ]*)[ ]} $d {} exmh(mh_vers) 
+    } else {
+	# UCI MH - 'version: .*'
+	# weirdness - 6.8 puts 'version (build on ...)', 6.6 (blech) doesnt.
+	catch {MhExec repl -help} d
+	set d1 [ split $d "\n"]
+	foreach line $d1 {
+	    regexp {^version:[ ]*([^(]*)} $line d2
+	    if [info exists d2] { set exmh(mh_vers) [string trim $d2] }
+	}
+    }
 }
+
 proc Mh_Preferences {} {
     global mhProfile
     Preferences_Add "MH Tweaks" \
