@@ -31,13 +31,15 @@ What You'll Need
 You need perl (which is available from http://www.perl.com, built with
 DBM support if you intend to use the arbitrary, persistent attribution
 mechanism) as well as the "cite", "cite-lookup" and "cite-update"
-scripts.
+scripts.  You'll also need "par", a C program which does advanced text
+formatting and is available from http://www.cs.berkeley.edu/~amc/Par.
 
 
 Instructions
 ------------
 Put the "cite", "cite-lookup" and "cite-update" scripts somewhere in
 your path, so that exmh will find them when it attempts to execute them.
+Likewise, build "par" and put the executable somewhere in your path.
 
 In your file of exmh hacks[1] (which should reside in the directory
 named in Preferences->Hacking Support->User Library Directory), add
