@@ -329,7 +329,7 @@ proc Msg_Reply { args } {
 		    }
 		}
 		eval {MhExec repl +$exmh(folder) $m -nowhatnowproc} $args
-		eval MhAnnoSetup $exmh(folder) $m repl $args
+		eval {MhAnnoSetup $exmh(folder) $m repl} $args
 	    } err] {	;# Setup draft msg
 		Exmh_Status "repl: $err" purple
 		Quote_Cleanup				;# Nuke @ link
@@ -386,7 +386,7 @@ proc Msg_Forward { args } {
 		    }
 		}
 		eval {MhExec forw +$exmh(folder)} $ids -nowhatnowproc $args
-		eval MhAnnoSetup $exmh(folder) $ids forw $args
+		eval {MhAnnoSetup $exmh(folder) $ids forw} $args
 		if {$mhProfile(forwtweak)} {
 		    Mh_Forw_MungeSubj $exmh(folder) $ids
 		}
@@ -422,7 +422,7 @@ proc Msg_Dist { args } {
 	    if [catch {
 		Exmh_Status "dist +$exmh(folder) $m"
 		eval {MhExec dist +$exmh(folder) $m} -nowhatnowproc $args
-		eval MhAnnoSetup $exmh(folder) $m dist $args
+		eval {MhAnnoSetup $exmh(folder) $m dist} $args
 	    } err] {
 		Exmh_Status "dist: $err" purple
 		return
