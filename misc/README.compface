@@ -1,0 +1,33 @@
+The compface.patch file has a patch that teaches the compface
+and uncompface programs how to read .xbm format (X bitmap) files,
+instead of the arcane .ikon files it used before.
+
+This patch should apply OK to the files in the compface directory of
+the picons (a.k.a. facesaver) software.
+
+With the new version of uncompface, the exmh X-Face pipeline can just be:
+uncompface -X
+
+To create the X-Face header from a 48x48 .xbm file, just do
+compface your.xbm > out
+
+The file "out" will contain three lines of jibberish. You need to add
+the X-Face: header
+
+e.g. out contains:
+ znu_@QbSegynS/\2YND%-w_L.V$bG-M.}<:^^3tS,BszwEdNEo)-/"eZF^+1]M%>A#"QV8U
+ #*cFsKsnwC63B`<ee|ik?J'%flkca.~y"QRpTa~0*U~-A2$*bF<OCR3NNl9f8Th79*RvU$D?EsWPU0
+ _"Tj_BHv""uV
+
+In your components file, put
+X-Face: znu_@QbSegynS/\2YND%-w_L.V$bG-M.}<:^^3tS,BszwEdNEo)-/"eZF^+1]M%>A#"QV8U
+ #*cFsKsnwC63B`<ee|ik?J'%flkca.~y"QRpTa~0*U~-A2$*bF<OCR3NNl9f8Th79*RvU$D?EsWPU0
+ _"Tj_BHv""uV
+
+Finally, remember that if you put this in your MH replcomps file, double-up
+the % and \ characters, which are special in that context.  It looks like:
+
+X-Face: znu_@QbSegynS/\\2YND%%-w_L.V$bG-M.}<:^^3tS,BszwEdNEo)-/"eZF^+1]M%%>A#"QV8U
+ #*cFsKsnwC63B`<ee|ik?J'%%flkca.~y"QRpTa~0*U~-A2$*bF<OCR3NNl9f8Th79*RvU$D?EsWPU0
+ _"Tj_BHv""uV
+
