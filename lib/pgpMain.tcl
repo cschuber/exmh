@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.20  2000/04/22 10:34:49  gruber
+# Handle PGP messages without Version: xxx
+#
 # Revision 1.19  1999/10/27 14:59:27  kchrist
 # Quick application/pgp bug fix.
 #
@@ -838,7 +841,10 @@ proc Pgp_CheckVersion { pgpfile varReal varV } {
         }
     }
     if {![info exists bestversion]} {
-        error "No pattern matches version info in pgp text!"
+        #error "No pattern matches version info in pgp text!"
+	Exmh_Debug "No pattern matches version info in pgp text!"
+	Exmh_Debug "Falling back to $pgp(noversion)"
+	set bestversion $pgp(noversion)
     }
 
     # look, if the version is setup

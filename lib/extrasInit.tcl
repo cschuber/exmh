@@ -554,7 +554,17 @@ This can be changed on the fly from the sedit window." }
     PGP:    Pretty Good Privacy, Version 2
     PGP5:   Pretty Good Privacy, Version 5
     GPG:    GNU Privacy Guard
-This can be changed on the fly from the sedit window." ] ]
+This can be changed on the fly from the sedit window." ] \
+    [list pgp(noversion) pgpNoVersion [concat CHOICE $setup] \
+    {Version of PGP for handling unknown PGP messages} \
+"Very seldom you happen to get PGP messages which don't carry
+the PGP header line
+Version: xxx
+In such a case Exmh falls back to a default PGP version.
+Here you can select, which version to use in these cases.
+    PGP:    Pretty Good Privacy, Version 2
+    PGP5:   Pretty Good Privacy, Version 5
+    GPG:    GNU Privacy Guard." ] ]
 
     Preferences_Add "General PGP Interface" "" {
     {pgp(keeppass) pgpKeepPass ON {Keep PGP passphrase}
