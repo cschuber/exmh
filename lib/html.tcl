@@ -195,6 +195,7 @@ proc Html_Stop {win} {
     if [info exists var] {
 	HMset_state $win -stop 1
     }
+    Http_stop
     Head_ResetColors $win	;# reset window
     Head_Reset $win		;# clear memory
     $win configure -tabs {}

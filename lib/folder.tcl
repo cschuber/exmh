@@ -117,7 +117,23 @@ proc FolderChange {folder msgShowProc} {
     Fdisp_HighlightCur $folder
     Flist_Visited $folder
     set exmh(folder) $folder
-    Flist_UnseenUpdate $folder
+    
+    # exmh-2.6 used to have Flist_UnseenUpdate here, but that calls
+    # Flist_Done which messed up Ftoc_NextFolder
+    # The exmh-2.5 code base had
+    # Scan_Folder $folder 1
+    # Here we extract the bits of Flist_UnseenUpdate that seem relevent,
+    # but I don't understand this paradigm of setting the sequences
+    # to what they already appear to be.
+    foreach seq [Mh_Sequences $folder] {
+	Seq_Set $folder $seq [MhGetSeqCache $folder $seq]
+    }
+    if {$ftoc(autoSort) && [Flist_NumUnseen $folder $mhProfile(unseen-sequence)]} {
+        Ftoc_Sort
+    }
+    Scan_FolderUpdate $folder
+    # end
+
     Scan_CacheUpdate
     Ftoc_ShowSequences
     Exmh_Status $folder

@@ -1,4 +1,21 @@
 HISTORY
+cvs repository 02/18/2003 welch@panasas.com
+    Makefile, exmh.README, exmh.install, version.sed, 
+    exmh.README.html, index.html, software.html
+      2.6.1 release
+    cvs tag exmh-2-6-1
+      
+cvs repository 02/18/2003 welch@panasas.com
+    mime.tcl - MimeHeaderSort fix from Tom Lane so that it displays
+      headers that appear in Header-Display first, before unsuppressed ones.
+    folder.tcl - Eliminated call to Flist_UpdateUnseen from FolderChange,
+      which does a little too much.  This means that exmh now keeps track
+      of the "unvisited folders" better for Ftoc_NextFolder ('F' binding)
+    html.tcl - added Http_stop call to Html_Stop
+    app-defaults-color - changed unseen sequence back to having a
+      blue foreground.
+    mime.types - added "pps" for application/powerpoint
+
 cvs repository 02/17/2003 welch@panasas.com
     extrasInit.tcl, pgp.tcl - picked up pgp(extpass) patch from Alexander Zangerl
     flist.tcl - FlistFindSeqsInner added check to eliminate calls to

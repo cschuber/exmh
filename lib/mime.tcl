@@ -1307,9 +1307,17 @@ proc MimeShowTime { tkw time } {
 proc MimeSortHeaders { a b } {
     global mhProfile
 
-   return [expr [lsearch -regexp $mhProfile(header-display) $a] - \
-	[lsearch -regexp $mhProfile(header-display) $b]]
- 
+  # Modification from Tom Lane so that headers that appear in the
+  # Header-Display .mh_profile setting appear first, before
+  # stray headers that are not surpressed with Header-Supress
+
+  set apos [lsearch -regexp $mhProfile(header-display) $a]
+  if {$apos < 0} { set apos 100000 }
+  set bpos [lsearch -regexp $mhProfile(header-display) $b]
+  if {$bpos < 0} { set bpos 100000 }
+
+
+   return [expr {$apos - $bpos}]
 }
 proc MimeShowMinHeaders {tkw part inlin} {
     global mimeHdr mhProfile msg mime

@@ -14,8 +14,8 @@
 source ./install.tcl
 
 set program exmh
-set vers 2.6
-set date 02/09/2003
+set vers 2.6.1
+set date 02/18/2003
 
 if [catch {package require Tcl 8.0}] {
     error "Tcl/Tk 8.0 or higher required for exmh.  You have $tcl_version"

@@ -18,7 +18,7 @@ application/octet-stream	bin dms lha lzh exe class tgz taz
 application/oda			oda
 application/pdf			pdf
 application/postscript		ai eps ps
-application/powerpoint		ppt
+application/powerpoint		ppt pps
 application/remote-printing
 application/rtf			rtf
 application/slate

@@ -81,8 +81,8 @@
 ! tag arguments for sequences
 !*sequence_cur: -foreground {violet red} -background white
 *sequence_cur:  -background #ececec -relief raised -borderwidth 2
-!*sequence_unseen: -foreground blue
-*sequence_unseen: -background white
+*sequence_unseen: -foreground blue
+!*sequence_unseen: -background white
 *sequence_urgent: -foreground red
 *sequence_moved: -background yellow
 !*sequence_deleted: -background #c3c3c3
