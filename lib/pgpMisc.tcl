@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.6  1999/04/09 19:11:26  cwg
+# Now that's an embarrasing typo
+#
 # Revision 1.5  1999/04/06 05:38:39  cwg
 # Bug fix.
 #
@@ -293,7 +296,7 @@ proc Misc_PostProcess { srcfile } {
 	if {$pgp(seditpgp)} {
 	    set keyid [lindex $pgp(myname) 0]
 	} else {
-	    pgp_GetPass $pgp(myname)
+	    Pgp_GetPass $pgp(myname)
 	}
 	Exmh_Debug keyid=$keyid
 	Exmh_Debug pass=>$pgpPass($keyid)<
