@@ -230,6 +230,7 @@ proc FolderCommit { rmmCommit moveCommit copyCommit } {
 
     Ftoc_Commit $rmmCommit $moveCommit $copyCommit
     Exmh_Debug Scan_CacheUpdate [time Scan_CacheUpdate]
+    FlistUncache $exmh(folder)
 
     if $ftoc(autoPack) {
 	Background_Wait	;# Let folder ops complete

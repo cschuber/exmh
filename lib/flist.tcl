@@ -315,7 +315,12 @@ proc FlistFindSeqsInner {} {
 
                   # Cache added 2/11/03
                   # Sequence is different than last time we checked
-
+                  # This causes an flist inconsistency, but helps me
+                  # so much that I'm leaving it in.  The bug is that if you
+                  # get a few new messages (e.g., 1), then read and delete
+                  # that message, and exactly one new message comes in,
+                  # the cache doesn't realize it.  Perhaps we just need
+                  # to unset the flistcache when we do deletes.
                   set flistcache($folder,$seq) $seqlist
                   BgRPC Seq_Set $folder $seq $seqlist
                 }
@@ -329,6 +334,14 @@ proc FlistFindSeqsInner {} {
 	# looking for new messages.
 	Exmh_Debug "FlistFindSeqs: $err"
     }
+}
+
+proc FlistUncache {folder} {
+    global flistcache
+    # Clear it from both processes because the FlistFindSeqInner
+    # can run in either place
+    array unset flistcache $folder,*
+    BgAction FlistUncache array unset flistcache $folder,*
 }
 
 proc FlistFindSeqs {reset} {

@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 3/18/2005 welch@panasas.com channeling Alexander Zangerl
+  lib/flist.tcl: Adding FlistUncache to unset flistcache when appropriate
+  lib/folder.tcl: Call FlistUncache when we commit folder changes
+
 cvs repository 3/17/2005 welch@panasas.com channeling Alexander Zangerl
   exmhcomp: support mailto URLs
 
