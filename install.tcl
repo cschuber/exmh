@@ -15,7 +15,7 @@ option add *Text.c_link			blue	startup
 proc install_init { appName dotFile } {
     global install
     set install(appName) $appName
-    install_progVar wish /usr/local/bin/wish {wish absolute pathname}
+    install_progVar wish [installGuessPath /usr/local/bin/wish wish] {wish absolute pathname}
     set install(dotFile) $dotFile
     if [file readable $dotFile] {
 	if [catch {uplevel #0 source $dotFile} msg] {
@@ -157,6 +157,36 @@ proc installFieldDefault { item {override 0} } {
     } else {
 	return $value
     }
+}
+
+proc installGuessDir { defpath file } {
+    global env
+    set tmp $defpath
+
+    #puts "installGuessDir: def=$defpath, file=$file..."
+    foreach dir [split $env(PATH) :] {
+	if {[file exists $dir/$file]} {
+	    set tmp $dir
+	    break
+	}
+    }
+    #puts "returning $tmp\n"
+    return $tmp
+}
+
+proc installGuessPath { defpath file } {
+    global env
+    set tmp $defpath
+
+    #puts "installGuessPath: def=$defpath, file=$file..."
+    foreach dir [concat /etc /usr/lib/nmh [split $env(PATH) :]] {
+	if {[file exists $dir/$file]} {
+	    set tmp $dir/$file
+	    break
+	}
+    }
+    #puts "returning $tmp\n"
+    return $tmp
 }
 
 proc install_help { text } {
@@ -569,6 +599,8 @@ proc installInner { {logProc nolog} } {
 		    if [file isdirectory $f] {
 			installCmd $logProc [list rm -rf $dir/$newf]
 			installCmd $logProc [list cp -r $f $dir/$newf]
+                        installCmd $logProc [list chmod a+rx $dir/$newf]
+                        installCmd $logProc [list chmod -R a+r $dir/$newf]
 		    } else {
 			installCmd $logProc [list rm -f $dir/$newf]
 			installCmd $logProc [list cp $f $dir/$newf]

@@ -33,13 +33,13 @@ install_version	exmh(version) "version $vers $date" {Exmh Version number}
 # The following are settings inside exmh that depend on the local environment
 install_name	exmh(name) 	exmh 		{Name of main exmh script}
 install_var	exmh(maintainer) welch@acm.org {Target of error mailings}
-install_dirVar	mh_path		/usr/local/bin		{MH binary directory}
-install_progVar	exmh(slocal)	/usr/local/lib/mh/slocal	{MH slocal program}
-install_dirVar	mime(dir)	/usr/local/bin    	{Metamail bin directory}
-install_fileVar mailcap_default	/usr/etc/mailcap	{System mailcap file}
-install_fileVar mimetypes_default /usr/local/lib/exmh-$vers/mime.types	{System mime.types file}
-install_expect	exmh(expect)	/usr/local/bin/expect	{expect program}
-install_progVar	exmh(expectk)	/usr/local/bin/expectk	{expectk program}
+install_dirVar	mh_path		[installGuessDir /usr/local/bin inc]	{MH binary directory}
+install_progVar	exmh(slocal)	[installGuessPath /usr/local/lib/mh/slocal slocal]	{MH slocal program}
+install_dirVar	mime(dir)	[installGuessDir /usr/local/bin metamail]    	{Metamail bin directory}
+install_fileVar mailcap_default	[installGuessPath /usr/etc/mailcap mailcap]	{System mailcap file}
+install_fileVar mimetypes_default [installGuessPath /usr/local/lib/exmh-$vers/mime.types mime.types]	{System mime.types file}
+install_expect	exmh(expect)	[installGuessPath /usr/local/bin/expect expect]	{expect program}
+install_progVar	exmh(expectk)	[installGuessPath /usr/local/bin/expectk expectk]	{expectk program}
 install_dirVar	faces(dir)	/usr/local/faces/faces    {Root dir of faces store}
 install_var	faces(set,user)	{local users usenix misc} \
 						{Search path for user faces}
@@ -48,8 +48,8 @@ install_var	faces(set,unknown)	{domains unknown} \
 install_var	faces(set,news)	{news}	{Search path for news faces}
 install_var	faces(defaultDomain) eng.sun.com	{Your default domain}
 install_var	faces(suffix) {xpm gif xbm}	{Faces file suffixes}
-install_dirVar	pgp(path)	/usr/local/bin    	{PGP bin directory}
-install_dirVar	glimpse(path)	/usr/local/bin    	{Glimpse bin directory}
+install_dirVar	pgp(path)	[installGuessDir /usr/local/bin pgp]    	{PGP bin directory}
+install_dirVar	glimpse(path)	[installGuessDir /usr/local/bin glimpse]   	{Glimpse bin directory}
 install_var	sound(cmd)	{/usr/demo/SOUND/play -v 38} \
 							{Audio play command}
 
@@ -58,7 +58,7 @@ install_testLib	./lib
 
 # The following are installation directories, which you may have to adjust,
 # and install file patterns (glob/sed), which should not be site dependent.
-install_dir  bin	/usr/local/bin		{Install bin directory}
+install_dir  bin	[installGuessDir /usr/local/bin exmh]		{Install bin directory}
 install_glob bin	exmh exmh-bg exmh-async ftp.expect
 install_sed  .MASTER	exmh exmh-bg exmh-async ftp.expect
 install_dir  man	/usr/man/manl	{Install man directory}
