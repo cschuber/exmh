@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 4/13/1999
+    Took the "Dates display localtime in parentheses" enhancement from March
+	31, and made the format settable as resource localTimeFormat. -jbeck
+
 cvs repository 4/12/1999
     Added support for faces for newsgroups. -jbeck
     Added somewhat smart auto-probe for default paths in install

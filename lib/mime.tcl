@@ -1086,11 +1086,15 @@ proc MimeShowFullHeaders {tkw part inlin} {
 #
 
 proc MimeShowTime { tkw time } {
+    global mime
+
     catch {
 	set msgtime   [clock scan $time]
 	set localtime [clock format $msgtime -format " %T"]
 	if { [string first $localtime $time] == -1 } {
-	    set format "%H:%M %Z"
+	    Preferences_Resource mime(localTimeFormat) localTimeFormat \
+		"%H:%M %Z"
+	    set format $mime(localTimeFormat)
 	    set day [clock format $msgtime -format %a]
 	    if { [string first $day $time] == -1 } {
 		set format "%a $format"

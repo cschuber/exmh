@@ -111,7 +111,8 @@ not have been saved to your ~/.exmh-defaults file.
 Here is a short summary of the preference sections and what features
 they control. The Tcl module that the section corresponds to is listed
 so you can dig into the code if you want to. 
-<dl>Fonts
+<dl>
+<dt>Fonts
 <dd>A font selection dialog. (fontsel.tcl)
 <dt>The Top Ten
 <dd>A collection of the ten most important preference settings.
@@ -263,7 +264,7 @@ The default values for these profile components are:
 
 Header-Suppress: .*
 Header-Display: Subject To From Date Cc Newsgroups
-</blockquote></dl></pre>
+</blockquote></pre></dl>
 <p>
 If you are a mail junky, you may want to use Header-Suppress to explicitly
 suppress the boring header componets you already know about. The new,
@@ -291,7 +292,7 @@ My Folder-Order looks like:
 
 Folder-Order: personal exmh mxedit * mail* sun m3 mach background
 
-</blockquote></dl></pre>
+</blockquote></pre></dl>
 <p>
 The other effect of Folder-Order is to define a traversal order for
 visiting folders with unread mail in them. When you do a Next and are
@@ -1016,7 +1017,7 @@ the access method.
 *mimeUExtMethods:
 *mime_local-file:    MimeLocalFileTransfer
 *mime_anon-ftp:             MimeFTPTransfer
-</blockquote></dl></pre>
+</blockquote></pre></dl>
 
 <h3><a NAME="SEDIT BINDING RESOURCES" HREF="#CONTENTS">SEDIT BINDING
 RESOURCES</a></h3>
@@ -1041,7 +1042,13 @@ RESOURCES</a></h3>
 <dl>
 <dt>helpInOneWindow 
 <dd>Set this to 1 to get a new preferences interface. 
-</dl>
+<dt>localTimeFormat
+<dd>If a message was sent from another time zone, the local equivalent is
+    calculated and appended in parentheses to the displayed <code>Date:</code>
+    header.  This resource describes the format, which uses the
+    <code>strftime(3C)</code> syntax.  The default value is:
+<pre><blockquote>%H:%M %Z
+</blockquote></pre></dl>
 <h3><a NAME="PROGRAMMING EXMH" HREF="#CONTENTS">PROGRAMMING EXMH</a></h3>
 <p>
 <i>Exmh</i> is implemented as a Tcl/Tk script that uses the MH programs
