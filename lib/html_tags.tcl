@@ -180,7 +180,7 @@ proc HMtag_Wrapped {win param} {
     upvar #0 HM$win var
     set url $var(S_url)
     Exmh_Debug URL=$url
-    if {![regexp -nocase {^file:} $url] || [regexp -nocase {^file:/tmp} $url]} {
+    if {![regexp -nocase {^file:} $url] || [regexp -nocase "^file:[Env_Tmp]" $url]} {
 	set index [lsearch -exact $param -command]
 	if {$index != -1} {
 	    incr index

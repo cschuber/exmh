@@ -1,6 +1,9 @@
 HISTORY
 
-cvs repostitory 08/05/1999
+cvs repository 08/10/1999
+    Properly use [Env_Tmp] in the below patch -cwg
+
+cvs repository 08/05/1999
     Prompt before executing buttons on html pages which are either
 	non-local or in /tmp. -cwg
 
