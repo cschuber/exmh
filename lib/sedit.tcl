@@ -497,13 +497,6 @@ proc SeditSendOnly { draft t } {
     global sedit exmh
 
 	set id [SeditId $draft]
-	foreach cmd [info commands Hook_SeditSend*] {
-	    if [catch {$cmd $draft $t} err] {
-		SeditMsg $t "$cmd $err"
-		$sedit($t,toplevel).but.send config -state normal
-		return
-	    }
-	}
 	# Keep on send hack
 	global mhProfile
 	set async $mhProfile(sendType)
@@ -535,6 +528,15 @@ proc SeditSendOnly { draft t } {
 
 proc SeditSend { draft t {post 0} } {
     global sedit exmh intelligentSign editor msg
+
+	set id [SeditId $draft]
+	foreach cmd [info commands Hook_SeditSend*] {
+	    if [catch {$cmd $draft $t} err] {
+		SeditMsg $t "$cmd $err"
+		$sedit($t,toplevel).but.send config -state normal
+		return
+	    }
+	}
 
     set common [SeditSendCommon $draft $t $post]
 
