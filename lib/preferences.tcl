@@ -41,6 +41,8 @@ proc Preferences_Init { userDefaults appDefaults } {
     set pref(localDefaults) \
 	"[file dirname $appDefaults]/local.[file tail $appDefaults]"
 
+    catch {exec mkdir -p [glob ~]/.exmh}
+
     PreferencesReadFile $pref(appDefaults) startup
     PreferencesReadFile $pref(localDefaults) 50
     PreferencesReadFile $pref(userDefaults) user

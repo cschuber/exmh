@@ -73,10 +73,10 @@ proc Addr_Init {} {
     global addr_list
 
     # addrFile is the name of the file the address database is kept in
-    set addrFile ".exmh_addrs"
+    set addrFile "exmh_addrs"
     
     # homeDir is the directory the database is kept in.
-    set homeDir $env(HOME)
+    set homeDir "$env(HOME)/.exmh"
 
     # tell exmh about our preference items and initialize them
     Preferences_Add "Address Database" "These settings affect the behavior of the address database.

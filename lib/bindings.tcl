@@ -15,7 +15,7 @@ proc Bindings_Main { w } {
     # Assert $w == $exwin(mtext)
     global bindings
     catch {unset bindings}
-    set bindings(dotfile) ~/.exmhbindings
+    set bindings(dotfile) ~/.exmh/exmhbindings
     BindingsReadPref
     BindingsReset $w
 }
@@ -104,7 +104,7 @@ proc BindOrderReset {} {
 proc Bind_Key { w defaultSeq cmd } {
     global bindings
     if [info exists bindings(key,$cmd)] {
-	# Preserve existing key specifications (from ~/.exmhbindings)
+	# Preserve existing key specifications (from ~/.exmh/exmhbindings)
 	set seqs $bindings(key,$cmd)
     } else {
 	set seqs $defaultSeq

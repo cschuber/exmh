@@ -25,7 +25,7 @@ proc Sedit_BindInit {} {
     # with the use of resources
     set sedit(defaultfile) $exmh(library)/sedit-bindings
     set sedit(localfile)   $exmh(library)/local.sedit-bindings
-    set sedit(dotfile)     ~/.exmhsedit
+    set sedit(dotfile)     ~/.exmh/exmhsedit
 
     SeditReadPref
     Sedit_ClassBindings

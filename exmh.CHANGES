@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 6/5/1999
+    Moved all the ~/.exmh* files to ~/.exmh/exmh*
+    Important user change: the installer does NOT move any of your old files,
+    so you better do that :)
+       - slipcon
+
 cvs repository 6/1/1999
     Sedit was not inserting Mime-version header when it should have.
        -Chris Hibbert via haldevore

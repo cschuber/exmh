@@ -16,7 +16,7 @@ proc Exmh {} {
 
     Mh_Init		;# Defines mhProfile
 
-    Preferences_Init ~/.exmh-defaults $exmh(library)/app-defaults
+    Preferences_Init "~/.exmh/exmh-defaults" "$exmh(library)/app-defaults"
 
     TopTenPreferences
 
