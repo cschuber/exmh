@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.3  1999/05/04 06:35:38  cwg
+# Fixed crash when aborting out of PGP Password window
+#
 # Revision 1.2  1999/04/10 04:20:08  cwg
 # Do the right thing if pgp(seditpgp) is not enabled.
 #
@@ -425,6 +428,7 @@ proc Pgp_GetPass { key } {
     }
     while 1 {
 	if [catch {Misc_GetPass "Enter PGP password" "password for [lindex $key 1]"} password] {
+	    Exmh_Debug "Aborting out of Misc_GetPass: $password"
 	    return {}
 	} elseif {[PgpExec_CheckPassword $password $key]} {
 	    if $pgp(keeppass) {
