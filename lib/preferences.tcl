@@ -181,7 +181,9 @@ proc Preferences_Add { id text prefs } {
 	foreach p $prefs {
 	    lappend pref($id,prefs) $p
 	}
-	append pref($id,text) \n$text
+	if {[string length $text] > 0} {
+	    append pref($id,text) \n$text
+	}
     }
 
     # Initialize the global variable from the option database,

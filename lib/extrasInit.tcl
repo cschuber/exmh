@@ -524,9 +524,7 @@ This set of preferences controls the general behavior of all the
 PGP modules." {
     {pgp(seditpgp) pgpSeditPgp OFF {Sedit PGP passphrase}
 "Turning this on provides you with a PGP passphrase field in the sedit
-window so that you will not be prompted with the passphrase prompt.  
-Changing this value will require that you exit and re-enter exmh if 
-you've already composed email." }
+window so that you will not be prompted with the passphrase prompt." }
     {pgp(seditpgpextras) pgpSeditPgpExtras OFF {Sedit PGP extras info}
 "Turning this on gives extra information about what key and PGP
 version are currently selected.  Users with multiple PGP keys or PGP
@@ -548,12 +546,18 @@ This can be changed on the fly from the sedit window." }
     Plain:  No MIME headers at all
     App:    Use the now deprecated application/pgp standard.
 This can be changed on the fly from the sedit window." }
-    {pgp(version) pgpVersion {CHOICE pgp pgp5 gpg} {Version of PGP for new messages}
+    }
+
+    Preferences_Add "General PGP Interface" "" [list \
+    [list pgp(version) pgpVersion [concat CHOICE $setup] \
+    {Version of PGP for new messages} \
 "There are multiple versions of the PGP program.
     PGP:    Pretty Good Privacy, Version 2
     PGP5:   Pretty Good Privacy, Version 5
     GPG:    GNU Privacy Guard
-This can be changed on the fly from the sedit window." }
+This can be changed on the fly from the sedit window." ] ]
+
+    Preferences_Add "General PGP Interface" "" {
     {pgp(keeppass) pgpKeepPass ON {Keep PGP passphrase}
 "Exmh tries to remember your passphrase between PGP
 invocations. But the passphrase is then kept in a global
@@ -572,6 +576,12 @@ other people." }
     {pgp(passtimeout) pgpPassTimeout 60 {Minutes to cache PGP passphrase}
 "Exmh will clear its memory of PGP passphrases after
 this time period, in minutes, has elapsed." }
+    }
+
+    # Make sure we don't inherit a bad pgp(version) from a previous setup
+    if ![set pgp($pgp(version),enabled)] {
+	set pgp(version) [lindex $setup 0]
+	Preferences_Tweak pgp(version)
     }
 
     # And now load the version specific stuff
