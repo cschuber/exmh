@@ -259,11 +259,20 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 	regsub -all " \n\t" $h {} h
 	# Loop through the fields
 	foreach f [split $h ,] {
+            # Trim any blanks between the , and the <
+            regsub {^[ ]*} $f {} f
 	    # Stricture #1
 	    if {[string index $f 0] == "<"} {
 		# Stricture #2
 		regexp "<(.*)>" $f match url
-		lappend menuitems $name $url
+                # We're looking at a purported URL, 
+                regexp {^([^:]*)} $url match proto
+		# We assume that uri.tcl is set up to do http:
+                switch -- $proto {
+		    https -
+                    http -
+		    mailto { lappend menuitems $name $url; break; }
+                }
 	    } else {
 		# Stricture #3
 		break

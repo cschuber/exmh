@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 03/18/2003 valdis.kletnieks@vt.edu
+    msgShow.tcl - Fix MsgShowListHeaders to be pedantically correct - it had
+    been accidentally picking the first field only.  It now loops through
+    each field and only saves http, https, and mailto URIs.
+
 cvs repository 03/18/2003 welch@panasas.coM
     exmh.install - bumped up date for 2.6.2
     msgShow.tcl - added \n adn \t to the white-space removal in the 
