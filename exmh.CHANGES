@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 4/29/1999
+    Fixed bug in which people using an external editor get a PGP related 
+	error and can't send email  -cwg
+
 cvs repository 4/26/1999
     Add documentation for mime_alternative_prefs resource to
         exmh-custom html doc.  -haldevore

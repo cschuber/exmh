@@ -180,13 +180,6 @@ proc Sedit_Start { draft } {
     }
     focus $t
 
-    if $pgp(enabled) {
-	# Copy the default PGP values into this window
-	foreach var {encrypt sign mime clearsign format} {
-	    set pgp($var,$id) $pgp($var)
-	}
-    }
-    
     SeditTextBindings $draft $t		;# set up sendMsg binding
     if [file readable $quote(filename)] {
 		$b.repl configure -state normal

@@ -208,10 +208,18 @@ proc EditDialogDone {act id {hide hide}} {
 
 proc EditStart { draft {type prog} } {
     # Start the editor, reusing an existing session if possible
-    global editor exmh mhProfile
+    global editor exmh mhProfile pgp
 
     Exmh_Debug EditStart $draft $type
 
+    if $pgp(enabled) {
+	# Copy the default PGP values into this window
+	set id [SeditId $draft]
+	foreach var {encrypt sign mime clearsign format} {
+	    set pgp($var,$id) $pgp($var)
+	}
+    }
+    
     switch -glob -- $editor($type) {
 	*mxedit* {
 	    if ![info exists exmh(editInterp)] {
