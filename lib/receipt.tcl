@@ -51,7 +51,7 @@ proc MDNGenerate { file address choice } {
 
     if {$choice != "ignored"} {
 	set mdnfile [MDNBuildDraft $file $address $choice]
-	exec send $mdnfile
+	exec send -nopush $mdnfile
     }
     MDNAddHeaderToDraft $file "X-ExmhMDN: $choice"
     MsgShowInText $exwin(mtext) $mimeHdr(0,rawfile)
@@ -128,28 +128,34 @@ forwarded) in response to a user command, without being displayed to the \
 user.  The user may or may not see the message later."
 	}
 	"autoprocessed" {
+	    set jtext \
 "The message has been processed automatically in some manner (e.g. printed, \
 faxed, forwarded, gatewayed) in response to some user request made in \
 advance, without being displayed to the user.  The user may or may not see the \
 message later."
 	}
 	"deleted" {
+	    set jtext \
 "The message has manually been deleted.  The recipient may or may not have \
 seen the message."
 	}
 	"autodeleded" {
+	    set jtext \
 "The message has been automatically deleted without being displayed to the \
 recipient."
 	}
 	"obsoleted" {
+	    set jtext \
 "The message has been automatically rendered obsolete by another message \
 received.  The recipient may still access and read the message later."
 	}
 	"terminated" {
+	    set jtext \
 "The recipient's mailbox has been terminated and all messagess in it \
 automatically deleted."
 	}
 	"autodenied" {
+	    set jtext \
 "The recipient does not wish the sender to be informed of the message's \
 disposition, and has requested that this MDN be sent automatically."
 	}
