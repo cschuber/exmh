@@ -1,0 +1,167 @@
+<HTML>
+<HEAD>
+<TITLE>#!/usr/bin/perl -w
+=head1 NAME</TITLE>
+<LINK REV="made" HREF="mailto:bhcompile@stripples.devel.redhat.com">
+</HEAD>
+
+<BODY>
+
+<A NAME="__index__"></A>
+<!-- INDEX BEGIN -->
+
+<UL>
+
+	<LI><A HREF="#synopsis">SYNOPSIS</A></LI>
+	<LI><A HREF="#description">DESCRIPTION</A></LI>
+	<LI><A HREF="#results">RESULTS</A></LI>
+	<LI><A HREF="#options">OPTIONS</A></LI>
+	<LI><A HREF="#installation for scan">INSTALLATION FOR SCAN</A></LI>
+	<LI><A HREF="#installation for exmh">INSTALLATION FOR EXMH</A></LI>
+	<LI><A HREF="#notes">NOTES</A></LI>
+	<LI><A HREF="#todo">TODO</A></LI>
+	<LI><A HREF="#bugs">BUGS</A></LI>
+	<LI><A HREF="#download">DOWNLOAD</A></LI>
+	<LI><A HREF="#author">AUTHOR</A></LI>
+	<LI><A HREF="#version">VERSION</A></LI>
+</UL>
+<!-- INDEX END -->
+
+<HR>
+<P>
+<H1><A NAME="synopsis">SYNOPSIS</A></H1>
+<PRE>
+        mhthread [options] +folder
+        mhthread [options] /path/to/folder</PRE>
+<P>options accepted: [-debug] [-no-write] [-fast] [-lock]</P>
+<P>
+<HR>
+<H1><A NAME="description">DESCRIPTION</A></H1>
+<P>This will thread an MH folder.  It re-orders the messages (as <CODE>sortm(1)</CODE> would
+do), and annotates each one with a new header, ``X-MH-Thread-Markup'', which can
+be displayed by scan(1).</P>
+<P>Together, this results in the messages being displayed in ``threaded'' order, as
+in <CODE>trn(1)</CODE> or mutt(1).</P>
+<P>Sequences will be rewritten appropriately.   The folder will also be ``packed'',
+as if 'folder -pack' had been run; see folder(1).</P>
+<P>
+<HR>
+<H1><A NAME="results">RESULTS</A></H1>
+<P>Here's some sample output from scan(1), after threading the folder:</P>
+<PRE>
+  430  03/23 mathew              3  [Asrg] Re: [OffTopic - NNTP]
+  431  03/23 Kee Hinckley        5  |- [Asrg] Re: [OffTopic - NNTP]
+  432 -03/23 Chuq Von Rospach   11  | |- Parameters for success? (was Re: [A
+  433  03/23 To:Chuq Von Rospa   4  | | \- Re: Parameters for success? (was 
+  434  03/23 Matt Sergeant       3  | \- Re: [Asrg] Re: [OffTopic - NNTP]
+  435  03/23 Chuq Von Rospach    7  \- Re: [Asrg] Re: [OffTopic - NNTP]</PRE>
+<P>
+<HR>
+<H1><A NAME="options">OPTIONS</A></H1>
+<DL>
+<DT><STRONG><A NAME="item_%2Dfast">-fast</A></STRONG><BR>
+<DD>
+Use an on-disk cache to speed up operation.
+<P></P>
+<DT><STRONG><A NAME="item_%2Dlock">-lock</A></STRONG><BR>
+<DD>
+Use a folder-wide lock-file to synchronize access to folders, so that multiple
+processes will not stomp on each other's changes or cause folder corruption.
+If you use this, you should ensure that you also use a locking version of other
+tools, such as the <CODE>lockedrcvstore</CODE> script that comes with ExMH (typical
+location: <CODE>/usr/lib/exmh*/misc/lockedrcvstore</CODE>).
+<P></P>
+<DT><STRONG><A NAME="item_%2Dno%2Dwrite">-no-write</A></STRONG><BR>
+<DD>
+Do not rewrite the messages; instead, output a line for each message
+noting the actions that would be taken.
+<P></P>
+<DT><STRONG><A NAME="item_%2Ddebug">-debug</A></STRONG><BR>
+<DD>
+Output debugging info to stderr.
+<P></P></DL>
+<P>Note that options will also be read from the <CODE>mhthread</CODE> entry in
+your <CODE>.mh_profile</CODE> file, in traditional MH style.</P>
+<P>
+<HR>
+<H1><A NAME="installation for scan">INSTALLATION FOR SCAN</A></H1>
+<P>To display the results in <CODE>scan(1)</CODE> output, use something like the following
+for the subject-display part of the scan.form file:</P>
+<PRE>
+  %(decode{x-mh-thread-markup})%(decode{subject})</PRE>
+<P>If you do not have a ``scan.form'' file of your own, you will need to set it up.
+This functionality is accessed using the -form or -format switches to the
+<CODE>scan(1)</CODE> command.  To use this, copy the /etc/nmh/scan.default file to your
+~/Mail dir and modify it with the above line, then add</P>
+<PRE>
+  scan: -form scan.form</PRE>
+<P>to your ~/.mh_profile.</P>
+<P>
+<HR>
+<H1><A NAME="installation for exmh">INSTALLATION FOR EXMH</A></H1>
+<P>Add the following function to your <CODE>~/.tk/exmh/user.tcl</CODE> file:</P>
+<PRE>
+  proc Folder_Thread {} {
+    global exmh
+    Background_Wait
+    Exmh_Status &quot;Threading folder...&quot; blue
+    if {[Ftoc_Changes &quot;Thread&quot;] == 0} then {
+      if {[catch {MhExec mhthread +$exmh(folder)} err]} {
+          Exmh_Status $err error
+      } else {
+        # finish off by using the ExMH packing logic to redisplay folder
+        Folder_Pack
+        # then show the first unseen message
+        Msg_ShowUnseen
+      }
+    }
+  }</PRE>
+<P>Next, you need to rebuild the <CODE>tclIndex</CODE> file.  Run <CODE>tclsh</CODE> and type:</P>
+<PRE>
+  auto_mkindex ~/.tk/exmh *.tcl</PRE>
+<P>Now add a button to run this function.  To do this, you must exit ExMH
+first, then edit the <CODE>~/.exmh/exmh-defaults</CODE> file and add these
+files at the top of the file:</P>
+<PRE>
+  *Fops.ubuttonlist: thread
+  *Fops.thread.text: Thread
+  *Fops.thread.command: Folder_Thread</PRE>
+<P>Restart ExMH, and there should be a new button marked <STRONG>Thread</STRONG> on the
+folder button-bar.  Press this to re-thread the current folder.</P>
+<P>
+<HR>
+<H1><A NAME="notes">NOTES</A></H1>
+<P>The threading algorithm uses the In-Reply-To, Message-Id and References
+headers.  Thanks to JWZ for guidance, in the form of his page on threading at
+<CODE>http://www.jwz.org/doc/threading.html</CODE>.</P>
+<P>The 'X-MH-Thread-Markup' headers are encoded using RFC-2047 encoding, using
+'no-break space' characters for whitespace, as otherwise MH's <CODE>scan(1)</CODE> format
+code will strip them.  Here's an example of the results:</P>
+<PRE>
+  X-MH-Thread-Markup: =?US-ASCII?Q?=a0=a0=a0=a0=5c=2d=a0?=</PRE>
+<P>
+<HR>
+<H1><A NAME="todo">TODO</A></H1>
+<P>dealing with private sequences (stored in .mh_profile); limiting displayed
+thread-depth to keep UI readable (so far has not been a problem).</P>
+<P>
+<HR>
+<H1><A NAME="bugs">BUGS</A></H1>
+<P>duplicate messages will always be shuffled in order each time <CODE>mhthread</CODE> is
+run, due to handling of identical Message-Ids.</P>
+<P>
+<HR>
+<H1><A NAME="download">DOWNLOAD</A></H1>
+<P>Latest version can be found at <A HREF="http://jmason.org/software/mhthread/">http://jmason.org/software/mhthread/</A> .</P>
+<P>
+<HR>
+<H1><A NAME="author">AUTHOR</A></H1>
+<P>Justin Mason, <CODE>jm dash mhthread dash nospam at jmason dot org</CODE></P>
+<P>
+<HR>
+<H1><A NAME="version">VERSION</A></H1>
+<P>version = 1.5, Apr 25 2003 jm</P>
+
+</BODY>
+
+</HTML>

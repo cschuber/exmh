@@ -1,0 +1,22 @@
+mhthread -- sort an MH folder into 'threaded' order
+
+This will thread an MH folder. It re-orders the messages (as sortm(1) would do), and annotates each one with a new header, "X-MH-Thread-Markup", which can be displayed by scan(1). 
+
+Together, this results in the messages being displayed in "threaded" order, as in trn(1) or mutt(1). 
+
+Sequences will be rewritten appropriately. The folder will also be "packed", as if 'folder - pack' had been run; see folder(1). 
+
+RESULTS
+
+Here's some sample output from scan(1), after threading the folder: 
+
+
+  430  03/23 mathew              3  [Asrg] Re: [OffTopic - NNTP]
+  431  03/23 Kee Hinckley        5  |- [Asrg] Re: [OffTopic - NNTP]
+  432 -03/23 Chuq Von Rospach   11  | |- Parameters for success? (was Re: [A
+  433  03/23 To:Chuq Von Rospa   4  | | \- Re: Parameters for success? (was
+  434  03/23 Matt Sergeant       3  | \- Re: [Asrg] Re: [OffTopic - NNTP]
+  435  03/23 Chuq Von Rospach    7  \- Re: [Asrg] Re: [OffTopic - NNTP]
+
+
+

@@ -1,5 +1,8 @@
 HISTORY
 cvs repository 06/11/2003 haldevore@acm.org
+  Added code, manpage, and a README for mhthread to misc directory
+  
+cvs repository 06/11/2003 haldevore@acm.org
   patch from "Klaus Elsbernd" <elsbernd@dfki.uni-kl.de>
     mh.tcl It clears the mhPriv(otherpriv) variable, which otherwise grows infinitly,
     when reading .exmhcontext-File multiple times and writing it afterwards.
