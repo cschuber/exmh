@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 06/21/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
+    lib/main.tcl - fix MH version for UCI MH users - was using bogus variable
+
 cvs repository 06/20/2000 Bruce A. Mah <bmah@cisco.com>
     lib/fdisp.tcl, lib/find.tcl:  Add a preferences item to allow
     finds (control-s in default bindings) to start either in the FTOC or

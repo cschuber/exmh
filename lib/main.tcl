@@ -29,7 +29,7 @@ proc Exmh {} {
 	set d1 [ split $d "\n"]
 	foreach line $d1 {
 	    regexp {^version:[ ]*([^(]*)} $line d2
-	    if [info exists d2] { set exmh(mh_vers) [string trim $foo] }
+	    if [info exists d2] { set exmh(mh_vers) [string trim $d2] }
 	}
     }
 
