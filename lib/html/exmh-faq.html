@@ -19,8 +19,6 @@
 <dt>1 
 <dd><a HREF="#1">Is it possible to get the cursor keys working in the
 editor?</a> 
-<dt>1b 
-<dd><a HREF="#1b">Can I paste with the middle mouse button?</a> 
 <dt>2 
 <dd><a HREF="#2">How do I display ISO-8859 fonts so that my special
 characters show up?</a> 
@@ -116,27 +114,6 @@ sequences for a function - just space separate them. You may have to
 drag the entry widget with the middle mouse button to make room to
 add stuff to the end.
 </dl>
-<dl COMPACT>
-
-<h3><a NAME="1b">1b. Can I paste with the middle mouse button?</a></h3>
-</dl>
-<dl COMPACT>
-<p>
-This is now the default after versions 1.5.1
-<p>
-Answer for older versions: Select Simple Edit from the
-Bindings menu and do two things.
-</dl>
-<ol>
-<li>
-Use the "Scroll Button" setting to change
-the drag scrolling binding from Middle to one of the other choices:
-ShiftMiddle, Right, or None. This binding lets you "drag" a text window
-around without having to hit the scrollbar.
-<li>
-Change the selpaste binding to &amp;LT;Button-2&amp;GT;
-so you can paste with middle click.
-</ol>
 <dl COMPACT>
 
 <h3><a NAME="2">2. How do I display ISO-8859 fonts so that my special
@@ -290,18 +267,23 @@ to resynchronize the session key.
 <h3><a NAME="4d">4d. rsh commands don't work between home and work,
 because the accounts are different on the two machines.</a></h3>
 <p>
-You *can* set up rsh to work correctly. In your .rhosts at work, put
+You <i>can</i> set up rsh to work correctly. In your .rhosts at work, put
 a line like: 
 <p>
 host.at.home.net homeuser 
 <p>
 and change the command above to read: 
-<p>
-xauth nlist $DISPLAY | rsh host.at.work.com -l workuser xauth nmerge
-- 
-<p>
+<pre>
+xauth nlist $DISPLAY | rsh host.at.work.com -l workuser xauth nmerge - 
+</pre>
 I have had mismatched accounts on lots of hosts, and nary a problem
 keeping the session keys in sync. 
+<p>
+A better answer, however, is to use <a href="http://www.ssh.fi">ssh
+(the secure shell)</a> instead of rsh.  Ssh is a drop-in replacement
+for rsh but with security features including encryption and
+authentication.  It also tunnels X traffic through the encrypted link
+and automatically sets your DISPLAY variable on the remote side.
 
 <h3><a NAME="5">5. Where do I find Faces and Metamail packages?</a></h3>
 <p>

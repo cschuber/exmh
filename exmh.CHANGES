@@ -4,8 +4,9 @@ cvs repository 08/02/1999
     Spell checked html documentation and fleshed out documentation on
 	stuff that I wrote. -cwg
     Discovered the <button> tag in the built-in web browser; went
-	through Intro.html adding it in appropriate places.  Will do
-	other pages as well. -cwg
+	through Intro.html, exmh.n.html, exmh-custom.n.html, and most
+	of exmh-ref.n.html adding it in appropriate places.  Will
+	continue as I have the time. -cwg
     Merge in PGP2/PGP5/GPG support from multipgp branch.  --bmah.
 
 cvs repository 07/31/1999
