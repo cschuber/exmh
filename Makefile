@@ -9,12 +9,14 @@ srctar:
 	echo ./lib/html/CVS >> Tar.exclude
 	echo ./lib/html/Tar.exclude >> Tar.exclude
 	echo ./Tar.exclude >> Tar.exclude
-	echo ./exmh-$(VERSION).tar.gz >> Tar.exclude
 	echo ./html-$(VERSION).tar.gz >> Tar.exclude
-	tar cvfX - Tar.exclude . | gzip > exmh-$(VERSION).tar.gz
+	rm -rf /tmp/exmh-$(VERSION)
+	mkdir /tmp/exmh-$(VERSION)
+	tar cvfX - Tar.exclude . | (chdir /tmp/exmh-$(VERSION) ; tar xf -)
+	(chdir /tmp ; tar cf - exmh-$(VERSION) | gzip > /home/welch/download/exmh-$(VERSION).tar.gz)
 
 ftpdist:
-	scp exmh-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
+	scp /home/welch/download/exmh-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
 	scp html-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
 	scp exmh.README www:~ftp/pub/tcl/exmh
 	scp lib/html/exmh.README.html www:~ftp/pub/tcl/exmh
@@ -22,5 +24,7 @@ ftpdist:
 htmltar:
 	echo ./CVS > lib/html/Tar.exclude
 	echo ./Tar.exclude >> lib/html/Tar.exclude
-	(chdir lib/html ; tar cfX - ./Tar.exclude | gzip > ../../html-$(VERSION).tar.gz)
+	(chdir lib/html ; tar cfX - ./Tar.exclude . | gzip > ../../html-$(VERSION).tar.gz)
+
+install: htmltar srctar ftpdist
 

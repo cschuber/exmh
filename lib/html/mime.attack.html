@@ -1,0 +1,27 @@
+<title>Exmh and MIME Attacks</title>
+<h2><center>FLASH: Exmh unaffected by MIME "long filename" attack</center> </h2>
+(7/27/98)
+News articles about security flaws in Microsoft and Netscape mail
+readers concern an attack on MIME handling.
+Exmh implements MIME handling in Tcl code that is unaffected by
+buffer overflow type attacks.  There are no fixed sized buffers
+in the implementation of Tcl itself, so it is not possible to
+trick Exmh into executing arbitrary code by sending it
+MIME attachments with extremely long file names.
+<p>
+Exmh does, however, rely on the MH package for many other mail handling
+functions.  This is a very old code base that may be susecptible to
+various buffer overflow attacks.  In particular, if you use the 
+"mhn" program to read MIME messages from the UNIX command line, you
+may or may not be subject to the attack.  Again, Exmh does not use
+this program to read MIME messages, so reading MIME messages in
+Exmh is safe from the particular attack described
+in the news media.
+<p>
+However, we currently recommend that MH users switch
+to the "nmh" replacement for MH (not to be confused with the
+afore-mentioned "mhn" component of MH).  The nmh package is a major clean up
+of the MH code base.  For starters, it is much easier to compile
+and install nmh than MH.  There are many bug fixes and other enhancements
+to the code as well.  For more information, see the
+<a href=http://www.math.gatech.edu/nmh/>nmh home page</a>.
