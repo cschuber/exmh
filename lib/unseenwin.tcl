@@ -6,7 +6,9 @@
 
 
 proc UnseenWinSetGeom {width height} {
-    incr width 4
+    global unseenwin
+
+    incr width [expr $unseenwin(digits) + 1]
     .unseen.lb configure -width $width -height $height
 }
 
@@ -56,6 +58,7 @@ if [catch {
     set unseenwin(listwidth) $unseenwin(minwidth)
     set unseenwin(empty)     1
     set unseenwin(folders)   {}
+    set unseenwin(digits)    1
 
     if {![info exists flist(unseen)] ||
         ([llength $flist(unseen)] == 0)} {
@@ -102,7 +105,28 @@ proc UnseenWinTrace {array elem op} {
       if {$num == 0} {
         UnseenWinRemove $index $folder
       } else {
-        UnseenWinShow $index 1 $folder $num
+        # the number of digits may have changed: recalculate
+        set old_digits $unseenwin(digits)
+        set unseenwin(digits) 1
+        foreach f $unseenwin(folders) {
+          if {[catch {set digits [expr int(log10($flist(new,$f)) + 1)]}]} {
+            set digits 1
+          }
+          if {$digits > $unseenwin(digits)} {
+            set unseenwin(digits) $digits
+          }
+        }
+        # if it did change, set the geometry and re-show every folder
+        if {$unseenwin(digits) != $old_digits} {
+          UnseenWinSetGeom $unseenwin(curwidth) $unseenwin(curlines)
+          set i 0
+          foreach f $unseenwin(folders) {
+            UnseenWinShow $i 1 $f $flist(new,$f)
+            incr i
+          }
+        } else {
+          UnseenWinShow $index 1 $folder $num
+        }
       }
     }
   } error] {
@@ -119,7 +143,8 @@ proc UnseenWinShow {index delete folder count} {
     .unseen.lb delete $index
   }
   set width $unseenwin(listwidth)
-  .unseen.lb insert $index [format "%${width}s %2d" $folder $count]
+  set digits $unseenwin(digits)
+  .unseen.lb insert $index [format "%${width}s %${digits}d" $folder $count]
   if {$width > $unseenwin(curwidth)} {
     .unseen.lb xview [expr $width - $unseenwin(curwidth)]
   }
@@ -148,6 +173,14 @@ proc UnseenWinAdd {folder num} {
 
   set resize 0
   set redisplay 0
+
+  # adding a folder, so only need to see if digits has increased
+  set digits [expr int(log10($num) + 1)]
+  if {$digits > $unseenwin(digits)} {
+    set unseenwin(digits) $digits
+    set resize 1
+    set redisplay 1
+  }
 
   if {($index >= $unseenwin(minlines)) &&
       (!$hasmaxlines || ($unseenwin(curlines) < $unseenwin(maxlines)))} {
@@ -225,6 +258,20 @@ proc UnseenWinRemove {index folder} {
       ($newlines >= $unseenwin(minlines))} {
     incr unseenwin(curlines) -1
     set resize 1
+  }
+
+  # the number of digits may have changed: recalculate
+  set old_digits $unseenwin(digits)
+  set unseenwin(digits) 1
+  foreach f $unseenwin(folders) {
+    set digits [expr int(log10($flist(new,$f)) + 1)]
+    if {$digits > $unseenwin(digits)} {
+      set unseenwin(digits) $digits
+    }
+  }
+  if {$unseenwin(digits) != $old_digits} {
+    set resize 1
+    set redisplay 1
   }
 
   if $resize {

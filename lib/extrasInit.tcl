@@ -874,6 +874,7 @@ Compose:     Starts a mail composition"
     }
   }
 
+  set unseenwin(digits) 1
   trace variable unseenwin(on)            w UnseenWinToggle
   trace variable unseenwin(icon)          w UnseenWinToggleIcon
   trace variable unseenwin(font)          w UnseenWinChangeFont

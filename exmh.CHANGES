@@ -3,6 +3,10 @@ HISTORY
 cvs repository 4/13/1999
     Took the "Dates display localtime in parentheses" enhancement from March
 	31, and made the format settable as resource localTimeFormat. -jbeck
+    The unseen window has to decide how many characters to allocate for the
+	digits in the unseen count.  Previously the code was inconsistent
+	as to whether 2 or 3 digits should be used.  Now it is dynamically
+	determined, and only as many as necessary are used. -jbeck
 
 cvs repository 4/12/1999
     Added support for faces for newsgroups. -jbeck
