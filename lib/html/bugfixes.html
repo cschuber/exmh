@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Exmh Bug Fixes</title>
+</head>
+<body>
+<h1>Bugs fixed in exmh since 2.0.3</h1>
+
+<ul>
+  <li>Fixed MIME formatting in Receipt-Notification message
+  <li>Fixed encoding of whitespace in header lines
+  <li>Restored 'Invoke menu with right button' message on large messaegs
+  <li>Unseen sequence is no longer trashed after a sort or pack
+  <li>Fixed ordering of MIME type guessing; It used to be mailcap,
+      mime.types, magic, now it is mime.types, mailcap, magic 
+  <li>Fixed mailcap file extention parsing to ignore entries with
+      nametemplate=%s
+  <li>Fixed problem in X-Image-URL with ~ in pathnames
+  <li>Fixed bug in alias editor
+  <li>Fixed address-book lookup/expansion to create a new "To:", "cc:"
+      or whatever line so wrapping isn't a problem 
+  <li>Improved code for posting to newsgroups
+  <li>Consistent field width for the count in the Unseen window
+  <li>Fixed installation glitch where hitting Verify before Patch would
+      raise an error about an undefined variable 
+  <li>Added a file create of .mh_sequences to the New Folder code
+  <li>Fixed small bug in searching body of message
+  <li>Fixed bug with compose in empty drafts folder
+  <li>Fixed a minor bug in the regular expression for URLs, so
+      <mailto:foo> loses the trailing '>' as it should
+  <li>Fixed handling of extra parameters on mailto: URLs
+  <li>Don't display message parts if 1) it's a text/*vcard; or 2) it's
+      got a "Content-Disposition: Ancillary" header
+  <li>Fixed error in regexps in ftoc.tcl where digits followed by a "+"
+      would confuse the marking of current message 
+  <li>Fixed Help...>Color Legend crash
+  <li>Made menubuttons and regular buttons the same size when using
+      tkstep 
+  <li>Fixed the actions for Rescan, Pack, and the various Sorts not to
+      call Msg_ShowSomething afterwards.  This had the unintended
+      side-effect of, if no current message was set, setting the current
+      message to the first unseen message
+  <li>Closing html window during install before the page is fully
+      rendered no longer crashes 
+  <li>If there's a PGP error while processing the message, show the
+      message raw 
+  <li>Eliminated extra newline in editnow window
+  <li>Sped up startup time by not precaching nicknames for all the
+      folders 
+  <li>Sedit was not inserting Mime-version header when it should have
+  <li>Allow ispell preferences to work before sedit has been opened
+  <li>Fix for problems with annotation settings
+  <li>References to exmh(background) should have been to exmh(bgPeriod)
+      in BackgroundFixup 
+</ul>
+</body>
+</html>
