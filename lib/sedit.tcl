@@ -411,7 +411,7 @@ proc SeditSendCommon { draft t {post 0} } {
     if {$sedit(autoSign) && ($sedit($t,sigfile) != "") &&
 	([string compare $exmh($id,action) "dist"] != 0)} {
 	set b .sedit${id}.but
-	set cmd [option get $b.sign command {}]
+	set cmd [subst [option get $b.sign command {}]]
 	if {[string length $cmd] == 0} {
 	    Exmh_Debug SeditSend null cmd for $b.sign
 	    set cmd {SeditSign $draft $t}
