@@ -320,14 +320,14 @@ proc MimeHeader {part contentType encoding} {
     # Paranoia time - sanitize these just in case...
     # Yes, we're ignoring the rfc2045 sec 5.1 definition of 'tspecials'
     set mimeHdr($part,hdr,content-type) $contentType
-    regsub -all {[^-/[:print:]]} $type {} type
+    regsub -all {[^-./[:print:]]} $type {} type
     set mimeHdr($part,type) $type
     regsub -all {[^-[:print:]]} $encoding {} encoding
     set mimeHdr($part,encoding) $encoding
     set mimeHdr($part,params) {}
     foreach sub [lrange $params 1 end] {
 	if [regexp {([^=]+)=(.+)} $sub match key val] {
-	    regsub -all {[^-./[:print:]]} $key {} key
+	    regsub -all {[^-/[:print:]]} $key {} key
 	    set key [string trim [string tolower $key]]
 	    set val [string trim $val]
 	    # Allow single as well as double quotes
