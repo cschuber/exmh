@@ -101,3 +101,32 @@ Complexity: ?
 
 A URL of the form "http://host.dom" without a trailing slash doesn't
 work.
+
+
+Number: 10
+Version: 2.0.3
+Priority: Med
+Scope: Narrow
+Complexity: ?
+
+From: "Jacob Morzinski" <jmorzins@MIT.EDU>
+
+The exmh variable ispellVars(command) is not initialized until
+_after_ you open your first sedit window.  (At that time, it gets
+set to the value of $ispellVars(defaultCommand).)
+
+The Ispell preferences window, on the other hand, tries to
+automagically turn the ispell checkbox on/off based on whether or
+not your machine has an ispell command available.  It does this
+by attempting to run $ispellVars(command) when the window is
+first opened, and each time the checkbox is clicked to "on".
+
+If ispellVars(command) is still unset, the exec fails, and exmh
+mistakes this failure as indicating that your machine does not have
+ispell.  Consequently, it won't permit the checkbox to be activated.
+
+No, I don't know why the code does it this way.  But it means
+that if you open your Pref window before you compose a message,
+you won't be able to turn ispell on at that time (look at the Log
+window for details).  Once you compose a message, though, you'll
+be able to turn ispell on/off normally.
