@@ -365,7 +365,7 @@ proc MimeSetCharset {tkw part} {
 	set mime(fontSize) [string trim $mime(fontSize)]
 	if [catch {Mime_GetFont $tkw medium r plain $mime(fontSize) $charset} \
 		font] {
-	    MimeInsertNote $tkw [MimeLabel $part part] "Error: $font"
+	    MimeInsertNote $tkw [MimeLabel $part charset] "Error: $font"
 	    $tkw insert insert \n
 	    set mimeFont(charset,$charset) $mimeFont(default)
 	} else {
@@ -374,7 +374,7 @@ proc MimeSetCharset {tkw part} {
     }
     set partTag [MimeLabel $part charset]
     if [catch {$tkw tag configure $partTag -font $mimeFont(charset,$charset)} err] {
-	MimeInsertNote $tkw [MimeLabel $part part] "Error: $err"
+	MimeInsertNote $tkw [MimeLabel $part charset] "Error: $err"
 	$tkw insert insert \n
 	Exmh_Status "No good font for $charset character set"
 	set mimeFont(charset,$charset) $mimeFont(default)
@@ -1061,7 +1061,7 @@ proc Mime_GetCharset {tkw part} {
 	    # Limit the encodings to ones for which we have fonts.
 
 	    if ![info exists mime(registry,$charset)] {
-		MimeInsertNote $tkw [MimeLabel $part part] \
+		MimeInsertNote $tkw [MimeLabel $part charset] \
 			       "Unknown charset: <$charset>"
 		$tkw insert insert \n
 		set charset us-ascii
