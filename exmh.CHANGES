@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 1/24/2005 cwg-exmh@deepeddy.com
+  lib/folder.tcl: fixed the background folder purging script
+    to properly pick up things from the script library
+
 cvs repository 1/19/2005 cwg-exmh@deepeddy.com
   lib/ftoc.tcl: Really fixed bindings for exwin(ftext).
 
