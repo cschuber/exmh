@@ -1,4 +1,7 @@
 HISTORY
+cvs repostiory 4/2/2003 welch@panasas.com
+  flist.tcl, sequences.tcl - Repaired the change made on 4/1
+
 cvs repository 04/02/2003 valdis.kletnieks@vt.edu
   exmh.MASTER, lib/widgets.tcl - set a default cursor of 'left_ptr' (otherwise
   enlightenment 0.16.5 doesn't play nice with XFree86 4.3.0 cursors)

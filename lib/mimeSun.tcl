@@ -224,8 +224,8 @@ proc MimeSunAppInner { stuff } {
     regsub -all \[\ \t\n\.] $field(start) {} start
     regsub -all \[\ \t\n\.] $field(end) {} end
 
-    Exmh_Status "cm_insert -d $date -s $start -e $end -w $field(what)"
-    if [catch {exec cm_insert -d $date -s $start -e $end -w $field(what)} error] {
+    Exmh_Status "dtcm_insert -d $date -s $start -e $end -w $field(what)"
+    if [catch {exec dtcm_insert -d $date -s $start -e $end -w $field(what)} error] {
 	Exmh_Status $error
     }
 }

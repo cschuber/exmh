@@ -172,7 +172,7 @@ proc Seq_TraceInit {} {
     trace variable flist wu Seq_Trace
 }
 proc Seq_Trace {array elem op} {
-    global flist seqwin
+    global flist seqwin mhProfile
 Exmh_Debug "Seq_Trace $array $elem $op"
     set indices [split $elem ,]
     set var [lindex $indices 0]
@@ -216,12 +216,12 @@ Exmh_Debug "Seq_Trace $array $elem $op"
 	    }
 	}
 	if {$delta != 0} {
-	    global fcache
-
-	    if {$fcache(lines) > 0} {
-                # Sequence information changed, so update the fcache
-                Fcache_RedisplayUnseen $folder
-	    }
+            # Sequence information changed, so update the fcache
+            # I suspect that this "scan $elem" is redundant - it
+            # is saying to force the fache update because the
+            # seqcount element of flist changed.  May be redundant
+            # with the local delta
+            Fcache_RedisplayUnseen [scan $elem "seqcount,%s,$mhProfile(unseen-sequence)" folder]
 	    if {[info exists flist(totalcount,$seq)]} {
 		incr flist(totalcount,$seq) $delta
 	    } else {

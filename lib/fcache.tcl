@@ -68,10 +68,6 @@ structure is deeply nested." }
     trace variable fcache(nicknames) w Fcache_Redisplay
     trace variable fcache(unseenCount) w Fcache_Redisplay
 
-    # BUG - this trace is replaced by the trace set up
-    # in Seq_TraceInit
-    trace variable flist wu Fcache_RedisplayUnseen
-
     # Init the cache and handle various error cases.
 
     if {$fcache(stickyOff)} {
@@ -98,10 +94,11 @@ structure is deeply nested." }
 proc Fcache_Redisplay { args } {
    Fcache_Display 1
 }
-proc Fcache_RedisplayUnseen { array elem op } {
-    global flist fcache mhProfile
+proc Fcache_RedisplayUnseen { force } {
+    global fcache
     if {$fcache(unseenCount)} {
-	Fcache_Display [scan $elem "seqcount,%s,$mhProfile(unseen-sequence)" folder]
+        Exmh_Debug Fcache_RedisplayUnseen force=$force
+	Fcache_Display $force
     }
 }
 
