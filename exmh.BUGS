@@ -276,3 +276,31 @@ From: Brent Welch <welch@scriptics.com>
 Ahh - this is a good diagnosis - this issue has plagued exmh for some time.
 It may be as simple as creating an empty .mh_sequences file in the 
 directory will fix it.
+
+
+
+Number: 16
+Version: 2.0.2 maybe earlier
+Priority: ?
+Scope: ?
+Complexity: ?
+Status: 
+
+From: Anders Eriksson <anders.c.eriksson@era.ericsson.se> 
+Date: Thu, 01 Apr 1999 14:27:43 +0200 
+
+Hi, This is a bug that has been bugging me for some time now.  When I
+use mouse-base cut&paste the stuff pasted into the buffer is often
+something I cut&pasted several iterations ago. Is this a exmh or tk
+bug?  I use
+
+exmh-2.0.2 (no patches)
+tcl/tk-8.0
+fvwm2
+Linux-2.0.36
+
+From: Brent Welch <welch@scriptics.com> 
+Date: Fri, 02 Apr 1999 13:59:44 -0800 
+
+This is an exmh bug...
+
