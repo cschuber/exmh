@@ -168,6 +168,7 @@ proc SeditQuoteHeader { line } {
 	set newline $key
 	set line $value
     }
+    set hithit 0
     while {[string length $line] > 0} {
 	if [regexp -indices {^([^][\(\)<>@,;:"/\?\.= 	]*)([][\(\)<>@,;:"/\?\.= 	]*)} $line match word special] {
 	    set x [expr [lindex $special 1]+1]
@@ -188,18 +189,23 @@ proc SeditQuoteHeader { line } {
 		}
 	    }
 	    if {! $hit} {
+		set hithit 0
 		append newline $word $special
 	    } else {
 		append newline =?$sedit(charset)?Q?
+		if {$hithit} {
+		    append newline _
+		}
 		foreach char [split $word {}] {
 		    scan $char %c code
-		    if {$code > 127} {
+		    if {$code > 127 || $char == "_" || $char == "=" || $char == {?}} {
 			append newline [format =%X $code]
 		    } else {
 			append newline $char
 		    }
 		}
 		append newline ?= $special
+		set hithit 1
 	    }
 	} else {
 	    Exmh_Debug Fail <$line>

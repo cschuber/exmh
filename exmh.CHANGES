@@ -1,4 +1,11 @@
 HISTORY
+
+cvs repository 4/1/1999
+    receipt-notification patch that fixes the MIME formatting in the
+        receipt-notification message. -jbeck@eng.sun.com via haldevore
+    Header Encoding patch that fixes the way whitespace is encoded in
+        header lines. -Ola Stromfors via haldevore
+
 cvs repository 3/31/1999
     New interface for PGP composition -cwg
     Dates display localtime in parentheses -cwg

@@ -232,7 +232,7 @@ of the message's disposition.
     if [info exists mimeHdr(0=1,hdr,message-id)] {
 	puts $out "Original-Message-ID: $mimeHdr(0=1,hdr,message-id)"
     }
-    puts $out "Disposition: $doit"
+    puts $out "Disposition: $doit\n"
 
     FvMimeAddPart $out $bdry "message/rfc822\n"
 

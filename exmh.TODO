@@ -15,8 +15,6 @@ Here's the 2.0.2 patch list:
 - Mime menu in long messages patch
 - Sequences bookkeeping patch
 - Add (fwd) to subject on forwarding
-- Header encoding patch
-- Receipt notification patch
 
 
 Number: 2
@@ -291,23 +289,21 @@ ftp://playground.sun.com/pub/jbeck/exmh/flag-bitmaps.tar
 
 
 
+Number: 27
+Priority: Med
+Scope: Medium
+Complexity: Medium
+
+From: Anders Eriksson <anders.c.eriksson@era.ericsson.se>
+
+I'd like to see the possibility to run an attachment though `file` as an 
+alternative to Content-type. Way too many attachments comes as  
+application/octet-stream which effectively disables all mime display magic in 
+exmh.
+
+
 
 $Id$
-
-$Log$
-Revision 1.4  1999/04/01 03:38:40  cwg
-yada yada
-
-Revision 1.3  1999/04/01 01:34:45  haldevore
-More todo list updates.  Corrected duplicate number 25, added more
-info to item 20.
-
-Revision 1.2  1999/04/01 01:28:23  haldevore
-Added items to the todo list.
-
-Revision 1.1  1999/03/31 21:36:15  haldevore
-Added the exmh.TODO file to track pending changes.
-
 
 # Emacs stuff
 # Local Variables:
