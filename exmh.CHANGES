@@ -1,5 +1,5 @@
 HISTORY
-cvs repository 08/23/2002 Robert Elz <kre@munnari.OZ.AU> via 
+cvs repository 08/26/2002 Robert Elz <kre@munnari.OZ.AU> via 
 	cwg-exmh@deepeddy.com
     pick.tcl - change the order of the arguments to pick to get around
 	nmh bug.
