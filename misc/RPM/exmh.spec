@@ -51,6 +51,14 @@ exmh, yaygýn olarak kullanýlan mh paketi için X11 arayüzüdür. MIME desteði,
 PGP desteði, faces, glimpse yardýmýyla dizin oluþturma gibi yetenekleri
 vardýr. Ses desteði için sox (ya da play) gerekir.
 
+
+%package misc
+Summary: exmh misc contributed utils
+Group: Applications/Mail
+%description misc
+The misc package contains user contributed programs which work well with 
+exmh.
+
 %prep
 %setup -q -n exmh-%{PACKAGE_VERSION}
 for i in *.MASTER; do
@@ -67,6 +75,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/X11/wmconfig
 mkdir -p $RPM_BUILD_ROOT/etc/X11/applnk/Internet
 mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man1}
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/exmh-%{version}
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/exmh-%{version}/misc
 
 for i in exmh exmh-bg exmh-async ftp.expect; do
 	install -m755 $i $RPM_BUILD_ROOT/%{_bindir}
@@ -76,6 +85,7 @@ for i in *.l; do
 done
 
 cp -ar lib/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}
+cp -ar misc/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc
 
 cp %SOURCE2 $RPM_BUILD_ROOT/etc/X11/applnk/Internet/
 install -m644 $RPM_SOURCE_DIR/exmh.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/exmh
@@ -95,7 +105,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/exmh-%{version}
 %{_mandir}/man1/exmh.1*
 
+%files misc
+%defattr(-,root,root)
+%{_libdir}/exmh-%{version}/misc
+
 %changelog
+* Thu May 24 2001 Scott Lipcon <slipcon@mercea.net>
+- change rpm to build exmh-misc package as well.
+
 * Sat Oct 14 2000 Scott Lipcon <slipcon@acm.jhu.edu>
 - changes to support RPM4, bring specfile in line with Redhat's, hopefully
 
