@@ -505,6 +505,8 @@ proc Addr_KeyExpand { w } {
     ##  AddrDebug "  got line \"$line\""
     # Only allows expansion on addressable header lines.
     if [regexp -nocase {^(to: *|resent-to: *|cc: *|resent-cc: *|bcc: *|dcc: *)(.*)} $line t0 t1 t2] {
+        # Save keyword that started the line for later
+        set startline $t1
         ##  AddrDebug  "  matched! keep is \"$t1\", partial name=\"$t2\""
         if [regexp -indices ",?.*, *" $t2 t0] {
             set t0 [lindex $t0 end]
@@ -516,7 +518,7 @@ proc Addr_KeyExpand { w } {
         }
         if {[string compare $addr_db(lastfound) $t2] != 0 \
                 || $addr_db(curmethod) >= [llength $addr_db(searchlist)]} {
-            Exmh_Status "Reseting start method"
+            Exmh_Status "Resetting start method"
             catch {destroy $w.addrs}
             set addr_db(expansion) {}
             set addr_db(curmethod) 0
@@ -534,7 +536,7 @@ proc Addr_KeyExpand { w } {
             if {[llength $result] == 1} {
                 # unique match
                 $w delete  {insert linestart} {insert lineend}
-                $w insert insert [format "%s%s" $t1 [lindex $result 0]]
+                $w insert insert [format "%s%s\n%s" $t1 [lindex $result 0] $startline]
                 set addr_db(lastfound) [lindex $result 0]
                 catch {destroy $w.addrs}
             } else {
@@ -546,13 +548,13 @@ proc Addr_KeyExpand { w } {
                 if [ string compare $new "" ] {
                     set addr_db(lastfound) $new
                     $w delete  {insert linestart} {insert lineend}
-                    $w insert insert [format "%s%s" $t1 $new]
+                    $w insert insert [format "%s%s\n%s" $t1 $new $startline]
                 }
             }
 			break
         }
     } else {
-        Exmh_Status "Error in name expansion: not on To: field"
+        Exmh_Status "Error in name expansion: not on supported field"
         return
     }
 }

@@ -30,16 +30,6 @@ many "exmh hackers" already but with a look at Jerry Peek's section on
 
 
 
-Number: 5
-Priority: Med
-Scope: Narrow
-Complexity: Low
-
-Fix address-book lookup/expansion to create a new "To:", "cc:" or
-whatever line so wrapping isn't a problem.
-
-
-
 Number: 6
 Priority: Med
 Scope: 
