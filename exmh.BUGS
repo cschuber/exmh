@@ -336,3 +336,41 @@ Status:
 
 The Hook_SeditInit predefined hooks are not mentioned in the html doc.
 There might be others, review the code and document any missing ones
+
+
+----------------------------------------------------------------------
+Number: 22
+Version: ?
+Priority: Low
+Scope: Narrow
+Complexity: ?
+Status:
+
+From: Hal DeVore <haldevore@earthling.net>
+Subject: Help...->Color Legend causes error popup
+Date: Sat, 01 May 1999 19:33:49 -0500
+
+Chris, could you take a look at this one?  I'm working thru the 
+sections of the MH book on exmh updating them and hit a 
+reference to this popup so I had to try it.  IIRC, you did some 
+cleanup on some color code, didn't you?
+
+Click the "Help..." button then "Color Legend", get an error popup:
+
+invalid command name "color"
+    while executing
+"color"
+    invoked from within
+"if {[winfo depth .] > 4} "color" "monochrome""
+    (procedure "Help_KeyDisplay" line 9)
+    invoked from within
+"Help_KeyDisplay"
+    invoked from within
+".main.help.m invoke active"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel #0 [list $w invoke active]"
+    (procedure "tkMenuInvoke" line 29)
+    invoked from within
+"tkMenuInvoke .main.help.m 1"
+    (command bound to event)
