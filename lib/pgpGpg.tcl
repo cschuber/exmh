@@ -1,6 +1,9 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.11  2000/04/18 18:38:33  valdis
+# Fix quote character to use ascii rather than iso8859-ish one
+#
 # Revision 1.10  2000/02/07 13:23:34  gruber
 # fixed run twice function to work with now short keyids
 #
@@ -81,7 +84,7 @@ Pgp_WWW_Init
 set pgp(pref,HKPkeyserverUrl) { HKPkeyserverUrl HKPKeyServerUrl {keys.pgp.com}
 {Horowitz Key Protocol Server}
 "The hkp (Horowitz Key Protokol) is a subset of the http.
-It´s used to tranfer keys to and from a keyserver.
+It's used to tranfer keys to and from a keyserver.
 Give here a hkp server name." }
 
 
@@ -125,7 +128,7 @@ in the Modules Path."] \
 ON "PGP 5.0 Compatibility" \
 "You MUST have enabled this if you want that GnuPG produces
 PGP 5.0 compatible messages.
-Having this enabled, you don´t need PGP 5.0 any more." ] ]
+Having this enabled, you don't need PGP 5.0 any more." ] ]
 
     # Before we can build the algorithm choice preferences part
     # we need to examine, which modules are installed on the system

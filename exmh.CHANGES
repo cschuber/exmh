@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 04/18/2000
+    lib/PgpDecryptExpect, lib/PgpExec.tcl, lib/pgpGpg.tcl, lib/pgpPgp5.tcl
+    Use ASCII quote character - vkletnieks, patch by Jacob Morzinski <jmorzins@MIT.EDU>
+
 cvs repository 04/05/2000
     lib/html_head.tcl, lib/html_links.tcl - Use app-defaults
     c_link, c_alink values for links. - vkletnieks

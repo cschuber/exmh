@@ -107,7 +107,7 @@ proc InterpretResponse { } {
 	        GetPassword $expect_out(1,string)
             } else {
                 # There was no keyid and the program is prompting for a password?
-                # It must be conventional encryption then. I hope this hasn´t
+                # It must be conventional encryption then. I hope this hasn't
                 # unforeseen effects
                 set encrypted 1
                 GetPassword conventional

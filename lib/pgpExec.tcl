@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.12  2000/04/18 18:38:33  valdis
+# Fix quote character to use ascii rather than iso8859-ish one
+#
 # Revision 1.11  1999/09/27 23:18:45  kchrist
 # More PGP changes. Consolidated passphrase entry to sedit field or
 # pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
@@ -189,7 +192,7 @@ proc Pgp_Exec_Interactive { v exectype arglist outvar } {
     set pgpcmd [set pgp($v,executable,$exectype)]
     set args [concat [subst [set pgp($v,flags_interactive)]] $arglist]
 
-    # Be sure, that passphrase isn´t read from stdin
+    # Be sure, that passphrase isn't read from stdin
     Pgp_${v}_PassFdUnset
 
     # Build shellcommand
@@ -441,7 +444,7 @@ proc Pgp_Exec_GetDecryptKey {v in recipients} {
 
     Exmh_Debug "Pgp_Exec_GetDecryptKey $v $in $recipients"
 
-    # If the user has time (this doesn´t consume more than a half second)
+    # If the user has time (this doesn't consume more than a half second)
     # and has set preferences to run pgp twice,
     # run pgp a first time to get out the decryption keyid
     set runtwice 0
@@ -469,7 +472,7 @@ proc Pgp_Exec_GetDecryptKey {v in recipients} {
     } else {
       set recipients [string tolower $recipients]
       # Messages get encrypted with the subkey for dsa/elg
-      # I don´t know if there are subkeyids in the recipients list if dsa/elg
+      # I don't know if there are subkeyids in the recipients list if dsa/elg
       # Lets search for mainkeys
       set useablekeys [Pgp_Misc_Filter key \
          {[string first [string tolower [string range [lindex $key 0] 2 end]] $recipients] >= 0} \

@@ -1,6 +1,9 @@
 # pgpPgp5.tcl
 
 # $Log$
+# Revision 1.6  2000/04/18 18:38:33  valdis
+# Fix quote character to use ascii rather than iso8859-ish one
+#
 # Revision 1.5  1999/09/30 03:51:07  kchrist
 # pgp($v,cmd_Beauty) was getting in the way of pgp($v,cmd_User) for
 # v=gpg so I had to rearrange things a bit.
@@ -55,7 +58,7 @@ Pgp_WWW_Init
 set pgp(pref,HKPkeyserverUrl) { HKPkeyserverUrl HKPKeyServerUrl {keys.pgp.com}
 {Horowitz Key Protocol Server}
 "The hkp (Horowitz Key Protokol) is a subset of the http.
-It´s used to transfer keys to and from a keyserver.
+It's used to transfer keys to and from a keyserver.
 Give here a hkp server name." }
 
 
