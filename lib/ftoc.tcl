@@ -84,6 +84,7 @@ proc Ftoc_Reset { numMsgs msgid folder } {
     } else {
 	set ftoc(curLine) {}		;# Set later in Msg_Change ?
     }
+    Ftoc_ClearMsgCache
 }
 proc Ftoc_Update { numMsgs folder } {
     # Update size of message list after inc'ing into current folder
@@ -517,12 +518,20 @@ proc Ftoc_FindMsg { msgid {line {}} } {
     }
     # not reached
 }
+proc Ftoc_ClearMsgCache {} {
+    global msgcache
+    array unset msgcache
+}
 proc Ftoc_MsgNumber { L } {
-    global exwin
+    global exwin msgcache
+    if {[array get msgcache $L] != {}} {
+	return $msgcache($L)
+    } 
     if [catch {$exwin(ftext) get $L.0 $L.end} line] {
 	return ""
     }
-    return [Ftoc_MsgNumberRaw $line]
+    set msgcache($L) [Ftoc_MsgNumberRaw $line]
+    return $msgcache($L)
 }
 proc Ftoc_MsgNumberRaw { line } {
     if [regexp {^( *)([0-9]+)} $line foo foo2 number] {
@@ -700,6 +709,7 @@ proc Ftoc_RescanLine { ix {plus none} } {
 		# Here we mark the display dirty to force an update
 		# of the cache and prevent later rescans.
 		set ftoc(displayDirty) 1
+		Ftoc_ClearMsgCache
 	    }
 	}
 	if {$ok} {
@@ -965,6 +975,7 @@ proc Ftoc_Delete { line msgid } {
     $exwin(ftext) delete $line.0 "$line.end + 1 chars"
     $exwin(ftext) configure -state disabled
     set ftoc(displayDirty) 1
+    Ftoc_ClearMsgCache
 }
 proc Ftoc_RemoveMark { line msgid } {
     # Flag the current message(s) for deletion
@@ -1089,6 +1100,7 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	    Msg_UnSeen $msgid	;# avoid MH mark bug
 	    $exwin(ftext) delete $c0 "$ce + 1 chars"
 	    set ftoc(displayDirty) 1
+	    Ftoc_ClearMsgCache
 	    if {$msgid == $curid} {
 		Ftoc_ClearCurrent
 		Msg_ClearCurrent
