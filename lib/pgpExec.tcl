@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.19  2002/07/16 01:27:54  sysphrog
+# Fixing problems with PGP sign+encrypt, gnupg 1.0.7 support
+#
 # Revision 1.18  2002/05/01 02:24:07  welch
 # A whole collection of patches.  If marked with ** then I've lost
 # track of who gave them to me and I apologize for that:
@@ -424,7 +427,9 @@ proc Pgp_Exec_Encrypt { v in out tokeys } {
         # pgp refuses to generate an encrypted message
         # if a key was untrusted
         # interactively proceed
+        catch {file delete $out}
         Pgp_Exec_Interactive $v encrypt [subst [set pgp($v,args_encrypt)]] output
+        Pgp_Exec_CheckSuccess $v $out $output "encrypted text"
     }
 }
 
@@ -439,7 +444,9 @@ proc Pgp_Exec_EncryptSign { v in out sigkey tokeys } {
         # pgp refuses to generate an encrypted/signed message
         # if a key was untrusted
         # interactively proceed
+        catch {file delete $out}
         Pgp_Exec $v encrypt [subst [set pgp($v,args_encryptSign)]] output $sigkey 1
+        Pgp_Exec_CheckSuccess $v $out $output "signed and encrypted text"
     }
 }
  
@@ -484,7 +491,7 @@ proc Pgp_Exec_CheckSuccess {v out output object} {
     } else {
         # GnuPG will also not encrypt to a key if it is untrusted but if
         # any of the encryption keys are trusted a file will be generated
-        if {[regexp {^gpg:.* no info} $output]} {
+        if {[regexp "^(.*\n)*gpg:.*no (info|indication)" $output]} {
             return 1
         } else {
             return 0

@@ -1,4 +1,11 @@
 HISTORY
+cvs repository 07/15/2002 valdis.kletnieks@vt.edu
+    pgpExec.tcl - multiple fixes.  Added a second call to CheckSuccess to
+        both Exec_Encrypt and Exec_EncryptSign (and a 'file delete' to clean
+        up beforehand) so we actually *fail* if the second try doesn't work.
+        Also, fixed the regexp in CheckSuccess - it failed to deal with
+        multiple lines of output, and I added gnupg 1.0.7 support.
+
 cvs repository 07/15/2002 cwg-exmh@deepeddy.com
     flist.tcl - in Flist_UnseenUpdate, don't push the folder onto the
 	unvisited list if it's the current folder.
