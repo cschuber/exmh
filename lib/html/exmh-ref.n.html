@@ -36,30 +36,39 @@ There are just a handful of command line options for exmh. Note that
 Xt-like command line options are not supported because <i>exmh</i>
 is based on Tk, not Xt. 
 <dl>
-<dt><b>-bgAction </b><i>action</i> 
-<dd>Override background processing setting. Valid actions are: off,
-count, msgchk, flist, and inc. 
-<dt><b>-bgPeriod </b><i>minutes</i> 
-<dd>Override background period setting. 
-<dt><b>-geometry </b><i>geometry</i> 
-<dd>Initial geometry to use for the window. Exmh remembers the geometry
-when you change it interactively, so you do not really need to specify
-it each time on the command line. 
-<dt><b>-iconposition </b><i>geometry</i> 
-<dd>Initial position to use for the icon in the form +<i>xoff</i>+<i>yoff</i>.
-You can use minus signs instead of + to position relative to the right
-and bottom of the screen. 
-<dt><b>-iconic</b> 
-<dd>Begin execution iconic. 
-<dt><strong>-nofaces</strong> 
-<dd>Do not use faces database during this run. 
-<dt><b>-sedit</b> 
-<dd>Override the editor command defined in Preferences and use the
-built-in editor (sedit) instead. 
-<dt><i>folder</i> 
-<dd>It the argument is not one of the flags given above, it is assumed
-to be the name of a folder. In this case <i>exmh</i> begins in that
-folder. 
+
+  <dt><b>-bgAction </b><i>action</i> 
+  <dd>Override background processing setting. Valid actions are: off,
+      count, msgchk, flist, and inc. 
+
+  <dt><b>-bgPeriod </b><i>minutes</i> 
+  <dd>Override background period setting. 
+
+  <dt><b>-geometry </b><i>geometry</i> 
+  <dd>Initial geometry to use for the window. Exmh remembers the
+      geometry when you change it interactively, so you do not really
+      need to specify it each time on the command line. 
+
+  <dt><b>-iconposition </b><i>geometry</i> 
+  <dd>Initial position to use for the icon in the form
+      +<i>xoff</i>+<i>yoff</i>. You can use minus signs instead of +
+      to position relative to the right and bottom of the screen. 
+
+  <dt><b>-iconic</b> 
+  <dd>Begin execution iconic. 
+
+  <dt><strong>-nofaces</strong> 
+  <dd>Do not use faces database during this run. 
+
+  <dt><b>-sedit</b> 
+  <dd>Override the editor command defined in Preferences and use the
+      built-in editor (sedit) instead.  
+
+  <dt><i>folder</i> 
+  <dd>It the argument is not one of the flags given above, it is
+      assumed to be the name of a folder. In this case <i>exmh</i>
+      begins in that folder. 
+
 </dl>
 <h3><a NAME="EXMH MAIN BUTTONS" HREF="#CONTENTS">EXMH MAIN BUTTONS</a></h3>
 <p>
@@ -67,250 +76,377 @@ There are three sets of buttons in exmh, the main, or top row, folder
 operations, and message operations. The main set has global commands:
 Log, Help..., Bindings..., Address..., Preferences, and Quit. 
 <dl>
-<dt>Help... 
-<dd>Help is a menu with several choices: 
-<dt>Quick Intro 
-<dd>This provides a useful sub-set of this man page. 
-<dt>Color Legend 
-<dd>This provides a highlighting key for color or monochrome screens.
-<dt>HTML Docs 
-<dd>This provides access to all the exmh documentation. 
-<dt>Frequently Asked Questions 
-<dd>This displays a Frequently-Asked-Questions file. It has the same
-info as the help.FAQ file. 
-<dt>Exmh Mailing Lists... 
-<dd>This is a sub-menu that lets you administer your membership in
-the exmh-related mailing lists. See the About menu entry for an explanation
-of the various mailing lists. The add/remove operations result in mail
-messages. You'll need to Send the draft messages. 
-<dt>Submit Bug Report 
-<dd>A mail message is started so you can report a problem with exmh.
-<dt>Register as an EXMH User 
-<dd>A mail message is started to you can register as an exmh user.
-There is an opportunity to sign up for the mailing lists and provide
-positive and negative feedback about exmh. 
-<dt>Pgp Setup 
-<dd>Get started with PGP. There is some help text and an interface
-to create your public key / private key pair. 
-<dt>Bindings... 
-<dd>Exmh has two sets of key bindings. One for simple editing, and
-another to invoke commands. The editing bindings are used in the simple
-editor and in the various text entry widgets. The command bindings
-are in effect otherwise, and they allow you to invoke various Exmh
-commands without using buttons or menus. This is a menu with three
-choices: 
-<dt>Commands 
-<dd>This brings up a dialog that lets you edit the keystroke bindings.
-All of the defined bindings are displayed, and you can edit their associated
-keystroke in place. Use the entry to the right of each command to alter
-or add key bindings. There are further directions in the dialog box.
-<dt>Simple Edit 
-<dd>These bindings result in class definitions for the Entry and Text
-widget classes. The default bindings are Emacs-like. See the Tk man
-page on the bind command for details about the syntax, if you need
-to. In Tk versions 3.3 and later, "Meta" is an OK synonym for "Mod1".
-To emulate Emacs, any keystroke that is defined to be &lt;Meta-<i>x</i>&gt;
-will also result in a binding for &lt;Escape&gt;<i>x</i>. 
-<dt>Compose Key 
-<dd>The compose key is used to insert 8-bit characters. This dialog
-shows you the key sequences used to get special characters. You can
-define which key maps to Compose in the Simple Edit bindings dialog.
-<dt>Log 
-<dd>If you have enabled the debug log under the Hacking Support preferences
-section, then this button appears. It displays the debug log. 
-<dt>Address... 
-<dd>This is a menu to with the following entriesMH 
-<dt>Aliases 
-<dd>This displays an interface to the MH alias file. You will be prompted
-to set up the MH profile entry that names the alias file, if needed.
-There are a pair of lists in the interface. To the left is a list of
-your aliases. Selecting one will display the address(s) of the alias
-in the right-hand list. Under each list are three buttons: Insert,
-Change, and Delete, that let you operate on the aliases or the addresses
-associated with an alias. As you view messages, the From address of
-the current message is displayed in the dialog. There is a Help button
-in the dialog that gives more tips about using it. 
-<dt>Address Book 
-<dd>This is a user interface onto all the email addresses exmh has
-saved for you. You can update the address information, delete addresses,
-and view the last message from a person. You can save them automatically
-or on demand. See the Address Database preferences. Within the built-in
-editor a &lt;Control-Tab&gt; does pattern matching against saved addresses.
-<dt>Preferences 
-<dd>This displays a dialog that lets you customize <i>exmh</i>. There
-is also a different Help button in the Preference dialog that explains
-how to make selections and get more info. In particular, you can click
-on the descriptive label for an item to get a popup with more detailed
-information on the preference item. 
-<dt>Quit 
-<dd>This quits exmh. If there are pending changes to draft messages,
-they are saved first. 
+
+  <dt>Help... 
+  <dd>Help is a menu with several choices: 
+
+      <dl>
+         <dt><button -command Help>Quick Intro</button> 
+         <dd>This provides a useful sub-set of this man page. 
+
+         <dt><button -command Help_KeyDisplay>Color Legend</button> 
+         <dd>This provides a highlighting key for color or monochrome
+             screens. 
+
+         <dt><button -command "Html_Window file:\$exmh(library)/html/index.html">HTML Docs </button> 
+         <dd>This provides access to all the exmh documentation. 
+
+         <dt><button -command "Help exmh-faq">Frequently Asked
+             Questions</button> 
+         <dd>This displays a Frequently-Asked-Questions file. It has
+             the same info as the help.FAQ file. 
+
+         <dt>Exmh Mailing Lists... 
+         <dd>This is a sub-menu that lets you administer your
+             membership in the exmh-related mailing lists. See the
+             <button -command "Help Lists {About the exmh mailing lists}">
+	     About</button> menu entry for an explanation of the various
+             mailing lists. The add/remove operations result in mail
+             messages. You'll need to Send the draft messages.
+
+         <dt><button -command "Report_Bug">Submit Bug Report</button>
+         <dd>A mail message is started so you can report a problem
+             with exmh. 
+
+         <dt><button -command "Report_Registration">Register as an
+             EXMH User</button> 
+         <dd>A mail message is started to you can register as an exmh
+             user. There is an opportunity to sign up for the mailing
+             lists and provide positive and negative feedback about
+             exmh. 
+
+         <dt><button -command "Pgp_Help">Pgp Setup</button>
+         <dd>Get started with PGP. There is some help text and an
+             interface to create your public key / private key pair.
+      </dl>
+
+  <dt>Bindings... 
+  <dd>Exmh has two sets of key bindings. One for simple editing, and
+      another to invoke commands. The editing bindings are used in the
+      simple editor and in the various text entry widgets. The command
+      bindings are in effect otherwise, and they allow you to invoke
+      various Exmh commands without using buttons or menus. This is a
+      menu with three choices: 
+
+      <dl>
+         <dt><button -command Bind_Pref>Commands</button>
+         <dd>This brings up a dialog that lets you edit the keystroke
+             bindings. All of the defined bindings are displayed, and
+             you can edit their associated keystroke in place. Use the
+             entry to the right of each command to alter or add key
+             bindings. There are further directions in the dialog box.
+
+         <dt><button -command Sedit_Pref>Simple Edit</button>
+         <dd>These bindings result in class definitions for the Entry
+             and Text widget classes. The default bindings are
+             Emacs-like. See the Tk man page on the bind command for
+             details about the syntax, if you need to. "Meta" is an OK
+             synonym for "Mod1". To emulate Emacs, any keystroke that
+             is defined to be &lt;Meta-<i>x</i>&gt; will also result
+             in a binding for &lt;Escape&gt;<i>x</i>.   
+
+         <dt><button -command Sedit_ComposeUI>Compose Key</button>
+         <dd>The compose key is used to insert 8-bit characters. This
+             dialog shows you the key sequences used to get special
+             characters. You can define which key maps to Compose in
+             the Simple Edit bindings dialog.
+      </dl>
+
+  <dt>Log
+  <dd>If you have enabled the debug log under the Hacking Support
+      preferences section, then this button appears. It displays the
+      debug log.  
+
+  <dt>Address... 
+  <dd>This is a menu with the following entries
+
+      <dl>
+         <dt><button -command Aliases_Pref>MH Aliases</button>
+         <dd>This displays an interface to the MH alias file. You will
+             be prompted to set up the MH profile entry that names the
+             alias file, if needed. There are a pair of lists in the
+             interface. To the left is a list of your
+             aliases. Selecting one will display the address(s) of the
+             alias in the right-hand list. Under each list are three
+             buttons: Insert, Change, and Delete, that let you operate
+             on the aliases or the addresses associated with an
+             alias. As you view messages, the From address of the
+             current message is displayed in the dialog. There is a
+             Help button in the dialog that gives more tips about
+             using it. 
+
+         <dt><button -command Addr_Browse>Address Book</a>
+         <dd>This is a user interface onto all the email addresses
+             exmh has saved for you. You can update the address
+             information, delete addresses, and view the last message
+             from a person. You can save them automatically or on
+             demand. See the Address Database preferences. Within the
+             built-in editor a &lt;Control-Tab&gt; does pattern
+             matching against saved addresses. 
+      </dl>
+
+  <dt><button -command Preferences_Dialog>Preferences</button>
+  <dd>This displays a dialog that lets you customize
+      <i>exmh</i>. There is also a different Help button in the
+      Preference dialog that explains how to make selections and get
+      more info. In particular, you can click on the descriptive label
+      for an item to get a popup with more detailed information on the
+      preference item.  
+
+  <dt><button -command Exmh_Done>Quit</button>
+  <dd>This quits exmh. If there are pending changes to draft messages,
+      they are saved first. 
+
 </dl>
 <h3><a NAME="FOLDER BUTTONS" HREF="#CONTENTS">FOLDER BUTTONS</a></h3>
 <p>
-The middle set of buttons has folder commands: New, Flist, Inc, Commit,
+The middle set of buttons has folder commands:
+<button -command "Folder_New">New</button>, 
+<Button -command "Busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</Button>,
+<button -command "Inc">Inc</button>,
+<Button -command "Folder_Commit">Commit</Button>, 
 Search... and More... 
+
 <dl>
-<dt>New 
-<dd>This pops up a dialog box from which you can create new folders.
-When entering a folder name, the '@' character is short for the current
-folder name. Note that the Delete folder operation is under the More
-menu. 
-<dt>Flist 
-<dd>The Flist button refreshes the color feedback of folder buttons
-so you can tell which folders have unseen messages in them. If you
-use presort inc style, then this is done automatically. However, if
-you read all the unseen messages in a folder from outside <i>exmh</i>,
-then it will miss the transition out of the unseen state, so the Flist
-button will help reset its view of the folder state. 
-<dt>Inc 
-<dd>The Inc button will incorporate new mail from your spool file into
-your mail folders. This command is also bound to the keystroke 'i'.
-<dt>Commit 
-<dd>The Commit button causes pending delete and move operations to
-occur. This command is also bound to the keystroke &lt;Control-Return&gt;.
-Know that messages marked for deletion are removed by means of the
-MH <b>rmm</b> command. In most systems, <b>rmm</b> will rename the
-message to a name beginning with either a comma (,) or pound sign (#).
-Unlike <b>xmh</b>, exmh requires that you commit changes before changing
-folders and doing other operations that modify the scan listing (e.g.,
-Pack, Sort, Rescan). However, you can set Auto Commit under the Scan
-Listing preferences to have exmh automatically commit changes when
-needed. See also the description of the "Purge Folder" operation. <dt>Search...
-<dd>This is a menu of different search methods. The first two operations
-use a simple Find dialog. The Pick and Glimpse interfaces have their
-own dialogs. The menu entries under Search... are: 
-<dt>Search help 
-<dd>This help text describes the search methods in more detail. 
-<dt>Current message 
-<dd>Enter a string to find in the current message. &lt;Return&gt; causes
-the search to begin. &lt;Control-s&gt; and &lt;Control-r&gt; cause
-subsequent forward and reverse searches, respectively. 
-<dt>Folder table of contents 
-<dd>This search is done by scanning the folder table of contents display,
-so it only hits on the current folder scan output. Select the All button
-to select all matching messages. Use Pick for more general searching.
-<dt>All messages in current folder (pick) 
-<dd>This provides an interface to the MH <b>pick</b> command. Begin
-by choosing from the "pick attribute" menu in the dialog. These include
-headers like Subject, From, To, and Cc, as well as date criteria like
-Before, and After. You can search for a string in the body of messages
-with the "Search" field. You can enter a pattern for any of these,
-and <b>pick</b> selects messages that satisfy the logical AND of these
-pattern specifications. Note that the Before and After patterns are
-date-specific, and <b>pick</b> understands many forms of date patterns.
-Read the MH man page on <b>pick</b> for the complete story. You can
-build up more complex logical search expressions by clicking the Or
-button. 
-<dt>Pick from Seq/msgs(s) 
-<dd>This entry lets you limit <b>pick</b> to a specific set of messages.
-In particular, you can specify a sequence name (e.g., "unseen"), and
-have pick find all messages with that sequence identifier. After the
-pick completes, a range of messages is selected that satisfies the
-search, and you can operate on these messages as described below. 
-<dt>Add to Sequence(s) 
-<dd>This entry lets you apply a sequence name to the set of messages
-that are selected by the search. You can select these later by using
-the "Pick from Seq" field. 
-<dt>Add to Sel 
-<dd>This button is part of the <i>pick</i> interface. Set this before
-the pick to add the results of the pick to whatever message range is
-already selected in the table of contents. Otherwise a new selection
-is made. 
-<dt>New FTOC 
-<dd>This button is part of the <i>pick</i> interface. It causes the
-table of contents to be replaced with the set of currently selected
-messages. These can be the result of a pick, or you can just make a
-selection with the mouse. <i>Warning</i>: after projecting a new table
-of contents, a subsequent <i>pick</i> will only find things in this
-limited table of contents. 
-<dt>Mark Seen 
-<dd>This button is part of the <i>pick</i> interface. Use this to remove
-the selected messages from the unseen sequence. 
-<dt>All messages in all folders (glimpse) 
-<dd>This brings up an interface to the Glimpse text index tool. You
-must first index your mail, so to get started click "index" to build
-your indexes. This process runs in the background, and the status of
-the index process is displayed in the Glimpse log. The storage overhead
-of the indexes is about 10% to 15%, which is quite good for a full
-text index system. To search, enter a word in the search area and press
-"Search". The button changes to a "Stop" button, although the stop
-may take a moment to take effect. The search results are displayed
-in the log. Click on the message in the log and exmh will visit that
-message. For more details, see the exmh-use man page. 
-<dt>Display related messages 
-<dd>This selects messages that have the same subject as the current
-message, or that are "in-reply-to" the current message. The folder
-table of contents is replaced by one that only lists the related messages.
-<dt>More... 
-<dd>This is a menu with more folder operations in it: 
-<dt>Rescan folder 
-<dd>Rescan forces a rescan of the folder contents. <i>Exmh</i> maintains
-a cache of the scan output that could get confused. The Rescan button
-forces a full scan. If you just want to scan the new messages that
-have arrived in the folder you are currently reading, it is more efficient
-to click on the folder's label in the top pane. This will invoke a
-scan merging procedure that attempts to preserve the cached results
-of previous scans. You should only need Rescan when you have reason
-to believe that <i>exmh</i> is out of sync. 
-<dt>List only selected messages 
-<dd>This changes the table of contents to list only the selected messages.
-This is useful after a pick or table of contents search that has highlighted
-several messages throughout the folder. You must use Rescan folder
-to get the full listing back. 
-<dt>Pack folder 
-<dd>This will renumber messages in the current folder to eliminate
-any gaps in the number sequence. 
-<dt>Sort folder 
-<dd>This is a cascade menu that provides different ways to sort your
-folder: by date, by subject, and by the sender. The subject and sender
-sorts also do some grouping by date so that messages from one person
-or about one subject may be grouped into several subgroups based on
-their age. See the MH sortf command manual page for details. 
-<dt>Find all folders 
-<dd>This refreshes the display of folder buttons, and it will pick
-up any new folders you have created. This currently uses the MH command
-"folders -fast -recurse", which can be slow. The results are saved,
-so you should not need to wait for this scanning unless you change
-your folder structure. (You can also edit the .folders file in your
-MH mail directory.) The <i>exmh</i> distribution comes with a two-line
-patch for the MH folders program that speeds it up considerably. This
-is found in the misc/folder.patch file. 
-<dt>Delete folder 
-<dd>This lets you delete a folder. The folder must be empty, except
-for .xmhcache, .mh_sequences, and any .nfs junk files. 
-<dt>Catch-up Unseen 
-<dd>This clears the unseen sequence from the current folder. 
-<dt>Update scan caches 
-<dd>This runs another process in the background to update any scan
-caches that are out of date. 
-<dt>Update all scan caches 
-<dd>This runs another process in the background to update all the scan
-caches. 
-<dt>Purge folder 
-<dd>When MH deletes a message it really only renames it to have a name
-like #N or ,N if it was message N. The Purge operation will clean up
-these junk files that are older than 7 days. (This age parameter can
-be adjusted by a Preference item under the MH Tweaks section.) 
-<dt>Purge all folders 
-<dd>This runs through all your folders deleting old junk files. This
-is done in the background so you can continue to use the user interface
-during the process. 
-<dt>Import mailbox folders 
-<dd>If you use a program like Elm or Sun's Mailtool, you can import
-their message folder contents into the format used by MH. This menu
-entry brings up a dialog that lets you do this. After you specify the
-directory that contains the mail folders, a display with a checkbutton
-for each folder is created. You can select which folders to import.
-The originals are left alone, so you'll have to delete them yourself
-after you import them into MH. 
-<dt>Audit 
-<dd>This is a cascade menu entry that lets you either view the audit
-summary statistics or the current audit log. Note that the audit log
-is appended into ~/Mail/.exmhaudit when you quit exmh. 
-<dt>Re-read MH Profile 
-<dd>If you change something important in your MH profile, you can get
-exmh to reprocess it with this operation. 
+
+  <dt><button -command "Folder_New">New</button> 
+  <dd>This pops up a dialog box from which you can create new
+      folders. When entering a folder name, the '@' character is short
+      for the current folder name. Note that the
+      <button -command Folder_Delete>Delete folder</button>
+      operation is under the More... menu. 
+
+  <dt><Button -command "Busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</Button> 
+  <dd>The 
+      <Button -command "Busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</Button> 
+      button refreshes the color feedback of folder buttons so you can
+      tell which folders have unseen messages in them. If you use
+      presort inc style, then this is done automatically. However, if
+      you read all the unseen messages in a folder from outside
+      <i>exmh</i>, then it will miss the transition out of the unseen
+      state, so the 
+      <Button -command "Busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</Button> 
+      button will help reset its view of the folder state. 
+
+  <dt><button -command "Inc">Inc</button> 
+  <dd>The <button -command "Inc">Inc</button> button will incorporate
+      new mail from your spool file into your mail folders. This
+      command is also bound to the keystroke 'i'. 
+
+  <dt><Button -command "Folder_Commit">Commit</Button> 
+  <dd>The <Button -command "Folder_Commit">Commit</Button> button
+      causes pending delete and move operations to occur. This command
+      is also bound to the keystroke &lt;Control-Return&gt;. Know that
+      messages marked for deletion are removed by means of the MH
+      <b>rmm</b> command. In most systems, <b>rmm</b> will rename the
+      message to a name beginning with either a comma (,) or pound
+      sign (#). Unlike <b>xmh</b>, exmh requires that you commit
+      changes before changing folders and doing other operations that
+      modify the scan listing (e.g., Pack, Sort, Rescan). However, you
+      can set Auto Commit under the Scan Listing preferences to have
+      exmh automatically commit changes when needed. See also the
+      description of the "Purge Folder" operation. 
+
+  <dt>Search...
+  <dd>This is a menu of different search methods. The first two
+      operations use a simple Find dialog. The Pick and Glimpse
+      interfaces have their own dialogs. The menu entries under
+      Search... are: 
+
+      <dl>
+         <dt><button -command "Help Search">Search help</button>
+	 <dd>This help text describes the search methods in more
+	     detail. 
+
+         <dt><button -command Find_Msg>Current message</button>
+	 <dd>Enter a string to find in the current
+	     message. &lt;Return&gt; causes the search to
+	     begin. &lt;Control-s&gt; and &lt;Control-r&gt; cause
+	     subsequent forward and reverse searches, respectively.
+
+	 <dt><button -command Find_FTOC>Folder table of contents</button>
+	 <dd>This search is done by scanning the folder table of
+	     contents display, so it only hits on the current folder
+	     scan output. Select the All button to select all matching
+	     messages. Use Pick for more general searching. 
+
+	 <dt><button -command Pick>All messages in current folder
+	     (pick)</button> 
+	 <dd>This provides an interface to the MH <b>pick</b>
+	     command. Begin by choosing from the "pick attribute" menu
+	     in the dialog. These include headers like Subject, From,
+	     To, and Cc, as well as date criteria like Before, and
+	     After. You can search for a string in the body of
+	     messages with the "Search" field. You can enter a pattern
+	     for any of these, and <b>pick</b> selects messages that
+	     satisfy the logical AND of these pattern
+	     specifications. Note that the Before and After patterns
+	     are date-specific, and <b>pick</b> understands many forms
+	     of date patterns. Read the MH man page on <b>pick</b> for
+	     the complete story. You can build up more complex logical
+	     search expressions by clicking the Or button.
+
+	     <dl>	     
+	       <dt>Pick from Seq/msgs(s) 
+	       <dd>This entry lets you limit <b>pick</b> to a specific
+	           set of messages. In particular, you can specify a
+	           sequence name (e.g., "unseen"), and have pick find
+	           all messages with that sequence identifier. After
+	           the pick completes, a range of messages is selected
+	           that satisfies the search, and you can operate on
+	           these messages as described below. 
+
+	       <dt>Add to Sequence(s) 
+	       <dd>This entry lets you apply a sequence name to the
+	           set of messages that are selected by the
+	           search. You can select these later by using the
+	           "Pick from Seq" field. 
+
+	       <dt>Add to Sel 
+	       <dd>Set this before the pick to add the results of the
+	           pick to whatever message range is already selected
+	           in the table of contents. Otherwise a new selection
+	           is made.   
+
+	       <dt>New FTOC 
+	       <dd>This button causes the table of contents to be
+	           replaced with the set of currently selected
+	           messages. These can be the result of a pick, or you
+	           can just make a selection with the
+	           mouse. <i>Warning</i>: after projecting a new table
+	           of contents, a subsequent <i>pick</i> will only
+	           find things in this limited table of contents. 
+
+	       <dt>Mark Seen 
+	       <dd>Use this to remove the selected messages from the
+	           unseen sequence.  
+	    </dl>
+
+	<dt><button -command Glimpse_Startup>All messages in all
+	    folders (glimpse)</button> 
+	<dd>This brings up an interface to the Glimpse text index
+	    tool. You must first index your mail, so to get started
+	    click "index" to build your indexes. This process runs in
+	    the background, and the status of the index process is
+	    displayed in the Glimpse log. The storage overhead of the
+	    indexes is about 10% to 15%, which is quite good for a
+	    full text index system. To search, enter a word in the
+	    search area and press "Search". The button changes to a
+	    "Stop" button, although the stop may take a moment to take
+	    effect. The search results are displayed in the log. Click
+	    on the message in the log and exmh will visit that
+	    message. For more details, see the exmh-use man page.
+
+	<dt><button -command Thread_Display>Display related messages 
+	<dd>This selects messages that have the same subject as the
+	    current message, or that are "in-reply-to" the current
+	    message. The folder table of contents is replaced by one
+	    that only lists the related messages. 
+      </dl>
+
+   <dt>More... 
+   <dd>This is a menu with more folder operations in it: 
+       <dl>
+
+         <dt><button -command "busy Scan_FolderForce">Rescan folder</button>
+	 <dd>Rescan forces a rescan of the folder
+	     contents. <i>Exmh</i> maintains a cache of the scan
+	     output that could get confused. The Rescan button forces
+	     a full scan. If you just want to scan the new messages
+	     that have arrived in the folder you are currently
+	     reading, it is more efficient to click on the folder's
+	     label in the top pane. This will invoke a scan merging
+	     procedure that attempts to preserve the cached results of
+	     previous scans. You should only need Rescan when you have
+	     reason to believe that <i>exmh</i> is out of sync.
+
+	 <dt><button -command Ftoc_NewFtoc>List only selected
+	     messages</button> 
+	 <dd>This changes the table of contents to list only the
+	     selected messages. This is useful after a pick or table
+	     of contents search that has highlighted several messages
+	     throughout the folder. You must use 
+	     <button -command "busy Scan_FolderForce">Rescan
+	     folder</button> to get the full listing back.
+
+	 <dt><button -command FolderPack>Pack folder</button>
+	 <dd>This will renumber messages in the current folder to
+	     eliminate any gaps in the number sequence. 
+
+	 <dt>Sort folder...
+	 <dd>This is a cascade menu that provides different ways to
+	     sort your folder: 
+	     <button -command "busy Folder_Sort -datefield date">by
+	     date</button>, 
+	     <button -command "busy Folder_Sort -textfield subject -limit 0">by
+	     subject</button>, and by the 
+	     <button -command "busy Folder_Sort -textfield from">sender</button>.
+	     The subject and sender sorts also do some grouping by
+	     date so that messages from one person or about one
+	     subject may be grouped into several subgroups based on
+	     their age. See the MH sortf command manual page for
+	     details. 
+
+	 <dt><button -command "busy Flist_Refresh">Find all folders</button>
+	 <dd>This refreshes the display of folder buttons, and it will
+	     pick up any new folders you have created. Under MH, the
+	     command "folders -fast -recurse" can be slow. The results
+	     are saved, so you should not need to wait for this
+	     scanning unless you change your folder structure. (You
+	     can also edit the .folders file in your MH mail
+	     directory.) In nmh, this command has been patched to
+	     speed it up considerably. 
+
+	 <dt><button -command Folder_Delete>Delete folder</button> 
+	 <dd>This lets you delete a folder. The folder must be empty,
+	     except for .xmhcache, .mh_sequences, and any .nfs junk
+	     files. 
+
+	 <dt><button -command Catch-up Unseen>Catch-up Unseen</button>
+	 <dd>This clears the unseen sequence from the current folder. 
+
+	 <dt><button -command Scan_AllFolders>Update scan caches</button>
+	 <dd>This runs another process in the background to update any
+	     scan caches that are out of date. 
+
+	 <dt><button -command "Scan_AllFolders 1">Update all scan
+	     caches</button> 
+	 <dd>This runs another process in the background to update all
+	     the scan caches. 
+
+	 <dt><button -command Folder_PurgeBg>Purge folder</button>
+	 <dd>When MH deletes a message it really only renames it to
+	     have a name like #N or ,N if it was message N. The Purge
+	     operation will clean up these junk files that are older
+	     than 7 days. (This age parameter can be adjusted by a
+	     Preference item under the MH Tweaks section.) 
+
+	 <dt><button -command Folder_PurgeAllBg>Purge all
+	     folders</button> 
+	 <dd>This runs through all your folders deleting old junk
+	     files. This is done in the background so you can continue
+	     to use the user interface during the process. 
+
+	 <dt><button -command Import_Dialog>Import mailbox folders</button>
+	 <dd>If you use a program like Elm or Sun's Mailtool, you can
+	     import their message folder contents into the format used
+	     by MH. This menu entry brings up a dialog that lets you
+	     do this. After you specify the directory that contains
+	     the mail folders, a display with a checkbutton for each
+	     folder is created. You can select which folders to
+	     import.  The originals are left alone, so you'll have to
+	     delete them yourself after you import them into MH.
+
+	 <dt><button -command audit>Audit</button>
+	 <dd>This is a cascade menu entry that lets you either view
+	     the audit summary statistics or the current audit
+	     log. Note that the audit log is appended into
+	     ~/Mail/.exmhaudit when you quit exmh. 
+
+	 <dt><button -command MhParseProfile>Re-read MH Profile</button>
+	 <dd>If you change something important in your MH profile, you
+	     can get exmh to reprocess it with this operation.
+       </dl>
 </dl>
 <h3><a NAME="MESSAGE BUTTONS" HREF="#CONTENTS">MESSAGE BUTTONS</a></h3>
 <p>
@@ -320,15 +456,19 @@ Delete, Move, Link, Forward, Unmark, and Print. Some of these buttons
 and menu entries are disabled if there is no current message. Disabled
 actions have their text grayed out. 
 <dl>
+
 <dt>Forward 
 <dd>Forward the current message(s). Also keystroke 'f'. 
+
 <dt>Send 
 <dd>Compose a mail message. Chose the editor to use via the Preferences
 dialog. Also keystroke 'c' (for "compose"). 
+
 <dt>Prev 
 <dd>Move to the previous message. Also keystroke 'p'. Keystroke 'P'
 changes the current message without displaying it. Use 's' to display
 such a message. 
+
 <dt>Next 
 <dd>Move to the next message. This will chain to the next folder with
 unread messages if you are at the end of the current folder. The "Next"
@@ -338,10 +478,12 @@ keeps you in the interesting folders and away from the dregs if you
 organize your Folder-Order properly.) Also keystroke 'n'. Keystroke
 'N' changes the current message without displaying it. Keystroke 'F'
 changes to the next folder with unseen messages. 
+
 <dt>Delete 
 <dd>Mark the current message(s) for deletion and go to the next message.
 Also keystroke 'd'. If you change your mind, select the message again
 and "Unmark" it via the entry under the message More... menu. 
+
 <dt>Move 
 <dd>Mark the selected message(s) to be moved to the target folder and
 go to the next message. Also keystroke 'm'. Note that selecting a target
@@ -350,100 +492,128 @@ if the correct target folder is already selected. If you make a mistake
 and want to move the message to a different folder, just select it
 again and right click on the proper destination folder. If you don't
 want to move it at all, then "Unmark" the message. 
+
 <dt>Link 
 <dd>Similar to move, except that the message is linked into the other
 folder so that it appears in both places. While this appears like a
 copy, the same message is shared between the folders to save disk space.
+
 <dt>Reply... 
 <dd>This is a menu of reply options. By default there are two choices,
 but you can easily define more variations on reply. The default choices
 are: 
+
 <dt>Reply to sender &lt;Key-r&gt; 
 <dd>Reply to the current message, only to the person that send the
 original. Also keystroke 'r'. 
+
 <dt>Reply all &lt;Key-R&gt; 
 <dd>Reply to the current message, including on the cc line everyone
 that got the original message. (It invokes MH <b>repl</b> with: -cc
 cc -cc to). Also keystroke 'R'. 
+
 <dt>Reply help 
 <dd>This pops up a display that tells you how to program new reply
 buttons. You'll need to be familiar with the MH repl command and its
 filters. Check out the <b>repl</b> and <b>mh-format</b> manual pages.
+
 <dt>More... 
 <dd>This is a menu of more message operations. 
+
 <dt>Print 
 <dd>Print the current message, or the selected set of messages. The
 print command is defined via the Preferences dialog. The whole message
 is printed, headers and all. 
+
 <dt>Unmark (Undo) 
 <dd>Cancel a move or delete mark on the selected message(s). Also keystroke
 'u'. 
+
 <dt>Clip 
 <dd>Display a new toplevel window containing the current message. 
+
 <dt>First Unseen 
 <dd>Display the first unseen message, if any. Also keystroke 'U'. 
+
 <dt>Burst Digest 
 <dd>Use the MH <b>burst</b> command to split up a digest message into
 its individual messages. In addition, the new messages are added to
 the unseen sequence. You can control whether or not the original message
 is replaced with just the digest header by specifying burst options
 in your .mh_profile. (E.g., "burst: -inplace"). 
+
 <dt>Redistribute 
 <dd>This uses the MH <b>dist</b> command to resend a message to a different
 recipient. Your editor is invoked with a small buffer containing only
 Resent-To: and Resent-Cc: lines. 
+
 <dt>Save to file 
 <dd>This simply copies the current message(s) to a file selected via
 the file selector dialog. 
+
 <dt>Use message as draft 
 <dd>This copies the current message into the drafts folder and opens
 your editor on the message. 
+
 <dt>Edit message 
 <dd>This opens your editor on the message so that you can annotate
 it. 
+
 <dt>uudecode message 
 <dd>This simple runs uudecode with the current message as input. A
 file selection dialog lets you choose the name of the resulting file.
+
 <dt>Print postscript content 
 <dd>This is useful for non-MIME messages that contain a postscript
 file. The message body (everything from the initial %!PS onwards) is
 put into a temp file and then the Preferences Postscript Print Command
 is used to print that file. 
+
 <dt>Apply command to message 
 <dd>This runs a UNIX command over the current message (all of it).
 A dialog lets you set the command, with occurrences of $file replaced
 with the pathname of the message. The default value of the UNIX command
 is hiding under the Print preferences entry. 
+
 <dt>Apply command to body 
 <dd>This runs a UNIX command over a temporary file containing the body
 of the current message. 
+
 <dt>Mark Unseen 
 <dd>This puts the current message(s) back into the unseen sequence.
+
 <dt>PGP Encrypt 
 <dd>Replace the current message with an encrypted version of it. 
+
 <dt>old PGP... 
 <dd>This is a menu of operations that apply to PGP messages that are
 not wrapped up in a MIME format. Those are handled automatically. This
 menu is used to tell exmh explicitly what to do. You can Decrypt, View,
 or Extract Keys. 
+
 <dt>Scan for URLs 
 <dd>Scan through the message body and look for URL and URN references.
 If any are found, they are highlighted and made into active text. Click
 on the text and Mosaic will be started on that URI. You can set the
 command to use via the URI preferences section. Also keystroke 'z'.
+
 <dt>View selected URL 
 <dd>If you have manually selected an embedded URL, then use this menu
 entry to get exmh to ask your web browser to display the selected URL.
 If the automatic scanning doesn't work perfectly, you can do a manual
 selection on top of an incorrect active text button. 
+
 <dt>Concatenate partial messages 
 <dd>If you get a message in parts, as a MIME type message/partial,
 then select all the messages that have the parts and invoke this operation.
+
 <dt>Automatic Refile 
 <dd>Choose a folder for the current message based on the from address.
+
 <dt>Post this message to a Newsgroup 
 <dd>Post a copy of the current message to a newsgroup. You'll be prompted
 for what group. 
+
 </dl>
 <h3><a NAME="SEDIT" HREF="#CONTENTS">SEDIT</a></h3>
 The built-in editor, <b>sedit</b>, has a dozen or so commonly used

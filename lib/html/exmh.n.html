@@ -44,17 +44,22 @@ system.
 After you read this tutorial you should be able to use <i>exmh</i>for
 your basic daily mail reading needs. You will learn how to send mail,
 read mail, manage your messages in folders, and adjust some of the
-<i>exmh</i> features by means of its Preferences user interface. 
+<i>exmh</i> features by means of its 
+<button -command Preferences_Dialog>Preferences</button> user
+interface. 
 <p>
-There are three other exmh man pages. <a HREF="exmh-use.n.html"><b>exmh-use</b></a>
-provides information about using the more advanced features of <i>exmh</i>.
-If you are already an experienced email user, you may want to just
-read the GETTING STARTED section here and then skip to the <a HREF="exmh-use.n.html"><b>exmh-use</b></a>
-man page. <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a> describes
-how to customize exmh to suit your needs. <a HREF="exmh-ref.n.html"><b>exmh-ref</b></a>
-lists each button and menu entry in <i>exmh</i> and explains what they
-do. If you are an experienced <i>exmh</i> user, this may be the most
-useful man page for you. 
+There are three other exmh man pages. <a
+HREF="exmh-use.n.html"><b>exmh-use</b></a> provides information about
+using the more advanced features of <i>exmh</i>. If you are already an
+experienced email user, you may want to just read the GETTING STARTED
+section here and then skip to the <a
+HREF="exmh-use.n.html"><b>exmh-use</b></a> man page. <a
+HREF="exmh-custom.n.html"><b>exmh-custom</b></a> describes how to
+customize exmh to suit your needs. <a
+HREF="exmh-ref.n.html"><b>exmh-ref</b></a> lists each button and menu
+entry in <i>exmh</i> and explains what they do. If you are an
+experienced <i>exmh</i> user, this may be the most useful man page for
+you.
 <pre></pre>
 <p>
 A cleaned up version of these man pages appear in the 3rd edition of
@@ -123,13 +128,14 @@ There are three sets of buttons in the interface, and three main sub-windows.
 
 <p>
 <b>Main Buttons</b>. Along the top of the window is a set of buttons
-and menus that apply to <i>exmh</i> itself. Quit, for example, quits
-<i>exmh</i>. The Help button pops up a menu, and you can select the
-entries there to get more on-line information about <i>exmh</i>. Use
-the left mouse button to select the buttons and menus. A button will
-change its appearance when you press it, and it will be invoked when
-you release the mouse over the button. If you slide the mouse off the
-button before releasing it, nothing happens. 
+and menus that apply to <i>exmh</i> itself. <button -command
+Exmh_Done>Quit</button>, for example, quits <i>exmh</i>. The Help...
+button pops up a menu, and you can select the entries there to get
+more on-line information about <i>exmh</i>. Use the left mouse button
+to select the buttons and menus. A button will change its appearance
+when you press it, and it will be invoked when you release the mouse
+over the button. If you slide the mouse off the button before
+releasing it, nothing happens.
 <p>
 <b>Folder Display</b>. Below the main buttons is the folder display
 sub-window. It has a special button for each of your top-level folders,
@@ -139,25 +145,27 @@ your new messages, and the drafts folder is for messages you are writing.
 If you have used MH (or xmh) before, then you may have many more folders
 that will appear in this display. The mouse bindings for folder labels
 are explained in the <a HREF="exmh-use.n.html"><b>exmh-use</b></a>
-man page. The <i>Color Legend</i> from the Help menu also tells you
-how the folder labels respond to mouse clicks. 
+man page. The <button -command Help_KeyDisplay>Color Legend</button>
+from the Help... menu also tells you how the folder labels respond to
+mouse clicks.
 <p>
 <b>Folder Cache</b>. A second folder display called the <i>folder cache</i>
 may appear under the main folder display. This shows the folder labels
 for recently used folders. If you only have a few folders this wastes
-screen real estate. The PREFERENCES section near the end of this man
-page explains how to turn this off via the Folder Cache preferences
-setting. If you are a first-time exmh user, Exmh tries to guess if
-you need this display based on the number of folders and nested folders
-you have. 
+screen real estate. The <a href="#PREFERENCES">PREFERENCES</a> section
+near the end of this man page explains how to turn this off via the
+Folder Cache <button -command Preferences_Dialog>Preferences</button>
+setting. If you are a first-time exmh user, Exmh tries to guess if you
+need this display based on the number of folders and nested folders
+you have.
 <p>
 <b>Folder Buttons</b>. The middle set of buttons is for operations
 that apply to folders. For example, you can create a new folder with
-the New button here. The More... button displays a popup menu with
-several more operations you can apply to folders. Some of these buttons
-will be introduced in this man page. All of these buttons and menus
-are explained in detail in the <a HREF="exmh-ref.n.html"><b>exmh-ref</b></a>
-man page. 
+the <button -command "Folder_New">New</button> button here. The
+More... button displays a popup menu with several more operations you
+can apply to folders. Some of these buttons will be introduced in this
+man page. All of these buttons and menus are explained in detail in
+the <a HREF="exmh-ref.n.html"><b>exmh-ref</b></a> man page. 
 <p>
 To the left of the folder buttons, summary information about the current
 folder is displayed. 
@@ -167,7 +175,8 @@ a summary of the messages in the folder. It shows the message number,
 the date of the message, the subject of the message, and, space permitting,
 the first few words of the message. Left click on a line in the table
 of contents to view the corresponding message. The mouse bindings for
-the table of contents are described in more detail in the <a HREF="exmh-use.n.html"><b>exmh-use</b></a>
+the table of contents are described in more detail in the <a
+HREF="exmh-use.n.html"><b>exmh-use</b></a> 
 man page. 
 <p>
 MH experts: The display in this window comes from both the MH scan
@@ -178,11 +187,13 @@ used by these programs.
 table of contents windows use highlights to give you visual clues about
 the state of messages and folders. Your unread messages are highlighted
 in the table of contents and the folders that contain unread message
-are highlighted in the folder display. Pull down the main Help menu
-and select <i>Color Legend</i> to display a key to the highlights for
-your display. The highlighting is covered in more detail later in the
-<a HREF="exmh-use.n.html"><b>exmh-use</b></a> man page. The <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page tells how you can control the highlighting yourself. 
+are highlighted in the folder display. Pull down the main Help... menu 
+and select <i><button -command Help_KeyDisplay>Color
+Legend</button></i> to display a key to the highlights for your
+display. The highlighting is covered in more detail later in the <a
+HREF="exmh-use.n.html"><b>exmh-use</b></a> man page. The <a
+HREF="exmh-custom.n.html"><b>exmh-custom</b></a> man page tells how
+you can control the highlighting yourself. 
 <p>
 <b>Status Line</b>. Just below the table of contents is the status
 line. This has two parts. The left part shows the name of the folder
@@ -208,21 +219,23 @@ Some of the short-cuts are introduced in this man page, and all of
 them are listed in the <a HREF="exmh-use.n.html"><b>exmh-use</b></a>
 man page. 
 <p>
-<b>Message Display</b>. The bottom sub-window displays the current message,
-if any. Some of the less interesting mail headers start out scrolled
-off the top of this window. 
+<b>Message Display</b>. The bottom sub-window displays the current
+message, if any. Some of the less interesting mail headers start out
+scrolled off the top of this window. 
 
 <h3><a NAME="SENDING MAIL" HREF="#CONTENTS">SENDING MAIL</a></h3>
 <p>
 A good way to test things out is to send a message to yourself. Here
 are the steps you take to do that: 
 <p>
-1. Click the Send button, which is in the Message buttons in the bottom
-group. A new window will open that contains the template for your message.
-The built-in editor, which is called <i>sedit</i>, will start out with
-the insert cursor positioned at the end of the first empty header line.
-Enter your user name after the To: header. If you want to send the
-message to more than one person, use a comma to separate the names.
+1. Click the <button -command "Msg_Compose">Comp</button> button,
+which is in the Message buttons in the bottom group. "Comp" is short
+for "compose".  A new window will open that contains the template for
+your message. The built-in editor, which is called <i>sedit</i>, will
+start out with the insert cursor positioned at the end of the first
+empty header line. Enter your user name after the To: header. If you
+want to send the message to more than one person, use a comma to
+separate the names. 
 
 <p>
 2. Position the insert cursor on the next header line. You can do this
@@ -261,9 +274,9 @@ message templates, this will be right after the line of all dashes.
 5. Type in your message. When you type in a long message, the lines
 will wrap automatically at word boundaries. To get a blank line for
 paragraph boundaries, press &lt;Return&gt;. The built-in editor supports
-several editing commands that are based on the GNU emacs key bindings.
-If you select the <i>Simple Edit</i> menu entry under the main Bindings
-menu, you will bring up a dialog that lets you view and edit the key
+several editing commands that are based on emacs key bindings. If you
+select the <i>Simple Edit</i> menu entry under the main Bindings menu,
+you will bring up a dialog that lets you view and edit the key
 bindings. 
 <p>
 6. If you are happy with the message, you send it by pressing the Send
@@ -282,10 +295,11 @@ messages. You will use these test messages to practice moving around
 in a folder and deleting messages. Make one of the messages pretty
 long so you can practice scrolling through it. 
 <p>
-Finally, try sending mh-mime-sample@online.ora.com a message. This
-addresses a program that will return a MIME message to you. Just put
-this address in the To field with anything as the message body and
-subject. Reading this message will be described below. 
+Finally, try sending <a
+href="mailto:mh-mime-sample@online.ora.com">mh-mime-sample@online.ora.com</a>
+a message. This addresses a program that will return a MIME message to
+you. Just put this address in the To field with anything as the
+message body and subject. Reading this message will be described below. 
 
 <h3><a NAME="MOUSING AROUND" HREF="#CONTENTS">MOUSING AROUND</a></h3>
 <p>
@@ -296,10 +310,11 @@ begins a line-oriented selection. If you drag a selection off the bottom
 or top of a window the text will be scrolled automatically and the
 selection will be extended. 
 <p>
-Paste is done with the middle mouse button. <i>The</i>If you drag the
-middle mouse button, then the window is scrolled instead as described
-below. There is also a key-binding for paste, which is &lt;Control-y&gt;.
-Use &lt;Control-w&gt; or the &lt;Delete&gt; key to delete the selection.
+Paste is done with the middle mouse button. If you drag the middle
+mouse button, then the window is scrolled instead as described
+below. There is also a key-binding for paste, which is
+&lt;Control-y&gt;. Use &lt;Control-w&gt; or the &lt;Delete&gt; key to
+delete the selection. 
 
 <p>
 The middle mouse button is used for "drag-scrolling". To scroll, simply
@@ -332,25 +347,28 @@ menu entry is a dashed line that invokes this tear-off operation.)
 
 <h3><a NAME="GETTING NEW MAIL" HREF="#CONTENTS">GETTING NEW MAIL</a></h3>
 <p>
-By now you should have some new mail waiting. Press the Inc button
-from the middle set of buttons that do Folder operations. This will
-transfer messages from your system spool file into your inbox folder.
-You will hear an audible cue if there was new mail, and the table of
-contents will be updated to reflect the new messages in your inbox.
-New messages will be underlined (on a monochrome screen), or blue (on
-a color screen), to indicate that you have not read them yet. 
+By now you should have some new mail waiting. Press the <button
+-command "Inc">Inc</button> button from the middle set of buttons that
+do Folder operations. This will transfer messages from your system
+spool file into your inbox folder. You will hear an audible cue if
+there was new mail, and the table of contents will be updated to
+reflect the new messages in your inbox. New messages will be
+underlined (on a monochrome screen), or blue (on a color screen), to
+indicate that you have not read them yet. 
 <p>
 To view the new message, click on its line in the table of contents,
-or press the Next button in the bottom group of buttons. The message
-will be displayed in the bottom sub-window, and the line in the table
-of contents will be highlighted to remind you which message is being
-displayed. 
+or press the <button -command "Ftoc_Next show">Next</button> button in
+the bottom group of buttons. The message will be displayed in the
+bottom sub-window, and the line in the table of contents will be
+highlighted to remind you which message is being displayed. 
 <p>
-To view the next message, click the Next button. The keyboard shortcut
-for this is the 'n' key. 
+To view the next message, click the <button -command "Ftoc_Next
+show">Next</button> button. The keyboard shortcut for this is the 'n'
+key.
 <p>
-The view the previous message, click the Prev button. The keyboard
-shortcut for this is the 'p' key. 
+The view the previous message, click the <button -command "Ftoc_Prev
+show">Prev</button> button. The keyboard shortcut for this is the 'p'
+key. 
 <p>
 <b>Scrolling through messages</b>. If you get a message that is too
 long to fit into the message window, then the scrollbar will change
@@ -376,29 +394,30 @@ key. You can use the BackSpace key to scroll back through a message.
 <h3><a NAME="READING MIME MESSAGES" HREF="#CONTENTS">READING MIME
 MESSAGES</a></h3>
 <p>
-By now you should have also received the sample MIME message from mh-mime-sample@online.ora.com.
-The MIME message has three parts to it, and these are numbered and
+By now you should have also received the sample MIME message from <a
+href="mailto:mh-mime-sample@online.ora.com">mh-mime-sample@online.ora.com</a>.
+The MIME message has three parts to it, and these are numbered and 
 labeled in the display. The first part is a multipart/alternative content,
 which means there are a few different ways to view the content. This
 is indicated by the message under the heading <b>1.</b> that there
 are alternative views of the following content. <i>Exmh</i> will go
 ahead and display what it thinks is the best alternative, and you see
-the text/enriched content displayed in part <b>1.2</b>. If you want
+the text/plain content displayed in part <b>1.2</b>. If you want
 to see the other alternatives, then you can press the right button
 over section 1 to get a popup menu with some choices. 
 <p>
 The next two parts are an audio clip and a picture in GIF format. The
-audio clip is handled directly by exmh, and it displays two active
-text buttons labeled "Play attached audio" and "Save audio file". Click
-on either of these with the left mouse button. The part corresponding
-to the image displays a message about what the type is, and suggests
-that you press the right mouse button to display a menu. You can always
-press the right button to get a MIME menu that has type-specific options
-for parts of your message. If you press the right button over part
-<b>2.</b>, then the popup menu will offer you these choices: 
+audio clip displays two active text buttons labeled "Play attached
+audio" and "Save audio file". Click on either of these with the left
+mouse button. The part corresponding to the image displays the image
+in the window. You can always press the right button to get a MIME
+menu that has type-specific options for parts of your message. If you
+press the right button over part <b>2.</b>, then the popup menu will
+offer you these choices:  
 <pre><blockquote>Decode part as MIME
 Save Hello from the author...
 View using mailcap rule...
+Print Hello from the author as text...
 Pass an audio fragment to metamail...
 </blockquote></pre>The first item is a checkbox menu
 item that lets you view the raw content if you want to. The Save...
@@ -417,7 +436,8 @@ also plays the audio.
 <p>
 Select one of the messages from your friend that you'd like to answer.
 Press the left button over the Reply... menu button. A menu with a
-few entries will be displayed. Select the <i>Reply to sender</i> menu
+few entries will be displayed. Select the <button
+-command "Msg_Reply -nocc to -nocc cc">Reply to sender</button> menu 
 entry by dragging the mouse down to that entry and letting up over
 it. The menu entry has a &lt;Key-r&gt; in it, which means that you
 could also press the 'r' key to invoke this function. 
@@ -432,16 +452,18 @@ to the Cc: component so you will get a copy of the reply message. When
 you are done, press the Send button in the editor window to send the
 message. 
 <p>
-There are a number of ways to control the format of your reply messages.
-The MH <i>repl</i> command has several formatting options, and because
-<i>exmh</i> uses <i>repl</i> to set up the reply message, you can customize
-your reply format. <i>Exmh</i> lets you define several variations on
-reply and add them to the Reply... menu. This is described in the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page. 
+There are a number of ways to control the format of your reply
+messages. The MH <i>repl</i> command has several formatting options,
+and because <i>exmh</i> uses <i>repl</i> to set up the reply message,
+you can customize your reply format. <i>Exmh</i> lets you define
+several variations on reply and add them to the Reply... menu. This is
+described in the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
+man page.
 <p>
 It should not take long for you to get the copy of the reply message.
-Wait a minute or so and press the Inc button. The keyboard short-cut
-for Inc is the 'i' key. 
+Wait a minute or so and press the <button -command "Inc">Inc</button>
+button. The keyboard short-cut for <button -command "Inc">Inc</button>
+is the 'i' key.
 
 <h3><a NAME="SELECTING MESSAGES" HREF="#CONTENTS">SELECTING MESSAGES</a></h3>
 <p>
@@ -506,10 +528,11 @@ to any existing selection.
 <p>
 Finally, use the "Pick" button to do the search. Once the search has
 completed you can perform a few operations on the selection. You can
-delete and refile messages as described later. You can also display
-a new table of contents that only contains the selected messages. Use
-the "New FTOC" button for this. You can also clear the unseen state
-of the messages with the "Mark Seen" button. 
+<button -command "Msg_Remove">Delete</button> and refile messages as
+described later. You can also display a new table of contents that
+only contains the selected messages. Use the "New FTOC" button for
+this. You can also clear the unseen state of the messages with the
+"Mark Seen" button.
 <p>
 The "Clear" button resets the fields. 
 <p>
@@ -543,66 +566,79 @@ After you have read a message, you might want to remove it to keep
 your mail folders tidy. <i>Exmh</i> uses two steps to remove mail.
 In the first step you <i>mark</i> a message as being deleted. In the
 second step you <i>commit</i> the operations on all marked messages.
-It turns out that delete just renames your message files. They will
-survive until you get another message by the same number and remove
-it, too. In addition, exmh has a "Purge Folder" operation that removes
-these renamed files if they are more than a week old. 
+It turns out that <button -command "Msg_Remove">Delete</button> just
+renames your message files. They will survive until you get another
+message by the same number and remove it, too. In addition, exmh has a
+<button -command Folder_PurgePg>Purge Folder</button> operation that
+removes these renamed files if they are more than a week old.
 <p>
-The Delete operation applies to the current message, or you can also
-select a range of messages by dragging out a selection in the table
-of contents. You can delete the current message(s) by pressing the
-Delete button. The keyboard short-cut is the 'd' key. The deleted message(s)
-will be highlighted after the delete operation so you can easily see
+The <button -command "Msg_Remove">Delete</button> operation applies to
+the current message, or you can also select a range of messages by
+dragging out a selection in the table of contents. You can delete the
+current message(s) by pressing the <button -command
+"Msg_Remove">Delete</button> button. The keyboard short-cut is the 'd'
+key. The deleted message(s) will be highlighted after the <button
+-command "Msg_Remove">Delete</button> operation so you can easily see
 the state of the message. On a monochrome screen, a cross hatching
-will be drawn through the table of contents line for the message. On
-a color screen, the table of contents line will get a dark grey background.
+will be drawn through the table of contents line for the message. On a
+color screen, the table of contents line will get a dark grey
+background. 
 
 <p>
-After you mark a message for delete, you are automatically advanced
-to the next message. This makes it easy to go through your folder and
-clean it up. Click 'd' to delete, or click 'n' to leave it alone. 
+After you mark a message for <button -command
+"Msg_Remove">Delete</button>, you are automatically advanced to the
+next message. This makes it easy to go through your folder and clean
+it up. Click 'd' to delete, or click 'n' to leave it alone.
 <p>
 <i>Hint</i>. If you are really in a hurry, use 'D' and 'N' as your
 keyboard short-cuts. This prevents the next message from being displayed,
 which can be slow for complex multi-media messages. 
 <p>
-When you are ready to commit the pending delete actions, press the
-Commit button. The keyboard shortcut for commit is &lt;Control-Return&gt;.
+When you are ready to commit the pending <button 
+-command "Msg_Remove">Delete</button> actions, press the <button
+-command "Folder_Commit">Commit</button> button. The keyboard shortcut
+for <button -command "Folder_Commit">Commit</button> is
+&lt;Control-Return&gt;.
 
 <p>
-If you decide you do not want to delete a message you can unmark it.
-Use the <i>Unmark (Undo)</i> menu entry that is under the message More...
-menu. The unmark operation applies to the current message or messages,
-so you have to select the messages to unmark first. The keyboard short-cut
-for unmark is 'u'. 
+If you decide you do not want to <button -command
+"Msg_Remove">Delete</button> a message you can unmark it. 
+Use the <button -command "Ftoc_Unmark">Unmark (Undo)</button> menu
+entry that is under the message More... menu. The unmark operation
+applies to the current message or messages, so you have to select the
+messages to unmark first. The keyboard short-cut for unmark is 'u'. 
 <p>
-<i>Hint</i>. The minus, '-', keyboard shortcut takes you to the previous
-message, even if it has been marked for delete. Ordinarily the Prev
-operation, and the 'p' short-cut for it, will skip over marked messages.
-
+<i>Hint</i>. The minus, '-', keyboard shortcut takes you to the
+previous message, even if it has been marked for
+<button -command "Msg_Remove">Delete</button>. Ordinarily the
+<button -command "Ftoc_Prev show">Prev</button> operation, and the 'p'
+short-cut for it, will skip over marked messages. 
 
 <h3><a NAME="LEAVING EXMH" HREF="#CONTENTS">LEAVING EXMH</a></h3>
 <p>
-Press the Quit button to leave exmh. It will take a few moments to
-close down because it saves some state information before quitting.
-The Quit button will grey out after you click it, and you will see
-a few status messages as it shuts itself down. 
+Press the <button -command Exmh_Done>Quit</button> button to leave
+exmh. It will take a few moments to close down because it saves some
+state information before quitting. The
+<button -command Exmh_Done>Quit</button> button will grey out after
+you click it, and you will see a few status messages as it shuts
+itself down.
 
 <h3><a NAME="PREFERENCES" HREF="#CONTENTS">PREFERENCES</a></h3>
 <p>
-Try out the Preferences by turning off the folder cache. This just
-takes up display space if you don't have many folders. If you have
-lots of nested folders, though, you might even want to make this display
-bigger! 
+Try out the <button -command Preferences_Dialog>Preferences</button>
+by turning off the folder cache. This just takes up display space if
+you don't have many folders. If you have lots of nested folders,
+though, you might even want to make this display bigger! 
 <p>
-Click the Preference button, which brings up a dialog that has buttons
-for several of the modules that make up <i>exmh</i>. Click on the Folder
-Cache button to bring up the preference items that control the folder
-cache. In this case there are just two items: the number of lines of
-labels in the cache, and the names of folders that are always in the
-cache. Click in the first field and backspace over the default value
-of 1. Type in 0 instead, and press &lt;Return&gt;. Voila! The folder
-cache disappears. 
+Click the <button -command Preferences_Dialog>Preferences</button>
+button, which brings up a dialog that has buttons for several of the
+modules that make up <i>exmh</i>. Click on the Folder Cache button to
+bring up the preference items that control the folder cache. In this
+case there are just two items: the number of lines of labels in the
+cache, and the names of folders that are always in the cache. Click in
+the first field and backspace over the default value of 1. Type in 0
+instead, and press &lt;Return&gt;. Voila! The folder cache
+disappears.
 <p>
 If you like this setting, press Save one the main Preference dialog
 and your changes will be saved to a file named ~/.exmh/exmh-defaults. Press
@@ -611,16 +647,18 @@ here, because you are allowed to Dismiss the preference dialog without
 saving. 
 <p>
 Another useful preference item to set is under Background Processing.
-You can arrange for <i>exmh</i> to periodically run <i>inc</i> so your
-messages are automatically transferred into your inbox. The advantage
-of doing this is that the folder label highlighting works best this
-way. Unfortunately, <i>exmh</i> does not give you any visual clues
-when mail is only waiting in your system spool file. 
+You can arrange for <i>exmh</i> to periodically run <i><button
+-command "Inc">Inc</button></i> so your messages are automatically
+transferred into your inbox. The advantage of doing this is that the
+folder label highlighting works best this way. Unfortunately,
+<i>exmh</i> does not give you any visual clues when mail is only
+waiting in your system spool file.
 <p>
-More details about the Preferences dialog are given in the <a HREF="exmh-use.n.html"><b>exmh-use</b></a>
-man page, and an overview of the various preference sections is given
-in the <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a> man page..
-
+More details about the 
+<button -command Preferences_Dialog>Preferences</button> dialog are
+given in the <a HREF="exmh-use.n.html"><b>exmh-use</b></a> man page,
+and an overview of the various preference sections is given in the <a
+HREF="exmh-custom.n.html"><b>exmh-custom</b></a> man page.. 
 
 <h3><a NAME="WHAT IS MH MAIL?" HREF="#CONTENTS">WHAT IS MH MAIL?</a></h3>
 <p>
@@ -636,28 +674,39 @@ reason. For more details, there are individual man pages for each MH
 program, plus one overview man page called MH. Below is a short summary
 of the main MH programs used by exmh. 
 <dl>
-<dt>folder 
-<dd>Query or set the current folder. 
-<dt>inc 
-<dd>Incorporate mail from your system spool file into your folders.
-<dt>scan 
-<dd>Display a listing of a mail folder. 
-<dt>show 
-<dd>Display a mail message. 
-<dt>next 
-<dd>Display the next mail message. (Exmh doesn't actually run this.)
-<dt>prev 
-<dd>Display the previous mail message. (Exmh doesn't actually run this.)
-<dt>rmm 
-<dd>Delete a mail message. 
-<dt>refile 
-<dd>Move a message into another mail folder. 
-<dt>repl 
-<dd>Reply to a mail message 
-<dt>forw 
-<dd>Forward one or more mail messages. 
-<dt>comp 
-<dd>Compose a new mail message. 
+  <dt>folder 
+  <dd>Query or set the current folder. 
+
+  <dt><button -command "Inc">Inc</button> 
+  <dd>Incorporate mail from your system spool file into your folders.
+
+  <dt>scan 
+  <dd>Display a listing of a mail folder. 
+
+  <dt>show 
+  <dd>Display a mail message. 
+
+  <dt>Next
+  <dd>Display the next mail message. (Exmh doesn't actually run this.)
+
+  <dt>Prev
+  <dd>Display the previous mail message. (Exmh doesn't actually run this.)
+
+  <dt>rmm 
+  <dd>Delete a mail message. 
+
+  <dt>refile 
+  <dd>Move a message into another mail folder. 
+
+  <dt>repl 
+  <dd>Reply to a mail message 
+
+  <dt>forw 
+  <dd>Forward one or more mail messages. 
+
+  <dt>Comp
+  <dd>Compose a new mail message. 
+
 </dl>
 <p>
 MH keeps track of the current folder and the current message in between
@@ -716,10 +765,10 @@ have unread mail in them.
 your system, <i>exmh</i> displays the bitmap face of the person that
 sent the current message (or their organization). 
 <p>
-<b>Background processing</b>. You can set <i>exmh</i> to run <i>inc</i>
-periodically, check for new messages arriving asynchronously in folders,
-run the MH <i>msgchk</i> program, or count up the messages in your
-mail spool file. 
+<b>Background processing</b>. You can set <i>exmh</i> to run
+<i><button -command "Inc">Inc</button></i> periodically, check for new
+messages arriving asynchronously in folders, run the MH <i>msgchk</i>
+program, or count up the messages in your mail spool file. 
 <p>
 <b>Editor interface</b>. You can hook <i>exmh</i> to your favorite
 editor using the <b>exmh-async</b> script. Or, Tcl-based editors such
@@ -734,17 +783,18 @@ define new aliases and insert aliases into mail messages.
 <b>Pretty Good Privacy (PGP)</b>. If you have PGP, you can use it from
 <i>exmh</i> to digitally sign, encrypt, and decrypt messages. 
 <p>
-<b>NNTP News support</b>. <i>Exmh</i> can retrieve new messages using NNTP
-(Network News Transfer Protocol) from user-specified newsgroups. This can be
-performed automatically every so often.
+<b>NNTP News support</b>. <i>Exmh</i> can retrieve new messages using
+NNTP (Network News Transfer Protocol) from user-specified
+newsgroups. This can be performed automatically every so often.
 <p>
 <b>User Programming</b>. If the preference settings are not enough
 for you, you can program <i>exmh</i> more directly. You can define
 new buttons and menus and add new Tcl code to its implementation. 
 
 <h3><a NAME="SEE ALSO" HREF="#CONTENTS">SEE ALSO</a></h3>
-<a HREF="exmh-use.n.html">exmh-use</a>, <a HREF="exmh-ref.n.html">exmh-ref</a>,
-<a HREF="exmh-custom.n.html">exmh-custom</a>, mh 
+<a HREF="exmh-use.n.html">exmh-use</a>, <a
+HREF="exmh-ref.n.html">exmh-ref</a>, <a
+HREF="exmh-custom.n.html">exmh-custom</a>, mh 
 
 <h3><a NAME="AUTHOR" HREF="#CONTENTS">AUTHOR</a></h3>
 welch@acm.org "Brent Welch"
@@ -753,7 +803,7 @@ welch@acm.org "Brent Welch"
 To Xerox PARC/CSL, for supporting this work initially, to Sun Microsystems
 Laboratories for continuing the support, and to all the <a HREF="index.html">exmh</a>
 users that contributed ideas and code. 
-<hr>[ <a HREF="index.html">exmh</a> | 
+<hr><a HREF="index.html">exmh</a> | 
 <a HREF="software.html">software</a> |
 <a HREF="Intro.html">intro</a> |
 <a HREF="exmh-faq.html">faq</a> |

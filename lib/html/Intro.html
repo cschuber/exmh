@@ -198,8 +198,7 @@ message(s) and select the <button
 
 <h3>Folder Commands</h3>
 <p>
-The middle set of buttons are for folder commands: New, Search...,
-Flist, Inc, Commit, and More... 
+The middle set of buttons are for folder commands: 
 <p>
 <dl>
   <dt><button -command "Folder_New">New</button>
@@ -224,25 +223,31 @@ Flist, Inc, Commit, and More...
 
 <h4>Incorporating Mail</h4>
 <p>
-The Inc button will incorporate new mail from your spool file into
-your mail folders. Exmh knows about three styles of Inc, which you
-choose via the Preferences dialog. 
+The <button -command "Inc">Inc</button> button will incorporate new
+mail from your spool file into your mail folders. Exmh knows about
+three styles of Inc, which you choose via the 
+<button -command Preferences_Dialog>Preferences</button> dialog.
+
 <ul>
-<li>"inbox" Inc moves new messages into your inbox folder. 
-<li>"presort" Inc will run the MH filtering hook, slocal, for you if
-there are messages in your spool file. 
-<li>"multidrop" Inc moves new messages into "dropboxes" by means of
-the standard slocal and ~/.maildelivery filtering, and then inc's from
-these dropboxes into folders. For this to work, you need to list your
-dropbox names in a ~/.xmhcheck file. Dropbox names can be hostnames
-(no slashes...) in which case POP is used. 
-<li>Select "none" for inc if you have an external agent that presorts
-mail for you. In this case, "background flist" will highlight folders
-that have new mail in them. 
+  <li>"inbox" <button -command "Inc">Inc</button> moves new messages
+      into your inbox folder.
+  <li>"presort" <button -command "Inc">Inc</button> will run the MH
+      filtering hook, slocal, for you if there are messages in your
+      spool file. 
+  <li>"multidrop" <button -command "Inc">Inc</button> moves new
+      messages into "dropboxes" by means of the standard slocal and
+      ~/.maildelivery filtering, and then <button 
+      -command "Inc">Inc</button>'s from these dropboxes into
+      folders. For this to work, you need to list your dropbox names
+      in a ~/.xmhcheck file. Dropbox names can be hostnames (no
+      slashes...) in which case POP is used. 
+  <li>Select "none" for <button -command "Inc">Inc</button> if you
+      have an external agent that presorts mail for you. In this case,
+      "background flist" will highlight folders that have new mail in them. 
 </ul>
 <h3><a name="search">Searching</a></h3>
 <p>
-Exmh provides several search mechanisms under the Search menu. The
+Exmh provides several search mechanisms under the Search... menu. The
 Search Message command searches for a string in the current message.
 The Search Table of Contents searches the folder table of contents
 for a string. The Glimpse search engine can search all your mail folders.

@@ -42,44 +42,51 @@ exmh-custom - A guide to customizing the exmh mail user interface.
 <h3><a NAME="CUSTOMIZING EXMH" HREF="#CONTENTS">CUSTOMIZING EXMH</a></h3>
 <p>
 This man page describes the four mechanisms used to customize <i>Exmh</i>:
-Preferences, the MH profile, X resources, and custom Tcl code. 
+<button -command Preferences_Dialog>Preferences</button>, the MH
+profile, X resources, and custom Tcl code.
 <p>
 <i>Exmh</i> is built with the assumption that you will want to customize
-it to some degree. The simplest way is by the Preferences user interface,
-which exposes numerous knobs and dials that you can adjust to control
-a lot of the behavior of <i>exmh</i>. The second way is by defining
-X resources. You will need to do this if you want to control fonts
-and colors. It would be great if there was a user interface for this,
-but this is something that has not been crossed off the TODO list,
-yet. You also use X resources to define new buttons and menus. The
-third way is by adding custom Tcl code to the implementation of <i>exmh</i>.
-A personal library of Tcl routines is supported. You can either add
-new buttons or menus to invoke your functionality, or take advantage
-of some hook points inside <i>exmh</i> to slip in your new feature.
-It is also possible to completely replace any module of the <i>exmh</i>
-implementation. Finally, there are a few MH profile components introduced
-by <i>exmh</i>, although these may eventually migrate out of the profile
-and into the Preferences package. 
+it to some degree. The simplest way is by the 
+<button -command Preferences_Dialog>Preferences</button> user
+interface, which exposes numerous knobs and dials that you can adjust
+to control a lot of the behavior of <i>exmh</i>. The second way is by
+defining X resources. You will need to do this if you want to control
+fonts and colors. It would be great if there was a user interface for
+this, but this is something that has not been crossed off the TODO
+list, yet. You also use X resources to define new buttons and
+menus. The third way is by adding custom Tcl code to the
+implementation of <i>exmh</i>. A personal library of Tcl routines is
+supported. You can either add new buttons or menus to invoke your
+functionality, or take advantage of some hook points inside
+<i>exmh</i> to slip in your new feature. It is also possible to
+completely replace any module of the <i>exmh</i>
+implementation. Finally, there are a few MH profile components
+introduced by <i>exmh</i>, although these may eventually migrate out
+of the profile and into the 
+<button -command Preferences_Dialog>Preferences</button> package. 
 
 <h3><a NAME="PREFERENCES" HREF="#CONTENTS">PREFERENCES</a></h3>
 <p>
 After you have used <i>exmh</i> a little, you should explore all its
-capabilities by clicking on the Preferences button. There is a two-level
-preferences scheme, mainly because there are too many knobs and dials.
-At the top-level you see a menu that corresponds to different modules
-of the implementation. Clicking on one of the items brings up the preferences
-items for that module. Use the Help button to display more detailed
-information about the preference items. If you click on the label of
-an item, the help text is scrolled to the information for that item.
+capabilities by clicking on the
+<button -command Preferences_Dialog>Preferences</button> button. There
+is a two-level preferences scheme, mainly because there are too many
+knobs and dials. At the top-level you see a menu that corresponds to
+different modules of the implementation. Clicking on one of the items
+brings up the preferences items for that module. Use the
+Help... button to display more detailed information about the
+preference items. If you click on the label of an item, the help text
+is scrolled to the information for that item. 
 
 <p>
-There are three types of options you can set through the Preferences
-dialog: choices, booleans, and general items. Each of these are tied
-to a Tcl variable and an X resource name. Changes in the Preference
-user interface change the value of the Tcl variable, which affects
-the <i>exmh</i> runtime behavior. Then, when you click <b>Save</b>
-in the dialog, the values are saved as X resource settings in your
-~/.exmh/exmh-defaults file. 
+There are three types of options you can set through the
+<button -command Preferences_Dialog>Preferences</button> dialog:
+choices, booleans, and general items. Each of these are tied to a Tcl
+variable and an X resource name. Changes in the Preference user
+interface change the value of the Tcl variable, which affects the
+<i>exmh</i> runtime behavior. Then, when you click <b>Save</b> in the
+dialog, the values are saved as X resource settings in your
+~/.exmh/exmh-defaults file.  
 <p>
 Choices are represented by radio-style buttons where only one button
 in the set can be enabled at once. Changes take effect immediately.
@@ -96,11 +103,12 @@ through all the Preference sections to get an idea of what sort of
 options are available. 
 <p>
 If you decide you like your settings, click <b>Save</b> in the main
-Preferences dialog to save them in a exmh-defaults file in your ~/.exmh
-directory. Click <b>Reset All</b> in the main dialog to restore all
-the settings to those of your last <b>Save</b>. Within each module's
-preference dialog there is a <b>Reset</b> button that resets only those
-module's settings. 
+<button -command Preferences_Dialog>Preferences</button> dialog to
+save them in a exmh-defaults file in your ~/.exmh directory. Click
+<b>Reset All</b> in the main dialog to restore all the settings to
+those of your last <b>Save</b>. Within each module's preference dialog
+there is a <b>Reset</b> button that resets only those module's
+settings.
 <p>
 <i>Warning!</i> If you click <b>Dismiss</b> in the main dialog, some
 preferences may have been set for the current session, but they will
@@ -249,9 +257,9 @@ so you can dig into the code if you want to.
 There are a number of keystroke bindings already defined by <i>exmh</i>
 that invoke different Tcl commands. You can change the bindings and
 add bindings for new commands via the Bind dialog. Open the dialog
-from the <i>Commands</i> menu entry under the Bindings menu. The dialog
-presents a scrollable column of commands and their bindings, plus an
-area at the top to define a new binding. 
+from the <button -command Bind_Pref>Commands</button> menu entry under
+the Bindings menu. The dialog presents a scrollable column of commands
+and their bindings, plus an area at the top to define a new binding.
 <p>
 <b>Binding Syntax</b>. The following is a very brief summary of the
 Tk bind syntax. For the complete story, consult the Tk man page for
@@ -352,45 +360,58 @@ back to the first folder in your Folder-Order, unless you disable this
 by turning off the <i>Cycle back to first</i> preference setting under
 the Unseen Folders section. 
 <dl>
-<dt>Folder-Unseen 
-<dd>The Folder-Unseen component lets you constrain the search through
-folders for the ones with messages in the unseen message sequence.
-Its value is a set of <i>string match</i> patterns that are matched
-against folder names. If a folder name matches the pattern, it is searched
-for unseen messages. If the pattern begins with a !, however, then
-a folder that matches the pattern (not including the !) is excluded
-from the search. The default is *, which matches everything. Put the
-negated patterns first in your list of patterns (e.g., !junk* inbox*).
-<dt>Folder-Ignore 
-<dd>The Folder-Ignore component specifies a set of <i>string match</i>
-patterns for folder names you want to ignore. These folders are not
-even displayed by exmh. It defaults to ".* */.* */*/.* */*/*.*" , which
-causes <i>exmh</i> to ignore directories whose name begins with a period.
-<dt>Draft-Folder 
-<dd>The Draft-Folder component is used to know where to put messages
-being composed. <i>Exmh</i> will ask you if it is OK to create a Draft-Folder
-entry if you do not already have one. 
-<dt>ExmhShowProc 
-<dd>The ExmhShowProc component lets you define a program that pre-filters
-a message before displaying it. If an ExmhShowProc is defined, then
-<i>exmh</i> runs that program with the current message as the standard
-input and displays what is generated on the program's standard output.
-Note that the Header-Suppress and Header-Display mechanism is still
-used even if you have a special show proc. 
-<dt>Scan-Proc 
-<dd>The Scan-Proc component can be used to define an alternative scan
-program. If you change the scan format, you need to make sure that
-the first item on each scan line is the message number. <i>Exmh</i>
-depends on this. (It makes no attempt to decipher scan formats.) 
-<dt>MailDrop 
-<dd>The MailDrop component is required if you do not have your system
-mail spool file in the "standard" location, which is typically /usr/spool/mail/<i>username</i>.
-If you do not define MailDrop correctly then Inc will not do anything
-because it will not file your new messages in the system spool file.
-<dt>Path 
-<dd>The Path component is used to find your mail folders. <i>Exmh</i>
-will abort if this entry is not there on the presumption that you have
-not set yourself up to use MH properly. 
+  <dt>Folder-Unseen 
+  <dd>The Folder-Unseen component lets you constrain the search
+      through folders for the ones with messages in the unseen message
+      sequence. Its value is a set of <i>string match</i> patterns
+      that are matched against folder names. If a folder name matches
+      the pattern, it is searched for unseen messages. If the pattern
+      begins with a !, however, then a folder that matches the pattern
+      (not including the !) is excluded from the search. The default
+      is *, which matches everything. Put the negated patterns first
+      in your list of patterns (e.g., !junk* inbox*). 
+
+  <dt>Folder-Ignore 
+  <dd>The Folder-Ignore component specifies a set of <i>string
+      match</i> patterns for folder names you want to ignore. These
+      folders are not even displayed by exmh. It defaults to ".* */.*
+      */*/.* */*/*.*" , which causes <i>exmh</i> to ignore directories
+      whose name begins with a period. 
+
+  <dt>Draft-Folder 
+  <dd>The Draft-Folder component is used to know where to put messages
+      being composed. <i>Exmh</i> will ask you if it is OK to create a
+      Draft-Folder entry if you do not already have one. 
+
+  <dt>ExmhShowProc 
+  <dd>The ExmhShowProc component lets you define a program that
+      pre-filters a message before displaying it. If an ExmhShowProc
+      is defined, then <i>exmh</i> runs that program with the current
+      message as the standard input and displays what is generated on
+      the program's standard output. Note that the Header-Suppress and
+      Header-Display mechanism is still used even if you have a
+      special show proc.
+
+  <dt>Scan-Proc 
+  <dd>The Scan-Proc component can be used to define an alternative
+      scan program. If you change the scan format, you need to make
+      sure that the first item on each scan line is the message
+      number. <i>Exmh</i> depends on this. (It makes no attempt to
+      decipher scan formats.)  
+
+  <dt>MailDrop 
+  <dd>The MailDrop component is required if you do not have your
+      system mail spool file in the "standard" location, which is
+      typically /usr/spool/mail/<i>username</i>. If you do not define
+      MailDrop correctly then Inc will not do anything because it will
+      not file your new messages in the system spool file. 
+
+  <dt>Path 
+  <dd>The Path component is used to find your mail
+      folders. <i>Exmh</i> will abort if this entry is not there on
+      the presumption that you have not set yourself up to use MH
+      properly.
+
 </dl>
 <h3><a NAME="X RESOURCES" HREF="#CONTENTS">X RESOURCES</a></h3>
 <p>
@@ -401,108 +422,135 @@ which can be confusing. The default values come from the <b>app-defaults</b>
 file that is kept in the script library directory for <i>exmh</i>.
 Color-specific resources are contained in the app-defaults-color or
 app-defaults-mono file. One of these two is used depending on the display.
-
 <p>
-A site administrator can add local resource specifications in the local-app-defaults
-file. Put this into the exmh script library directory (the same place
-as app-defaults). To handle site-specific color-specific resources,
-<i>exmh</i> will also read the local.app-defaults-color or local.app-defaults-mono
-if those files exist. 
+A site administrator can add local resource specifications in the
+local-app-defaults file. Put this into the exmh script library
+directory (the same place as app-defaults). To handle site-specific
+color-specific resources, <i>exmh</i> will also read the
+local.app-defaults-color or local.app-defaults-mono if those files exist.
 <p>
-Each user has a ~/.exmh/exmh-defaults file in their home directory. To handle
-personal color-specific resources, <i>exmh</i> will also read your
-~/.exmh/exmh-defaults-color or ~/.exmh/exmh-defaults-mono if those files exist.
-
+Each user has a ~/.exmh/exmh-defaults file in their home directory. To
+handle personal color-specific resources, <i>exmh</i> will also read
+your ~/.exmh/exmh-defaults-color or ~/.exmh/exmh-defaults-mono if
+those files exist. 
 <p>
-I do not recommend putting exmh-related resource settings in your ~/.Xdefaults,
-although you can do that. If you do, be warned that values from the
-~/.Xdefaults file and the RESOURCE_MANAGER property on the root window
-will be overridden by things in your ~/.exmh/exmh-defaults file. 
+I do not recommend putting exmh-related resource settings in your
+~/.Xdefaults, although you can do that. If you do, be warned that
+values from the ~/.Xdefaults file and the RESOURCE_MANAGER property on
+the root window will be overridden by things in your
+~/.exmh/exmh-defaults file.  
 <p>
-The ~/.exmh/exmh-defaults file is divided into sections. The first section
-is for things you add by hand. The remaining sections are automatically
-managed by <i>exmh</i>. If you manually add settings to your ~/.exmh/exmh-defaults
-file, add entries to the <i>beginning</i> of this file. Add them before
-the comment about the rest of the file being automatically generated
-and you will not lose your changes. 
+The ~/.exmh/exmh-defaults file is divided into sections. The first
+section is for things you add by hand. The remaining sections are
+automatically managed by <i>exmh</i>. If you manually add settings to
+your ~/.exmh/exmh-defaults file, add entries to the <i>beginning</i>
+of this file. Add them before the comment about the rest of the file
+being automatically generated and you will not lose your changes.
 <p>
 If a resource has a multiword value, you *should not quote* the value
-in the resource file. The right way to specify these in your ~/.exmh/exmh-defaults
-file is shown below. The leading "*" gets around quirks in the way
-Tk names its applications; different instances of the application have
-different names. 
+in the resource file. The right way to specify these in your
+~/.exmh/exmh-defaults file is shown below. The leading "*" gets around
+quirks in the way Tk names its applications; different instances of
+the application have different names. 
 <pre><blockquote>*scrollbarSide:      left
 *c_current: violet red
 </blockquote></pre>
 <p>
 Finally, if you are really serious about fiddling with resources, you
-should look through the app-defaults file. For one thing, there is
-no guarantee that the resource names used in this man page, which correspond
-to version 1.5, will be exactly the same in later versions of <i>exmh</i>.
-Furthermore, there might be new goodies that appear in future versions
-that are not described here. Only by reading the app-defaults file
-of the current version will you be sure you are setting things correctly
-in your ~/.exmh/exmh-defaults file. (<i>Hint:</i> read through the main
-exmh script for the definition of the exmh(library) Tcl variable, which
-is the script library where app-defaults lives. The script is short,
-and the definition is near the beginning.) 
+should look through the app-defaults file. For one thing, there is no
+guarantee that the resource names used in this man page, which
+correspond to version 1.5, will be exactly the same in later versions
+of <i>exmh</i>.  Furthermore, there might be new goodies that appear
+in future versions that are not described here. Only by reading the
+app-defaults file of the current version will you be sure you are
+setting things correctly in your ~/.exmh/exmh-defaults
+file. (<i>Hint:</i> read through the main exmh script for the
+definition of the exmh(library) Tcl variable, which is the script
+library where app-defaults lives. The script is short, and the
+definition is near the beginning.)
 
 <h3><a NAME="WIDGET CLASS HIERARCHY" HREF="#CONTENTS">WIDGET CLASS
 HIERARCHY</a></h3>
 <p>
 If you want to dive into the widget tree and fiddle with fonts and
-colors and such, here are the class descriptions. I also highly recommend
-the <i>tkinspect</i> program, which you can find in the Tcl archives.
+colors and such, here are the class descriptions. I also highly
+recommend the <i>tkinspect</i> program, which you can find in the Tcl
+archives.
 
 <dl>
-<dt>Main 
-<dd>Top row of buttons and title label 
-<dt>Fdisp 
-<dd>Folder label display 
-<dt>Fltop 
-<dd>Folder label display when it is in a detached toplevel. 
-<dt>Fops 
-<dd>Folder operation buttons and folder label 
-<dt>Ftoc 
-<dd>Folder table of contents display 
-<dt>Mid 
-<dd>Frame around Face, Msgid, Status, Mops 
-<dt>Mid.Face 
-<dd>Bitmap display 
-<dt>Mid.Right.Status.label 
-<dd>Message label 
-<dt>Mid.Right.Status.msg 
-<dd>Status line 
-<dt>Mid.Right.Mops 
-<dd>Message buttons 
-<dt>Msg 
-<dd>Message display 
-<dt>Clip 
-<dd>Detached message display 
-<dt>Sedit 
-<dd>Simple editor top-levels 
-<dt>Help 
-<dd>Help window 
-<dt>Key 
-<dd>Color key window 
-<dt>Pref 
-<dd>Preferences dialogs 
-<dt>Log 
-<dd>Error/debug log 
-<dt>Pick 
-<dd>The pick dialog 
-<dt>Glimpse 
-<dd>The glimpse dialog 
-<dt>NewFolder 
-<dd>The new folder dialog. 
-<dt>DeleteFolder 
-<dd>The delete folder dialog. 
-<dt>WhatNow 
-<dd>The What Now? dialog. 
-<dt>Error 
-<dd>Error popups 
-<dt>Dialog 
-<dd>General popups 
+
+  <dt>Main 
+  <dd>Top row of buttons and title label 
+
+  <dt>Fdisp 
+  <dd>Folder label display 
+
+  <dt>Fltop 
+  <dd>Folder label display when it is in a detached toplevel. 
+
+  <dt>Fops 
+  <dd>Folder operation buttons and folder label 
+
+  <dt>Ftoc 
+  <dd>Folder table of contents display 
+
+  <dt>Mid 
+  <dd>Frame around Face, Msgid, Status, Mops 
+
+  <dt>Mid.Face 
+  <dd>Bitmap display 
+
+  <dt>Mid.Right.Status.label 
+  <dd>Message label 
+
+  <dt>Mid.Right.Status.msg 
+  <dd>Status line 
+
+  <dt>Mid.Right.Mops 
+  <dd>Message buttons 
+
+  <dt>Msg 
+  <dd>Message display 
+
+  <dt>Clip 
+  <dd>Detached message display 
+
+  <dt>Sedit 
+  <dd>Simple editor top-levels 
+
+  <dt>Help 
+  <dd>Help window 
+
+  <dt>Key 
+  <dd>Color key window 
+
+  <dt>Pref 
+  <dd>Preferences dialogs 
+
+  <dt>Log 
+  <dd>Error/debug log 
+
+  <dt>Pick 
+  <dd>The pick dialog 
+
+  <dt>Glimpse 
+  <dd>The glimpse dialog 
+
+  <dt>NewFolder 
+  <dd>The new folder dialog. 
+
+  <dt>DeleteFolder 
+  <dd>The delete folder dialog. 
+
+  <dt>WhatNow 
+  <dd>The What Now? dialog. 
+
+  <dt>Error 
+  <dd>Error popups 
+
+  <dt>Dialog 
+  <dd>General popups 
+
 </dl>
 <h3><a NAME="RESOURCES FOR BUTTONS" HREF="#CONTENTS">RESOURCES FOR
 BUTTONS</a></h3>
@@ -518,12 +566,12 @@ are the button list resources used by <i>exmh</i>.
 *Mops.ubuttonlist
 *Sedit.Menubar.ubuttonlist
 *WhatNow.ubuttonlist
-</blockquote></pre><b>Fops</b> is the set of folder
-operation buttons. Mops is the set of message operations buttons. <b>Sedit.Menubar</b>
-is the buttons in the built-in editor. <b>WhatNow</b> is the What Now
-dialog used with external editors. The <b>ubuttonlist</b> resource
-is necessary because there is no easy way to enumerate the contents
-of the resource database. 
+</blockquote></pre>
+<b>Fops</b> is the set of folder operation buttons. Mops is the set of
+message operations buttons. <b>Sedit.Menubar</b> is the buttons in the
+built-in editor. <b>WhatNow</b> is the What Now dialog used with
+external editors. The <b>ubuttonlist</b> resource is necessary because
+there is no easy way to enumerate the contents of the resource database. 
 <p>
 There are actually several resources associated with each set of buttons
 in order to provide maximum flexibility. There are three sources of
@@ -594,11 +642,12 @@ on the menubutton. The <b>entrylist</b> resource lists the entries
 that are found under the menu. Again, the system-defined entries are
 listed under <b>entrylist</b>, the administrator defines <b>lentrylist</b>,
 and users are meant to add new entries to <b>uentrylist</b>. System
-(or local) defined entries can be removed by adding them to the <b>l-entrylist</b>
-and <b>u-entrylist</b> resources. 
+(or local) defined entries can be removed by adding them to the
+<b>l-entrylist</b> and <b>u-entrylist</b> resources. 
 <p>
-For each menu entry there are resources with the following naming convention
-(this is not standard Tk): if the entrylist item is <i>foo</i>, then:
+For each menu entry there are resources with the following naming
+convention (this is not standard Tk): if the entrylist item is
+<i>foo</i>, then: 
 
 <pre><blockquote>l_<i>foo</i> defines the label (text) for the entry.
 c_<i>foo</i> defines the command.
@@ -617,7 +666,7 @@ more information, it might be helpful to consult the Tk man page for
 *Main.bind.m.l_sedit:       Simple Edit
 *Main.bind.m.c_sedit:       Sedit_Pref
 
-*Main.help.text:     Help
+*Main.help.text:     Help...
 *Main.help.m.entrylist:     help colorkey faq
 *Main.help.m.l_colorkey:    Color Legend
 *Main.help.m.c_colorkey:    Help_KeyDisplay
@@ -724,33 +773,45 @@ The basic TK widget color attributes are listed below. Most of these
 are defined in app-defaults-color to obtain a family of gray levels.
 
 <dl>
-<dt>background 
-<dd>The main background of a widget. Default is a light gray (#efefef)
-<dt>foreground 
-<dd>The foreground, (e.g., for text). Default is black. 
-<dt>activeBackground 
-<dd>The background of a button or menu when the mouse is over it. Default
-is white. 
-<dt>activeForeground 
-<dd>The foreground of a button or menu when the mouse is over it. Default
-is black. 
-<dt>disabledForeground 
-<dd>The foreground color of a button or menu that has been disabled.
-Default is grey50. 
-<dt>selectBackground 
-<dd>The background of text when it is selected. Default is canary blue.
-<dt>highlightColor 
-<dd>The color of the focus highlight rectangle when a widget has focus.
-Default is black. 
-<dt>highlightBackground 
-<dd>The color of the focus highlight rectangle when a widget does not
-have focus. Default is the same gray as background. 
-<dt>selector 
-<dd>The color of the checkbutton and radiobutton glyph when the button
-is selected. Default is black. 
-<dt>troughColor 
-<dd>The "other background" for scrollbars and scales. Default is gray
-(#dfdfdf) 
+
+  <dt>background 
+  <dd>The main background of a widget. Default is a light gray (#efefef)
+
+  <dt>foreground 
+  <dd>The foreground, (e.g., for text). Default is black. 
+
+  <dt>activeBackground 
+  <dd>The background of a button or menu when the mouse is over
+      it. Default is white. 
+
+  <dt>activeForeground 
+  <dd>The foreground of a button or menu when the mouse is over
+      it. Default is black. 
+
+  <dt>disabledForeground 
+  <dd>The foreground color of a button or menu that has been
+      disabled. Default is grey50. 
+
+  <dt>selectBackground 
+  <dd>The background of text when it is selected. Default is canary
+      blue. 
+
+  <dt>highlightColor 
+  <dd>The color of the focus highlight rectangle when a widget has
+      focus. Default is black. 
+
+  <dt>highlightBackground 
+  <dd>The color of the focus highlight rectangle when a widget does
+      not have focus. Default is the same gray as background. 
+
+  <dt>selector 
+  <dd>The color of the checkbutton and radiobutton glyph when the
+      button is selected. Default is black. 
+
+  <dt>troughColor 
+  <dd>The "other background" for scrollbars and scales. Default is
+      gray (#dfdfdf) 
+
 </dl>
 <p>
 You can specify colors for particular classes of widgets. All the labels
@@ -767,66 +828,85 @@ and deleted) but now, for the benefit of grayscale users, you can specify
 all of them. You might also look at the fdispColor.tcl and ftocColor.tcl
 files that use these resources. 
 <dl>
-<dt>c_current 
-<dd>The color for the current message and current folder. Default is
-violet red. 
-<dt>c_currentBg 
-<dd>The background color for the current message. Default is white.
-<dt>c_unseen 
-<dd>The color for unseen messages and folders that contain unseen messages.
-Default is blue. 
-<dt>c_unseenBg 
-<dd>The background color for unseen messages. Default is normal background
-(same as text widget default background). 
-<dt>c_moved 
-<dd>The background color for messages that are marked for refile, and
-the background label color for the target folder for refile. Default
-is yellow. 
-<dt>c_movedFg 
-<dd>The foreground color for messages that are marked for refile. The
-default is normal foreground. 
-<dt>c_deletedFg 
-<dd>The foreground color for messages marked for delete. Default is
-normal foreground. 
-<dt>c_foreground 
-<dd>The foreground color for labels in the folder display. Default
-is black. 
-<dt>c_background 
-<dd>The background color for labels in the folder display. Default
-is white. 
-<dt>c_popup 
-<dd>The color for the popups that display nested folders. Default is
-grey. 
-<dt>c_st_normal 
-<dd>The color for normal status messages. Default is blue. 
-<dt>c_st_error 
-<dd>The color for error messages. Default is purple. 
-<dt>c_st_warn 
-<dd>The color for warning messages. Default is red. 
-<dt>c_st_background 
-<dd>The color for messages from the background process. Default is
-medium sea green. 
-<dt>c_uri 
-<dd>The color used to highlight URL and URN text by the Highlight URI
-function. The default is thistle. 
-<dt>Text.c_link
-<dd>The color used for links in HTML display. The default is blue. 
+
+  <dt>c_current 
+  <dd>The color for the current message and current folder. Default is
+      violet red. 
+ 
+  <dt>c_currentBg 
+  <dd>The background color for the current message. Default is white.
+
+  <dt>c_unseen 
+  <dd>The color for unseen messages and folders that contain unseen
+      messages. Default is blue. 
+
+  <dt>c_unseenBg 
+  <dd>The background color for unseen messages. Default is normal
+      background (same as text widget default background). 
+
+  <dt>c_moved 
+  <dd>The background color for messages that are marked for refile,
+      and the background label color for the target folder for
+      refile. Default is yellow. 
+
+  <dt>c_movedFg 
+  <dd>The foreground color for messages that are marked for
+      refile. The default is normal foreground. 
+
+  <dt>c_deletedFg 
+  <dd>The foreground color for messages marked for delete. Default is
+      normal foreground.  
+
+  <dt>c_foreground 
+  <dd>The foreground color for labels in the folder display. Default
+      is black.
+
+  <dt>c_background 
+  <dd>The background color for labels in the folder display. Default
+      is white.
+
+  <dt>c_popup 
+  <dd>The color for the popups that display nested folders. Default is
+      grey. 
+
+  <dt>c_st_normal 
+  <dd>The color for normal status messages. Default is blue. 
+
+  <dt>c_st_error 
+  <dd>The color for error messages. Default is purple. 
+
+  <dt>c_st_warn 
+  <dd>The color for warning messages. Default is red. 
+
+  <dt>c_st_background 
+  <dd>The color for messages from the background process. Default is
+      medium sea green.  
+
+  <dt>c_uri 
+  <dd>The color used to highlight URL and URN text by the Highlight
+      URI function. The default is thistle. 
+
+  <dt>Text.c_link
+  <dd>The color used for links in HTML display. The default is blue. 
+
 </dl>
 <h3><a NAME="COLORIZING HEADERS" HREF="#CONTENTS">COLORIZING HEADERS</a></h3>
 <p>
 A set of resources are used to specify colors and other font attributes
 of message headers. 
 <dl>
-<dt>m_tagnames 
-<dd>This defines a list of mail headers for which you want to define
-special looks when they are displayed in the message area. For each
-tagname, you should define another resource with name m_<i>tagname</i>
-(e.g, m_subject) that has the text tag configuration options for that
-header line. Consult the Tk man page on the text widget to see what
-sort of tag configuration options there are. In addition, two special
-tagnames are used for defaults if there are no more specific matching
-tag name. "default" applies to displayed headers, while "hidden" applies
-to hidden ones (scrolled off the top). 
+
+  <dt>m_tagnames 
+  <dd>This defines a list of mail headers for which you want to define
+      special looks when they are displayed in the message area. For
+      each tagname, you should define another resource with name
+      m_<i>tagname</i> (e.g, m_subject) that has the text tag
+      configuration options for that header line. Consult the Tk man
+      page on the text widget to see what sort of tag configuration
+      options there are. In addition, two special tagnames are used
+      for defaults if there are no more specific matching tag
+      name. "default" applies to displayed headers, while "hidden"
+      applies to hidden ones (scrolled off the top). 
 </dl>
 <p>
 For example, here is what I have in my own ~/.exmh/exmh-defaults file: 
@@ -889,14 +969,19 @@ instead of the upper-left corner. By default no position is specified
 so your window manager will place the icon. The <b>iconic</b> resource
 indicates the startup disposition of the window. 
 <dl>
-<dt>exmh.iconposition: 
-<dd>(empty - no default position) 
-<dt>exmh.iconic: 
-<dd>0 
-<dt>*Fltop.iconposition: 
-<dd>(empty - no default position) 
-<dt>*Fltop.iconic: 
-<dd>0 
+
+  <dt>exmh.iconposition: 
+  <dd>(empty - no default position) 
+
+  <dt>exmh.iconic: 
+  <dd>0 
+
+  <dt>*Fltop.iconposition: 
+  <dd>(empty - no default position) 
+
+  <dt>*Fltop.iconic: 
+  <dd>0 
+
 </dl>
 <h3><a NAME="ICON APPEARANCE" HREF="#CONTENTS">ICON APPEARANCE</a></h3>
 <p>
@@ -908,30 +993,42 @@ values. The value for the Bitmap is a file name. If it is relative
 then it is assumed to be in the exmh script library. Specify an absolute
 pathname otherwise. 
 <dl>
-<dt>*iconUpBitmap: 
-<dd>flagup.bitmap 
-<dt>*iconDownBitmap: 
-<dd>flagdown.bitmap 
-<dt>*iconSpoolBitmap: 
-<dd>flagspool.bitmap 
-<dt>*iconUpMask: 
-<dd>flagup.mask
-<dt>*iconDownMask: 
-<dd>flagdown.mask
-<dt>*iconSpoolMask: 
-<dd>flagspool.mask
-<dt>*iconUpLabel: 
-<dd>$flist(newMsgs) Unseen 
-<dt>*iconDownLabel: 
-<dd>exmh 
-<dt>*iconSpoolLabel: 
-<dd>$exmh(numUnInced) Spooled 
-<dt>*iconUpGlyph:
-<dd>flagup.gif
-<dt>*iconDownGlyph:
-<dd>flagdown.gif
-<dt>*iconSpoolGlyph:
-<dd>flagspool.gif
+
+  <dt>*iconUpBitmap: 
+  <dd>flagup.bitmap 
+
+  <dt>*iconDownBitmap: 
+  <dd>flagdown.bitmap 
+
+  <dt>*iconSpoolBitmap: 
+  <dd>flagspool.bitmap 
+
+  <dt>*iconUpMask: 
+  <dd>flagup.mask
+
+  <dt>*iconDownMask: 
+  <dd>flagdown.mask
+
+  <dt>*iconSpoolMask: 
+  <dd>flagspool.mask
+
+  <dt>*iconUpLabel: 
+  <dd>$flist(newMsgs) Unseen 
+
+  <dt>*iconDownLabel: 
+  <dd>exmh 
+
+  <dt>*iconSpoolLabel: 
+  <dd>$exmh(numUnInced) Spooled 
+
+  <dt>*iconUpGlyph:
+  <dd>flagup.gif
+
+  <dt>*iconDownGlyph:
+  <dd>flagdown.gif
+
+  <dt>*iconSpoolGlyph:
+  <dd>flagspool.gif
 </dl>
 <p>
 You can reference any global exmh variable in the icon label. The two
@@ -952,23 +1049,29 @@ Glyph.
 <h3><a NAME="FOLDER DISPLAY RESOURCES" HREF="#CONTENTS">FOLDER DISPLAY
 RESOURCES</a></h3>
 <dl>
-<dt>fl_font 
-<dd>The font for the labels in the folder display. Default is "fixed".
-<dt>fl_xgap 
-<dd>The horizontal gap, in pixels, between labels in the folder display.
-The default is 8. 
-<dt>fl_ygap 
-<dd>The vertical gap, in pixels, between labels in the folder display.
-The default is 8. 
-<dt>fl_curbutton 
-<dd>The button that chooses the current folder in the folder display.
-The default is 1. (1=left, 2=middle, 3=right). 
-<dt>fl_navbutton 
-<dd>The button that navigates nested folders in the folder display.
-The default is 2. (1=left, 2=middle, 3=right). 
-<dt>fl_tarbutton 
-<dd>The button that chooses the target folder for operations in the folder
-display. The default is 3. (1=left, 2=middle, 3=right). 
+
+  <dt>fl_font 
+  <dd>The font for the labels in the folder display. Default is "fixed".
+
+  <dt>fl_xgap 
+  <dd>The horizontal gap, in pixels, between labels in the folder
+      display. The default is 8. 
+  <dt>fl_ygap 
+  <dd>The vertical gap, in pixels, between labels in the folder
+      display. The default is 8. 
+
+  <dt>fl_curbutton 
+  <dd>The button that chooses the current folder in the folder
+      display. The default is 1. (1=left, 2=middle, 3=right). 
+
+  <dt>fl_navbutton 
+  <dd>The button that navigates nested folders in the folder
+      display. The default is 2. (1=left, 2=middle, 3=right).
+
+  <dt>fl_tarbutton 
+  <dd>The button that chooses the target folder for operations in the
+      folder display. The default is 3. (1=left, 2=middle, 3=right). 
+
 </dl>
 <h3><a NAME="MIME RESOURCES" HREF="#CONTENTS">MIME RESOURCES</a></h3>
 <p>
@@ -976,12 +1079,14 @@ Resources are used to define the set of understood MIME types and to
 define the font families used to display messages in various character
 sets. 
 <dl>
-<dt>mimeTypes 
-<dd>This lists the Content-Types for which handler procedures are defined.
-For each of these there is a corresponding mime_<i>content/type</i>
-resource that specifies the Tcl command used to display a part of that
-type. <b>mimeUTypes</b> is the parallel resource so that users can
-add content types of their own. For example: 
+
+  <dt>mimeTypes 
+  <dd>This lists the Content-Types for which handler procedures are
+      defined. For each of these there is a corresponding
+      mime_<i>content/type</i> resource that specifies the Tcl command
+      used to display a part of that type. <b>mimeUTypes</b> is the
+      parallel resource so that users can add content types of their
+      own. For example:  
 <pre><blockquote>text/plain text/richtext text/enriched multipart/mixed 
        multipart/digest multipart/parallel multipart/alternative 
        application/octet-stream message/external-body message/rfc822 
@@ -1000,15 +1105,17 @@ add content types of their own. For example:
 *mime_message/rfc822:              Mime_ShowRfc822
 *mime_image/gif:            Mime_ShowImage
 </blockquote></pre>
-<dt>mimeCharsets 
-<dd>A font has a character set, which is an encoding for the characters.
-This is an optional parameter to the text Content-type. us-ascii is
-the basic ASCII charset, which lacks special characters used in many
-European languages. The iso-8859-1 character set has 8-bit characters
-and is used to encode accented and other special characters used in
-latin-based languages. The iso-8859-8 is used for Hebrew. The iso-2022-jp
-is used for kanji. You need a specialized version of the Tk toolkit
-to display kanji. 
+
+  <dt>mimeCharsets 
+  <dd>A font has a character set, which is an encoding for the
+     characters.  This is an optional parameter to the text
+     Content-type. us-ascii is the basic ASCII charset, which lacks
+     special characters used in many European languages. The
+     iso-8859-1 character set has 8-bit characters and is used to
+     encode accented and other special characters used in latin-based
+     languages. The iso-8859-8 is used for Hebrew. The iso-2022-jp is
+     used for kanji. You need a specialized version of the Tk toolkit
+     to display kanji.  
 <pre><blockquote>*mimeCharsets: us-ascii iso-8859-1 iso-8859-8 iso-2022-jp
 *mimeUCharsets:
 *mime_us-ascii_registry:    iso8859
@@ -1020,27 +1127,31 @@ to display kanji.
 *mime_iso-2022-jp_registry:   jisx0208.1983
 *mime_iso-2022-jp_encoding:   *
 </blockquote></pre>
-<dt>mime_<i>charset</i>_plain_families 
-<dd>A font has a family that determines the basic look for the font,
-like times or helvetica. Each of the family resources specifies a list
-of families that are tried, in order, to find a font that is supported
-by the X server. The plain family resource lists a set of font families
-that are used for ordinary text/plain messages. 
+
+  <dt>mime_<i>charset</i>_plain_families 
+  <dd>A font has a family that determines the basic look for the font,
+      like times or helvetica. Each of the family resources specifies
+      a list of families that are tried, in order, to find a font that
+      is supported by the X server. The plain family resource lists a
+      set of font families that are used for ordinary text/plain messages. 
 <pre><blockquote>*mime_us-ascii_plain_families:     fixed clean lucidatypewriter courier terminal
 *mime_iso-8859-1_plain_families:   lucidatypewriter fixed courier terminal
 *mime_iso-8859-8_plain_families:   fixed
 *mime_iso-2022-jp_plain_families:     fixed
 </blockquote></pre>
-<dt>mime_<i>charset</i>_fixed_families 
-<dd>The fixed families are used to display fixed-width fonts. Fixed
-is one of the types allowed by text/enriched fonts. 
+
+  <dt>mime_<i>charset</i>_fixed_families 
+  <dd>The fixed families are used to display fixed-width fonts. Fixed
+      is one of the types allowed by text/enriched fonts.  
 <pre><blockquote>*mime_us-ascii_fixed_families:     lucidatypewriter fixed clean courier terminal
 *mime_iso-8859-1_fixed_families:   lucidatypewriter fixed courier terminal
 *mime_iso-8859-8_fixed_families:   fixed
 *mime_iso-2022-jp_fixed_families:     fixed
 </blockquote></pre>
-<dt>mime_<i>charset</i>_proportional_families 
-<dd>The proportional families are used for text/enriched. 
+
+  <dt>mime_<i>charset</i>_proportional_families 
+  <dd>The proportional families are used for text/enriched. 
+
 <pre><blockquote>*mime_us-ascii_proportional_families:     times "new century schoolbook" 
                                    lucidabright charter lucida helvetica
 *mime_iso-8859-1_proportional_families:   times "new century schoolbook" 
@@ -1048,8 +1159,10 @@ is one of the types allowed by text/enriched fonts.
 *mime_iso-8859-8_proportional_families:   
 *mime_iso-2022-jp_proportional_families:
 </blockquote></pre>
-<dt>mime_<i>charset</i>_title_families 
-<dd>The title families are used for menu and section titles. 
+
+  <dt>mime_<i>charset</i>_title_families 
+  <dd>The title families are used for menu and section titles. 
+
 <pre><blockquote>*mime_us-ascii_title_families:     times "new century schoolbook" 
                             lucidabright charter lucida helvetica
 *mime_iso-8859-1_title_families:   times "new century schoolbook" 
@@ -1057,62 +1170,78 @@ is one of the types allowed by text/enriched fonts.
 *mime_iso-8859-8_title_families:   
 *mime_iso-2022-jp_title_families:
 </blockquote></pre>
-<dt>mimeExtMethods 
-<dd>This resource lists the set of external access methods for use
-with message/external-body MIME parts. For each of these methods there
-is a corresponding resource that lists the Tcl command that handles
-the access method. 
+
+  <dt>mimeExtMethods 
+  <dd>This resource lists the set of external access methods for use
+      with message/external-body MIME parts. For each of these methods
+      there is a corresponding resource that lists the Tcl command
+      that handles the access method. 
+
 <pre><blockquote>*mimeExtMethods:     local-file anon-ftp
 *mimeUExtMethods:
 *mime_local-file:    MimeLocalFileTransfer
 *mime_anon-ftp:             MimeFTPTransfer
-</blockquote></pre></dl>
+</blockquote></pre>
+</dl>
 
 <h3><a NAME="SEDIT BINDING RESOURCES" HREF="#CONTENTS">SEDIT BINDING
 RESOURCES</a></h3>
 <dl>
-<dt>sedit_typeKillsSel 
-<dd>Set to 1 or 0 to enable or disable type-in-kills selection: if
-there is selected text, typing new characters delete the selection.
-<dt>sedit_scrollButton 
-<dd>Set to Middle (the default), Shift-Middle, or Right, to control
-which button is used for drag-scrolling text widgets. 
-<dt>sedit_editprocs 
-<dd>This is a list of built-in editing functions. It doesn't really
-make sense to change this unless you edit seditBind.tcl to provide
-an implementation for the edit function. 
-<dt>sedit_key_<i>function</i> 
-<dd>There is a corresponding resource for each function listed in sedit_editprocs.
-The value of the resources is one or more event sequences that trigger
-the function. 
+
+  <dt>sedit_typeKillsSel 
+  <dd>Set to 1 or 0 to enable or disable type-in-kills selection: if
+      there is selected text, typing new characters delete the
+      selection. 
+  <dt>sedit_scrollButton 
+  <dd>Set to Middle (the default), Shift-Middle, or Right, to control
+  which button is used for drag-scrolling text widgets.
+
+  <dt>sedit_editprocs 
+  <dd>This is a list of built-in editing functions. It doesn't really
+      make sense to change this unless you edit seditBind.tcl to
+      provide an implementation for the edit function.
+
+  <dt>sedit_key_<i>function</i> 
+  <dd>There is a corresponding resource for each function listed in
+      sedit_editprocs. The value of the resources is one or more event
+      sequences that trigger the function. 
+
 </dl>
 <h3><a NAME="MISCELLANEOUS RESOURCES" HREF="#CONTENTS">MISCELLANEOUS
 RESOURCES</a></h3>
 <dl>
-<dt>helpInOneWindow 
-<dd>Set this to 1 to get a new preferences interface. 
-<br>
-<br>
-<dt>localTimeFormat
-<dd>If a message was sent from another time zone, the local equivalent is
-    calculated and appended in parentheses to the displayed <code>Date:</code>
-    header.  This resource describes the format, which uses the
-    <code>strftime(3C)</code> syntax.  The default value is:
+
+  <dt>helpInOneWindow 
+  <dd>Set this to 1 to get a new preferences interface. 
+      <br>
+      <br>
+
+  <dt>localTimeFormat
+  <dd>If a message was sent from another time zone, the local
+      equivalent is calculated and appended in parentheses to the
+      displayed <code>Date:</code> header.  This resource describes
+      the format, which uses the <code>strftime(3C)</code> syntax.
+      The default value is: 
 <pre><blockquote>%H:%M %Z
 </blockquote></pre>
-<dt>mime_alternative_prefs
-<dd>If a message contains a MIME part of type multipart/alternative,
-exmh will select one of the alternatives for display.  You can control
-the order of preference of the various alternatives.  The most common
-use for this is to establish the precedence of text/plain over
-text/html for exmh users who do not use the in-line html viewer for
-showing text/html content.
-<p>Example:
+
+  <dt>mime_alternative_prefs
+  <dd>If a message contains a MIME part of type multipart/alternative,
+      exmh will select one of the alternatives for display.  You can
+      control the order of preference of the various alternatives.
+      The most common use for this is to establish the precedence of
+      text/plain over text/html for exmh users who do not use the
+      in-line html viewer for showing text/html content.
+      <p>
+      Example:
+
 <pre><blockquote>
 *mime_alternative_prefs: text/plain text/richtext text/html
 </blockquote></pre>
-If no value of mime_alternative_prefs is provided, exmh will display
-the last alternative that it is capable of displaying.
+
+      If no value of mime_alternative_prefs is provided, exmh will
+      display the last alternative that it is capable of displaying.
+
 </dl>
 <h3><a NAME="PROGRAMMING EXMH" HREF="#CONTENTS">PROGRAMMING EXMH</a></h3>
 <p>
@@ -1126,9 +1255,10 @@ files) of the exmh implementation. It is more awkward to override the
 definition of a single Tcl procedure, as explained below. 
 <p>
 By the way, if you do anything interesting to the sources, send the
-results to welch@acm.org so they can be folded back into the
-master sources. Many of the good features in <i>exmh</i> came about
-this way. 
+results to <a
+href="mailto:exmh-workers@redhat.com">exmh-workers@redhat.com</a> so
+they can be folded back into the master sources. Many of the good
+features in <i>exmh</i> came about this way. 
 <p>
 Even if you do not know Tcl you can probably figure it out as you read
 through the source. There is not enough room here to talk in any detail
@@ -1204,31 +1334,42 @@ implementation will call all procedures that match the pattern Hook_Foo*,
 so you could define Hook_FooBrent and Hook_FooWelch and both would
 be called at the Foo hook point. The hook points are: 
 <dl>
-<dt>Hook_FolderChange $folder 
-<dd>Called after you changed into the named folder. 
-<dt>folderHook(enter,$folder) 
-<dd>
-<dt>folderHook(leave,$folder) 
-<dd>The <b>folderHook</b> array can be used to define enter and leave
-hooks for a folder. Just set these array elements to be the Tcl commands
-you want invoked before and after the folder change. 
-<dt>Hook_CheckPoint 
-<dd>Called at Quit time. 
-<dt>Hook_SeditSend $draft 
-<dd>Called as a message is being sent. The argument is the pathname
-of the draft message. You could frob the message here before it is
-delivered. If this raises an error, the message is not sent. 
-<dt>Hook_MsgShow $pathname mimeHdr 
-<dd>Called before a message is displayed. The first argument is the
-pathname of the message file. The second is the name of an array that
-contains the header information plucked out of the message. Because
-of multipart messages, the elements of the array look like: 
-<dt>mimeHdr(0=1,hdrs) 
-<dd>Lists all the headers defined in the message. The header keys are
-downcased (from, to, subject, etc.). 
-<dt>mimeHdr(0=1,hdr,<i>key</i>) 
-<dd>Contains the header line with the given <i>key</i>, e.g. <b>from</b>
-or <b>subject</b>. 
+
+  <dt>Hook_FolderChange $folder 
+  <dd>Called after you changed into the named folder. 
+
+  <dt>folderHook(enter,$folder) 
+  <dd>
+
+  <dt>folderHook(leave,$folder) 
+  <dd>The <b>folderHook</b> array can be used to define enter and
+      leave hooks for a folder. Just set these array elements to be
+      the Tcl commands you want invoked before and after the folder
+      change. 
+
+  <dt>Hook_CheckPoint 
+  <dd>Called at Quit time. 
+
+  <dt>Hook_SeditSend $draft 
+  <dd>Called as a message is being sent. The argument is the pathname
+      of the draft message. You could frob the message here before it
+      is delivered. If this raises an error, the message is not sent.  
+
+  <dt>Hook_MsgShow $pathname mimeHdr 
+  <dd>Called before a message is displayed. The first argument is the
+      pathname of the message file. The second is the name of an array
+      that contains the header information plucked out of the
+      message. Because of multipart messages, the elements of the
+      array look like: 
+
+  <dt>mimeHdr(0=1,hdrs) 
+  <dd>Lists all the headers defined in the message. The header keys
+      are downcased (from, to, subject, etc.). 
+
+  <dt>mimeHdr(0=1,hdr,<i>key</i>) 
+  <dd>Contains the header line with the given <i>key</i>,
+      e.g. <b>from</b> or <b>subject</b>. 
+
 </dl>
 <p>
 Note that the MsgParseFrom procedure, which is defined in msgShow.tcl,
@@ -1253,186 +1394,267 @@ order to see what is wrong and how you might do things better. The
 following is a list of the files in the implementation along with a
 short explanation of what the Tcl procedures in it are for. 
 <dl>
-<dt>exmh.MASTER 
-<dd>This is the main script. It gets patched with site-dependent information
-and the results are written to <i>exmh</i>, which gets installed. It
-doesn't define much because it loads just about everything from the
-script library. 
-<dt>exmh-bg.MASTER 
-<dd>This is the main script for the background process. It redefines
-a few procedures, and loads in the rest of its implementation from
-the library. The initial rendezvous between the background process
-is implemented in this script and in some supporting routines in background.tcl
-<dt>install.tcl 
-<dd>These are supporting routines for the installation process. This
-should be generic enough for use with your own Tcl application. Feel
-free to borrow it. 
-<dt>exmh.install 
-<dd>This is the installation script for exmh. 
-<dt>exmh-async 
-<dd>This is the wrapper for external editors. 
+
+  <dt>exmh.MASTER 
+  <dd>This is the main script. It gets patched with site-dependent
+      information and the results are written to <i>exmh</i>, which
+      gets installed. It doesn't define much because it loads just
+      about everything from the script library. 
+
+  <dt>exmh-bg.MASTER 
+  <dd>This is the main script for the background process. It redefines
+      a few procedures, and loads in the rest of its implementation
+      from the library. The initial rendezvous between the background
+      process is implemented in this script and in some supporting
+      routines in background.tcl 
+
+  <dt>install.tcl 
+  <dd>These are supporting routines for the installation process. This
+      should be generic enough for use with your own Tcl
+      application. Feel free to borrow it. 
+
+  <dt>exmh.install 
+  <dd>This is the installation script for exmh. 
+
+  <dt>exmh-async 
+  <dd>This is the wrapper for external editors. 
+
 </dl>
 <p>
 The remainder of the files are kept in the script library. 
 <dl>
-<dt>aliases.tcl 
-<dd>A browser for the MH aliases file. 
-<dt>audit.tcl 
-<dd>Maintain an audit log of mail handling operations. 
-<dt>background.tcl 
-<dd>The background processing module. This can run in a separate process
-or as part of the main process. The BgRPC routine is used to invoke
-a background operation, and it works in either case. 
-<dt>bindings.tcl 
-<dd>This has the default bindings and the implementation of the binding
-user interface. 
-<dt>busy.tcl 
-<dd>Three different ways to indicate that exmh is busy doing something.
-<dt>buttons.tcl 
-<dd>The resource-based button and menu implementation. 
-<dt>cutbuffer.tcl 
-<dd>A stub for the C cutbuffer extension. 
-<dt>dragNdrop.tcl 
-<dd>Drag-and-drop for exmh. 
-<dt>editor.tcl 
-<dd>The interface to editors for message composition. 
-<dt>env.tcl 
-<dd>Environment variable initialization. 
-<dt>error.tcl 
-<dd>The error handler. 
-<dt>extrasInit.tcl 
-<dd>This has Init routines for optional modules. The idea is to avoid
-loading their complete implementation until they are actually used.
-<dt>exwin.tcl 
-<dd>The main window display is set up here. The code that remembers
-where toplevel windows go is here. 
-<dt>faces.tcl 
-<dd>The interface to the faces database. 
-<dt>fcache.tcl 
-<dd>The folder cache display. 
-<dt>fdisp.tcl 
-<dd>The main folder display. 
-<dt>fdispColor.tcl 
-<dd>The color definitions for the folder display. 
-<dt>fdispPopup.tcl 
-<dd>The nested folder popup implementation. 
-<dt>fileselect.tcl 
-<dd>The file selection dialog. 
-<dt>find.tcl 
-<dd>The find dialog. 
-<dt>flag.tcl 
-<dd>The appearance of the icon is managed here. 
-<dt>flist.tcl 
-<dd>The set of unseen folders is managed by this module. 
-<dt>folder.tcl 
-<dd>Folder operations like Folder_Change and Folder_Commit. 
-<dt>folderNew.tcl 
-<dd>The folder create and delete dialogs. 
-<dt>ftoc.tcl 
-<dd>The scan listing (folder table-of-contents). 
-<dt>ftocColor.tcl 
-<dd>Color definitinos for the highlights in the scan listing. 
-<dt>ftocFind.tcl 
-<dd>The search routines over the scan listing. 
-<dt>getnews.tcl 
-<dd>Code to retrieve news via NNTP.
-<dt>help.tcl 
-<dd>Some very simple help text and a color key. 
-<dt>import.tcl 
-<dd>Routines to import folders from UCB mail. 
-<dt>inc.tcl 
-<dd>Several ways to incorporate mail. 
-<dt>labels.tcl 
-<dd>There are three labels in the display - can you see them? 
-<dt>mailcap.tcl 
-<dd>Routines to parse the mailcap files. 
-<dt>main.tcl 
-<dd>The main Exmh procedure, plus Exmh_Status and Exmh_Debug. 
-<dt>mh.tcl 
-<dd>A basic layer on top of the MH commands. 
-<dt>mime.tcl 
-<dd>The mime display code. 
-<dt>mosaic.tcl 
-<dd>Code to request Mosaic to display an HTML page. 
-<dt>msg.tcl 
-<dd>Message operations - although these tend to be distributed partly
-among ftoc.tcl and mh.tcl as well. 
-<dt>msgShow.tcl 
-<dd>This used to be the main message display code, but it has become
-dwarfed by the mime display. 
-<dt>partial.tcl 
-<dd>Code to concatenate the parts of a message/partial MIME message.
-<dt>pgp.tcl 
-<dd>An interface to the Pretty Good Privacy system. 
-<dt>pgpEWN.tcl 
-<dd>This implements the PGP function in the external editor What Now
-dialog. 
-<dt>pgpExec.tcl 
-<dd>This executes the PGP program to get things done. 
-<dt>pgpMatch.tcl 
-<dd>This looks for keys in your keyring. 
-<dt>pgpMisc.tcl 
-<dd>This has the main post-processing hook for messages. 
-<dt>pick.tcl 
-<dd>An interface to the MH <i>pick</i> program. 
-<dt>preferences.tcl 
-<dd>The preferences user interface. 
-<dt>print.tcl 
-<dd>Routines to print messages. 
-<dt>ps.tcl 
-<dd>Code to rummage through the process table. OS-specific. 
-<dt>report.tcl 
-<dd>This implements the Bug Report and Register New User forms. 
-<dt>rich2tk.tcl 
-<dd>This parses text/enriched MIME content-types. 
-<dt>scan.tcl 
-<dd>This manages the scan caches. 
-<dt>sedit.tcl 
-<dd>The main routines for the built-in editor. 
-<dt>seditBind.tcl 
-<dd>The keybindings for the built-in editor. 
-<dt>seditCompose.tcl 
-<dd>The mapping for the Compose key sequences that allow input of 8-bit
-characters. 
-<dt>seditEnriched.tcl 
-<dd>The composition of text/enriched is implemented here. 
-<dt>seditExtras.tcl 
-<dd>More editor stuff, like Whom, Spell, Sign, Find, and the dialogs
-associated with Insert Part. 
-<dt>seditMime.tcl 
-<dd>The MIME multipart structuring is implemented here. 
-<dt>seditQP.tcl 
-<dd>This is code to handle 8-bit characters via the MIME quoted-printable
-encoding. 
-<dt>select.tcl 
-<dd>The keyboard selection of folders and messages is implemented here.
-<dt>sound.tcl 
-<dd>Sound effects. 
-<dt>text.tcl 
-<dd>Some text tagging routines. 
-<dt>textButton.tcl 
-<dd>An implementation of a pseudo-button in a text widget. 
-<dt>textSelect.tcl 
-<dd>The main guts of text bindings. 
-<dt>thread.tcl 
-<dd>This displays the messages related to the current subject. 
-<dt>uri.tcl 
-<dd>The code that scans messages for URLs. 
-<dt>user.tcl 
-<dd>Stubs for User_Init and User_Layout. 
-<dt>widgetMenu.tcl 
-<dd>Support for the popup menus used in MIME messages. 
-<dt>widgetText.tcl 
-<dd>Constrained text scrolling and dragging a selection off the window
-is handled by the routines here. 
-<dt>widgets.tcl 
-<dd>A basic layer on top of the Tk widgets. These routines integrate
-the pack geometry manager. Even more important, they guard against
-errors that occur because of missing fonts. You should try and use
-these instead of the straight Tk widget commands. 
-<dt>xns.tcl 
-<dd>An interface to xnsgetmail for those folks with mail on an XNS
-mail server. 
+
+  <dt>aliases.tcl 
+  <dd>A browser for the MH aliases file. 
+
+  <dt>audit.tcl 
+  <dd>Maintain an audit log of mail handling operations. 
+
+  <dt>background.tcl 
+  <dd>The background processing module. This can run in a separate
+      process or as part of the main process. The BgRPC routine is
+      used to invoke a background operation, and it works in either
+      case. 
+
+  <dt>bindings.tcl 
+  <dd>This has the default bindings and the implementation of the
+      binding user interface. 
+
+  <dt>busy.tcl 
+  <dd>Three different ways to indicate that exmh is busy doing
+      something. 
+
+  <dt>buttons.tcl 
+  <dd>The resource-based button and menu implementation. 
+
+  <dt>cutbuffer.tcl 
+  <dd>A stub for the C cutbuffer extension. 
+
+  <dt>dragNdrop.tcl 
+  <dd>Drag-and-drop for exmh. 
+
+  <dt>editor.tcl 
+  <dd>The interface to editors for message composition. 
+
+  <dt>env.tcl 
+  <dd>Environment variable initialization. 
+
+  <dt>error.tcl 
+  <dd>The error handler. 
+
+  <dt>extrasInit.tcl 
+  <dd>This has Init routines for optional modules. The idea is to
+      avoid loading their complete implementation until they are actually used.
+
+  <dt>exwin.tcl 
+  <dd>The main window display is set up here. The code that remembers
+      where toplevel windows go is here.  
+
+  <dt>faces.tcl 
+  <dd>The interface to the faces database. 
+
+  <dt>fcache.tcl 
+  <dd>The folder cache display. 
+
+  <dt>fdisp.tcl 
+  <dd>The main folder display. 
+
+  <dt>fdispColor.tcl 
+  <dd>The color definitions for the folder display. 
+
+  <dt>fdispPopup.tcl 
+  <dd>The nested folder popup implementation. 
+
+  <dt>fileselect.tcl 
+  <dd>The file selection dialog. 
+
+  <dt>find.tcl 
+  <dd>The find dialog. 
+
+  <dt>flag.tcl 
+  <dd>The appearance of the icon is managed here. 
+
+  <dt>flist.tcl 
+  <dd>The set of unseen folders is managed by this module. 
+
+  <dt>folder.tcl 
+  <dd>Folder operations like Folder_Change and Folder_Commit. 
+
+  <dt>folderNew.tcl 
+  <dd>The folder create and delete dialogs. 
+
+  <dt>ftoc.tcl 
+  <dd>The scan listing (folder table-of-contents). 
+
+  <dt>ftocColor.tcl 
+  <dd>Color definitinos for the highlights in the scan listing. 
+
+  <dt>ftocFind.tcl 
+  <dd>The search routines over the scan listing. 
+
+  <dt>getnews.tcl 
+  <dd>Code to retrieve news via NNTP.
+
+  <dt>help.tcl 
+  <dd>Some very simple help text and a color key. 
+
+  <dt>import.tcl 
+  <dd>Routines to import folders from UCB mail. 
+
+  <dt>inc.tcl 
+  <dd>Several ways to incorporate mail. 
+
+  <dt>labels.tcl 
+  <dd>There are three labels in the display - can you see them? 
+
+  <dt>mailcap.tcl 
+  <dd>Routines to parse the mailcap files. 
+
+  <dt>main.tcl 
+  <dd>The main Exmh procedure, plus Exmh_Status and Exmh_Debug. 
+
+  <dt>mh.tcl 
+  <dd>A basic layer on top of the MH commands. 
+
+  <dt>mime.tcl 
+  <dd>The mime display code. 
+
+  <dt>mosaic.tcl 
+  <dd>Code to request Mosaic to display an HTML page. 
+
+  <dt>msg.tcl 
+  <dd>Message operations - although these tend to be distributed
+      partly among ftoc.tcl and mh.tcl as well. 
+
+  <dt>msgShow.tcl 
+  <dd>This used to be the main message display code, but it has become
+      dwarfed by the mime display. 
+
+  <dt>partial.tcl 
+  <dd>Code to concatenate the parts of a message/partial MIME message.
+
+  <dt>pgp.tcl 
+  <dd>An interface to the Pretty Good Privacy system. 
+
+  <dt>pgpEWN.tcl 
+  <dd>This implements the PGP function in the external editor What Now
+      dialog. 
+
+  <dt>pgpExec.tcl 
+  <dd>This executes the PGP program to get things done. 
+
+  <dt>pgpMatch.tcl 
+  <dd>This looks for keys in your keyring. 
+
+  <dt>pgpMisc.tcl 
+  <dd>This has the main post-processing hook for messages. 
+
+  <dt>pick.tcl 
+  <dd>An interface to the MH <i>pick</i> program. 
+
+  <dt>preferences.tcl 
+  <dd>The preferences user interface. 
+
+  <dt>print.tcl 
+  <dd>Routines to print messages. 
+
+  <dt>ps.tcl 
+  <dd>Code to rummage through the process table. OS-specific. 
+
+  <dt>report.tcl 
+  <dd>This implements the Bug Report and Register New User forms. 
+
+  <dt>rich2tk.tcl 
+  <dd>This parses text/enriched MIME content-types. 
+
+  <dt>scan.tcl 
+  <dd>This manages the scan caches. 
+
+  <dt>sedit.tcl 
+  <dd>The main routines for the built-in editor. 
+
+  <dt>seditBind.tcl 
+  <dd>The keybindings for the built-in editor. 
+
+  <dt>seditCompose.tcl 
+  <dd>The mapping for the Compose key sequences that allow input of
+      8-bit characters. 
+
+  <dt>seditEnriched.tcl 
+  <dd>The composition of text/enriched is implemented here. 
+
+  <dt>seditExtras.tcl 
+  <dd>More editor stuff, like Whom, Spell, Sign, Find, and the dialogs
+      associated with Insert Part. 
+
+  <dt>seditMime.tcl 
+  <dd>The MIME multipart structuring is implemented here. 
+
+  <dt>seditQP.tcl 
+  <dd>This is code to handle 8-bit characters via the MIME
+  quoted-printable encoding. 
+
+  <dt>select.tcl 
+  <dd>The keyboard selection of folders and messages is implemented here.
+
+  <dt>sound.tcl 
+  <dd>Sound effects. 
+
+  <dt>text.tcl 
+  <dd>Some text tagging routines. 
+
+  <dt>textButton.tcl 
+  <dd>An implementation of a pseudo-button in a text widget. 
+
+  <dt>textSelect.tcl 
+  <dd>The main guts of text bindings. 
+
+  <dt>thread.tcl 
+  <dd>This displays the messages related to the current subject. 
+
+  <dt>uri.tcl 
+  <dd>The code that scans messages for URLs. 
+
+  <dt>user.tcl 
+  <dd>Stubs for User_Init and User_Layout. 
+
+  <dt>widgetMenu.tcl 
+  <dd>Support for the popup menus used in MIME messages. 
+
+  <dt>widgetText.tcl 
+  <dd>Constrained text scrolling and dragging a selection off the
+      window is handled by the routines here. 
+
+  <dt>widgets.tcl 
+  <dd>A basic layer on top of the Tk widgets. These routines integrate
+      the pack geometry manager. Even more important, they guard
+      against errors that occur because of missing fonts. You should
+      try and use these instead of the straight Tk widget commands. 
+
+  <dt>xns.tcl 
+  <dd>An interface to xnsgetmail for those folks with mail on an XNS
+      mail server.  
+
 </dl>
 <h3><a NAME="SEE ALSO" HREF="#CONTENTS">SEE ALSO</a></h3>
 <a HREF="exmh-use.n.html">exmh-use</a>, <a HREF="exmh-ref.n.html">exmh-ref</a>,
