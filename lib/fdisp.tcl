@@ -252,6 +252,11 @@ proc FdispMakeCanvas { frame } {
     pack $s -side $exwin(scrollbarSide) -fill y
     pack $fdisp(canvas) -side $exwin(scrollbarSide) -fill both -expand 1
 
+    # Enable wheelscroll if desired
+    if {$exwin(wheelEnabled)} {
+        mscroll $fdisp(canvas) 1
+    }
+
     # fdisp popup color hack
     if {[winfo depth $fdisp(canvas)] <= 4} {
 	if {! [regexp {black|white} $fdisp(c_popup)]} {

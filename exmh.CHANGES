@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 1/6/2005 valdis.kletnieks@vt.edu
+  lib/fdisp.tcl - enable scrollwheel support for fdisp canvas
+
 cvs repository 1/5/2005 welch@panasas.com
   lib/folderNew.tcl: folder-protect value wasn't being interpreted as
     octal when creating new folders.
