@@ -42,7 +42,7 @@ proc Flag_Init {} {
     Preferences_Resource flag(icondownglyph) iconDownGlyph flagdown.gif
     Preferences_Resource flag(iconspoolglyph) iconSpoolGlyph flagup.gif
 
-    foreach i {iconup icondown iconspool iconupmask icondownmask iconspoolmask iconupglyph icondownglyph} {
+    foreach i {iconup icondown iconspool iconupmask icondownmask iconspoolmask iconupglyph icondownglyph iconspoolglyph} {
 	if ![string match /* $flag($i)] {
 	    set flag($i) $exmh(library)/$flag($i)
 	}
