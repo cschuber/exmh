@@ -1,7 +1,7 @@
 These are known bugs in exmh, along with the release under which they
 were reported.
 
-
+----------------------------------------------------------------------
 Number: 2
 Version: 2.0.3
 Priority: Medium
@@ -18,6 +18,7 @@ the time.
 
 
 
+----------------------------------------------------------------------
 Number: 3
 Version: 2.0.3
 Priority: Low
@@ -32,6 +33,7 @@ I discovered it a while after I wrote the code.  It probably isn't
 hard, but I haven't looked at that code in 5 years or more.
 
 
+----------------------------------------------------------------------
 Number: 5
 Version: 2.0.3
 Priority: Medium
@@ -43,6 +45,7 @@ Not cleaning up MIME parts saved into temp files.  Not cleaning up
 audit logs.
 
 
+----------------------------------------------------------------------
 Number: 6
 Version: 2.0.3 + cvs as of around 4/7
 Priority: Low
@@ -53,6 +56,7 @@ Status: DUPLICATE of number 10 ??
 I-Spell gets turned off by magic.  Make the magic go away.
 
 
+----------------------------------------------------------------------
 Number: 7
 Version: 2.0.3
 Priority: Low
@@ -64,6 +68,7 @@ The "use message as draft" does not highlight the body (not obeying
 the "colorize multipart" preference?).
 
 
+----------------------------------------------------------------------
 Number: 9
 Version: 2.0.3
 Priority: Low
@@ -83,6 +88,7 @@ I also noticed there is no timeout on Http_get.
 
 
 
+----------------------------------------------------------------------
 Number: 10
 Version: 2.0.3
 Priority: Med
@@ -112,6 +118,9 @@ you won't be able to turn ispell on at that time (look at the Log
 window for details).  Once you compose a message, though, you'll
 be able to turn ispell on/off normally.
 
+
+
+----------------------------------------------------------------------
 Number: 11
 Version: 2.0.2
 Priority: ?
@@ -167,6 +176,8 @@ This seems to be a bug report for the upstream maintainer.
 Cheers, Thomas
 
 
+
+----------------------------------------------------------------------
 Number: 12
 Version: 2.0.2
 Priority: ?
@@ -184,6 +195,8 @@ to figure out the logic error in faces.tcl.
 Picons behave properly if FACEPATH is not set.
 
 
+
+----------------------------------------------------------------------
 Number: 13
 Version: 1.6.9
 Priority: ?
@@ -197,6 +210,9 @@ From: Dominik Kubla <kubla@netz.klinik.uni-mainz.de>
 The exmh frontend can not handle inc contacting a POP server and asking
 for a password.
 
+
+
+----------------------------------------------------------------------
 Number: 14
 Version: 1.6.9
 Priority: ?
@@ -226,39 +242,7 @@ be good to just forward this to the upstream authors.
 
 
 
-Number: 15
-Version: 1.6.9
-Priority: ?
-Scope: ?
-Complexity: ?
-Status: Brent has applied a probably fix, held pending re-occurrence
-
-Subject: Odd "unseen" exmh weirdnesses
-Date: Tue, 13 Apr 1999 00:28:07 -0500
-From: Eddie Kuns <ekuns@kilroy.chi.il.us>
-
-When I create a new folder, move messages into that folder, and mark them 
-unseen -- all within EXMH -- the "unseen"-ness seems to get stored in 
-~/Mail/.exmhcontext RATHER THAN in the unseen sequence file.  I am now 
-pretty sure that this only happens in a new folder, opened this session of 
-exmh.  (Also in a folder opened in a recent exmh session which somehow -- I 
-don't know how -- has its context not quite right.)
-
-Any time I've had "unseen" weirdness in a folder (messages refusing to 
-leave the unseen coloration and other oddities), it has always been caused 
-by "atr-unseen-" lines in ~/Mail/.exmhcontext.  Exiting exmh, removing that 
-line, and restarting exmh (sometimes having to do this more than one time 
-in succession) has always fixed this problem.  Once fixed, the problem 
-never recurs in the same folder.
-
-From: Brent Welch <welch@scriptics.com>
-
-Ahh - this is a good diagnosis - this issue has plagued exmh for some time.
-It may be as simple as creating an empty .mh_sequences file in the 
-directory will fix it.
-
-
-
+----------------------------------------------------------------------
 Number: 16
 Version: 2.0.2 maybe earlier
 Priority: ?
@@ -287,19 +271,7 @@ This is an exmh bug...
 
 
 
-
-Number: 17
-Version: unknown
-Priority: ?
-Scope: ?
-Complexity: ?
-Status: CLOSED, hold pending feedback otherwas
-
-If the drafts folder is being viewed and there are no messages in it
-compose messes up by trying to "use" a non-existent draft.
-
-
-
+----------------------------------------------------------------------
 Number: 18
 Version: 2.1.0 cvs
 Priority: high
@@ -310,6 +282,9 @@ Status:
 If the PGP sedit field is enabled, a new sedit window puts focus in
 the wrong place.
 
+
+
+----------------------------------------------------------------------
 Number: 19
 Version: 2.0.2
 Priority: Low
@@ -334,3 +309,18 @@ error flushing "file9": broken pipe
     (procedure "tkMenuInvoke" line 29)
     invoked from within
 "tkMenuInvoke .sedit1.f.t.m.sub 1"
+
+
+----------------------------------------------------------------------
+Number: 20
+Version: 2.0.2
+Priority: Med
+Scope: Narrow
+Complexity: ?
+Status:
+
+Date: Fri, 23 Apr 1999 11:36:04 -0400 (10:36 CDT)
+From: Chip Christian <chip@princetontele.com>
+
+The url-scanning code only looks for one url per line, but sometimes I get 
+messages with more.  
