@@ -66,6 +66,7 @@ proc Base64_Decode {string} {
 
     set output {}
     set group 0
+    set pad 0
     set j 18
     foreach char [split $string {}] {
 	if {[string compare $char "\n"] == 0} {
@@ -74,11 +75,17 @@ proc Base64_Decode {string} {
 	if [string compare $char "="] {
 	    set bits $base64($char)
 	    set group [expr {$group | ($bits << $j)}]
+	} else {
+	    incr pad
 	}
 
 	if {[incr j -6] < 0} {
-		scan [format %06x $group]] %2x%2x%2x a b c
-		append output [format %c%c%c $a $b $c]
+		set i [scan [format %06x $group] %2x%2x%2x a b c]
+		switch $pad {
+		    2 { append output [format %c $a] }
+		    1 { append output [format %c%c $a $b] }
+		    0 { append output [format %c%c%c $a $b $c] }
+		}
 		set group 0
 		set j 18
 	}

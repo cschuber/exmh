@@ -1,5 +1,9 @@
 HISTORY
 cvs repository 10/08/2004 valdis.kletnieks@vt.edu
+  lib/base64.tcl - properly deal with trailing '=' so we don't append
+  spurious nulls to the file
+
+cvs repository 10/08/2004 valdis.kletnieks@vt.edu
   lib/seditExtras.tcl - add fconfigure -translation binary so base64 encoding
   works properly.
 
