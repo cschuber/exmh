@@ -387,6 +387,9 @@ proc ExmhLog { stuff } {
 	ExmhLogCreate
 	wm withdraw $exmh(logTop)
     }
+    if {! $exmh(logWrite)} {
+	return
+    }
     if [info exists exmh(log)] {
 	catch {
 #	    $exmh(log) insert end " [bw_delta] "
@@ -434,6 +437,9 @@ proc ExmhLogCreate {} {
     set exmh(logWindow) 1
     Exwin_Toplevel .log "Exmh Log" Log
     set exmh(logTop) .log
+    set exmh(logDisableBut) \
+	[Widget_AddBut $exmh(logTop).but swap "Disable" ExmhLogToggle]
+    set exmh(logWrite) 1
     Widget_AddBut $exmh(logTop).but trunc "Truncate" ExmhLogTrunc
     Widget_AddBut $exmh(logTop).but save "Save To File" ExmhLogSave
     set exmh(logYview) 1
@@ -484,6 +490,12 @@ proc ExmhLogSave {} {
     } msg] {
 	Exmh_Status "Cannot save log: $msg" error
     }
+}
+proc ExmhLogToggle {} {
+    global exmh
+
+    set exmh(logWrite) [expr ! $exmh(logWrite)]
+    $exmh(logDisableBut) configure -text [lindex {"Enable " Disable} $exmh(logWrite)]
 }
 #### Misc
 

@@ -1,4 +1,14 @@
 HISTORY
+cvs repository 04/01/2003 haldevore@acm.org
+  Multiple fixes from Robert Elz (kre@munnari.OZ.AU)
+  select.tcl, html/guide.html - Select message by typing now allows 
+    "s" to show the message or "-" to go to the prior message
+  mh.tcl - Ignore garbage in sequence files
+  main.tcl - Add Disable/Enable button to debug log window
+  extrasInit.tcl, sedit.tcl, seditMime.tcl - add preference item
+    to make insertion of x-mailer header optional and check the item
+    (applicable to Sedit only)
+
 cvs repository 03/31/2003 haldevore@acm.org
   select.tcl, removed fix for non-numeric typing
 

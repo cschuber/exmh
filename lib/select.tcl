@@ -49,9 +49,11 @@ proc Select_EntryBind { w } {
     bindtags $w [list $w Entry]
     bind $w <Any-Key>	{SelectTypein %W %A}
     bind $w <Key-plus>	{SelectToggle %W }
+    bind $w <Key-minus>	{SelectPrev %W }
     bind $w <space>	{SelectComplete %W}
     bind $w <Tab>	{SelectComplete %W}
     bind $w <Return>	{SelectReturn %W}
+    bind $w <Key-s>	{SelectReturn %W %A}
     bind $w <BackSpace>	{SelectBackSpace %W}
     bind $w <Control-h>	{SelectBackSpace %W}
     bind $w <Delete>	{SelectBackSpace %W}
@@ -69,14 +71,10 @@ proc SelectTypein {w {a {}}} {
 	unset select(match)
 	catch {unset select(allfolders)}
     }
-# Attempt to fix traceback removed, breaks folder select by keyboard
-#    if {![regexp {[0-9]} $a]} {
-#        return
-#    }
     append select(sel) $a
     Exmh_Status "$select(prompt) $select(sel)"
     if ![info exists select(folder)] {
-	Msg_Change $select(sel) noshow
+	catch { Msg_Change $select(sel) noshow }
     }
 }
 proc SelectBackSpace { w } {
@@ -95,6 +93,10 @@ proc SelectBackSpace { w } {
 proc SelectToggle {w} {
     global select
     if [info exists select(folder)] {
+	if {$select(sel) != ""} {
+	    SelectTypein $w +
+	    return
+	}
 	set select(toggle) [list [lindex $select(toggle) 1] [lindex $select(toggle) 0]]
 	set select(prompt) "[lindex $select(toggle) 0] Folder:"
     } else {
@@ -104,6 +106,18 @@ proc SelectToggle {w} {
 	}
     }
     Exmh_Status "$select(prompt) $select(sel)"
+}
+proc SelectPrev {w} {
+    global select
+    if [info exists select(folder)] {
+	SelectTypein $w "-"
+    } else {
+	catch {
+	    incr select(sel) -1
+	    Msg_Change $select(sel) noshow
+	}
+        Exmh_Status "$select(prompt) $select(sel)"
+    }
 }
 proc SelectComplete { w } {
     global select
@@ -130,9 +144,13 @@ proc SelectComplete { w } {
 	Exmh_Status "$select(prompt) $select(sel)"
     }
 }
-proc SelectReturn { w } {
+proc SelectReturn { w {a {}} } {
     global select
     if [info exists select(folder)] {
+	if {$a != {}} {
+	    SelectTypein $w $a
+	    return
+	}
 	if [info exists select(match)] {
 	    set select(sel) $select(match)
 	    unset select(match)
@@ -155,6 +173,7 @@ proc SelectCancel { w } {
 	unset select(folder)
     }
     $select(entry) configure -state disabled
+    Exmh_Status ""
     Exmh_Focus
 }
 proc SelectClear { w } {

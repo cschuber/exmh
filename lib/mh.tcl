@@ -546,6 +546,10 @@ proc MhSeqExpand { folder sequence } {
     set seq {}
     set rseq {}
     foreach range [split [string trim $sequence]] {
+	if ![regexp {^[0-9]+(-[0-9]+)?$} $range] {
+	    # just ignore anything bogus
+	    continue;
+	}
 	set parts [split [string trim $range] -]
 	if {[llength $parts] == 1} {
 	    lappend seq $parts

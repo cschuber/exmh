@@ -637,7 +637,7 @@ proc SeditFormatMail { t out isigw } {
 	regsub -all -nocase "(^|\n)(x-mailer:\[^\n\]*\n)+" $X1 {\1} X1
 	regsub -all -nocase "(^|\n)(x-exmh-isig-(comptype|folder):\[^\n\]*\n)+" $X1 {\1} X1
 	# No X-Mailer on redistributed messages
-	if {[string compare $exmh($id,action) dist] != 0} {
+	if {$sedit(xMailHeader) && [string compare $exmh($id,action) dist] != 0} {
 	    puts $out "X-Mailer: exmh $exmh(version) with $exmh(mh_vers)"
 	}
 	# Replace X-Exmh-Isig-* headers if necessary
@@ -678,7 +678,7 @@ proc SeditFormatMail { t out isigw } {
     set plen [string length $sedit(pref,replPrefix)]
 
     # No X-Mailer on redistributed messages
-    if {[string compare $exmh($id,action) dist] != 0} {
+    if {$sedit(xMailHeader) && [string compare $exmh($id,action) dist] != 0} {
 	puts $out "X-Mailer: exmh $exmh(version) with $exmh(mh_vers)"
     }
     # Output X-Exmh-Isig-* headers if necessary
