@@ -559,14 +559,15 @@ proc Addr_KeyExpand { w } {
     global addr_db
 
     AddrDebug "Addr_KeyExpand: w=$w $addr_db(searchlist)"
-    set line [string trim [$w get {insert linestart} {insert lineend}]]
+    set line [string trimright [$w get {insert linestart} {insert lineend}]]
     ##  AddrDebug "  got line \"$line\""
     # Only allows expansion on addressable header lines.
-    if [regexp -nocase {^(to: *|resent-to: *|cc: *|resent-cc: *|bcc: *|dcc: *)(.*)} $line t0 t1 t2] {
-        # Save keyword that started the line for later
-        set startline $t1
+    #old regexp:  regexp -nocase {^(to: *|resent-to: *|cc: *|resent-cc: *|bcc: *|dcc: *)(.*)} $line t0 t1 t2
+    if {[$w compare insert <= hlimit] && \
+            [regexp -nocase {^([-a-z]+: *)?(.*)} $line t0 t1 t2]} {
         ##  AddrDebug  "  matched! keep is \"$t1\", partial name=\"$t2\""
-        if [regexp -indices ",?.*, *" $t2 t0] {
+        if {[regexp -indices ",?.*, *" $t2 t0] || \
+                [regexp -indices " +" $t2 t0]} {
             set t0 [lindex $t0 end]
             ##  AddrDebug "got comma at $t0"
             set t3 [string range $t2 0 $t0]
@@ -594,7 +595,7 @@ proc Addr_KeyExpand { w } {
             if {[llength $result] == 1} {
                 # unique match
                 $w delete  {insert linestart} {insert lineend}
-                $w insert insert [format "%s%s\n%s" $t1 [lindex $result 0] $startline]
+                $w insert insert [format "%s%s" $t1 [lindex $result 0]]
                 set addr_db(lastfound) [lindex $result 0]
                 catch {destroy $w.addrs}
             } else {
@@ -606,7 +607,7 @@ proc Addr_KeyExpand { w } {
                 if [ string compare $new "" ] {
                     set addr_db(lastfound) $new
                     $w delete  {insert linestart} {insert lineend}
-                    $w insert insert [format "%s%s\n%s" $t1 $new $startline]
+                    $w insert insert [format "%s%s" $t1 $new]
                 }
             }
 			break
@@ -813,7 +814,8 @@ proc AddrShowDialog {w list} {
 
     catch {destroy $w.addrs}
     set f [frame $w.addrs -bd 4 -relief ridge]
-    set l [listbox $f.lb -bd 4 -width 50 -height 10]
+    frame $f.top -relief flat
+    set l [listbox $f.top.lb -bd 4 -width 50 -height 10]
     bind $l <Any-Double-1> "\
             AddrShowDialogDone $f $l ;\
             break \
@@ -822,14 +824,22 @@ proc AddrShowDialog {w list} {
             AddrShowDialogCancel $f ;\
             break \
             "
-    focus $w.addrs.lb
+    focus $f.top.lb
+    $f configure -cursor left_ptr
     foreach i $list {
         $l insert end $i
     }
-    pack $f.lb -expand true -fill both
+    pack $f.top.lb -expand true -fill both -side left
+    if {[llength $list] > 10} {
+        $f.top.lb configure -yscrollcommand "$f.top.sy set"
+        scrollbar $f.top.sy -width 15 -command [list $l yview]
+        pack $f.top.sy -expand true -fill y -side left
+    }
+    pack $f.top -expand true -fill both
     frame $f.but -bd 10 -relief flat
     pack $f.but -expand true -fill both
     Widget_AddBut $f.but ok "Done" [list AddrShowDialogDone $f $l] {left filly}
+    Widget_AddBut $f.but can "Cancel" [list AddrShowDialogCancel $f] {right filly}
     Widget_PlaceDialog $w $f
     tkwait window $f
     if [info exists addr_db(expansion)] {

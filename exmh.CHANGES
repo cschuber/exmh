@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 08/19/1999
+    Change address book expansion to NOT insert new header lines as this 
+        broke the "continue lookup" feature.  Also changes to allow address
+        expansion on ANY header line (doc changes still to be done).
+        -Kevin.Christian via haldevore
+
 cvs repository 08/17/1999
     PGP without seditpgp works again.  -bmah
     Wheel mouse support added, enable it in the Windows + Scrolling dialog.
