@@ -863,13 +863,25 @@ pathname otherwise.
 <dt>*iconDownBitmap: 
 <dd>flagdown.bitmap 
 <dt>*iconSpoolBitmap: 
-<dd>flagup.bitmap 
+<dd>flagspool.bitmap 
+<dt>*iconUpMask: 
+<dd>flagup.mask
+<dt>*iconDownMask: 
+<dd>flagdown.mask
+<dt>*iconSpoolMask: 
+<dd>flagspool.mask
 <dt>*iconUpLabel: 
 <dd>$flist(newMsgs) Unseen 
 <dt>*iconDownLabel: 
 <dd>exmh 
 <dt>*iconSpoolLabel: 
 <dd>$exmh(numUnInced) Spooled 
+<dt>*iconUpGlyph:
+<dd>flagup.gif
+<dt>*iconDownGlyph:
+<dd>flagdown.gif
+<dt>*iconSpoolGlyph:
+<dd>flagspool.gif
 </dl>
 <p>
 You can reference any global exmh variable in the icon label. The two
@@ -877,6 +889,15 @@ most useful are $flist(newMsgs), which is a count across all folders
 of messages in the unseen sequence, and $exmh(numUnInced), which is
 the number of messages in your system spool file. This later value
 is only computed by the background "count" operation. 
+<p>
+The icon*Glyph values are color images for the icons; the icon*Bitmap
+values are black & white images for the icons and are used if the
+Glyph is not available; the icon*Mask values are masks to allow
+transparency in black and white icons.
+<p>
+The color icons may be disabled and the black and white used in their
+place by providing a meaningless value (such as "none") for the
+Glyph. 
 
 <h3><a NAME="FOLDER DISPLAY RESOURCES" HREF="#CONTENTS">FOLDER DISPLAY
 RESOURCES</a></h3>
