@@ -531,8 +531,8 @@ proc Ftoc_FindMsg { msgid {line {}} } {
 }
 proc Ftoc_ClearMsgCache {} {
     global linetomsgcache msgtolinecache
-    array unset linetomsgcache
-    array unset msgtolinecache
+    unset linetomsgcache
+    unset msgtolinecache
 }
 proc Ftoc_MsgNumber { L } {
     global exwin linetomsgcache msgtolinecache
