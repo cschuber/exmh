@@ -19,6 +19,9 @@ and retrieve new articles from selected newsgroups." {
     {NNTP(port) nntpPort {119}  {NNTP port}
 "Port on which the news server listens for nntp connections. 
 119 unless your site is weird"}
+    {NNTP(emailaddr) nntpEmailAddr {}  {My address when posting}
+"E-mail address to use when posting to newsgroups.
+Typically: First Last <login@domain>"}
     {NNTP(moderated) nntpModerated {} {Groups you moderate}
 "A list of groups which you moderate separated by whitespace.
 If one of these is in the Newsgroups header then an Approved
@@ -55,7 +58,7 @@ proc Post {} {
     # and CNews which get upset when they can't do it
     set header_throwAway \
 	{{return-path:} {received:} {path:} {date:} {message-id:} {to:} \
-	     {lines:} {x-exmh-isig-}}
+	     {lines:} {x-exmh-isig-} {cc:}}
 
     # Headers INN wants to add  itself get X-original- shoved in front
     # if we want to keep them
@@ -66,14 +69,21 @@ proc Post {} {
 
     #  split header from body
     set sp [string first "\n\n" $text]
-
-    set hdr [string range $text 0 [incr sp -1]]
-    set NNTP(body) [string range $text [incr sp 3] end]
+    set spmh [string first "\n--------\n" $text]
+    if {$sp < 0 || ($spmh > 0 && $spmh < $sp)} {
+	set sp $spmh
+	set hdr [string range $text 0 [incr sp -1]]
+	set NNTP(body) [string range $text [incr sp 11] end]
+    } else {
+	set hdr [string range $text 0 [incr sp -1]]
+	set NNTP(body) [string range $text [incr sp 3] end]
+    }
 
     set headerin [split $hdr \n]
     set NNTP(headers) {}
     set flag 0
     set NNTP(post_groups) $NNTP(groups)
+    set NNTP(sender) $NNTP(emailaddr)
     set organization 0
 
     # parse headers and dispose of as necessary

@@ -6,6 +6,8 @@ cvs repository 4/8/1999
     Fix address-book lookup/expansion to create a new "To:",
         "cc:" or whatever line so wrapping isn't a problem. -haldevore
     Make autosave interval in Sedit a user preference -haldevore
+    Applied updated version of patch to allow posting to
+        newsgroups from Sedit -John Beck via haldevore
 
 cvs repository 4/4/1999
     Code cleanup:  Removed dead code which only ran in pre tk-4.1 versions.

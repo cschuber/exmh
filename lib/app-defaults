@@ -767,7 +767,7 @@ exmh.iconic:		0
 *Sedit.Menubar.quit.command:	SeditQuit $draft $t
 *Sedit.Menubar.send.text:	Send
 *Sedit.Menubar.send.padX:	15
-*Sedit.Menubar.send.command:	SeditSend $draft $t
+*Sedit.Menubar.send.command:	SeditSend $draft $t 0
 !
 ! The sign button turns into a menu with one entry for
 ! each file that matches the glob pattern ~/.signature*
@@ -777,7 +777,7 @@ exmh.iconic:		0
 !
 ! buttons is standard buttons
 ! ubuttons is for extra user-specific buttons
-*Sedit.Menubar.buttonlist:	help abort save
+*Sedit.Menubar.buttonlist:	help abort save post
 *Sedit.Menubar.ubuttonlist:
 *Sedit.Menubar.help.text:	Help
 *Sedit.Menubar.help.command:	SeditHelp
@@ -785,6 +785,9 @@ exmh.iconic:		0
 *Sedit.Menubar.abort.command:	SeditAbort $draft $t
 *Sedit.Menubar.save.text: 	Save&Quit
 *Sedit.Menubar.save.command: 	SeditSave $draft $t SeditNuke
+*Sedit.Menubar.post.text:	Post
+*Sedit.Menubar.post.padX:	10
+*Sedit.Menubar.post.command:	SeditSend $draft $t 1
 
 ! The repl button is well-known.  It is disabled except when replying.
 *Sedit.Menubar.repl.text:	Quote...

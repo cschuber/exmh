@@ -84,7 +84,7 @@ proc SeditTextBindings { draft t } {
     # toplevel - not used
     # all - not used because it has focus-change bindings on <Tab>
     bindtags $t [list $t SeditText TSelect TScroll [winfo toplevel $t]]
-    SeditBind $t sendMsg "SeditSend $draft $t ; break"
+    SeditBind $t sendMsg "SeditSend $draft $t 0 ; break"
     SeditBind Entry sendMsg { }
     SeditBind $t abortMsg "SeditAbort $draft $t ; break"
     SeditBind Entry abortMsg { }

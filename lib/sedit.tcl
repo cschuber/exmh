@@ -310,7 +310,7 @@ or do nothing?"
 	Widget_Frame $f f Dialog
 	$f.f configure -bd 10
 	Widget_AddBut $f.f ok "Abort" [list SeditAbortDirect $draft $t]
-	Widget_AddBut $f.f send "Send\n(Ctrl-c)" [list SeditSend $draft $t]
+	Widget_AddBut $f.f send "Send\n(Ctrl-c)" [list SeditSend $draft $t 0]
 	Widget_AddBut $f.f save "Save\n(Ctrl-s)" \
 		[list SeditSave $draft $t SeditNuke]
 	Widget_AddBut $f.f no "Do nothing\n(Return)" [list destroy $f]
@@ -386,8 +386,9 @@ proc SeditMsg { t text } {
     update idletasks
 }
 
-proc SeditSend { draft t } {
+proc SeditSendCommon { draft t {post 0} } {
     global sedit exmh intelligentSign editor
+
     set id [SeditId $draft]
     SeditCheckForIsigHeaders $t
     Exmh_Debug SeditSend id=$id action=$exmh($id,action)
@@ -418,14 +419,22 @@ proc SeditSend { draft t } {
     }
     if [SeditSave $draft $t {} 0] {
 	global env sedit
-	$sedit($t,toplevel).but.send config -state disabled
+	if {$post==0} {
+	    $sedit($t,toplevel).but.send config -state disabled
+	} else {
+	    $sedit($t,toplevel).but.post config -state disabled
+	}
 	# Decide if this file needs to go through mhn
 	if {$sedit($t,mhn) && ![catch {exec grep -l ^# $draft}]} {
 	    set env(mhdraft) $draft
 	    SeditMsg $t "Running mhn..."
 	    if [catch {exec $editor(mhn) $draft} err] {
 		SeditMsg $t $err
-		$sedit($t,toplevel).but.send config -state normal
+		if {$post==0} {
+		    $sedit($t,toplevel).but.send config -state normal
+		} else {
+		    $sedit($t,toplevel).but.post config -state normal
+		}
 		return
 	    }
 	}
@@ -439,6 +448,16 @@ proc SeditSend { draft t } {
 	    # Insert content-transfer-encoding headers
 	    SeditFixupEncoding $draft $t [expr ($sedit($t,quote) > 0)]
 	}
+	return 1
+    } else {
+	return 0
+    }
+}
+
+proc SeditSendOnly { draft t } {
+    global sedit exmh
+
+	set id [SeditId $draft]
 	foreach cmd [info commands Hook_SeditSend*] {
 	    if [catch {$cmd $draft $t} err] {
 		SeditMsg $t "$cmd $err"
@@ -470,6 +489,21 @@ proc SeditSend { draft t } {
 		Scan_Folder $exmh(folder)
 	    }
 	    SeditMsg $t "Message saved and sent $time"
+	}
+}
+
+proc SeditSend { draft t {post 0} } {
+    global sedit exmh intelligentSign editor msg
+
+    set common [SeditSendCommon $draft $t $post]
+
+    if {$common==1} {
+	if {$post==0} {
+	    SeditSendOnly $draft $t
+	} else {
+	    set msg(path) $draft
+	    Post
+	    $sedit($t,toplevel).but.post config -state normal
 	}
     }
 }
