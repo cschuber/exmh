@@ -1,5 +1,7 @@
 HISTORY
 
+Released exmh-2.2 6/23/2000 Brent Welch <welch@ajubasolutions.com>
+
 cvs repository 06/22/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/receipt.tcl - generate proper Final-Recipient: field
 
