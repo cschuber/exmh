@@ -15,12 +15,14 @@ set draftpath [lindex $argv [expr {[llength $argv] - 1}]]
 set draftm [file tail $draftpath]
 
 send $exmh [list Edit_Ident [winfo name .]]
-#
-# split/join here to allow quoted -geom arguments.  A user can specify
-# xterm {-geom +0+0} -e {vi +/^[-]*$}
-# for example.
 
-if [catch {eval exec [split [join $editorCmd]]} err] {
+# Used to do a split/join on $editorCmd to allow quoted -geom arguments.
+# But that totally screws some arguments, like
+# exmh-async gvim -c {cal SetSyn("mail")}
+# other interesting cases are
+# exmh-async xterm -geom +0+0 -e vi {+/^[-]*$}
+
+if [catch {eval exec $editorCmd} err] {
     send $exmh [list Exmh_Status "exmh-async: editor failed: $err" purple]
 }
 send $exmh EditDialog $draftm

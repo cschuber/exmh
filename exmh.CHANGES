@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 07/10/2001 Brent Welch <welch@panasas.com>
+    lib/editor.tcl: A -- is passed to the exmh-async script to
+    turn off any argument/flag parsing by wish.  This means you can
+    safely pass "-c" or "-geometry" arguments to the programs
+    spawned by the exmh-async wrapper script.
+    exmh-async.MASTER: Removed a split/join construct that screwed
+    up attempts to pass arguments like {cal SetSyn("mail")} to editors.
+
 cvs repository 07/09/2001 Brent Welch <welch@panasas.com>
     Makefile:
     exmh.README:

@@ -379,8 +379,8 @@ proc EditStart { draft {type prog} } {
 	exmh-async* {
 	    global wish argv0
 	    Exmh_Status "Starting ASYNC $editor($type) ..." warn
-	    eval exec $wish -f ${argv0}-async \"[winfo name .]\" \
-		[lrange $editor($type) 1 end] $draft &
+	    eval {exec $wish -f ${argv0}-async -- [winfo name .]} \
+		[lrange $editor($type) 1 end] {$draft &}
 	    return 0		;# Asynchronous edit
 	}
 	give-away* -
