@@ -92,7 +92,12 @@ NOTE: When you change the option you have to rescan your
 	    set uri(viewer) netscape
 	}
     }
-    catch {package require netscape_remote}
+
+    if [catch {package require netscape_remote}] {
+	Exmh_Debug "No netscape_remote package"
+    } else {
+	Exmh_Debug "Using netscape_remote package"
+    }
 
     # Fix up netscape command from the old flags argument
     set flags [option get . uriNetscapeFlags {}]

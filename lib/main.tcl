@@ -383,6 +383,7 @@ proc ExmhLog { stuff } {
     if [info exists exmh(log)] {
 	catch {
 #	    $exmh(log) insert end " [bw_delta] "
+	    $exmh(log) insert end [clock format [clock seconds] -format "%H:%M:%S "]
 	    $exmh(log) insert end $stuff
 	    $exmh(log) insert end \n
 	    if {$exmh(logYview)} {
