@@ -30,7 +30,7 @@ proc ScanFolder {F adjustDisplay} {
 	if [catch {open $cacheFile} input] {
 	    # No cache, scan last N messages
 	    Exmh_Status "Limit scan $F last:$ftoc(scanSize) - Rescan?" warn
-	    set input  [open [list |$mhProfile(scan-proc) +$F \
+	    set input  [open [concat |$mhProfile(scan-proc) +$F \
 		    last:$ftoc(scanSize) -width $ftoc(scanWidth)]]
 	    set ftoc(displayDirty) 1
 	    set update 0
@@ -53,7 +53,7 @@ proc ScanFolder {F adjustDisplay} {
 	set id [Ftoc_MsgNumber [Ftoc_FindMsg {} last]]
 	if [catch {
 	    Exmh_Debug Scanning new messages
-	    set input [open [list |$mhProfile(scan-proc) +$F \
+	    set input [open [concat |$mhProfile(scan-proc) +$F \
 		    $id-last -width $ftoc(scanWidth)]]
 	    set check [gets $input]
 	    set new [read $input]
@@ -77,7 +77,7 @@ proc ScanFolder {F adjustDisplay} {
 	    if {[Ftoc_Changes "Scan Update Failed"] == 0} {
 	    Exmh_Status "scan +$F last:$ftoc(scanSize)"
 		Background_Wait
-		set input  [open [list |$mhProfile(scan-proc) +$F \
+		set input  [open [concat |$mhProfile(scan-proc) +$F \
 			last:$ftoc(scanSize) -width $ftoc(scanWidth)]]
 		set ftoc(displayDirty) 1
 		ScanAddLineReset $F
@@ -119,7 +119,7 @@ proc Scan_FolderForce {{F ""}} {
 	Background_Wait
 	Label_Folder $F
 	Exmh_Status "rescanning $F ..."
-	Scan_IO $F [open [list |$mhProfile(scan-proc) +$F \
+	Scan_IO $F [open [concat |$mhProfile(scan-proc) +$F \
 		-width $ftoc(scanWidth)]]
 	set ftoc(displayValid) 1
 	set ftoc(displayDirty) 1
@@ -268,7 +268,7 @@ proc Scan_CacheUpdate {} {
     if !$ftoc(displayValid) {
 	set curLine [Ftoc_ClearCurrent]			;# Clear +
         if [file writable $cacheFile] {
-            set scancmd [list exec $mhProfile(scan-proc) \
+            set scancmd [concat exec $mhProfile(scan-proc) \
                                +$folder -width $ftoc(scanWidth) > $cacheFile]
             if [catch $scancmd err] {
                 Exmh_Status "failed to rescan folder $folder: $err" warn
