@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 05/22/2004 cwg-exmh@deepeddy.com
+  exmhwrapper - Prepend the hostname if we're running on the local
+  host.  This allows bifffolder to work even if it's on a different
+  machine. 
+
 cvs repository 05/11/2004 cwg-exmh@deepeddy.com
   mime.tcl - Don't display part inline by default if its 
   disposition is "attachment".

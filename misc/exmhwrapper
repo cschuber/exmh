@@ -4,12 +4,16 @@ displayfile=$HOME/.exmh/.display
 if [ -e $displayfile ] ; then
     display=`cat $displayfile`
     if [ "$display" != "" ]; then
-	/usr/local/bin/wish -f -display $display <<EOF
+	/usr/bin/wish -f -display $display <<EOF
 catch { send exmh { Exmh_Done 1 } } err
 exit 0
 EOF
     fi
 fi
+if echo $DISPLAY | grep --quiet '^:'; then
+    DISPLAY="$HOSTNAME$DISPLAY"
+fi
 echo $DISPLAY > $displayfile
 exmh
+rm $displayfile
 exit 0
