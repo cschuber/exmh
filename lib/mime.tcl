@@ -1603,6 +1603,24 @@ proc Mime_ShowMultipartAlternative {tkw part} {
 		  -variable mimeHdr($part,chosenPart) \
 		  -value $subpart
     }
+
+    # If we find a type we like, use that subpart instead
+    # This is to support display of text/plain instead of text/html
+
+    set preferred [option get . mime_alternative_prefs {}]
+    set selected 0
+    foreach preftype $preferred {
+	for {set subpart 1} {$subpart <= $numParts} {incr subpart} {
+	    set type $mimeHdr($part=$subpart,type)
+	    if {$type == $preftype} {
+		set mimeHdr($part,chosenPart) $subpart
+		set selected 1
+		break
+	    }
+	}
+	if {$selected != 0} {break}
+    }
+
     set mimeHdr($part,priorChosenPart) \
 	$mimeHdr($part,chosenPart)
 
