@@ -109,9 +109,20 @@ proc SeqWinShowSeqPane {seq} {
     }
 }
 proc SeqWinHideSeqPane {seq} {
+    global seqwin
     if {[winfo exists .sequences]} {
 	if {[winfo exists .sequences.$seq]} {
 	    pack forget .sequences.$seq
+	}
+	if {[pack slaves .sequences] == {}} {
+	    if $seqwin(hidewhenempty) {
+		catch {wm withdraw .sequences}
+		return
+	    } elseif (!$seqwin(icon)) {
+		catch {wm deiconify .sequences}
+	    }
+	} else {
+	    catch {wm deiconify .sequences}
 	}
     }
 }
@@ -424,12 +435,6 @@ proc SeqWinEmptyMsg {seq} {
     
     if {[winfo exists .sequences]} {
 	if {[llength $seqwin(folders,$seq)] == 0} {
-	    if $seqwin(hidewhenempty) {
-		catch {wm withdraw .sequences}
-		return
-	    } elseif (!$seqwin(icon)) {
-		catch {wm deiconify .sequences}
-	    }
 	    set elen [string length $seqwin(emptymsg)]
 	    set pad [expr ((($seqwin(listwidth,$seq) + 4) - $elen) / 2) + $elen]
 	    set empty [expr (($seqwin(curlines,$seq) + 1) / 2) - 1]
