@@ -1,0 +1,142 @@
+# -*-Mode: tcl;-*-
+#
+# To be interpreted by expectk
+# 
+#
+# This is run by exmh, currenly only when decrypting certain PGP messages.
+# See Preferences->Pgp->Help or the source code for more information.
+#
+# Arguments: infile, outfile, exmh-bg name
+#
+
+wm withdraw .
+
+if {[llength $argv] < 3} {
+    puts "PgpDecryptExpect should be invoked by exmh"
+    exit 1
+}
+
+set infile [lindex $argv 0]
+set outfile [lindex $argv 1]
+set exmhbg [lindex [lrange $argv 2 [expr [llength $argv] - 1]] 0]
+set badpass 0
+set encrypted 0
+
+# GetPassword tries (if necessary) to get the the pass phrase using
+# Exmh's Misc_GetPass command.  It sets pgpPass if it gets a
+# legitamite password.
+
+proc GetPassword { keydesc } {
+    global spawn_id expect_out badpass
+
+    if {[string compare $keydesc conventional]==0} {
+	set password [Exmh {Misc_GetPass "Enter PGP Password" \
+				"symmetric encryption - enter pass phrase"}]
+    } else {
+	
+	set keyid [Exmh [list PgpMatch_PrivateExact $keydesc]]
+	
+	if $badpass {
+	    Exmh [list unset pgpPass($keyid)]
+	}
+	
+	if {$keyid!={} && [Exmh [list info exists pgpPass($keyid)]]} {
+	    set password [Exmh [format {list $pgpPass(%s)} $keyid]]
+	} else {
+	    set password [Exmh [concat [list set pgpPass($keyid)] \
+				    [format \
+			{[Misc_GetPass "Enter PGP password" \
+			      "password for %s"]} $keydesc]]]
+	}
+	set badpass 1
+    }
+
+    exp_send "$password\r"
+    InterpretResponse
+}
+
+# Saves typing - this calls the given Exmh command.
+
+proc Exmh {cmd} {
+    global exmhbg
+    send $exmhbg $cmd
+}
+
+proc Debug {text} {
+#    send exmh [concat Exmh_Debug [list $text]]
+    exec echo $text >>/home/ben/work/dlog
+}
+
+proc InterpretResponse { } {
+    global spawn_id timeout expect_out badpass encrypted
+
+    expect {
+	"Enter pass phrase: " {
+	    GetPassword $expect_out(1,string)
+	}
+	"You need a pass phrase to decrypt this file." {
+	    set encrypted 1
+	    set expect_out(1,string) conventional
+	    InterpretResponse
+	}
+	-re {Key for user ID "(.*)"} {
+	    set timeout 30
+	    set badpass 0
+	    set encrypted 1
+	    InterpretResponse
+	}
+	-re {(This message can only.*).(You.*this file.)} {
+	    set encrypted 1
+	    regsub -all \r $expect_out(1,string)$expect_out(2,string) {} msg
+	    Done $msg 1
+	}
+	-re {(Error: .*is not a ciphertext.*file.)} {
+	    Done $expect_out(1,string) 2
+	}
+	eof {
+	    regsub -all \r $expect_out(buffer) {} msg
+	    Done [string trim $msg]
+	}
+    }
+    Done "Unknown Error" 2
+}
+
+# Done is the procedure that calls the Exmh continuation command
+# before this process exits.
+
+proc Done {msg {error 0} } {
+    global outfile infile encrypted
+
+    if !$encrypted {
+	set msg "Note: File may not have been encrypted.\n\n$msg"
+    }
+
+    if {$error==2} {
+	set msg "Error processing with PGP\n$msg"
+    }
+
+    if {[string trim $msg]==""} {
+	set msg "Message encrypted with PGP"
+    }
+
+    Exmh [list set pgpmsg $msg]
+    puts $msg
+    exit $error
+}
+
+expect_after timeout {
+    Done "Unknown Error" 2
+}
+set timeout 4
+
+spawn -nottycopy -noecho pgp +armorlines=0 +keepbinary=off +batchmode=off \
+    +verbose=0 +pager=cat $infile -o $outfile
+
+# Don't ask me why, but when I comment out the following line my
+# program ceases to work under some conditions.  Mail me
+# <bescoto@usa.net> if you figure it out.
+
+expect -re . {}
+
+InterpretResponse
+exit 3
