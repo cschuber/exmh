@@ -382,6 +382,13 @@ used by exmh.  This might include any or all of the following:
 .webtkcache         html viewer cache
 $EXMHTMPDIR         temp files
 
+Number: 46
+Priority: Med
+Scope: Narrow (?)
+Complexity: ?
+
+The PGP code needs to remember the settings for a particular
+draft between edits.
 
 
 $Id$
