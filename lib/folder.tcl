@@ -168,7 +168,7 @@ proc Folder_TargetCopy { f {copyProc Ftoc_CopyMark} } {
     }
 }
 
-proc Folder_TargetClear {f} {
+proc Folder_TargetClear {{f {}}} {
     global exmh
 
     Fdisp_HighlightTarget ""
@@ -298,6 +298,8 @@ proc Folder_PurgeBg { {folderlist {}} } {
     while {[file exists [set fn [Env_Tmp]/exmh.[pid].purge.$uid]]} {
 	incr uid
     }
+    catch {File_Delete}	;# auto-load it
+
     set out [open $fn w]
     puts $out "wm withdraw ."
     puts $out "source $exmh(library)/folder.tcl"
