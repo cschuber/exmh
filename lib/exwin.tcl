@@ -143,6 +143,7 @@ proc Exwin_Layout {} {
     set exwin(ftext) [Widget_Text [Widget_Frame . ftoc Ftoc $fixed] \
 				$exwin(ftextLines)]
     Ftoc_Bindings $exwin(ftext)
+    Ftoc_InitSequences $exwin(ftext)
 
     if {$exwin(wheelEnabled)} {
 	mscroll $exwin(ftext) 1

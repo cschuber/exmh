@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 03/03/2002 cwg-exmh@deepeddy.com
+    lib/app-defaults, lib/app-defaults-color, lib/buttons.tcl,
+    lib/exwin.tcl, lib/ftoc.tcl, lib/msg.tcl, lib/pick.tcl -
+    Added 'Sequences...' menu; some code cleanup and a few bug fixes
+    from the last change.
+
 cvs repository 03/28/2002 cwg-exmh@deepeddy.com
     lib/app-defaults-color, lib/app-defaults-mono, lib/exwin.tcl,
     lib/fdispColor.tcl, lib/ftoc.tcl, lib/ftocColor.tcl, lib/help.tcl,

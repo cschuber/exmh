@@ -180,7 +180,7 @@ proc Pick_It {} {
 
     Exmh_Debug Pick_It $cmd $msgs
     busy PickInner $cmd $msgs
-    Scan_FolderForce $exmh(folder)
+    Ftoc_ShowSequences $exmh(folder)
     Exmh_Focus
 }
 proc PickInner {cmd msgs} {

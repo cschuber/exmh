@@ -276,7 +276,7 @@ exmh.iconic:		0
 ! NOTICE: In 1.4 and higher, the entrylist etc. are attached to the
 ! menu widget pathname, not the menu button.  NOTICE.
 !
-*Fops.menulist:		more search
+*Fops.menulist:		more search sequences
 *Fops.umenulist:
 
 *Fops.more.text: 	More...
@@ -349,6 +349,7 @@ exmh.iconic:		0
 *Fops.search.m.l_thread: Display related messages
 *Fops.search.m.c_thread: Thread_Display
 
+*Fops.sequences.text:	Sequences...
 
 *Fops.buttonlist:	commit inc flist new
 *Fops.ubuttonlist:

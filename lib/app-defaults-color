@@ -75,9 +75,11 @@
 ! Priority of sequences for display, last sequence has highest priority.
 ! If you define any additional sequences, you will need to redefine this 
 ! resource to include your sequences in the appropriate place.
-*sequences: mrange drange range moved deleted selected unseen current
+*sequences: mrange drange range moved deleted selected unseen cur
+! Exmh internal sequences which cannot be added to or removed from
+*hiddensequences: mrange drange range moved deleted selected cur
 ! tag arguments for sequences
-*sequence_current: -foreground {violet red} -background white
+*sequence_cur: -foreground {violet red} -background white
 *sequence_unseen: -foreground blue
 *sequence_moved: -background yellow
 !*sequence_deleted: -background #c3c3c3

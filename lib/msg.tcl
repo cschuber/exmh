@@ -157,6 +157,7 @@ proc MsgChange {msgid {show show} {line {}} } {
 	set msg(path) $mhProfile(path)/$exmh(folder)/$msg(id)
 	if {$show == "show"} {
 	    MsgShow $msgid
+	    Mh_MarkSeen $exmh(folder) $msgid
 	} else {
 	    MsgClear
 	}

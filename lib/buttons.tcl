@@ -174,6 +174,16 @@ proc Buttons_Folder { frame } {
 	if {$inc(style) == "none" && $b == "inc"} continue
 	Widget_AddButDef $frame $b
     }
+
+    # Sequences
+    set menu $buttons(folderF).sequences.m
+    set sequences [option get . sequences {}]
+    set hiddensequences [option get . hiddensequences {}]
+    foreach sequence $sequences {
+	if {[lsearch -exact $hiddensequences $sequence] == -1} {
+	    Widget_AddMenuItem $menu $sequence [list FtocToggleSequence $sequence]
+	}
+    }
 }
 
 proc Buttons_Message { frame } {

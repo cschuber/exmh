@@ -429,7 +429,7 @@ proc FtocRangeClear { start end } {
     }
 }
 proc Ftoc_RangeUnHighlight { } {
-    global exwin
+    global exwin exmh
     set win $exwin(ftext)
     foreach tag {range drange mrange} {
 	foreach range [FtocMakePairs [$win tag ranges $tag]] {
@@ -442,6 +442,7 @@ proc Ftoc_RangeUnHighlight { } {
 	    }
 	}
     }
+    Ftoc_ShowSequences $exmh(folder)
 }
 
 # For user programming
@@ -601,8 +602,7 @@ proc Ftoc_ClearCurrent {} {
     set ftoc(lineset) {}
 
     if {$ftoc(curLine) != {}} {
-	$exwin(ftext) tag remove current $ftoc(curLine).0 $ftoc(curLine).end
-#	$exwin(ftext) tag remove currentBg $ftoc(curLine).0 $ftoc(curLine).end
+	$exwin(ftext) tag remove cur $ftoc(curLine).0 $ftoc(curLine).end
 	Ftoc_RescanLine $ftoc(curLine)
     }
     return $ftoc(curLine)
@@ -617,7 +617,7 @@ proc Ftoc_Change { msgid line {show show} } {
 	    $exwin(ftext) tag remove unseen $ftoc(curLine).0 $ftoc(curLine).end
 	}
 	Ftoc_RescanLine $ftoc(curLine) +
-	$exwin(ftext) tag add current $ftoc(curLine).0 $ftoc(curLine).end
+	$exwin(ftext) tag add cur $ftoc(curLine).0 $ftoc(curLine).end
 	set top [$exwin(ftext) index @0,4]
 	if [catch {expr {$top+1}}] {set top 0}	;# trap 100.-1 format, iconic
 	if {$ftoc(curLine) == $top ||
@@ -630,16 +630,27 @@ proc Ftoc_Change { msgid line {show show} } {
     }
     return $ok
 }
+proc Ftoc_InitSequences { w } {
+    global exwin
+    set sequences [option get . sequences {}]
+    foreach sequencename $sequences {
+	eval $w tag configure $sequencename \
+		[option get . sequence_$sequencename {}]
+	$w tag raise $sequencename
+    }
+}
 proc Ftoc_ShowSequences { folder } {
     global exwin
     Exmh_Debug "Ftoc_ShowSequences $folder"
-    set knownsequences [option get . sequences {}]
-    foreach sequencename $knownsequences {
-	eval $exwin(ftext) tag configure $sequencename \
-		[option get . sequence_$sequencename {}]
-	$exwin(ftext) tag raise $sequencename
+    set sequences [option get . sequences {}]
+    set hiddensequences [option get . hiddensequences {}]
+    foreach sequence $sequences {
+	if {[lsearch -exact $hiddensequences $sequence] == -1} {
+	    $exwin(ftext) tag remove $sequence 1.0 end
+	}
     }
     foreach sequencename [Mh_Sequences $folder] {
+	$exwin(ftext) tag remove $sequencename 0.0 end
 	set sequence [Mh_Sequence $folder $sequencename]
 	if {[llength $sequence] > 0} {
 	    Exmh_Debug $sequencename: $sequence
@@ -1315,7 +1326,7 @@ proc FtocDragSelectOld {w x y wx wy} {
         if !$ftoc(displayValid) {
             set folder $exmh(folder)
         }
-	set line [lindex [split [$w index current] .] 0]
+	set line [lindex [split [$w index cur] .] 0]
 	set msg [Ftoc_MsgNumber $line]
 	if {$msg == {} || $msg == 0} return
 
@@ -1335,7 +1346,7 @@ proc FtocDragSelect {w x y wx wy} {
     }
     set msgs {}
     if $ftoc(pickone) {
-	set line [lindex [split [$w index current] .] 0]
+	set line [lindex [split [$w index cur] .] 0]
 	set msgs [Ftoc_MsgNumber $line]
 	if {$msgs == {} || $msgs == 0} return
 	set ftocDrag(data,filename) $mhProfile(path)/$folder/$msgs
@@ -1353,5 +1364,26 @@ proc FtocDragSelect {w x y wx wy} {
     set ftocDrag(source) $w
     set ftocDrag(data,foldermsg) "+$folder $msgs"
     Drag_Source ftocDrag $x $y
-  }
+}
+proc FtocToggleSequence { sequencename } {
+    global ftoc exmh
 
+    set folder $exmh(folder)
+    set sequence [Mh_Sequence $folder $sequencename]
+    # If any selected message is not in the sequence, then add to the sequence.
+    # If none are in the sequence, then remove from the sequence.
+    set flag -delete
+    set msgs {}
+    Ftoc_Iterate line {
+	set msgid [Ftoc_MsgNumber $line]	
+	lappend msgs $msgid
+	if {[lsearch -exact $sequence $msgid] == -1} {
+	    set flag -add
+	}
+    }
+    if {$msgs != {}} {
+	Exmh_Status "mark +$folder $msgs $flag -sequence $sequencename"
+	eval MhExec mark +$folder $msgs $flag -sequence $sequencename
+	Ftoc_ShowSequences $folder
+    }
+}
