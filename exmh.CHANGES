@@ -1,6 +1,6 @@
 HISTORY
 cvs repository 07/03/2001 cwg-exmh@deepeddy.com
-    scan.tcl - Remove unnecessary call to Scan_Folder in FolderChange.
+    folder.tcl - Remove unnecessary call to Scan_Folder in FolderChange.
 	Probably should have removed this when I added the call to
 	Flist_UnseenUpdate at the same point yesterday.
 
