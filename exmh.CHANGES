@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 5/5/1999
+    Modifed Jan Peterson's code to make better use of screen real estate. -cwg
+
 cvs repository 5/4/1999
     Fixed Help...>Color Legend crash -cwg
     Fixed crash when aborting out of PGP Password window -cwg

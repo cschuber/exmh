@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.7  1999/05/05 14:58:10  cwg
+# Modifed Jan Peterson's code to make better use of screen real estate.
+#
 # Revision 1.6  1999/04/30 19:09:00  cwg
 # Jan Peterson's multiple PGP key patch
 #
@@ -316,7 +319,7 @@ proc Pgp_SetMyName {} {
    if [info exists pgpPass($keyid)] {
       set pgpPass(cur) $pgpPass($keyid)
    }
-   set pgp(sedit_label) "PGP passphrase for $keyname:"
+   set pgp(sedit_label) "$keyname"
 }
 
 proc Pgp_Process { srcfile dstfile {pgpaction {}} } {

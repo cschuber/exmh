@@ -155,21 +155,25 @@ proc EditAddPassPhrasePane {w} {
     if {$pgp(enabled) && $pgp(seditpgp)} {
 	set keyid [lindex $pgp(myname) 0]
 	set keyname [lindex $pgp(myname) 1]
-	set pgp(sedit_label) "PGP passphrase for $keyname:"
+	set pgp(sedit_label) "$keyname"
 	if {![winfo exists $w.pgp]} {
 	    pack [frame $w.pgp] -side bottom -fill x -ipady 2
 	}
-	if {![winfo exists $w.pgp.l]} {
-	    pack [label $w.pgp.l -textvariable pgp(sedit_label)] \
+	if {![winfo exists $w.pgp.l1]} {
+	    pack [label $w.pgp.l1 -text "PGP passphrase for "] \
+		    -side left
+	}
+	if {![winfo exists $w.pgp.b]} {
+	    pack [button $w.pgp.b -textvariable pgp(sedit_label) \
+		    -command {Pgp_SetMyName}] -side left -ipady 2
+	}
+	if {![winfo exists $w.pgp.l2]} {
+	    pack [label $w.pgp.l2 -text ": "] \
 		    -side left
 	}
 	if {![winfo exists $w.pgp.e]} {
 	    pack [entry $w.pgp.e -textvariable pgpPass(cur) -show *] \
 		    -side left -expand yes -fill x -ipady 2
-	}
-	if {![winfo exists $w.pgp.b]} {
-	    pack [button $w.pgp.b -text "Choose Alternate Key" \
-		    -command {Pgp_SetMyName}] -side left -ipady 2
 	}
     }
 }
