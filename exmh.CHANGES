@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 2/18/2005 cwg-exmh@deepeddy.com
+  lib/ftoc.tcl: Fix patch of 2/3 so it doesn't break if you don't have
+  a detached message window.
+
 cvs repository 2/9/2005 valdis.kletnieks@vt.edu
   lib/mime.tcl: resolve (or at least work around) Debian bug 294212
   as a too-zealous splatting of specials broke some content types.

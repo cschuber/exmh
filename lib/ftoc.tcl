@@ -144,12 +144,14 @@ proc Ftoc_Bindings { w } {
 }
 proc FtocDeduceSize {} {
     global exwin
-    set top [lindex [split [$exwin(ftext) index @0,0] .] 0]
-    set h [winfo height $exwin(ftext)]
-    set w [winfo width $exwin(ftext)]
-    set ix [$exwin(ftext) index @[expr $h-1],[expr $w-1]]
-    set bottom [lindex [split $ix .] 0]
-    set exwin(ftextLines) [expr $bottom-$top]
+    if {$exwin(toplevelMsg)} {
+	set top [lindex [split [$exwin(ftext) index @0,0] .] 0]
+	set h [winfo height $exwin(ftext)]
+	set w [winfo width $exwin(ftext)]
+	set ix [$exwin(ftext) index @[expr $h-1],[expr $w-1]]
+	set bottom [lindex [split $ix .] 0]
+	set exwin(ftextLines) [expr $bottom-$top]
+    }
 }
 proc FtocRangeStart { lineno } {
     # For normal button-down "start a selection"
