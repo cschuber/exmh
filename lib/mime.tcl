@@ -945,10 +945,27 @@ proc Mime_WithTextFile {fileIOVar tkw part body} {
 	return 1
     }
 
+    # Set the encoding for the file based on its character set
+
+    Mime_SetFileEncoding $fileIO $part
+
     uplevel $body
 
     MimeClose $fileIO
 }
+
+proc Mime_SetFileEncoding {fileIO part} {
+    global tcl_version
+    if {$tcl_version >= 8.1} {
+	set charset [Mime_GetCharset {} $part]
+	regsub {^(us-} $charset {} charset
+	regsub {^(mac|iso)-} $charset {\1} charset
+	if {[catch {fconfigure $fileIO -encoding $charset} err]} {
+	    Exmh_Debug "Mime_SetFileEncoding: $err"
+	}
+    }
+}
+
 proc Mime_GetUnencodedFile {part} {
     global mimeHdr mime
 
@@ -986,11 +1003,16 @@ proc Mime_GetCharset {tkw part} {
     set charset us-ascii
     if [info exists mimeHdr($part,param,charset)] {
 	set charset [string tolower $mimeHdr($part,param,charset)]
-	if ![info exists mime(registry,$charset)] {
-	    MimeInsertNote $tkw [MimeLabel $part part] \
-			   "Unknown charset: <$charset>"
-	    $tkw insert insert \n
-	    set charset us-ascii
+	if {[string length $tkw]} {
+
+	    # Limit the encodings to ones for which we have fonts.
+
+	    if ![info exists mime(registry,$charset)] {
+		MimeInsertNote $tkw [MimeLabel $part part] \
+			       "Unknown charset: <$charset>"
+		$tkw insert insert \n
+		set charset us-ascii
+	    }
 	}
     }
     return $charset
@@ -1841,6 +1863,7 @@ proc MimeParseSingle {tkw part fileIO } {
 		set tag [MimeSetCharset $tkw $part]
 		$tkw tag remove noteTag "insert -1line"  end
 		$tkw tag add $tag insert end
+		Mime_SetFileEncoding $fileIO $part
 	    }  else {
 		set tag {}
 	    }

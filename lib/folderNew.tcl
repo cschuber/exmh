@@ -85,6 +85,14 @@ proc FolderNewCommit { top entry } {
 	    Exwin_Dismiss $top
 	    return
 	}
+	if {[catch {
+	    close [open [file join $path .mh_sequences] w]
+	    if [info exists mhProfile(folder-protect)] {
+		exec chmod $mhProfile(folder-protect) $path/.mh_sequences
+	    }
+	} msg] {
+	    Exmh_Debug ".mh_sequences: $msg"
+	}
 	if [info exists mhProfile(folder-protect)] {
 	    exec chmod $mhProfile(folder-protect) $path
 	}
