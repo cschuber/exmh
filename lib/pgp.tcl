@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.3  1999/03/29 20:49:20  cwg
+# If doing a plain signature, disable usage of the pgp(mime) flag.
+#
 # Revision 1.2  1999/03/26 08:41:55  cwg
 # Changes to PGP interface to use preferences variables instead of
 # message headers.  Also, reorganize the "PGP..." menu and rename it
@@ -386,7 +389,9 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
     # write the message to be encrypted
     set msgfile [Mime_TempFile "msg"]
     set msg [open $msgfile w 0600]
-    if {$pgp(format) != "plain"} {
+    if {$pgp(format) == "plain"} {
+	set pgp(mime) 0
+    } else {
 	foreach line $pgpheaders { puts $msg [Pgp_FixHeader $line] }
     }
     puts $msg ""
