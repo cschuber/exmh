@@ -159,7 +159,6 @@ Status:
 Incorporate patches from the New Features section of the Patch page
 
   4.Patch to slocal.c that allows regular expressions in .maildelivery files. 
-  8.String From lines before posting. 
 
 ----------------------------------------------------------------------
 Number: 27
