@@ -669,27 +669,27 @@ proc SeditGuessContentType { filenameOrig } {
 
     set filename [string tolower $filenameOrig]
     set type {}
-    if [catch {set type [mailcap_guess_content_type $filename]} ] {
-	if ![info exists mimeType] {
-	    SeditLoadMimeTypes
+    if ![info exists mimeType] {
+	SeditLoadMimeTypes
+    }
+    if [regexp -- {^([1-9][0-9]*|@)$} [file tail $filename]] {
+	return message/rfc822
+    }
+    set suffix [file extension $filename]
+    set newfilename [file rootname $filename]
+    while {$newfilename != $filename} {
+	if [info exists mimeType($suffix)] {
+	    set type $mimeType($suffix)
 	}
-	if [regexp -- {^([1-9][0-9]*|@)$} [file tail $filename]] {
-	    return message/rfc822
-	}
-	set suffix [file extension $filename]
+	set filename $newfilename
+	set suffix "[file extension $filename]$suffix"
 	set newfilename [file rootname $filename]
-	while {$newfilename != $filename} {
-	    if [info exists mimeType($suffix)] {
-		set type $mimeType($suffix)
-	    }
-	    set filename $newfilename
-	    set suffix "[file extension $filename]$suffix"
-	    set newfilename [file rootname $filename]
-	}
     }
     if {[string length $type] == 0} {
-	if {[string length [set type [Mime_Magic $filenameOrig]]] == 0} {
-	    return $sedit(defaultType)
+	if [catch {set type [mailcap_guess_content_type $filename]}] {
+	    if {[string length [set type [Mime_Magic $filenameOrig]]] == 0} {
+		return $sedit(defaultType)
+	    }
 	}
     }
     return $type

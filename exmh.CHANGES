@@ -1,5 +1,12 @@
 HISTORY
 
+cvs repository 4/2/1999
+    Change ordering of mime type guessing. It used to be
+	mailcap, mime.types, magic, now it is mime.types,
+	mailcap, magic. (iko)
+    Fixed mailcap file extention parsing to ignore entries
+	with nametemplate=%s (iko)
+
 cvs repository 4/1/1999
     receipt-notification patch that fixes the MIME formatting in the
         receipt-notification message. -jbeck@eng.sun.com via haldevore

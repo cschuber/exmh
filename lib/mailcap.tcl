@@ -362,6 +362,7 @@ proc mailcap_guess_content_type {filename} {
         set field_name [lindex $field 0];
         if {$field_name == "nametemplate"} {
           set field_value [lindex $field 1];
+	  if [string match "%s" $field_value] continue
 	  regsub -all {([.()?*+|])} $field_value {\\\1} field_value
           regsub {%s} $field_value {.*} field_value;
           if [regexp -nocase "^$field_value\$" $filename] {
