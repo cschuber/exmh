@@ -152,7 +152,7 @@ proc Buttons_Main { frame } {
 	Widget_AddButDef $frame $b
     }
     foreach M [Widget_GetMenuBDef $frame] {
-	set menu [Widget_AddMenuBDef $frame $M {right padx 1}]
+	set menu [Widget_AddMenuBDef $frame $M {right padx 1 filly}]
 	ButtonMenuInner $menu
     }
 }
@@ -166,7 +166,7 @@ proc Buttons_Folder { frame } {
 
     # Menu for extra stuff
     foreach M [Widget_GetMenuBDef $frame] {
-	set menu [Widget_AddMenuBDef $frame $M {right padx 1}]
+	set menu [Widget_AddMenuBDef $frame $M {right padx 1 filly}]
 	ButtonMenuInner $menu
     }
 
@@ -183,7 +183,7 @@ proc Buttons_Message { frame } {
     # Menu for extra stuff
     # Loop through system and user-defined menus
     foreach M [Widget_GetMenuBDef $frame] {
-	set menu [Widget_AddMenuBDef $frame $M {right padx 1}]
+	set menu [Widget_AddMenuBDef $frame $M {right padx 1 filly}]
 	ButtonMenuInner $menu
 
 	# but only deal with system-defined groups

@@ -191,18 +191,18 @@ proc EditShowDialog {id text} {
 	EditAddPassPhrasePane $d
 
 	foreach but [Widget_GetButDef $d] {
-	    Widget_AddButDef $d $but
+	    Widget_AddButDef $d $but {right}
 	    Widget_ReEvalCmd $d.$but	;# expand $id variable now
 	}
 	catch {pack $d.abort -padx 15}
 	catch {pack $d.send -ipady 5 -ipadx 5 -padx 5}
 
 	foreach M [Widget_GetMenuBDef $d] {
-	    set menu [Widget_AddMenuBDef $d $M {right padx 1 filly}]
+	    set menu [Widget_AddMenuBDef $d $M {right padx 1}]
 	    ButtonMenuInner $menu	;# This also expands variables
 	}
 
-	Widget_Message $d msg -text "$text\nReturn for Send\nControl-c for Kill" -aspect 300
+	Widget_Message $d msg -text "$text\nReturn for Send\nControl-c for Kill" -aspect 400
 
 	focus $d
 	bind $d <Return> [list $d.send invoke]

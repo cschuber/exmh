@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 5/7/1999
+    Fix oddities introduced during tkstep patch; also eliminate
+	extra newline in editnow window.  -cwg
+
 cvs repository 5/6/1999
     Closing html window during install before the page is fully
 	rendered no longer crashes. -cwg
