@@ -18,6 +18,7 @@ proc Exmh {} {
     catch {string match *group* [exec repl -help] } nmh
 
     # set $exmh(mh_vers) to a pretty-printable string...
+    set exmh(mh_vers) "unknown"
     if { $nmh } {
 	# 'repl -- version [compiled etc etc]' - catch version
 	catch {exec repl -version} d
