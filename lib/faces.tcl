@@ -85,9 +85,6 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
     set xfaceAvail 0
     set ximageurlAvail 0
 
-    set xfaceAvail 0
-    set ximageurlAvail 0
-
     Face_Delete
 
     # Honor X-Face even if faces is disabled
@@ -98,22 +95,6 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
 	    DeferWork faces(work) [list FaceXFace $xface [FaceAlloc]]
 	} elseif {[FaceXFace $xface] && !$faces(rowEnabled)} {
 	    set xfaceAvail 1
-	}
-    }
-
-    # Honor X-Image-URL even if X-Face was displayed or the faces are
-    # disabled
-    if {[string compare "" $ximageurl]} {
-	if {![info exists failedURLs]
-	    || ([info exists failedURLs]
-		&& [lsearch $failedURLs $ximageurl] == -1)} {
- 	    if {$faces(rowEnabled) && $faces(defer)} {
- 		DeferWork faces(work) \
-		    [list UrlDisplayFace $ximageurl [FaceAlloc]]
- 	    } elseif {[UrlDisplayFace $ximageurl [FaceAlloc]]
-		      && !$faces(rowEnabled)} {
-		set ximageurlAvail 1
-	    }
 	}
     }
 
