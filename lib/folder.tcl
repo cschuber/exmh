@@ -324,9 +324,9 @@ proc Folder_PurgeAllBg {} {
     global flist
     Folder_PurgeBg $flist(allfolders)
 }
-proc Folder_IsShared {folder} {
+proc Folder_IsShared {f} {
     global folder
-    set folder(shared,$folder) 1
+    set folder(shared,$f) 1
 }
 proc Folder_FindShared {} {
     global mhProfile

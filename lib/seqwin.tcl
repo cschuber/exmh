@@ -252,6 +252,9 @@ proc SeqWinAdd {seq folder num} {
 proc SeqWinUpdate {seq folder num} {
     global seqwin flist
     
+    if {![info exist seqwin(folders,$seq)]} {
+        set seqwin(folders,$seq) {}
+    }
     set index [lsearch $seqwin(folders,$seq) $folder]
     if {$index == -1} {
 	if {$num > 0} {

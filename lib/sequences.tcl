@@ -73,7 +73,7 @@ folder width."
 "Sequences to never display in the sequences window."
     }
 
-    { seqwin(alwaysshow) seqAlwaysShow {unseen} {Always Show Sequences}
+    { seqwin(alwaysshow) seqAlwaysShow {} {Always Show Sequences}
 "Sequences to always display, even when they're empty."
     }
 
@@ -313,11 +313,15 @@ proc Seq_Add {folder seq msgids} {
 	Fdisp_HighlightUnseen $folder
     }
 }
+
 # Set the contents of a sequence for a folder.
+# This no longer synchronizes with the file system -
+# use Mh_SequenceUpdate explicitly for that.
+
 proc Seq_Set {folder seq msgids} {
     global flist exmh mhProfile
-#   catch {MhExec mark +$folder $msgids -seq $seq -zero}
-    Mh_SequenceUpdate $folder replace $seq $msgids
+#    catch {MhExec mark +$folder $msgids -seq $seq -zero}
+#    Mh_SequenceUpdate $folder replace $seq $msgids
     if [info exists flist(seqcount,$folder,$seq)] {
 	set oldnum $flist(seqcount,$folder,$seq)
     } else {

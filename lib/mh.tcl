@@ -394,6 +394,7 @@ proc Mh_SetCur { folder msgid } {
 	($mhPriv(cur,$folder) == $msgid)} {
 	return
     }
+    Mh_SequenceUpdate $folder replace cur $msgid
     Seq_Set $folder cur $msgid
     set mhPriv(cur,$folder) $msgid
 }

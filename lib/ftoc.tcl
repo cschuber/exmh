@@ -507,9 +507,13 @@ proc Ftoc_FindMsg { msgid } {
             }
             return {}   ;# not found
         }
-        #set nextlineno [expr int(($maxlineno+$minlineno)/2)]
-        # Don't divide in two, guestimate where the line might be instead
-        set nextlineno [expr int($minlineno+1+($msgid-$minmsgid)*($maxlineno-$minlineno-2)/($maxmsgid-$minmsgid))]
+        set nextlineno [expr int(($maxlineno+$minlineno)/2)]
+        if {0} {
+          # Don't divide in two, guestimate where the line might be instead
+          # Disabled - welch 2/20/03 - this sometimes picks lines that
+          # are not valid and so Ftoc_MsgNumber returns {}
+          set nextlineno [expr int($minlineno+1+($msgid-$minmsgid)*($maxlineno-$minlineno-2)/($maxmsgid-$minmsgid))]
+        }
         set nextmsgid [Ftoc_MsgNumber $nextlineno]
         # Note that a side effect of Ftoc_MsgNumber was to put this entry in 
 	# the cache,so we don't have to do it here.

@@ -1,4 +1,23 @@
 HISTORY
+cvs repository 02/21/2003 welch@panasas.com
+    ftoc.tcl - Reverted change to the binary search in Ftoc_FindMsg
+      because the new method sometime causes stack traces because the
+      nextlineno computation returns values out of range.
+    mh.tcl - added call to Mh_SequenceUpdate to Mh_SetCur
+    seq.tcl - removed Mh_SequenceUpdate call from Seq_Set, because
+      that procedure is usually called with the results of Mh_Sequence,
+      so we were reading sequence information and then immediately
+      writing it back out.
+      Also removed "unseen" from the seqAlwaysShow preference item.
+      Otherwise you couldn't clear that setting because of the way
+      preference defaults works.
+    seqwin.tcl - fixed stack trace by adding initialization for
+      seqwin(folders,$seq)
+
+cvs repository 02/20/2003 welch@panasas.com
+    folder.tcl - fixed Folder_IsShared parameter definition that
+      conflicted with global variable.
+
 cvs repository 02/19/2003 welch@panasas.com
     flist.tcl - fixed the Flist button, which was broken by the flistcache
       Also fixed the autoSort feature in Flist_UpdateUnseen
