@@ -150,14 +150,22 @@ proc Edit_Dialog {draftID} {
 proc EditDialog {draftID} {
     Edit_Dialog $draftID
 }
+# Set seditpgp name (PGP key name gets set in multiple places
+# so we should collapse them all here)
+proc Pgp_SetSeditPgpName { myname } {
+    global pgp
+
+	set keyid [lindex $myname 0]
+	set keyalg [lindex $myname 1]
+	set keyname [lindex $myname 4]
+	
+	set pgp(sedit_label) "$keyid $keyalg $keyname"
+}
 proc EditAddPassPhrasePane {id w} {
     global pgp
     if {$pgp(enabled) && $pgp(seditpgp)} {
-	set keyid [lindex $pgp($pgp(version,$id),myname) 0]
-	set keyalg [lindex $pgp($pgp(version,$id),myname) 1]
-	set keyname [lindex $pgp($pgp(version,$id),myname) 4]
-	
-	set pgp(sedit_label) "$keyid $keyalg $keyname"
+	Pgp_SetSeditPgpName $pgp($pgp(version,$id),myname)
+
 	if {![winfo exists $w.pgp]} {
 	    pack [frame $w.pgp] -side bottom -fill x -ipady 2
 	}

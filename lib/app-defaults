@@ -932,14 +932,17 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.m_pgpversion:	version
 *Sedit.Menubar.pgp.m.version.entrylist:	pgp2 pgp5 gpg
 *Sedit.Menubar.pgp.m.version.l_pgp2:	PGP2
+*Sedit.Menubar.pgp.m.version.c_pgp2:	Pgp_SetSeditPgpVersion pgp $id
 *Sedit.Menubar.pgp.m.version.t_pgp2:	radio
 *Sedit.Menubar.pgp.m.version.v_pgp2:	pgp(version,$id)
 *Sedit.Menubar.pgp.m.version.x_pgp2:	pgp
 *Sedit.Menubar.pgp.m.version.l_pgp5:	PGP5
+*Sedit.Menubar.pgp.m.version.c_pgp5:	Pgp_SetSeditPgpVersion pgp5 $id
 *Sedit.Menubar.pgp.m.version.t_pgp5:	radio
 *Sedit.Menubar.pgp.m.version.v_pgp5:	pgp(version,$id)
 *Sedit.Menubar.pgp.m.version.x_pgp5:	pgp5
 *Sedit.Menubar.pgp.m.version.l_gpg:	GPG
+*Sedit.Menubar.pgp.m.version.c_gpg:	Pgp_SetSeditPgpVersion gpg $id
 *Sedit.Menubar.pgp.m.version.t_gpg:	radio
 *Sedit.Menubar.pgp.m.version.v_gpg:	pgp(version,$id)
 *Sedit.Menubar.pgp.m.version.x_gpg:	gpg

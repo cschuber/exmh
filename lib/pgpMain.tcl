@@ -19,6 +19,10 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.7  1999/08/05 15:46:29  bmah
+# Fix seditpgp key-changing button label code (update properly when
+# user changes her key or changes the PGP version).
+#
 # Revision 1.6  1999/08/04 22:43:39  cwg
 # Got passphrase timeout to work yet again
 #
@@ -429,16 +433,54 @@ proc Pgp_SetMyName { v } {
    set newname [Pgp_ChoosePrivateKey $v \
 	 "Please select the default key to use for signing"]
    if ([string length $newname]) {
-       set pgp($v,myname) "$newname"
+       set pgp($v,myname) [lindex $newname 0]
+
+       Exmh_Debug "Pgp_SetMyName: myname now $pgp($v,myname)"
 
        set keyid [lindex $pgp($v,myname) 0]
-       set keyalg [lindex $pgp($v,myname) 1]
-       set keyname [lindex $pgp($v,myname) 4]
        if [info exists pgp($v,pass,$keyid)] {
 	   set pgp($v,pass,cur) $pgp($v,pass,$keyid)
        }
-       set pgp(sedit_label) "$keyid $keyalg $keyname"
+       Pgp_SetSeditPgpName $pgp($v,myname)
    }
+}
+
+# Set seditpgp name (PGP key name gets set in multiple places
+# so we should collapse them all here)
+proc Pgp_SetSeditPgpName { myname } {
+    global pgp
+
+    set keyid [lindex $myname 0]
+    set keyalg [lindex $myname 1]
+    set keyname [lindex $myname 4]
+	
+    set pgp(sedit_label) "$keyid $keyalg $keyname"
+}
+
+# Update seditpgp PGP version
+proc Pgp_SetSeditPgpVersion { v id } {
+    global pgp
+
+    # Get old PGP passphrase and save it away if it exists.
+    set oldv $pgp(version,$id)
+    if {[info exists pgp($oldv,pass,cur)] && [info exists pgp($oldv,myname)]} {
+	set keyid [lindex $pgp($oldv,myname) 0]
+	set pgp($oldv,pass,$keyid) $pgp($oldv,pass,cur)
+    }
+
+    Exmh_Debug "Pgp_SetSeditPgpVersion: myname now $pgp($v,myname)"
+
+    # Now behave as if we'd just chosen a new key (with new version $v)
+    set keyid [lindex $pgp($v,myname) 0]
+    if [info exists pgp($v,pass,$keyid)] {
+	set pgp($v,pass,cur) $pgp($v,pass,$keyid)
+    }
+    Pgp_SetSeditPgpName $pgp($v,myname)
+
+    # XXX Need to frob current password in sedit passphrase field.
+    # How can we do this, seeing that $v just changed, and $v for
+    # the field was set at the time it was first packed?
+
 }
 
 proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
