@@ -99,10 +99,10 @@ rm -rf $RPM_BUILD_ROOT
 # be changed to use %{_libdir}? Does %files -f support macros?
 #
 %files -f filelist
+%defattr(-,root,root)
 %dir /usr/lib/exmh-%{version}
 %dir /usr/lib/exmh-%{version}/html
 %dir /usr/lib/exmh-%{version}/bitmaps
-%defattr(-,root,root)
 %doc COPYRIGHT exmh.BUGS exmh.CHANGES exmh.TODO exmh.README lib/html/
 %config /etc/X11/wmconfig/exmh 
 %config /etc/X11/applnk/Internet/exmh.desktop
