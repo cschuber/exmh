@@ -1,8 +1,11 @@
 HISTORY
+cvs repository 06/06/2002 welch@panasas.com
+    lib/ftoc.tcl - Fix to Ftoc_ClearMsgCache for unset vs. array unset buglet.
+
 cvs repository 05/01/2002 Hal DeVore <haldevore@acm.org>
     lib/sedit.tcl - moved calls to SeditSend hooks to much earlier
     
-04/30/2002 welch@panasas.com
+cvs repository 04/30/2002 welch@panasas.com
     A whole collection of patches.  If marked with ** then I've lost
     track of who gave them to me and I apologize for that:
     exmh-strip.MASTER: added pref initialization to quiet errors caused
