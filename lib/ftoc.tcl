@@ -1132,7 +1132,7 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	    }
 	    incr ftoc(numMsgs) -1
 	} else {
-	    FtocUnmarkInner $L
+	    FtocUnmarkInner $lineno
 	}
 	incr ftoc(changed) -1
     }

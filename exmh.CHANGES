@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 09/09/2002 Robert Elz <kre@munnari.OZ.AU> via 
+	welch@panasas.com
+    ftoc.tcl - Fixed reference to $L
+
 cvs repository 08/26/2002 Robert Elz <kre@munnari.OZ.AU> via 
 	cwg-exmh@deepeddy.com
     pick.tcl - change the order of the arguments to pick to get around
