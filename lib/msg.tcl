@@ -289,7 +289,7 @@ proc Msg_ReplyAll { } {
     global nmh
 
     if {$nmh == 1} {
-	Msg_Reply -group -nocc me
+	Msg_Reply -group
     } else {
 	Msg_Reply -cc to -cc cc
     }
