@@ -47,9 +47,13 @@ proc Seq_Trace {array elem op} {
 	    set flist($sequence) $folder
 	}
     } else {
-	set ix [lsearch $flist($sequence) $folder]
-	if {$ix >= 0} {
-	    set flist($sequence) [lreplace $flist($sequence) $ix $ix]
+	if [info exists flist($sequence)] {
+	    set ix [lsearch $flist($sequence) $folder]
+	    if {$ix >= 0} {
+		set flist($sequence) [lreplace $flist($sequence) $ix $ix]
+	    }
+	} else {
+	    set flist($sequence) {}
 	}
     }
     Exmh_Debug "$flist(totalcount,$sequence) $sequence msgs in [llength $flist($sequence)] folders ($flist($sequence))"
