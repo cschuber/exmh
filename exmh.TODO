@@ -6,9 +6,13 @@ Scope: Medium
 Complexity: High
 Status: Anders Hammarquist <iko@cd.chalmers.se> has a forked version
 	of the sources in which he's working on this
+	Bruce A. Mah <bmah@acm.org> merged the multipgp branch changes
+	into the main trunk.
 
 Incorporate The PGP 5.0 patch from the 2.0.2 patch list.
 Unfortunately, it conflicts with some other already installed patches.
+(Keep this item and #12 on the TODO list until enough people have beat
+on the merged changes that there's some confidence in them.)
 
 ----------------------------------------------------------------------
 Number: 2

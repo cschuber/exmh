@@ -150,22 +150,24 @@ proc Edit_Dialog {draftID} {
 proc EditDialog {draftID} {
     Edit_Dialog $draftID
 }
-proc EditAddPassPhrasePane {w} {
+proc EditAddPassPhrasePane {id w} {
     global pgp pgpPass
     if {$pgp(enabled) && $pgp(seditpgp)} {
-	set keyid [lindex $pgp(myname) 0]
-	set keyname [lindex $pgp(myname) 1]
-	set pgp(sedit_label) "$keyname"
+	set keyid [lindex $pgp($pgp(version,$id),myname) 0]
+	set keyalg [lindex $pgp($pgp(version,$id),myname) 1]
+	set keyname [lindex $pgp($pgp(version,$id),myname) 4]
+	
+	set pgp(sedit_label) "$keyid $keyalg $keyname"
 	if {![winfo exists $w.pgp]} {
 	    pack [frame $w.pgp] -side bottom -fill x -ipady 2
 	}
 	if {![winfo exists $w.pgp.l1]} {
-	    pack [label $w.pgp.l1 -text "PGP passphrase for "] \
+	    pack [label $w.pgp.l1 -text "Passphrase for "] \
 		    -side left
 	}
 	if {![winfo exists $w.pgp.b]} {
 	    pack [button $w.pgp.b -textvariable pgp(sedit_label) \
-		    -command {Pgp_SetMyName}] -side left -ipady 2
+		    -command "Pgp_SetMyName \$pgp(version,$id)"] -side left -ipady 2
 	}
 	if {![winfo exists $w.pgp.l2]} {
 	    pack [label $w.pgp.l2 -text ": "] \
@@ -188,7 +190,7 @@ proc EditShowDialog {id text} {
 	wm transient $d
 	$d config -relief raised -borderwidth 2
 
-	EditAddPassPhrasePane $d
+	EditAddPassPhrasePane $id $d
 
 	foreach but [Widget_GetButDef $d] {
 	    Widget_AddButDef $d $but {right}
@@ -244,7 +246,7 @@ proc EditStart { draft {type prog} } {
     if $pgp(enabled) {
 	# Copy the default PGP values into this window
 	set id [SeditId $draft]
-	foreach var {encrypt sign mime clearsign format} {
+	foreach var {encrypt sign mime clearsign format version} {
 	    set pgp($var,$id) $pgp($var)
 	}
     }

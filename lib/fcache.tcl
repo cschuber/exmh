@@ -100,7 +100,7 @@ proc Fcache_FolderName { folder } {
       return $folderNickName($folder)
    }
    set nickname {}
-   foreach part [Misc_Reverse [split $folder "/"]] {
+   foreach part [Pgp_Misc_Reverse [split $folder "/"]] {
       if {"$nickname" == {}} {
 	 set nickname "$part"
       } else {

@@ -12,7 +12,7 @@ proc Crypt_Init {} {
     Exmh_Debug sigProtocols $protocols
     set mime(showsig,default)			Mime_ShowMultipart
     if {[llength $protocols] == 0} {
-	set mime(showsig,application/pgp-signature)	MimeShowMultipartSignedPgp
+	set mime(showsig,application/pgp-signature)	Pgp_MimeShowMultipartSignedPgp
     } else {
 	foreach protocol $protocols {
 	    set func [option get . sig_$protocol {}]
@@ -25,7 +25,7 @@ proc Crypt_Init {} {
     Exmh_Debug cryptProtocols $protocols
     set mime(showcrypt,default)			Mime_ShowMultipart
     if {[llength $protocols] == 0} {
-	set mime(showcrypt,application/pgp-encrypted)	MimeShowMultipartEncryptedPgp
+	set mime(showcrypt,application/pgp-encrypted)	Pgp_MimeShowMultipartEncryptedPgp
     } else {
 	foreach protocol $protocols {
 	    set func [option get . crypt_$protocol {}]

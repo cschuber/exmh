@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.12  1999/08/03 04:05:55  bmah
+# Merge support for PGP2/PGP5/GPG from multipgp branch.
+#
 # Revision 1.11  1999/06/10 16:59:18  cwg
 # Re-enabled the timeout of PGP passwords
 #
@@ -119,7 +122,7 @@ proc Pgp_Unsign { text } {
 }
 
 # returns a list of integers from $x to $y-1
-proc Misc_IntList { x y } {
+proc Pgp_Misc_IntList { x y } {
     for {set result {}} {$y > $x} {set x [expr $x + 1]} {
 	lappend result $x
     }
@@ -128,7 +131,7 @@ proc Misc_IntList { x y } {
 
 # returns a list containing every element of $list that fulfills
 # the requirement of cond(var)
-proc Misc_Filter { var cond list } {
+proc Pgp_Misc_Filter { var cond list } {
     upvar $var elem
 
     set result {}
@@ -143,7 +146,7 @@ proc Misc_Filter { var cond list } {
 
 # like filter, but returns a list of 2 lists. The first containing
 # the elements fulfilling the requirement, the second those that don't
-proc Misc_Segregate { var cond list } {
+proc Pgp_Misc_Segregate { var cond list } {
     upvar $var elem
 
     set fulfill {}
@@ -160,7 +163,7 @@ proc Misc_Segregate { var cond list } {
 }
 
 # applies expr on each elem and returns the resulting list
-proc Misc_Map { var expr list } {
+proc Pgp_Misc_Map { var expr list } {
     upvar $var elem
 
     set result {}
@@ -172,7 +175,7 @@ proc Misc_Map { var expr list } {
 }
 
 # returns the list reversed
-proc Misc_Reverse { list } {
+proc Pgp_Misc_Reverse { list } {
     set result {}
     foreach elem $list {
 	set result [linsert $result 0 $elem]
@@ -181,7 +184,7 @@ proc Misc_Reverse { list } {
 }
 
 # asks for a password in a window called $title with a little note $label
-proc Misc_GetPass { title label } {
+proc Pgp_Misc_GetPass { v title label } {
     global getpass pgp
     set w .getpass
 
@@ -212,37 +215,41 @@ proc Misc_GetPass { title label } {
     }
     # Override bindtags done by Widget_BindEntryCmd
     bindtags $getpass(entry) $getpass(entry)
-    SeditBind $getpass(entry) backspace {
-	global getpass
-	if $pgp(echopass) {
-	    $getpass(entry) delete [expr [$getpass(entry) index end]-1] end
-	}
-	set getpass(pass) [string range $getpass(pass) 0 [expr [string length $getpass(pass)]-2]]
-    }
-    bind $getpass(entry) <Any-Key> {
-	global getpass
-	if {"%A" != "" && "%A" != "{}"} {
-	    if $pgp(echopass) {
-		$getpass(entry) insert insert "*"
-	    }
-	    append getpass(pass) "%A"
-	}
-    }
+
+    SeditBind $getpass(entry) backspace "
+        global getpass
+        if \[set pgp($v,echopass)] \{
+            \$getpass(entry) delete \[expr \[\$getpass(entry) index end]-1] end
+        \}
+	set getpass(pass) \[string range \$getpass(pass) 0 \[expr \[string length \$getpass(pass)]-2]]
+    "
+
+    bind $getpass(entry) <Any-Key> "
+        global getpass
+        if \{ \"%A\" != \"\" && \"%A\" != \"\{\}\"\} \{
+            if \[set pgp($v,echopass)] \{
+                \$getpass(entry) insert insert \"*\"
+            \}
+            append getpass(pass) \"%A\"
+        \}
+    "
+
     bind $getpass(entry) <Control-U> {
 	global getpass
 	$w.pass.entry delete 0 end
 	set getpass(pass) {}
     }
+
     Visibility_Wait $w
     update idletasks
-    if $pgp(grabfocus)  {
+    if [set pgp($v,grabfocus)] {
 	grab -global $w
     }
     focus $getpass(entry)
     tkwait variable getpass(state)
     Exmh_Focus
     # Forget window locaton  to avoid problems in virtual root window managers
-    destroy $w	
+    destroy $w
     set password $getpass(pass)
     unset getpass(pass)
     
@@ -274,7 +281,7 @@ proc Misc_DisplayText { title text {height 8}} {
 
 # gets the whole header of the draft. Returns a list of strings.
 # Each multi-line header is put back into a single string (with embedded \n)
-proc Misc_GetHeader { in } {
+proc Pgp_Misc_GetHeader { in } {
     global miscRE
 
     set headers {}
@@ -299,32 +306,37 @@ proc Misc_PostProcess { srcfile } {
     global mhProfile pgp pgpPass
 
     set id [SeditId $srcfile]
+    set v $pgp(version,$id)
 
     set dstfile [Mh_Path $mhProfile(draft-folder) new]
     set curfile $srcfile
 
     # read the header to see what postprocessing has to be done
     set in [open $curfile r]
-    set mailheader [Misc_GetHeader $in]
+    set mailheader [Pgp_Misc_GetHeader $in]
     close $in
 
     # call the pgp postprocesing if necessary
     if {$pgp(enabled)} {
 	if {$pgp(encrypt,$id) || $pgp(sign,$id)} {
-	    if {[info exists pgpPass(cur)] && [info exists pgp(myname)]} {
-		set keyid [lindex $pgp(myname) 0]
-		Pgp_SetPassTimeout cur
-		set pgpPass($keyid) $pgpPass(cur)
+	    # If there's a passphrase from sedit and it's non-empty, use it
+	    # but otherwise don't touch passphrase for current key
+	    if {[info exists pgpPass(cur)] && ([string length $pgpPass(cur)] > 0) && [info exists pgp($v,myname)]} {
+		set keyid [lindex $pgp($v,myname) 0]
+		Pgp_SetPassTimeout $v cur
+		set pgp($v,pass,$keyid) $pgpPass(cur)
 	    }
-	    set keyid [lindex $pgp(myname) 0]
+	    set keyid [lindex $pgp($v,myname) 0]
 	    Exmh_Debug keyid=$keyid
-	    if !$pgp(seditpgp) {
-		set pgpPass($keyid) [Pgp_GetPass $pgp(myname)]
+	    # if non-seditpgp or we don't have a passphrase for current key 
+	    if {!$pgp(seditpgp) || (![info exists pgp($v,pass,$keyid)]) || ([string length $pgp($v,pass,$keyid)] == 0)} {
+		set pgp($v,pass,$keyid) [Pgp_GetPass $v $pgp($pgp(version,$id),myname)]
 	    } 
-	    Pgp_SetPassTimeout $keyid
-	    #Exmh_Debug pass=>$pgpPass($keyid)<
-	    if {[string length $pgpPass($keyid)] > 0} {
-		Pgp_Process $curfile $dstfile
+	    Pgp_SetPassTimeout $pgp(version,$id) $keyid
+# XXX Danger Wil Robinson!
+	    Exmh_Debug pass=>$pgp($v,pass,$keyid)<
+	    if {[string length $pgp($v,pass,$keyid)] > 0} {
+		Pgp_Process $pgp(version,$id) $curfile $dstfile
 		set curfile $dstfile
 	    }
 	}
@@ -342,7 +354,7 @@ proc Misc_Send { to subject {bodyfile {}} {headers {}} } {
 
     # read the default mail header
     set in [open "$mhProfile(path)/$mhProfile(draft-folder)/$msg" r]
-    set header [Misc_GetHeader $in]
+    set header [Pgp_Misc_GetHeader $in]
     close $in
 
     # write it back with a new to and subject fields
@@ -364,7 +376,7 @@ proc Misc_Send { to subject {bodyfile {}} {headers {}} } {
 
     Mh_Send $msg
 }
-proc Pgp_FixHeader { line } {
+proc Pgp_Misc_FixHeader { line } {
     if [regexp {^([^:]+):(.*)} $line x key value] {
 	set newline {}
 	while {[regexp {([^-]+)-(.*)} $key  x first rest]} {

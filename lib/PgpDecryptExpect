@@ -6,19 +6,19 @@
 # This is run by exmh, currenly only when decrypting certain PGP messages.
 # See Preferences->Pgp->Help or the source code for more information.
 #
-# Arguments: infile, outfile, exmh-bg name
-#
+# Arguments: v, infile, outfile, exmh-bg name
 
 wm withdraw .
 
-if {[llength $argv] < 3} {
+if {[llength $argv] < 4} {
     puts "PgpDecryptExpect should be invoked by exmh"
     exit 1
 }
 
-set infile [lindex $argv 0]
-set outfile [lindex $argv 1]
-set exmhbg [lindex [lrange $argv 2 [expr [llength $argv] - 1]] 0]
+set v [lindex $argv 0]
+set infile [lindex $argv 1]
+set outfile [lindex $argv 2]
+set exmhbg [lindex [lrange $argv 3 [expr [llength $argv] - 1]] 0]
 set badpass 0
 set encrypted 0
 
@@ -26,37 +26,65 @@ set encrypted 0
 # Exmh's Misc_GetPass command.  It sets pgpPass if it gets a
 # legitamite password.
 
-proc GetPassword { keydesc } {
-    global spawn_id expect_out badpass
+proc GetPassword { key } {
+    global spawn_id expect_out badpass v
 
-    if {[string compare $keydesc conventional]==0} {
-	set password [Exmh {Misc_GetPass "Enter PGP Password" \
-				"symmetric encryption - enter pass phrase"}]
+    if {[string match conventional $key]} {
+	set password [Exmh [list Pgp_Misc_GetPass $v \
+                        "Enter [Exmh [list set pgp($v,fullName)]] Password" \
+			"symmetric encryption - enter pass phrase"] ]
     } else {
-	
-	set keyid [Exmh [list PgpMatch_PrivateExact $keydesc]]
+	Match_PrivateExact $key keyid keydesc
 	
 	if $badpass {
-	    Exmh [list unset pgpPass($keyid)]
+	    Exmh [list unset pgp($v,pass,$keyid)]
 	}
 	
-	if {$keyid!={} && [Exmh [list info exists pgpPass($keyid)]]} {
-	    set password [Exmh [format {list $pgpPass(%s)} $keyid]]
+	if {$keyid!={} && [Exmh [list info exists pgp($v,pass,$keyid)]]} {
+	    set password [Exmh [list set pgp($v,pass,$keyid)]]
 	} else {
-	    set password [Exmh [concat [list set pgpPass($keyid)] \
-				    [format \
-			{[Misc_GetPass "Enter PGP password" \
-			      "password for %s"]} $keydesc]]]
+	    set password [Exmh [list Pgp_Misc_GetPass $v \
+                        "Enter [Exmh [list set pgp($v,fullName)]] Password" \
+                        "password for $keydesc"] ]
+            Exmh [list set pgp($v,pass,$keyid) $password]
 	}
 	set badpass 1
     }
 
-    exp_send "$password\r"
+    exp_send "${password}\r"
     InterpretResponse
 }
 
-# Saves typing - this calls the given Exmh command.
+# search privatekeys for the keyid exactly matching keydesc
+# returns keyid or {}
+proc Match_PrivateExact { key keyidVar keydescVar } {
+    global v
+    upvar $keyidVar keyid
+    upvar $keydescVar keydesc
 
+    foreach elem [Exmh [list set pgp($v,privatekeys)]] {
+        # One key keys (main only)
+        set hexid [lindex $elem 0]
+        if {[regexp $key $hexid]} {
+            Debug "<Match_PrivateExact> $hexid"
+            set keyid $hexid
+            set keydesc [lindex $elem 4]
+            return
+        }
+        # Double key keys (main and sub)
+        set hexid [lindex $elem 2]
+        if {[regexp $key $hexid]} {
+            Debug "<Match_PrivateExact> $hexid"
+            set keyid $hexid
+            set keydesc [lindex $elem 4]
+            return
+        }
+    }
+    set keyid {}
+    set keydesc $key
+}
+
+# Saves typing - this calls the given Exmh command.
 proc Exmh {cmd} {
     global exmhbg
     send $exmhbg $cmd
@@ -64,46 +92,59 @@ proc Exmh {cmd} {
 
 proc Debug {text} {
 #    send exmh [concat Exmh_Debug [list $text]]
-    exec echo $text >>/home/ben/work/dlog
+    if {![catch {open /home/markus/***exmh***/dlog {APPEND WRONLY}} fd]} {
+        puts $fd $text
+        close $fd
+    }
 }
 
 proc InterpretResponse { } {
-    global spawn_id timeout expect_out badpass encrypted
+    global spawn_id timeout expect_out badpass encrypted v
 
     expect {
-	"Enter pass phrase: " {
-	    GetPassword $expect_out(1,string)
+	[Exmh [list set pgp($v,expectpat,passprompt)]] {
+            if {[info exists expect_out(1,string)]} {
+	        GetPassword $expect_out(1,string)
+            } else {
+                # There was no keyid and the program is prompting for a password?
+                # It must be conventional encryption then. I hope this hasn´t
+                # unforeseen effects
+                set encrypted 1
+                GetPassword conventional
+            }
 	}
-	"You need a pass phrase to decrypt this file." {
+	-re [Exmh [list set pgp($v,expectpat,conventional)]] {
 	    set encrypted 1
 	    set expect_out(1,string) conventional
 	    InterpretResponse
 	}
-	-re {Key for user ID "(.*)"} {
-	    set timeout 30
-	    set badpass 0
+        -re [Exmh [list set pgp($v,expectpat,publickey)]] {
+            # I hope 40 is enough on slow computers
+            set timeout 40
+            set badpass 0
+            set encrypted 1
+            InterpretResponse
+        }
+	-re [Exmh [list set pgp($v,expectpat,secretmissing)]] {
 	    set encrypted 1
-	    InterpretResponse
-	}
-	-re {(This message can only.*).(You.*this file.)} {
-	    set encrypted 1
-	    regsub -all \r $expect_out(1,string)$expect_out(2,string) {} msg
+	    catch {regsub -all \r $expect_out(1,string)$expect_out(2,string) {} msg}
 	    Done $msg 1
 	}
-	-re {(Error: .*is not a ciphertext.*file.)} {
+	-re [Exmh [list set pgp($v,expectpat,nopgpfile)]] {
 	    Done $expect_out(1,string) 2
 	}
 	eof {
+            Debug Eof
 	    regsub -all \r $expect_out(buffer) {} msg
 	    Done [string trim $msg]
 	}
     }
+    Debug Error
     Done "Unknown Error" 2
 }
 
 # Done is the procedure that calls the Exmh continuation command
 # before this process exits.
-
 proc Done {msg {error 0} } {
     global outfile infile encrypted
 
@@ -118,7 +159,6 @@ proc Done {msg {error 0} } {
     if {[string trim $msg]==""} {
 	set msg "Message encrypted with PGP"
     }
-
     Exmh [list set pgpmsg $msg]
     puts $msg
     exit $error
@@ -129,14 +169,15 @@ expect_after timeout {
 }
 set timeout 4
 
-spawn -nottycopy -noecho pgp +armorlines=0 +keepbinary=off +batchmode=off \
-    +verbose=0 +pager=cat $infile -o $outfile
+# Now execute the whole thing
+eval [concat spawn -nottycopy -noecho [Exmh [list set pgp($v,cmd_DecryptExpect)]]]
 
 # Don't ask me why, but when I comment out the following line my
 # program ceases to work under some conditions.  Mail me
 # <bescoto@usa.net> if you figure it out.
-
 expect -re . {}
 
-InterpretResponse
+catch {InterpretResponse} error
+Debug $error
+
 exit 3

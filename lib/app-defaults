@@ -380,7 +380,7 @@ exmh.iconic:		0
 *Mops.reply.m.c_help:	Msg_ReplyHelp
 
 *Mops.more.text: 	More...
-*Mops.more.m.entrylist: 	print unmark clip xunseen burst distrib save use edit uudecode postscript apply1 apply2 munseen pgpencrypt pgp uriscan uriopen partial ref post grabaddr
+*Mops.more.m.entrylist: 	print unmark clip xunseen burst distrib save use edit uudecode postscript apply1 apply2 munseen pgp uriscan uriopen partial ref post grabaddr
 *Mops.more.m.uentrylist:
 
 *Mops.more.m.l_print: 	Print
@@ -416,8 +416,6 @@ exmh.iconic:		0
 *Mops.more.m.c_apply2:	Message_Apply body
 *Mops.more.m.l_munseen: Mark Unseen
 *Mops.more.m.c_munseen:	Msg_MarkUnseen
-*Mops.more.m.l_pgpencrypt: PGP Encrypt
-*Mops.more.m.c_pgpencrypt: Pgp_ExmhEncrypt
 *Mops.more.m.l_pgp:	old PGP...
 *Mops.more.m.t_pgp:	cascade
 *Mops.more.m.m_pgp:	pgp
@@ -434,13 +432,23 @@ exmh.iconic:		0
 *Mops.more.m.l_grabaddr: Save "From" address
 *Mops.more.m.c_grabaddr: Address_Save
 
-*Mops.more.m.pgp.entrylist: decrypt pgpview pgpextract 
-*Mops.more.m.pgp.l_decrypt: PGP Decrypt
-*Mops.more.m.pgp.c_decrypt:	Pgp_Decrypt
-*Mops.more.m.pgp.l_pgpview: PGP View
-*Mops.more.m.pgp.c_pgpview:	Pgp_View
-*Mops.more.m.pgp.l_pgpextract: PGP Extract keys
-*Mops.more.m.pgp.c_pgpextract: PgpExec_ExtractKeys \"\$mhProfile(path)/\$exmh(folder)/\$msg(id)\"
+*Mops.more.m.pgp.entrylist: encrypt decrypt extract
+*Mops.more.m.pgp.l_encrypt: Encrypt
+*Mops.more.m.pgp.t_encrypt: cascade
+*Mops.more.m.pgp.m_encrypt: encrypt
+
+*Mops.more.m.pgp.l_decrypt: Decrypt in Place
+*Mops.more.m.pgp.c_decrypt: Pgp_Old_Decrypt
+*Mops.more.m.pgp.l_extract: Extract keys
+*Mops.more.m.pgp.c_extract: Pgp_Old_ExtractKeys \"\$mhProfile(path)/\$exmh(folder)/\$msg(id)\"
+
+*Mops.more.m.pgp.encrypt.entrylist: pgp pgp5 gpg
+*Mops.more.m.pgp.encrypt.l_pgp: PGP
+*Mops.more.m.pgp.encrypt.c_pgp: Pgp_ExmhEncrypt pgp
+*Mops.more.m.pgp.encrypt.l_pgp5: PGP5
+*Mops.more.m.pgp.encrypt.c_pgp5: Pgp_ExmhEncrypt pgp5
+*Mops.more.m.pgp.encrypt.l_gpg: GPG
+*Mops.more.m.pgp.encrypt.c_gpg: Pgp_ExmhEncrypt gpg
 
 *Mops.buttonlist:	link move delete next prev comp forward
 *Mops.ubuttonlist:
@@ -525,8 +533,8 @@ exmh.iconic:		0
 *mime_multipart/parallel:	Mime_ShowMultipartParallel
 *mime_multipart/alternative:	Mime_ShowMultipartAlternative
 *mime_multipart/x-tioga:	Tioga_ShowMsg
-*mime_multipart/encrypted:		MimeShowMultipartEncrypted
-*mime_multipart/signed:			MimeShowMultipartSigned
+*mime_multipart/encrypted:		Pgp_MimeShowMultipartEncryptedPgp
+*mime_multipart/signed:			Pgp_MimeShowMultipartSignedPgp
 *mime_multipart/report:			Mime_ShowMultipartReport
 *mime_application/x-shell-script:	Mime_ShowShellScript
 *mime_audio/basic:			Mime_ShowAudio
@@ -887,7 +895,7 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.c_alt: SeditAlternate $draft $t
 
 *Sedit.Menubar.pgp.text:	Crypt...
-*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey
+*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpversion pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey pgppreview
 *Sedit.Menubar.pgp.m.l_pgpencrypt:	Encrypt
 *Sedit.Menubar.pgp.m.t_pgpencrypt:	check
 *Sedit.Menubar.pgp.m.v_pgpencrypt:	pgp(encrypt,$id)
@@ -901,7 +909,7 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.t_pgpclearsign:	check
 *Sedit.Menubar.pgp.m.v_pgpclearsign:	pgp(clearsign,$id)
 *Sedit.Menubar.pgp.m.l_pgpchoosekey:	Choose Key
-*Sedit.Menubar.pgp.m.c_pgpchoosekey:	Pgp_SetMyName
+*Sedit.Menubar.pgp.m.c_pgpchoosekey:	Pgp_SetMyName $pgp(version,$id)
 *Sedit.Menubar.pgp.m.l_pgpformat:	Format
 *Sedit.Menubar.pgp.m.t_pgpformat:	cascade
 *Sedit.Menubar.pgp.m.m_pgpformat:	format
@@ -919,10 +927,30 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.format.v_pm:	pgp(format,$id)
 *Sedit.Menubar.pgp.m.format.x_pm:	pm
 
+*Sedit.Menubar.pgp.m.l_pgpversion:	Version
+*Sedit.Menubar.pgp.m.t_pgpversion:	cascade
+*Sedit.Menubar.pgp.m.m_pgpversion:	version
+*Sedit.Menubar.pgp.m.version.entrylist:	pgp pgp5 gpg
+*Sedit.Menubar.pgp.m.version.l_pgp:	PGP
+*Sedit.Menubar.pgp.m.version.t_pgp:	radio
+*Sedit.Menubar.pgp.m.version.v_pgp:	pgp(version,$id)
+*Sedit.Menubar.pgp.m.version.x_pgp:	pgp
+*Sedit.Menubar.pgp.m.version.l_pgp5:	PGP5
+*Sedit.Menubar.pgp.m.version.t_pgp5:	radio
+*Sedit.Menubar.pgp.m.version.v_pgp5:	pgp(version,$id)
+*Sedit.Menubar.pgp.m.version.x_pgp5:	pgp5
+*Sedit.Menubar.pgp.m.version.l_gpg:	GPG
+*Sedit.Menubar.pgp.m.version.t_gpg:	radio
+*Sedit.Menubar.pgp.m.version.v_gpg:	pgp(version,$id)
+*Sedit.Menubar.pgp.m.version.x_gpg:	gpg
+
 *Sedit.Menubar.pgp.m.l_signkey:	Change Default Key
 *Sedit.Menubar.pgp.m.c_signkey:	Pgp_SetMyName
 *Sedit.Menubar.pgp.m.l_clear:	Clear Cached Password
 *Sedit.Menubar.pgp.m.c_clear:	Pgp_ClearPassword
+
+*Sedit.Menubar.pgp.m.l_pgppreview: PGP Preview
+*Sedit.Menubar.pgp.m.c_pgppreview: Pgp_EncryptDebug $draft
 
 ! This stuff is just a skeleton.  The functions don't do much yet
 *Sedit.Menubar.mime.text:	Mime...
@@ -1067,7 +1095,7 @@ exmh.iconic:		0
 *WhatNow.more.m.t_encrypt:	cascade
 *WhatNow.more.m.m_encrypt:	encrypt
 *WhatNow.more.m.l_encrypt:	Crypt...
-*WhatNow.more.m.encrypt.entrylist: pgpformat pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey
+*WhatNow.more.m.encrypt.entrylist: pgpformat pgpversion pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey
 *WhatNow.more.m.encrypt.l_pgpencrypt:	Encrypt
 *WhatNow.more.m.encrypt.t_pgpencrypt:	check
 *WhatNow.more.m.encrypt.v_pgpencrypt:	pgp(encrypt,$id)
@@ -1098,6 +1126,23 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.format.t_pm:	radio
 *WhatNow.more.m.encrypt.format.v_pm:	pgp(format,$id)
 *WhatNow.more.m.encrypt.format.x_pm:	pm
+
+*WhatNow.more.m.encrypt.l_pgpversion:	Version
+*WhatNow.more.m.encrypt.t_pgpversion:	cascade
+*WhatNow.more.m.encrypt.m_pgpversion:	version
+*WhatNow.more.m.encrypt.version.entrylist:	pgp pgp5 gpg
+*WhatNow.more.m.encrypt.version.l_pgp:	PGP
+*WhatNow.more.m.encrypt.version.t_pgp:	radio
+*WhatNow.more.m.encrypt.version.v_pgp:	pgp(version,$id)
+*WhatNow.more.m.encrypt.version.x_pgp:	pgp
+*WhatNow.more.m.encrypt.version.l_pgp5:	PGP5
+*WhatNow.more.m.encrypt.version.t_pgp5:	radio
+*WhatNow.more.m.encrypt.version.v_pgp5:	pgp(version,$id)
+*WhatNow.more.m.encrypt.version.x_pgp5:	pgp5
+*WhatNow.more.m.encrypt.version.l_gpg:	GPG
+*WhatNow.more.m.encrypt.version.t_gpg:	radio
+*WhatNow.more.m.encrypt.version.v_gpg:	pgp(version,$id)
+*WhatNow.more.m.encrypt.version.x_gpg:	gpg
 
 *WhatNow.more.m.encrypt.l_signkey:	Change Default Key
 *WhatNow.more.m.encrypt.c_signkey:	Pgp_SetMyName

@@ -6,6 +6,7 @@ cvs repository 08/02/1999
     Discovered the <button> tag in the built-in web browser; went
 	through Intro.html adding it in appropriate places.  Will do
 	other pages as well. -cwg
+    Merge in PGP2/PGP5/GPG support from multipgp branch.  --bmah.
 
 cvs repository 07/31/1999
     changed wording of preferences moved dialog, as suggested by 

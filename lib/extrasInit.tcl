@@ -491,181 +491,75 @@ proc Sedit_CheckPoint {} {
 proc Pgp_Init {} {
     global pgp env miscRE
 
-    set miscRE(headerend) {^(--+.*--+)?$}
-    set miscRE(mimeheaders) {^content-[-a-z]+:}
-    set miscRE(true) {^(on|y(es)?|t(rue)?)$}
-    set miscRE(beginpgp) {^-+BEGIN PGP}
-    set miscRE(beginpgpkeys) {^-+BEGIN PGP PUBLIC KEY BLOCK-+$}
-    set miscRE(beginpgpclear) {^-+BEGIN PGP SIGNED MESSAGE-+$}
+    # Load a minimal amount of data
+    # Otherwise it cannot check for pgp
+    Pgp_Base_Init
 
-    # Set pgp message colors
-    if {[winfo depth .] > 4} {
-	Preferences_Resource pgp(BadSig) m_pgpBadSig \
-	    "-foreground red"
-	Preferences_Resource pgp(GoodUntrustedSig) \
-	    m_pgpGoodUntrustedSig "-foreground blue"
-	Preferences_Resource pgp(GoodTrustedSig) \
-	    m_pgpGoodTrustedSig "-foreground darkgreen"
-	Preferences_Resource pgp(OtherMsg) \
-	    m_pgpOtherMsg {}
-    } else {
-	Preferences_Resource pgp(BadSig) m_pgpBadSig {}
-	Preferences_Resource pgp(GoodUntrustedSig) \
-	    m_pgpGoodUntrustedSig {}
-	Preferences_Resource pgp(GoodTrustedSig) \
-	    m_pgpGoodTrustedSig {}
-	Preferences_Resource pgp(OtherMsg) m_pgpOtherMsg {}
+    # Set up exmh for a pgp version
+    # if there is an appropriate keyring
+    foreach v $pgp(supportedversions) {
+        if { [file exists [set pgp($v,pubring)]] } {
+            set pgp($v,enabled) 1
+            set pgp(enabled) 1
+            lappend setup $v
+        }
+    }
+    if { ![info exists setup] } {
+        return
     }
 
-    # figure out the path for pgp files
-    if [info exists env(PGPPATH)] {
-	set pgp(pgppath) $env(PGPPATH)
-    } elseif [file isdirectory $env(HOME)/.pgp] {
-	set pgp(pgppath) $env(HOME)/.pgp
-    } else {
-	set pgp(pgppath) [pwd]
-    }
+    # Now that we know, that there is a pgp variant
+    # installed on the system, we load all the stuff
+    # every pgp version needs for basic functionality
+    Pgp_Shared_Init    
 
-    # if the user doesn't have public key ring, pgp isn't setup: give up !
-    set pgp(pubring) $pgp(pgppath)/pubring.pgp
-    if [file exists $pgp(pubring)] {
-	set pgp(enabled) 1
-    } else {
-	set pgp(pubring) {}
-	set pgp(enabled) 0
-	return
-    }
-
-    set pgp(menutext,signclear) "Check the signature"
-    set pgp(menutext,signbinary) "Show content"
-    set pgp(menutext,encrypt) "Show content"
-    set pgp(menutext,encryptsign) "Show content"
-    set pgp(menutext,keys-only) "Show content"
-    
-    set pgp(decode,none) 0
-    set pgp(decode,all) 1
-    set pgp(decode,keys) {$action == "keys-only"}
-    set pgp(decode,signed) {![regexp {encrypt} $action]}
-
-#    {pgp(fullkeyring) pgpFullKeyRing OFF {Potentially search the full keyring}
-#"When matching, exmh does a first strict selection based on the hostname 
-#and then looks for the best match in this selection. If the first selection
-#doesn't select anything, this option allows exmh to search the key in
-#the whole keyring instead of giving up and query the user." }
-
-    Preferences_Add "PGP interface" \
-"PGP is the Pretty Good Privacy package from Zimmerman.
-PGP lets you sign and encrypt messages using public keys.
-There is considerable documentation that comes with PGP itself." {
+# Global PGP preferences
+    Preferences_Add "General PGP Interface" \
+"Pretty Good Privacy (PGP) lets you sign and encrypt messages using 
+public keys.
+There is considerable documentation that comes with PGP itself.
+This set of preferences controls the general behavior of all the
+PGP modules." {
     {pgp(seditpgp) pgpSeditPgp OFF {Sedit PGP password}
 "Turning this on provides you with a PGP password field in the sedit
 window so that you will not be prompted with the password prompt.  
 Changing this value will require that you exit and re-enter exmh if 
 you've already composed email." }
-    {pgp(keeppass)  pgpKeepPass  ON {Keep PGP password}
-"Exmh tries to remember your PGP password between pgp
-invocations. But the password is then kept in a global
-variable, which is not safe, because of \"send\"'s power.
-If you turn this feature off, exmh will use xterm to run
-pgp so that it doesn't have to deal with the password at all." }
-    {pgp(echopass)  pgpEchoPass  ON {Echo '*' when typing pass}
-"If you have pgpKeepPass on, Exmh will prompt for your pgp password.
-A * will be echoed for every character typed depending on this option."}
-    {pgp(grabfocus)  pgpGrabFocus  ON {Password dialog grabs input focus}
-"When exmh prompts for the PGP password it will globally grab input 
-focus if this is on.  Some users like it because they don't need to
-select the popup dialog or because it lessens the risk they will type
-their password in the wrong window.  It annoys or does not work for
-other people." }
-    {pgp(passtimeout)  pgpPassTimeout  60 {Minutes to cache PGP password}
-"Exmh will clear its memory of the PGP password after
-this time period, in minutes, has elapesed.  If you use
-different keys, they have their own timeout period." }
     {pgp(sign) pgpSign ON {Sign outgoing messages}
 "If this is turned on, outgoing messages will be signed." }
     {pgp(encrypt) pgpEncrypt OFF {Encrypt outgoing messages}
 "If this is turned on, outgoing messages will be encrypted." }
     {pgp(mime) pgpMime ON {Use Mime for PGP}
 "If this is turned on, outgoing PGP messages will use Mime for encapsulation." }
+    {pgp(clearsign) pgpClearSign ON {Sign messages in the clear}
+"If this is turned on, messages will be signed so that they can be read by
+non-PGP mail readers." }
     {pgp(format) pgpFormat {CHOICE pm plain app} {Format to encode PGP}
 "There are multiple standards for PGP encoding.
     Pm:     Use the multipart/pgp standard (This is the preferred standard)
     Plain:  No MIME headers at all
-    app:    Use the now deprecated application/pgp standard.
+    App:    Use the now deprecated application/pgp standard.
 This can be changed on the fly from the sedit window" }
-    {pgp(clearsign) pgpClearSign ON {Sign messages in the clear}
-"If this is turned on, messages will be signed so that they can be read by
-non-PGP mail readers." }
-    {pgp(rfc822) pgpRfc822 OFF {Encrypt headers}
-"Used to encrypt the whole message, instead of only encrypting
-the body, so that the subject line (for instance) is also
-safely transmitted." }
-    {pgp(choosekey) pgpChooseKey ON {Always choose the sign-key}
-"When signing a message, sedit can either use the default key or ask
-the user to choose which key he wants to use. Of course, if you only
-have 1 private key this setting doesn't interest you much." }
-    {pgp(useexpectk) pgpUseExpectk OFF {Use expectk if available}
-"Expectk is a utility that can commuicate interactively with both
-PGP and exmh.  With this option enabled, messages will take longer
-to decrypt, but exmh will use the correct pass phrase.  Do not turn
-this on unless you have \"Separate background process\" in
-Preferences->Background Processing on.  This is recommended if you
-have more than one secret key." }
-    {pgp(cacheids) pgpCacheIds {CHOICE persistent temporary none} {Cache map from email to public-key}
-"The way exmh figures out the public-key to use for an email address is
-often slow. This option allows you to cache the result of the matching
-so that it doesn't have to be done over and over. Furthermore the cache
-can be saved in a file .matchcache in your pgp directory so as to make
-it persistent accross exmh sessions." }
-    {pgp(minmatch) pgpMinMatch 75 {Minimum match correlation (in percents)}
-"When trying to find the key corresponding to an email address,
-exmh tries to be 'smart' and does an approximate matching. If the 
-match's quality is better than the specified percentage, exmh will
-assume it's the right key. Else it will query the user. Hence, a
-value greater than 100 will make exmh always query the user." }
-    {pgp(showinline) pgpShowInline {CHOICE none keys signed all} {Show pgp messages inline}
-"controls which pgp parts get automatically decoded with pgp. Since
-decoding generally takes time, and since clear signed messages can
-be viewed without pgp, it makes sense to limit the decoding to rare
-cases like key parts:
- - keys: only auto-decode key parts
- - signed: auto-decode key and signed parts" }
-    {pgp(shortmsgs) pgpShortMessages OFF {Short PGP reports}
-{If this is selected Exmh tries to report PGP results in one line, 
-otherwise more of the text from PGP itself is used.  For example:
-
-Good signature from user "John Smith <jsmith@well.com>".
-Signature made 1996/12/30 16:34 GMT
-
-WARNING:  Because this public key is not certified with a trusted
-signature, it is not known with high confidence that this public key
-actually belongs to: "John Smith <jsmith@well.com>".
-
-versus
-
-Good untrusted signature from "John Smith <jsmith@well.com>".}}
-    {pgp(autoextract) pgpAutoExtract ON {Extract keys automatically}
-"When you receive a keys-only part, you can have its content
-displayed and you can extract its content into your public
-key ring. The extraction can be safely done automatically,
-but you might prefer doing it manually, with a menu entry
-on the keys-only part." }
-    {pgp(keyserver) pgpKeyServer "pgp-public-keys@keys.pgp.net" {Favorite public key server}
-"When a signature check fails because of a missing key,
-exmh allows you to ask a key server for the key.
-Please select a key server that's close to
-you so as to spread the load.  Examples include
-public-key-server@pgp.mit.edu
-pgp-public-keys@keys.pgp.net
-pgp-public-keys@keys.us.pgp.net
-There are pgp-public-keys@keys.*.pgp.net servers for these domains:
-ch de es fi kr nl no uk us pt se hr tw pl
-See also http://www.pgp.net/pgpnet/
-" }
+    {pgp(version) pgpVersion {CHOICE pgp pgp5 gpg} {Version of PGP to use}
+"There are multiple versions of the PGP program.
+    PGP:    Pretty Good Privacy, Version 2
+    PGP5:   Pretty Good Privacy, Version 5
+    GPG:    GNU Privacy Guard
+This can be changed on the fly from the sedit window" }
     }
 
-    PgpExec_Init
-    PgpWWW_Init
+    # And now load the version specific stuff
+    foreach v $setup {
+        # Load version specific support
+        Pgp_${v}_Init
+        # Add version specific Preferences
+        Pgp_Preferences $v
+    }
+
+    # Other initialization
+    Pgp_Match_Init
+    Pgp_Exec_Init
+
 }
 
 # Glimpse_Init

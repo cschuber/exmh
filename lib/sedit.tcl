@@ -68,7 +68,7 @@ proc Sedit_Start { draft } {
 
 	Drop_Attach $t SeditDragDrop
 
-	EditAddPassPhrasePane .sedit$id
+	EditAddPassPhrasePane $id .sedit$id
 
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]
 

@@ -41,7 +41,24 @@ you encrypted mail or if they want to check some signature of yours).
 <p>
 You must restart exmh after creating your public key. By default, exmh
 does not display any PGP-related menus if you are not yet set up for
-PGP. 
+PGP.
+
+
+<h4>Supported PGP program versions</h4>
+
+<p>Currently exmh has support for PGP version 2.6 and 5.0 and GnuPG.
+
+<p>You can use all versions separately or simultaneous from within exmh.
+You need not have all versions installed to use exmh PGP support.
+
+<p>Having both PGP versions 2.6 and 5.0 on one system can lead to problems,
+because the main binary of PGP 5.0 is called pgp like the 2.6 one.
+The pgpe, pgps and pgpv commands are links on that binary. Because calling
+the pgp binary of 5.0 itself does nothing but print out a version usage
+summary, one way to disable it, is to put it into a location that is not
+in PATH and edit the symlinks pgps, pgpe, pgpv to point to this new location.
+PGP 2.6 and 5.0 can peacefully coexist on the system this way and be used both
+from within exmh.
 
 <h2><a HREF="index.html">Main Help Index</a></h2>
 

@@ -6,6 +6,12 @@
 # 
 
 # $Log$
+# Revision 1.5  1999/08/03 04:05:54  bmah
+# Merge support for PGP2/PGP5/GPG from multipgp branch.
+#
+# Revision 1.4.2.1  1999/06/14 20:05:15  gruber
+# updated multipgp interface
+#
 # Revision 1.4  1999/06/10 16:59:18  cwg
 # Re-enabled the timeout of PGP passwords
 #
@@ -72,69 +78,87 @@
 #
 
 # execs pgp with the usual flags
-proc PgpExec { arglist outvar {privatekey {}} {interactive 0} } {
-    upvar $outvar output
+proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
     global pgp env
+    upvar $outvar output
 
-    #puts "<PgpExec> $arglist $outvar $privatekey $interactive"
-    
-    if {! $pgp(enabled)} {
-	error "<PGP> pgp isn't enabled"
+    Exmh_Debug "Pgp_Exec $v $exectype $arglist $outvar $privatekey $interactive"
+
+    if {![set pgp($v,enabled)]} {
+	error "<[set pgp($v,fullName)]> isn't enabled"
     }
+
     set output {}
-
-    if {!$pgp(keeppass)} {
-	Pgp_ClearPassword
+    if {![set pgp($v,keeppass)]} {
+	Pgp_ClearPassword $v
     }
-
-    if {$interactive || !($pgp(keeppass) || ($privatekey == {}))} {
-	return [PgpExec_Interactive $arglist output]
+    if {$interactive || !([set pgp($v,keeppass)] || ($privatekey == {}))} {
+        Exmh_Debug "<Pgp_Exec> Pgp_Exec_Interactive $v $exectype $arglist output"
+	return [Pgp_Exec_Interactive $v $exectype $arglist output]
     } else {
 	if {$privatekey == {}} {
-	    return [PgpExec_Batch $arglist output]
+            Exmh_Debug "<PGP Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output"
+	    return [Pgp_Exec_Batch $v $exectype $arglist output]
 	} else {
-	    set p [Pgp_GetPass $privatekey]
+            Exmh_Debug "<Pgp_Exec> Pgp_GetPass $v $privatekey"
+	    set p [Pgp_GetPass $v $privatekey]
+
+	    #Exmh_Debug "<Pgp_Exec> got passwd >$p<"
 	    if {[string length $p] == 0} {
 		return 0
 	    }
-	    return [PgpExec_Batch $arglist output $p]
+            Exmh_Debug "<Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output $p"
+	    return [Pgp_Exec_Batch $v $exectype $arglist output $p]
 	}
     }
 }
 
-#
-proc PgpExec_Batch { arglist outvar {password {}} } {
+# batch mode
+proc Pgp_Exec_Batch { v exectype arglist outvar {password {}} } {
+    global pgp
     upvar $outvar output
-    global pgp env
 
-    # pgp 4.0 command doesn't like the +keepbinary=off option
-    set tclcmd [concat \
-	    [list exec pgp +armorlines=0 +batchmode=on +verbose=0 +pager=cat] \
-	    $arglist]
+    Exmh_Debug "Pgp_Exec_Batch $v $exectype $arglist $outvar $password"
 
+    set tclcmd [concat exec [set pgp($v,executable,$exectype)] \
+                              [subst [set pgp($v,flags_batch)]] $arglist]
+
+    Exmh_Debug "<Pgp_Exec_Batch> $tclcmd"
+
+    # Set file descriptor for passphrase on stdin
     if {$password == {}} {
-	catch { unset env(PGPPASSFD) }
+        Pgp_${v}_PassFdUnset
     } else {
-	lappend tclcmd << $password
-	set env(PGPPASSFD) 0
+        lappend tclcmd << $password
+        Pgp_${v}_PassFdSet
     }
-    Exmh_Debug $tclcmd
-    set result [catch $tclcmd output]
+
+    set result [catch {eval $tclcmd} output]
+    Exmh_Debug "<Pgp_Exec_Batch>: Exit status: $result"
+
+    # Unset file descriptor for passphrase
+    Pgp_${v}_PassFdUnset
+
     regsub -all "\x07" $output "" output
-
-    catch { unset env(PGPPASSFD) }
-
     return $result
 }
 
-#
-proc PgpExec_Interactive { arglist outvar } {
-    global tcl_platform
+# interactive mode
+proc Pgp_Exec_Interactive { v exectype arglist outvar } {
+    global tcl_platform pgp
     upvar $outvar output
-    
-    set args [concat [list +armorlines=0 +keepbinary=off] $arglist]
-    set shcmd "unset PGPPASSFD;
-        pgp \"[join [Misc_Map x {
+
+    Exmh_Debug "Pgp_Exec_Interactive $v $exectype $arglist $outvar"
+
+    set pgpcmd [set pgp($v,executable,$exectype)]
+    set args [concat [subst [set pgp($v,flags_interactive)]] $arglist]
+
+    # Be sure, that passphrase isn´t read from stdin
+    Pgp_${v}_PassFdUnset
+
+    # Build shellcommand
+    set shcmd "
+        $pgpcmd \"[join [Pgp_Misc_Map x {
 	    regsub {([$"\`])} $x {\\1} x
 	    set dummy $x
         } $args] {" "}]\";
@@ -148,8 +172,12 @@ proc PgpExec_Interactive { arglist outvar } {
     } else {
         set xterm "xterm"
     }
-    set tclcmd {exec $xterm -l -lf $logfile -title PGP -e sh -c $shcmd}
-    Exmh_Debug $tclcmd
+
+    # Hint: XFree86 xterm does not support output logging (Markus)
+    # -l and -lf not supported
+
+    set tclcmd {exec $xterm -l -lf $logfile -title [set pgp($v,fullName)] -e sh -c $shcmd}
+    Exmh_Debug "<Pgp_Exec_Interactive> $tclcmd"
     set result [catch $tclcmd]
     if [catch {open $logfile r} log] {
 	set output {}
@@ -158,221 +186,347 @@ proc PgpExec_Interactive { arglist outvar } {
 	close $log
     }
 
-    # clean up the output
-    regsub -all "\[\x0d\x07]" $output {} output
-    regsub "^.*\nEnter pass phrase:" $output {} output
-    regsub "\nPlaintext filename:.*" $output {} output
-    regsub "^.*Just a moment\\.\\.+" $output {} output
-    regsub "^.*Public key is required \[^\n]*\n" $output {} output
-    set output [string trim $output]
+    eval [set pgp($v,cmd_cleanOutput)]
 
     return $result
 }
 
-#
-proc PgpExec_CheckPassword { password key } {
+proc Pgp_Exec_CheckPassword { v password key } {
+    global pgp
 
-    set tmpfile [Mime_TempFile "pwdin"]
-    set outfile [Mime_TempFile "pwdout"]
+    Exmh_Debug "Pgp_Exec_CheckPassword $v $password $key"
 
-    set out [open $tmpfile w 0600]
-    puts $out "salut"
-    close $out
-    
-    PgpExec_Batch [list -as $tmpfile -o $outfile -u [lindex $key 0]] err $password
-    File_Delete $tmpfile
+    set in [Mime_TempFile "pwdin"]
+    set out [Mime_TempFile "pwdout"]
+    set filio [open $in w 0600]
+    puts $filio "salut"
+    close $filio
+    set keyid [lindex $key 0]
+
+    Pgp_Exec_Batch $v sign [subst [set pgp($v,args_signClear)]] err $password
+
+    File_Delete $in
 
     # pgp thinks he knows better how to name files !
-    if {![file exists $outfile] && [file exists "$outfile.asc"]} {
-	Mh_Rename "$outfile.asc" $outfile
+    if {![file exists $out] && [file exists "$out.asc"]} {
+	Mh_Rename "$out.asc" $out
     }
-    if {![file exists $outfile]} {
-	if {![regexp "PGP" $err]} {
-	    # Probably cannot find pgp to execute.
-	    Exmh_Status !${err}!
-	    error "<PGP> can't find pgp"
-	} else {
-	    if [regexp {(Error:[^\.]*)\.} $err x match] {
-		Exmh_Status ?${match}?
-	    }
-	    ExmhLog "<Pgp_GetPass> $err"
-	}
+    if {![file exists $out]} {
+        if [regexp [set pgp($v,pat_checkError)] $err x match] {
+            Exmh_Status ?${match}?
+        }
+        Exmh_Debug "<Pgp_Exec_CheckPassword> $err"
 	return 0
     } else {
-	File_Delete $outfile
+	File_Delete $out
 	return 1
     }
 }
 
-# wrapper for 'pgp -kv $pattern $keyring'
-# returns a list of keys. Each "key" is a list whose first element is the keyID
+# returns a list of keys. Each "key" is a list whose first four elements are
+# keyid algo subkeyid algo
 # and the next ones are the corresponding userids
-proc PgpExec_KeyList { pattern keyring } {
+# {keyid algo subkeyid algo userid userid userid ...}
+proc Pgp_Exec_KeyList { v pattern keyringtype } {
+    global pgp
+
+    Exmh_Debug "Pgp_Exec_Keylist $v $pattern $keyringtype"
 
     set pattern [string trimleft $pattern "<>|2"]
-    PgpExec_Batch [list -kv $pattern $keyring] keylist
+    set arglist [subst [set pgp($v,args_list$keyringtype)]]
+    ldelete arglist {}
 
-    # drop the revoked keys
-    regsub -all "\n(pub|sec) \[^\n]+\\*\\*\\* KEY REVOKED \\*\\*\\*(\n\[\t ]\[^\n]+)+" $keylist "" keylist
+    Pgp_Exec_Batch $v key $arglist keylist
 
-    if { ![regexp {.*(pub|sec) +[0-9]+(/| +)([0-9A-F]+) +[0-9]+/ ?[0-9]+/ ?[0-9]+ +(.*)} $keylist]} {
-	return {}
-    } else {
-	set keylist [split $keylist "\n"]
-	set keys {}
-	set key {}
-	foreach line $keylist {
-            if [regexp {^ *(pub|sec) +[0-9]+(/| +)([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$} $line {} {} {} keyid userid] {
-		set key [list "0x$keyid" [string trim $userid]]
-		lappend keys $key
-	    }
-	}
-	return $keys
+    Exmh_Debug "<Pgp_Exec_Keylist>: $keylist"
+
+    # drop revoked and noninteresting keys
+    regsub -all [set pgp($v,pat_dropKeys)] $keylist {} keylist
+
+    # Form a list of keys
+    regsub -all [set pgp($v,pat_splitKeys)] $keylist \x81 keylist
+    set keylist [split $keylist \x81]
+
+    Exmh_Debug "<Pgp_Exec_Keylist>: Splitted keylist: $keylist"
+
+    # Match out interesting keys
+    set keypattern [set pgp($v,pat_key$keyringtype)]
+
+    # subkeyparsing
+    if [info exists pgp($v,pat_key${keyringtype}_sub)] {
+        set subkeypattern [set pgp($v,pat_key${keyringtype}_sub)]
     }
+
+    # uid parsing
+    set uidpattern [set pgp($v,pat_uid)]
+
+    # grep keys
+    set AllowedToFollow 0
+    set keys {}
+    foreach line $keylist {
+        catch {unset userid}
+        catch {unset keyid}
+        set goodline 0
+        #
+        if {[eval [set pgp($v,cmd_keyMatch)]]} {
+            if {[info exists userids] && [info exists keyids]} {
+                if {[llength $keyids] < 4} {
+                    lappend keyids {} {}
+                }
+                lappend keys [concat $keyids $userids]
+                unset keyids
+                unset userids
+            }
+            lappend keyids "0x$keyid" $algo
+            catch {lappend userids $userid}
+            set AllowedToFollow 1
+            set goodline 1
+        }    
+        if [info exists subkeypattern] {
+            if {[eval [set pgp($v,cmd_keyMatch_sub)]] && $AllowedToFollow} {
+                lappend keyids "0x$keyid" $algo
+                set goodline 1
+            }
+        }
+        if {[eval [set pgp($v,cmd_uidMatch)]] && $AllowedToFollow} {
+            lappend userids $userid
+            set goodline 1
+        }
+        if {!$goodline} {
+            set AllowedToFollow 0
+        }
+    }
+    if {[info exists userids] && [info exists keyids]} {
+        if {[llength $keyids] < 4} {
+            lappend keyids {} {}
+        }
+        lappend keys [concat $keyids $userids]
+    }
+
+    # keys is of the format { {keyid algo subkeyid algo userid userid} {} {}...}
+    return $keys
 }
 
-proc PgpSetPath {} {
-    global pgp env
-    if {[info exists pgp(path)] && \
-	    ([string length [string trim $pgp(path)]] > 0) && \
-	    ([lsearch -exact [split $env(PATH) :] $pgp(path)] < 0)} {
-	set env(PATH) $pgp(path):$env(PATH)
-    }
-}
+# parse config file
+# this is only needed to set pgp($v,myname)
+proc Pgp_Exec_ParseConfigTxt { v file } {
+    global pgp
 
-proc PgpExec_Init {  } {
-    global pgp pgpConfig pgpPass env
-
-    PgpSetPath
-
-    if {![info exists env(LOCALHOST)]} {
-	if [catch {exec uname -n} env(LOCALHOST)] {
-	    set env(LOCALHOST) localhost
-	}
-    }
-
-    set pgpPass() {}
-
-    PgpExec_ParseConfigTxt $pgp(pgppath)/config.txt pgpConfig
-    
-    set pgp(secring) $pgp(pgppath)/secring.pgp
-    if {![file exists $pgp(secring)]} { set pgp(secring) {} }
-
-    set pgp(privatekeys) [PgpExec_KeyList "" $pgp(secring)]
-    
-    if [info exists pgpConfig(myname)] {
-	set myname [string tolower $pgpConfig(myname)]
-	foreach key $pgp(privatekeys) {
-	    if {[string first $myname [string tolower $key]] >= 0} {
-		set pgp(myname) $key
-		break
-	    }
-	}
-	if {![info exists pgp(myname)]} {
-	    if [catch {PgpMatch_Simple $pgpConfig(myname) $pgp(pubring)} key] {
-		Misc_DisplayText "PGP Init" "the name specified in your config.txt file\ncouldn't be unambiguously found in your key rings !"
-		set pgp(myname) {}
-	    } else {
-		set pgp(myname) [lindex $key 0]
-	    }
-	}
-    } else {
-	set pgp(myname) [lindex $pgp(privatekeys) 0]
-    }
-#    PgpMatch_Init
-}
-
-#
-proc PgpExec_ParseConfigTxt { file configarray } {
-    upvar $configarray config
+    Exmh_Debug "Pgp_Exec_ParseConfigTxt $file"
 
     if [catch {open $file r} in] {
 	return
     }
-
     for {set len [gets $in line]} {$len >= 0} {set len [gets $in line]} {
 	if [regexp -nocase "^\[ \t]*(\[a-z]+)\[ \t]*=(\[^#]*)" $line {} option value] {
-	    set config([string tolower $option]) [string trim $value " \t\""]
+	    set pgp($v,config,[string tolower $option]) [string trim $value " \t\""]
 	}
     }
     close $in
 }
 
-#
-proc PgpExec_Encrypt { in out tokeys } {
 
-    PgpExec_Batch [concat [list -aet $in -o $out] [Misc_Map key {lindex $key 0} $tokeys]] output
+###############
+# Encrypt/Sign
 
-    # pgp thinks he knows better how to name files !
-    if {![file exists $out] && [file exists "$out.asc"]} {
-	Mh_Rename "$out.asc" $out
-    }
-    if {![file exists $out]} {
-	error "PGP refused to generate the encrypted text:\n$output"
-    } else {
-	return {}
-    }
-}
+proc Pgp_Exec_Encrypt { v in out tokeys } {
+    global pgp
 
-#
-proc PgpExec_EncryptSign { in out sigkey tokeys } {
+    Exmh_Debug "Pgp_Exec_Encrypt $v $in $out $tokeys"
 
-    PgpExec [concat [list -aset $in -o $out -u [lindex $sigkey 0]] [Misc_Map key {lindex $key 0} $tokeys]] output $sigkey
-
-    # pgp thinks he knows better how to name files !
-    if {![file exists $out] && [file exists "$out.asc"]} {
-	Mh_Rename "$out.asc" $out
-    }
-    if {![file exists $out]} {
-	error "PGP refused to generate the encrypted signed text:\n$output"
-    } else {
-	return {}
+    Pgp_Exec_Batch $v encrypt [subst [set pgp($v,args_encrypt)]] output
+    if {[Pgp_Exec_CheckSuccess $v $out $output "encrypted text"]} {
+        # pgp refuses to generate an encrypted message
+        # if a key was untrusted
+        # interactively proceed
+        Pgp_Exec_Interactive $v encrypt [subst [set pgp($v,args_encrypt)]] output
     }
 }
 
-#
-proc PgpExec_Sign { in out sigkey clear } {
+proc Pgp_Exec_EncryptSign { v in out sigkey tokeys } {
+    global pgp
 
+    Exmh_Debug "Pgp_Exec_EncryptSign $v $in $out $tokeys"
+
+    set keyid [lindex $sigkey 0]
+    Pgp_Exec $v encrypt [subst [set pgp($v,args_encryptSign)]] output $sigkey
+    if {[Pgp_Exec_CheckSuccess $v $out $output "signed and encrypted text"]} {
+        # pgp refuses to generate an encrypted/signed message
+        # if a key was untrusted
+        # interactively proceed
+        Pgp_Exec $v encrypt [subst [set pgp($v,args_encryptSign)]] output $sigkey 1
+    }
+}
+ 
+proc Pgp_Exec_Sign { v in out sigkey clear } {
+    global pgp
+
+    Exmh_Debug "Pgp_Exec_Sign $v $in $out $sigkey $clear"
+
+    set keyid [lindex $sigkey 0]
     if $clear {
-	set clear "+clearsig=on"
+	Pgp_Exec $v sign [subst [set pgp($v,args_signClear)]] output $sigkey
     } else {
-	set clear "+clearsig=off"
+	Pgp_Exec $v sign [subst [set pgp($v,args_signBinary)]] output $sigkey
     }
-    PgpExec [list $clear -ast $in -u [lindex $sigkey 0] -o $out] output $sigkey
+    Pgp_Exec_CheckSuccess $v $out $output "signed text"
+}
+    
+proc Pgp_Exec_SignDetached { v in out sigkey } {
+    global pgp
+
+    Exmh_Debug "Pgp_Exec_SignDetached $v $in $out $sigkey"
+
+    set keyid [lindex $sigkey 0]
+    Pgp_Exec $v sign [subst [set pgp($v,args_signDetached)]] output $sigkey
+    Pgp_Exec_CheckSuccess $v $out $output "signed text"
+}
+
+# Look if pgp generated pgp code
+proc Pgp_Exec_CheckSuccess {v out output object} {
+    global pgp
+
+    Exmh_Debug "Pgp_Exec_CheckSuccess $v $out $output $object"
 
     # pgp thinks he knows better how to name files !
     if {![file exists $out] && [file exists "$out.asc"]} {
 	Mh_Rename "$out.asc" $out
     }
     if {![file exists $out]} {
-	error "PGP refused to generate the signed text:\n$output"
+        # pgp5 refuses to generate ciphertext in batchmode if tokey is untrusted
+        if {[regexp [set pgp($v,pat_Untrusted)] $output]} {
+            return 1
+        } else {
+	    error "[set pgp($v,fullName)] refused to generate the ${object}:\n$output"
+        }
     } else {
-	return {}
+	return 0
     }
+}    
+
+
+#################
+# Decrypt/Verify
+
+# get the key to use for decryption
+proc Pgp_Exec_GetDecryptKey {v in recipients} {
+    global pgp
+
+    Exmh_Debug "Pgp_Exec_GetDecryptKey $v $in $recipients"
+
+    # If the user has time (this doesn´t consume more than a half second)
+    # and has set preferences to run pgp twice,
+    # run pgp a first time to get out the decryption keyid
+    set runtwice 0
+    if {[info exists pgp($v,runtwice)]} {
+      if {[set pgp($v,runtwice)]} {
+        set runtwice 1
+      }
+    }
+    if {$runtwice} {
+      Exmh_Debug "<Pgp_Exec_GetDecryptKey> Pgp_Exec_GetDecryptKeyid $v $in"
+      set keyid [Pgp_Exec_GetDecryptKeyid $v $in]
+      if {$keyid == {}} {
+        return {}
+      } elseif {[string match $keyid SYM]} {
+        # SYMMETRIC ENCRYPTION
+        set key [list SYM {} {} {} "symmetrically encrypted message"]
+      } else {
+        foreach key [set pgp($v,privatekeys)] {
+          if {[regexp $keyid [lindex $key 0]]} {
+            return $key
+          } elseif {[regexp $keyid [lindex $key 2]]} {
+            return $key
+          }
+        }
+      }
+    } else {
+      set recipients [string tolower $recipients]
+      # Messages get encrypted with the subkey for dsa/elg
+      # I don´t know if there are subkeyids in the recipients list if dsa/elg
+      # Lets search for mainkeys
+      set useablekeys [Pgp_Misc_Filter key \
+         {[string first [string tolower [string range [lindex $key 0] 2 end]] $recipients] >= 0} \
+         [set pgp($v,privatekeys)]]
+      # If no mainkeys were found, search for subkeys
+      if {[llength $useablekeys] == 0} {
+        set useablekeys [Pgp_Misc_Filter key \
+         {[string first [string tolower [string range [lindex $key 2] 2 end]] $recipients] >= 0} \
+         [set pgp($v,privatekeys)]]
+      }
+      set knownkeys [Pgp_Misc_Filter key \
+         {[info exists pgp($v,pass,[lindex $key 0])]} $useablekeys]
+
+      if {[llength $knownkeys] > 0} {
+        set key [lindex $knownkeys 0]
+      } elseif {[llength $useablekeys] > 0} {
+        set key [lindex $useablekeys 0]
+      } else {
+        set key {}
+      }
+    }
+    return $key
 }
 
-#
-proc PgpExec_Decrypt { in out outvar recipients } {
-    global pgp pgpPass
+proc Pgp_Exec_GetDecryptKeyid {v in} {
+    global pgp
+
+    Exmh_Debug "Pgp_Exec_GetDecryptKeyid $v $in"
+
+    Pgp_Exec_Batch $v verify [subst [set pgp($v,args_getDecryptKeyid)]] output
+    if {[regexp [set pgp($v,pat_getDecryptKeyid)] $output {} keyid]} {
+    } elseif {[regexp [set pgp($v,pat_getDecryptSym)] $output]} {
+      set keyid SYM
+    } else {
+      Exmh_Debug "<Pgp_Exec_GetDecryptKeyid> No key matches"
+      return {}
+    }
+    Exmh_Debug "<Pgp_Exec_GetDecryptKeyid> keyid $keyid"
+    return $keyid
+}
+
+proc Pgp_Exec_Decrypt { v in out outvar recipients } {
+    global pgp
     upvar $outvar output
 
-    set recipients [string tolower $recipients]
-    set useablekeys [Misc_Filter key {[string first [string tolower [string range [lindex $key 0] 2 end]] $recipients] >= 0} $pgp(privatekeys)]
-    set knownkeys [Misc_Filter key {[info exists pgpPass([lindex $key 0])]} $useablekeys]
+    Exmh_Debug "Pgp_Exec_Decrypt $v $in $out $outvar $recipients"
 
-    if {[llength $knownkeys] > 0} {
-	set key [lindex $knownkeys 0]
-    } elseif {[llength $useablekeys] > 0} {
-	set key [lindex $useablekeys 0]
-    } else {
-	set key {}
-    }
-    PgpExec [list $in -o $out] output $key
+    set key [Pgp_Exec_GetDecryptKey $v $in $recipients]
+    Exmh_Debug "<Pgp_Exec_Decrypt> $key"
+    
+    Pgp_Exec $v verify [subst [set pgp($v,args_decrypt)]] output $key
 }
 
+proc Pgp_Exec_Verify { v in outvar {out {}}} {
+    upvar $outvar output
+    global pgp
+
+    Exmh_Debug "Pgp_Exec_Verify $v $in $outvar $out"
+
+    if {$out == {}} {
+        Exmh_Debug "<Pgp_Exec_VerifyOnly>: Pgp_Exec_Verify $v $in $outvar $out"
+        Pgp_Exec $v verify [subst [set pgp($v,args_verifyOnly)]] output
+    } else {
+        Exmh_Debug "<Pgp_Exec_VerifyOut>: Pgp_Exec_Verify $v $in $outvar $out"
+        Pgp_Exec $v verify [subst [set pgp($v,args_verifyOut)]] output
+    }
+}
+
+proc Pgp_Exec_VerifyDetached { v sig text outvar } {
+    upvar $outvar output
+    global pgp
+
+    Exmh_Debug "Pgp_Exec_VerifyDetached $v $sig $text $outvar"
+
+    Pgp_Exec $v verify [subst [set pgp($v,args_verifyDetached)]] output
+}
+
+##################
+# NOT WITH GNUPG
+#
 # This is called if expectk is enabled.  It seemed the best (easiest
 # for me) way to do it was to have this proc terminate when the
-# message is finished displaying just as PgpExec_Decrypt would do.
+# message is finished displaying just as Exec_Decrypt would do.
 # However, this is a problem for the the expectk script
 # (PgpDecryptExpect), which may need to communicate with exmh to ask
 # for passwords, etc.  
@@ -380,12 +534,12 @@ proc PgpExec_Decrypt { in out outvar recipients } {
 # My slow and inelegant solution was to tell exmh-bg all the necessary
 # information and let PgpDecryptExpect communicate with exmh-bg,
 # exiting when done.
-
-proc PgpExec_DecryptExpect { infile outfile msgvar } {
-    global exmh pgp getpass exwin pgpPass sedit
+#
+proc Pgp_Exec_DecryptExpect { v infile outfile msgvar } {
+    global exmh exwin sedit pgp
     upvar $msgvar msg
 
-    # First update exmh-bg arrays.  I hope that pgp, getpass, 
+    # First update exmh-bg arrays.  I hope that pgp, getpass,
     # pgpPass, and exwin will be enough.  For exwin seems we have
     # to temporarily change the mtext error to avoid an error when
     # the password window is closed and focus is returned to .msg.t
@@ -393,57 +547,94 @@ proc PgpExec_DecryptExpect { infile outfile msgvar } {
     send $exmh(bgInterp) [list array set pgp [array get pgp]]
     send $exmh(bgInterp) [list array set getpass [array get getpass]]
     send $exmh(bgInterp) [list array set sedit [array get sedit]]
-    send $exmh(bgInterp) [list array set pgpPass [array get pgpPass]]
     send $exmh(bgInterp) [list array set exwin [array get exwin]]
     send $exmh(bgInterp) [list set exwin(mtext) .]
 
     if [catch {exec $exmh(expectk) -f $exmh(library)/PgpDecryptExpect \
-		   $infile $outfile $exmh(bgInterp)}] {
-	Exmh_Status "Error executing expect process" warn
+                        $v $infile $outfile $exmh(bgInterp)} error] {
+        Exmh_Debug "<PGP Exec_DecryptExpect> error: $error"
+        Exmh_Status "Error executing expect process" warn
     }
 
     set msg [lindex [send $exmh(bgInterp) {list $pgpmsg}] 0]
     send $exmh(bgInterp) [list unset pgpmsg]
 
-    # Now reload pgpPass and exwin from exmh-bg
-    array set pgpPass [send $exmh(bgInterp) array get pgpPass]
-
+    # Now reload pass and exwin from exmh-bg
+    foreach index [send $exmh(bgInterp) [list array names pgp $v,pass,*]] {
+        set pgp($index) [send $exmh(bgInterp) [list set pgp($index)]]
+        send $exmh(bgInterp) [list unset pgp($index)]
+    }
     # The following appears no longer to be necessary, but now I don't see
     # how to change the position of the getpass window
     #
     #    set exwin(geometry,.getpass) \
-    #	   [send $exmh(bgInterp) list {$exwin(geometry,.getpass)}]
-
-    send $exmh(bgInterp) [list unset pgpPass]
+    #    [send $exmh(bgInterp) list {$exwin(geometry,.getpass)}]
 }
 
-#
-proc Pgp_GetPass { key } {
-    global pgp pgpPass
+####################
 
-    if {[lsearch -glob $pgp(privatekeys) "[lindex $key 0]*"] < 0} {
-	return {}
+proc Pgp_Exec_ExtractKeys { v file outvar {interactive 1} } {
+    global env pgp
+    upvar $outvar output
+
+    Exmh_Debug "Pgp_Exec_ExtractKeys $v $file $outvar $interactive"
+
+    set output {}
+    if [Pgp_Exec $v key [subst [set pgp($v,args_importKey)]] output {} $interactive] {
+        Exmh_Status "Key extract failed"
+        Exmh_Debug "<Pgp_Exec_ExtractKeys> $output"
+        return 0
+    } else {
+        Exmh_Debug "<Pgp_Exec_ExtractKeys> $output"
+        return 1
+    }
+}
+
+# Get the passphrase for keyinstance key
+proc Pgp_GetPass { v key } {
+    global pgp
+
+    Exmh_Debug "Pgp_GetPass $v $key"
+
+    if {[lsearch -glob [set pgp($v,privatekeys)] "[lindex $key 0]*"] < 0} {
+        return {}
     }
 
+    # Because of DecryptExpects asymmetric passphrase storage
+    # we need to look for both mainkey and subkey separately
     set keyid [lindex $key 0]
-    if {[info exists pgpPass($keyid)] && [string length $pgpPass($keyid)]} {
-	return $pgpPass($keyid)
+    set subkeyid [lindex $key 2]
+    if {([info exists pgp($v,pass,$keyid)]) && ([string length $pgp($v,pass,$keyid)] > 0)} {
+        return [set pgp($v,pass,$keyid)]
+    } elseif {([string length $subkeyid] > 0) && ([info exists pgp($v,pass,$subkeyid)]) && ([string length $pgp($v,pass,$subkeyid)] > 0)} {
+        return [set pgp($v,pass,$subkeyid)]
     }
+
     while 1 {
-	if [catch {Misc_GetPass "Enter PGP password" "password for [lindex $key 1]"} password] {
-	    Exmh_Debug "Aborting out of Misc_GetPass: $password"
-	    return {}
-	} elseif {[PgpExec_CheckPassword $password $key]} {
-	    if $pgp(keeppass) {
-		set pgpPass($keyid) $password
-		Pgp_SetPassTimeout $keyid
-	    }
-	    return $password
-	}
+	Exmh_Debug "Attempt to get passphrase for [lindex $key 0] [lindex $key 1] [lindex $key 4]"
+        if [catch {Pgp_Misc_GetPass $v "Enter [set pgp($v,fullName)] passphrase" \
+                                   "Passphrase for [lindex $key 0] [lindex $key 1] [lindex $key 4]"} password] {
+            return {}
+        } elseif {[string match $keyid SYM]} {
+            # SYMMETRIC ENCRYPTION
+            return $password
+        } elseif {[Pgp_Exec_CheckPassword $v $password $key]} {
+            if [set pgp($v,keeppass)] {
+                set pgp($v,pass,$keyid) $password
+                # Because of DecryptExpect we need to store passphrase
+                # for mainkey and subkey
+                if {[string length $subkeyid] > 0} {
+                    set pgp($v,pass,$subkeyid) $password
+                }
+                after [expr [set pgp($v,passtimeout)] * 60 * 1000] \
+                        [list Pgp_ClearPassword $v $keyid]
+            }
+            return $password
+        }
     }
 }
 
-proc Pgp_SetPassTimeout {keyid} {
+proc Pgp_SetPassTimeout {v keyid} {
     global pgp pgpPass
 
     if [info exists pgp(timeout,$keyid)] {
@@ -451,136 +642,97 @@ proc Pgp_SetPassTimeout {keyid} {
 	after cancel $pgp(timeout,$keyid)
 	unset pgp(timeout,$keyid)
     }
-    Exmh_Debug "Setting timeout for $keyid in $pgp(passtimeout) minutes"
+    Exmh_Debug "Setting timeout for $keyid in $pgp($v,passtimeout) minutes"
     set pgp(timeout,$keyid) \
-	    [after [expr $pgp(passtimeout) * 60 * 1000] \
+	    [after [expr $pgp($v,passtimeout) * 60 * 1000] \
 	           [list Pgp_ClearPassword $keyid]]
 }
 
-proc Pgp_ClearPassword {{keyid {}}} {
-    global pgpPass
-    Exmh_Debug "Clearing password for $keyid"
+# wipe password away
+proc Pgp_ClearPassword { v {keyid {}} } {
     if {[string length $keyid] == 0} {
-	catch {unset pgpPass}
-	set pgpPass() {}
+        foreach index [array names pgp $v,pass*] {
+            unset pgp($index)
+        }
+        set pgp($v,pass,) {}
     } else {
-	set pgpPass($keyid) {}
-    }
-}
-#
-proc PgpExec_ExtractKeys { file {interactive 1} } {
-    global env
-
-    set output {}
-    if [PgpExec [list -ka $file] output {} $interactive] {
-	Exmh_Status "Key extract failed"
-	Exmh_Debug $output
-	return 0
-    } else {
-	Exmh_Debug $output
-	return 1
+        catch {unset pgp($v,pass,$keyid)}
     }
 }
 
-#
-proc PgpExec_GetKeys { keyid file } {
-    if [PgpExec [list -akx $keyid $file] msg] {
-	error $msg
-    } else {
-	# pgp thinks he knows better how to name files !
-	if {![file exists $file] && [file exists "$file.asc"]} {
-	    Mh_Rename "$file.asc" $file
-	}
-	if {![file exists $file]} {
-	    error "PGP refused to generate the key block for $keyid"
-	}
-    }
-}
-
-proc Pgp_InterpretOutput { in outvar } {
-
-    # This function is supposed to take the output given by the other
-    # pgp exec procedures and writes different information to the
-    # given array.  It is probably best to put all the code that
-    # change from PGP version to version in a single place.  This is
-    # based on 2.6.2
-
+proc Pgp_Exec_GetKeys { v keyid file } {
     global pgp
-    upvar $outvar pgpresult
 
-    Exmh_Debug "PGP Output:\n$in"
-    regexp {(.*)child process exited abnormally} $in {} in
-    set in [string trim $in]
+    Exmh_Debug "Pgp_Exec_GetKeys $v $keyid $file"
 
-    set pgpresult(ok) 1
-    regexp -nocase {key id ([0-9a-f]+)} $in {} pgpresult(keyid)
-    if [regexp {This.*do not have the secret key.*file.} $in \
-	    pgpresult(msg)] {
-	set pgpresult(summary) "SecretMissing"
-	set pgpresult(ok) 0
-    } elseif [regexp {Can't.*can't check signature integrity.*} $in \
-		  pgpresult(msg)] {
-	set pgpresult(summary) "PublicMissing"
-	set pgpresult(ok) 1
-    } elseif [regexp {Good signature.*} $in pgpresult(msg)] {
-	if [regexp {WARNING:.*confidence} $pgpresult(msg)] {
-	    set pgpresult(summary) "GoodSignatureUntrusted"
-	} else {set pgpresult(summary) "GoodSignatureTrusted"}
-    } elseif [regexp {WARNING:.*doesn't match.*} $in \
-		  pgpresult(msg)] {
-	if [regexp {WARNING:.*confidence.*} $pgpresult(msg)] {
-	    set pgpresult(summary) "BadSignatureUntrusted"
-	} else {set pgpresult(summary) "BadSignatureTrusted"}
-    } elseif [regexp {ERROR} $in \
-		  pgpresult(msg)] {
-	set pgpresult(summary) "UnknownError"
-	set pgpresult(msg) $in
-	set pgpresult(ok) 0
+    set arglist [subst [set pgp($v,args_exportKey)]]
+    ldelete arglist {}
+    if [Pgp_Exec $v key $arglist msg] {
+        error $msg
     } else {
-	set pgpresult(summary) "Other"
-	set pgpresult(msg) $in
-    } 
-
-    # DecryptExpect sometimes notifies the user that the
-    # file is not encrypted.
-    
-    if [regexp {Note: File may not have been encrypted} $in] {
-	set pgpresult(msg) \
-	    "Note: File may not have been encrypted.\n\n$pgpresult(msg)"
-    }
-
-    Exmh_Debug OK=$pgpresult(ok) $pgpresult(summary)
-
-    if $pgp(shortmsgs) {
-	set pgpresult(msg) [Pgp_ShortenOutput $pgpresult(msg) \
-				$pgpresult(summary)]
+        Pgp_Exec_CheckSuccess $v $file $msg "key block for $keyid"
     }
 }
 
-proc Pgp_ShortenOutput { pgpresult summary } {
-    
-    regexp {user ("[^"]*")} $pgpresult {} user
-
-    switch $summary {
-       SecretMissing {return "Cannot decrypt, missing secret key."}
-       PublicMissing {return "Missing public key."}
-       GoodSignatureUntrusted {return "Good untrusted signature from $user."}
-       GoodSignatureTrusted {return "Good trusted signature from $user."}
-       BadSignatureTrusted {return "WARNING: Bad trusted signature \
-		from $user."}
-       BadSignatureUntrusted {return "WARNING: Bad untrusted signature \
-		from $user."}
-       UnknownError {return "PGP Error while processing message:\n$pgpresult"}
-       Other {return $pgpresult}
+# Shutdown Cleanup
+proc Pgp_CheckPoint {} {
+    foreach cmd { Pgp_Match_CheckPoint } {
+        if {[info command $cmd] != {}} {
+            if [catch {$cmd} err] {
+                puts stderr "$cmd: $err"
+            }
+        }
     }
 }
 
-proc Pgp_CheckPoint {  } {
-    foreach cmd { PgpMatch_CheckPoint } {
-	if {[info command $cmd] != {}} {
-	    if [catch {$cmd} err] {
-		puts stderr "$cmd: $err"
-	    }
-	}
+
+### Init ###
+
+proc Pgp_Exec_Init {} {
+    global env pgp
+
+    Pgp_SetPath
+
+    # needed in pgpMatch
+    if {![info exists env(LOCALHOST)]} {
+        if [catch {exec uname -n} env(LOCALHOST)] {
+            set env(LOCALHOST) localhost
+        }
+    }
+
+    foreach v $pgp(supportedversions) {
+        if {[set pgp($v,enabled)]} {
+            set pgp($v,pass,) {}
+            # Parse config file
+            if { [set pgp($v,parse_config)] } {
+                Pgp_Exec_ParseConfigTxt $v [set pgp($v,configFile)]
+            }
+            if {![file exists [set pgp($v,secring)]]} {
+                set pgp($v,secring) {}
+            }
+            set pgp($v,privatekeys) [Pgp_Exec_KeyList $v "" Sec]
+            #
+            if [info exists pgp($v,config,myname)] {
+                set myname [string tolower [set pgp($v,config,myname)]]
+                foreach key [set pgp($v,privatekeys)] {
+                    if {[string first $myname [string tolower $key]] >= 0} {
+                        set pgp($v,myname) $key
+                        break
+                    }
+                }
+                if {![info exists pgp($v,myname)]} {
+                    if [catch {Pgp_Match_Simple $v [set pgp($v,config,myname)] Sec} key] {
+                        tk_messageBox -type ok -icon warning \
+                                      -title "[set pgp($v,fullName)] Init" \
+                                      -message "The name specified in your [set pgp($v,fullName)] config file couldn't be unambiguously found in your key rings !"
+                        set pgp($v,myname) {}
+                    } else {
+                        set pgp($v,myname) $key
+                    }
+                }
+            } else {
+                set pgp($v,myname) [lindex [set pgp($v,privatekeys)] 0]
+            }
+        }
     }
 }
