@@ -498,7 +498,7 @@ proc Mh_Sequence { f seq } {
 	    # Thanks to John Farrell
 	    regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
 	    if {[regexp "$pattern: (.*)" $line x msgs]} {
-		set result [mhSeq add $result [MhSeqExpand $msgs]]
+		set result [mhSeq add $result $msgs]
 	    }
 	}
     }
