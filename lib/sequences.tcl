@@ -192,7 +192,7 @@ proc Seq_Trace {array elem op} {
 	set flist(oldseqcount,$folder,$seq) $num
 	set delta [expr {$num - $oldnum}]
 	if {$delta != 0} {
-	    Exmh_Debug $folder has $num msgs in $seq
+	    Exmh_Debug $folder has $num msgs in $seq (delta: $delta)
 	}
 	if {$num > 0} {
 	    if [info exists flist($seq)] {
@@ -212,17 +212,23 @@ proc Seq_Trace {array elem op} {
 		set flist($seq) {}
 	    }
 	}
-	if {[info exists flist(totalcount,$seq)]} {
-	    incr flist(totalcount,$seq) $delta
-	} else {
-	    set flist(totalcount,$seq) $delta
+	if {$delta != 0} {
+	    if {[info exists flist(totalcount,$seq)]} {
+		incr flist(totalcount,$seq) $delta
+	    } else {
+		set flist(totalcount,$seq) $delta
+	    }
 	}
 	if {$seqwin(on)} {
 	    SeqWinUpdate $seq $folder $num
 	}
     } elseif {$var == {totalcount}} {
 	set seq [lindex $indices 1]
-	#Exmh_Debug "$flist(totalcount,$seq) $seq msgs in [llength $flist($seq)] folders ($flist($seq))"
+#	if [info exists flist($seq)] {
+#	    Exmh_Debug "$flist(totalcount,$seq) $seq msgs in [llength $flist($seq)] folders ($flist($seq))"
+#	} else {
+#	    Exmh_Debug "$flist(totalcount,$seq) $seq msgs in no folders"
+#	}
 	if {$flist(totalcount,$seq) <  0} {
 	    Exmh_Status "$flist(totalcount,$seq) $seq!"
 	    set flist(totalcount,$seq) 0

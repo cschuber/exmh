@@ -48,7 +48,7 @@ proc FlistResetVars {} {
     #	modification time of .mh_sequences file
     # flist(totalcount,$seq)	;# Total count of messages in sequence
 
-    foreach x [array names flist] {
+    foreach x [lsort -ascii [array names flist]] {
 	if [regexp {^(seq),} $x] {
 	    # reset state
 	    set flist($x) {}
