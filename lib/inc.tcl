@@ -180,6 +180,10 @@ proc Inc_Expect {cmd} {
     if {[lsearch -exact $cmd -host] < 0} {
 	lappend cmd -host $inc(pophost)
     }
+    if {[lsearch -exact $cmd -user] < 0
+	&& [info exists pop($inc(pophost),login)]} {
+	lappend cmd -user $pop($inc(pophost),login)
+    }
     if {[lsearch -exact $cmd <<] < 0} {
 	lappend cmd << $pop(password)
     }

@@ -1,6 +1,14 @@
 HISTORY
 cvs repository 08/28/2003 cwg-exmh@deepeddy.com
   ftoc.tcl - In FtocCommit, clear all unseen messages at the same time.
+  (modification of the 7/13 change)
+
+cvs repository 07/13/2003 welch@acm.org
+  ftoc.tcl: patch from Louis Mamakos to batch up the sequence updates
+        when doing large deletes.
+
+cvs repository 07/11/2003 welch@acm.org
+  inc.tcl: patch from Glenn Burkhardt to add -user to inc command
 
 cvs repository 06/11/2003 haldevore@acm.org
   Modified misc/mybogo.tcl to save and restore target

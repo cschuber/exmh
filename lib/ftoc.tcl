@@ -1165,14 +1165,7 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
     set delmsgs {}
     set curid [file tail $msg(path)]
     set pairs [FtocMakeReversePairs [$exwin(ftext) tag ranges $tagname]]
-    set linenos {}
-    foreach range $pairs {
-	set c0 [lindex $range 0]
-	set ce [lindex $range 1]
-	scan $c0 "%d" lineno
-	lappend linenos $lineno
-    }
-    Seq_Del $exmh(folder) $mhProfile(unseen-sequence) [Ftoc_MsgNumbers $linenos]	;# in case deleted or moved w/out viewing
+    set seqdelmsgs {}
     foreach range $pairs {
 	set c0 [lindex $range 0]
 	set ce [lindex $range 1]
@@ -1181,12 +1174,12 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	set F {}
 	set delline 0	;# Nuke display line
 	foreach tag [$exwin(ftext) tag names $c0] {
+            # Build up a list of moved or copied messages
+            # Note that the original order of the messages is maintained,
+            # (We are going from bottom to top thru the display.)
+            # The scan lines are reversed, which is handled by Scan_Move.
 	    if {([llength $tag] == 2) && ([lindex $tag 0] == "moved")} {
 		set F [lindex $tag 1]
-		# Build up a list of moved messages
-		# Note that the original order of the messages is maintained,
-		# (We are going from bottom to top thru the display.)
-		# The scan lines are reversed, which is handled by Scan_Move.
 		if ![info exists movemsgs($F)] {
 		    set movemsgs($F) $msgid
 		} else {
@@ -1197,10 +1190,6 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	    }
 	    if {([llength $tag] == 2) && ([lindex $tag 0] == "copied")} {
 		set F [lindex $tag 1]
-		# Build up a list of moved messages
-		# Note that the original order of the messages is maintained,
-		# (We are going from bottom to top thru the display.)
-		# The scan lines are reversed, which is handled by Scan_Move.
 		if ![info exists copymsgs($F)] {
 		    set copymsgs($F) $msgid
 		} else {
@@ -1214,6 +1203,9 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	    lappend delmsgs $msgid
 	    set delline 1
 	}
+	lappend seqdelmsgs $msgid					;# in case deleted or moved w/out viewing
+	#Exmh_Debug FtocCommit added $msgid to be deleted from unseen-sequence
+
 	if {$delline} {
 	    $exwin(ftext) delete $c0 "$ce + 1 chars"
 	    set ftoc(displayDirty) 1
@@ -1238,6 +1230,12 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	}
 	incr ftoc(changed) -1
     }
+
+    if {$seqdelmsgs != {}} {
+	Exmh_Debug FtocCommit deleting msgs from $mhProfile(unseen-sequence) $seqdelmsgs
+	Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $seqdelmsgs
+    }
+
     if {$delmsgs != {}} {
 	Exmh_Status "$commitProc $delmsgs"
 	if [catch {
