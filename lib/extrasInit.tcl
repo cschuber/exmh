@@ -419,6 +419,9 @@ is interactive, then run it from exmh-async:
 exmh-async xterm -e ispell
 (This is faked - exmh-async isn't really used.  Instead a temporary
 wish script is used.)"}
+    {sedit(autosaveInterval)   seditAutosaveInterval 60 {Seconds between auto saves}
+"This is the interval, in seconds, between automatic saves of 
+the message being edited.  Set to 0 to disable autosaving."}
     }
     Preferences_Resource sedit(wordbreakpat) seditWordBreakPat "\[\ \t/>\]"
     # Converting from boolean to choice

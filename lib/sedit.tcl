@@ -566,8 +566,10 @@ proc Sedit_CheckPoint {} {
 }
 proc SeditPeriodicSave {} {
     global sedit
-    Sedit_CheckPoint
-    set sedit(checkpoint) [after [expr 1000 * 60] SeditPeriodicSave]
+    if { [info exists sedit(autosaveInterval)] && $sedit(autosaveInterval) > 0 } {
+        Sedit_CheckPoint
+        set sedit(checkpoint) [after [expr 1000 * $sedit(autosaveInterval) ] SeditPeriodicSave]
+    }
 }
 
 proc SeditFixupMhn { draft t } {
