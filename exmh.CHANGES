@@ -1,4 +1,6 @@
 HISTORY
+cvs repository 06/18/2004 welch@panasas.com
+  Updating version to 2.7.0 in preparation for a release
 
 cvs repository 06/14/2004 welch@panasas.com
   mh.tcl: Slight tweak to version detection to make it more robust.

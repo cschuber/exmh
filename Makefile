@@ -2,7 +2,7 @@
 
 # Remember to update exmh.install when changing version numbers.
 
-VERSION=2.6.3
+VERSION=2.7.0
 RELDATE:=$(shell grep '^set date' ./exmh.install | cut -f3 -d" ")
 SNAPRELDATE:=$(shell /bin/date +%m/%d/%Y)
 SNAPDATE=`/bin/date +%Y%m%d`
