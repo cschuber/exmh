@@ -13,6 +13,10 @@ cvs repository 06/11/2003 haldevore@acm.org
     mh.tcl It clears the mhPriv(otherpriv) variable, which otherwise grows infinitly,
     when reading .exmhcontext-File multiple times and writing it afterwards.
 
+cvs repository 06/01/2003 welch@panasas.com
+  mime.tcl - add skipping of blank lines to help find the start of
+        PGP messages better.  Based on fix by Joel Hatton
+
 cvs repository 05/19/2003 welch@panasas.com
   pgpPgp65.tcl - Added +compatible=off to batchmode flags (Neil Rickert)
     added version check improvement for PGP 6.5 (Neil Rickert)

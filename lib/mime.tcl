@@ -2148,18 +2148,26 @@ proc MimeParseSingle {tkw part fileIO } {
 		[expr {$mime(enabled) && 
 		       [info exists mimeHdr(0=1,hdr,content-type)]}]
 	}
-
+        #
+        # Skip through blank lines looking for the start of a PGP message
+        # Old code used to just consume a single line
+        # (Based on a patch from Joel Hatton)
+        #
+        set firstLine ""
+        while {! [eof $fileIO]} {
+            set firstLinePosition [tell $fileIO]
+            gets $fileIO firstLine
+            if { ! [regexp {(?n)^\s*$} $firstLine ] } {
+              break
+            }
+        }
+        if [regexp $miscRE(beginpgp) $firstLine] { set mimeHdr($part,decode) 1 }
     } else {
 	Exmh_Status "Warning - no headers" warn
 	set firstLine $line
 	set mimeHdr($part,type) [set type text/plain]
 	set mimeHdr($part,encoding) [set encoding 8bit]
 	set mimeHdr($part,params) {}
-    }
-    if {![info exists firstLine]} {
-	set firstLinePosition [tell $fileIO]
-	gets $fileIO firstLine
-	if [regexp $miscRE(beginpgp) $firstLine] { set mimeHdr($part,decode) 1 }
     }
     if {$numBytes >= 0} {
 	if {$fast && [string compare $type text/plain] == 0 &&
