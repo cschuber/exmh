@@ -496,15 +496,15 @@ proc Ftoc_FindMsg { msgid {line {}} } {
 
     set minLine 1
     set minMsg [Ftoc_MsgNumber $minLine]
+    if {$msgid == $minMsg} {
+	return $minLine
+    }
     set maxLine $ftoc(numMsgs)	;# Ignore trailing blank line
     set maxMsg [Ftoc_MsgNumber $maxLine]
+    if {$msgid == $maxMsg} {
+	return $maxLine
+    }
     while (1) {
-	if {$msgid == $minMsg} {
-	    return $minLine
-	}
-	if {$msgid == $maxMsg} {
-	    return $maxLine
-	}
 	if {$msgid > $maxMsg || $msgid < $minMsg} {
 	    Exmh_Status "Cannot find $msgid ($minMsg,$maxMsg)" warn
 	    set msgtolinecache($msgid) -1
@@ -514,17 +514,22 @@ proc Ftoc_FindMsg { msgid {line {}} } {
 	    set msgtolinecache($msgid) -1
 	    return ""	;# not found
 	}
-	set nextLine [expr int(($maxLine+$minLine)/2)]
+	#set nextLine [expr int(($maxLine+$minLine)/2)]
+	# Don't divide in two, guestimate the where the line might be instead
+	set nextLine [expr int($minLine+1+($msgid-$minMsg)*($maxLine-$minLine-2)/($maxMsg-$minMsg))]
 	set nextMsg [Ftoc_MsgNumber $nextLine]
-	if {$nextMsg > $msgid} {
+	if {$nextMsg == $msgid} {
+	    return $nextMsg
+	} elseif {$nextMsg > $msgid} {
 	    set maxLine $nextLine
 	    set maxMsg $nextMsg
 	} elseif {$minLine == $nextLine} {
 	    Exmh_Status "Cannot find $msgid" warn
+	    set msgtolinecache($msgid) -1
 	    return "" ;# new message not listed
 	} else {
 	    set minLine $nextLine
-	    set minMsg $nextLine
+	    set minMsg $nextMsg
 	}
     }
     # not reached
