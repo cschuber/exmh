@@ -1,0 +1,794 @@
+#!/usr/bin/perl 
+
+#use strict;
+use Tk;
+require Tk::ROText;
+require Tk::BrowseEntry;
+require Tk::Dialog;
+
+(%aliases,%distros,%dtags,%olddtags,%akeys,%dkeys,%nakeys,$ndkeys,$CDchoice,$CAchoice,$WhichBox)=();
+@hnames=qw(aliases distros);
+@CADc=qw(CAchoice CDchoice);
+@BNames=qw(Distro Alias);
+$Defaultdtag="Undisclosed Recipients";
+$UpperLimit=3;
+$MaxLineLength=80;
+$DefaultAddress="";
+$DefaultAddress=$ARGV[0] if $ARGV[0] ne "";
+
+$configdir=$ENV{HOME};
+$configdir.='/' if ! ($configdir=~/\/\s*$/);
+open (CONFIG,$configdir.'.exmh/exmh-defaults') || die "Can't open ${configdir}.exmh/exmh-defaults\n";
+while (<CONFIG>) {
+    $BFont=$1 if /s*\*Button\.font:\s+(.*)/;
+    $TFont=$1 if /s*\*Msg\*Text\.font:\s+(.*)/;
+}
+$DColour='grey';
+
+close (CONFIG);
+
+open (MH,$configdir.'.mh_profile') || die "Can't open ${configdir}.mh_profile";
+while (<MH>) {
+    chomp;
+    s/^\s+//;
+    if (!(/^\#/)){
+	$AliasFile=$1 if /\s*AliasFile:\s*(.*)/;
+    }
+}
+close(MH);
+(%AliasCheck,@AliasFile)=();
+foreach $key (split(/\s+/,$AliasFile)) {
+    if (!$AliasCheck{$key}) {
+	push(@AliasFile,$key);
+	$AliasCheck{$key}=$key;
+    }
+}
+
+
+# First, construct main window
+my $main=MainWindow->new(-title=>"mafe: MH alias file editor");
+
+if ($#AliasFile>0) {
+    $ShowFile=$main->BrowseEntry(-autolimitheight=>1, -choices=>\@AliasFile, -width=>22,-font=>$TFont, -browsecmd=> sub{&SwitchAliasFile($_[1])})->
+	grid(-column=>0,-row=>0,-sticky=>'nw',-columnspan=>5);
+    $whichfile=$ShowFile->Subwidget("entry");
+} else {
+    $ShowFile=$main->ROText(-width=>22, -height=>1,-font=>$TFont,-relief=>'flat')->
+	grid(-column=>0,-row=>0,-sticky=>'nw',-columnspan=>5);
+    $ShowFile->insert('end',$AliasFile[0]);
+}
+
+$CurrentFile=$AliasFile[0];
+$oldCFile=$CurrentFile;
+
+my $BFrame=$main->Frame->grid(-row=>0,-column=>1,-sticky=>'ne');
+
+my $help=$BFrame->Button(-text=>'Help',
+			 -font=>$BFont, 
+			 -padx=>0)->grid(-column=>4, -row=>0,-sticky=>'e');
+my $save=$BFrame->Button(-text=>'Save',
+			 -font=>$BFont, 
+			 -padx=>0, -state=>'disabled', 
+			 -command=>sub{&SaveData})
+          ->grid(-column=>5, -row=>0,-sticky=>'e');
+my $dismiss=$BFrame->Button(-text=>'Dismiss',
+			    -font=>$BFont, 
+			    -padx=>0, 
+			    -command=> sub{&Dismiss})
+          ->grid(-column=>6, -row=>0,-sticky=>'e');
+
+my $dialog=$main->Dialog(-title=>'Unsaved Data!',
+			 -text=>'Blah Blah Blah',
+			 -font=>$TFont,
+			 -default_button=>2,
+			 -buttons=>[('Save', 'Don\'t Save', "Cancel")]);
+
+my (@ADFrame,@ADLabel,@ADBox,@ADEntry,@ADBFrame)=();
+my (@ADComp,@ADInsert,@ADChange,@ADDelete,@ADSwap)=();
+my @LabelNames=qw(Aliases Distributions);
+
+foreach my $ii (0..1) {
+    $ADFrame[$ii]=$main->Frame->grid(-row=>2+$ii, -column=>0,-sticky=>'nw');
+    $ADLabel[$ii]=$ADFrame[$ii]->Label(-text=>$LabelNames[$ii], -font=>$TFont) 
+	->grid(-column=>0, -row=>0);
+    $ADBox[$ii]=$ADFrame[$ii]->Scrolled('Listbox', 
+				    -width=>22, 
+				    -height=>10, 
+				    -scrollbars=>'oe', 
+				    -font=>$TFont)
+	->grid(-column=>0, -row=>1, -sticky=>'wn');
+    $ADBox[$ii]->bind('<ButtonRelease-1>', 
+		      sub{&show_tag($ADBox[$ii]->get('active'),$ii)});
+    $ADEntry[$ii]=$ADFrame[$ii]->Entry(-width=>26, -font=>$TFont)
+	->grid(-column=>0, -row=>2, -sticky=>'wn');
+    $ADBFrame[$ii]=$ADFrame[$ii]->Frame->grid(-column=>0, -row=>3);
+    $ADComp[$ii]=$ADBFrame[$ii]->Button(-text=>'Comp', 
+					-font=>$BFont, 
+					-padx=>0,
+					-command=>sub{&Compose($ADBox[$ii]->get('active'))},
+				    -state=>'normal')
+	->grid(-column=>0, -row=>0);
+    $ADInsert[$ii]=$ADBFrame[$ii]->
+	Button(-text=>'Insert', 
+	       -font=>$BFont, 
+	       -padx=>0, 
+	       -command=>sub{&InsertAlias($ii,$ADEntry[$ii]->get)})->
+	       grid(-column=>1, -row=>0);
+    $ADChange[$ii]=$ADBFrame[$ii]->
+	Button(-text=>'Change', 
+	       -font=>$BFont, 
+	       -padx=>0, 
+	       -state=>'disabled', 
+	       -command=>sub{&ChangeAlias($ii,$ADEntry[$ii]->get)})->
+	       grid(-column=>2, -row=>0);
+    $ADDelete[$ii]=$ADBFrame[$ii]->
+	Button(-text=>'Delete', 
+	       -font=>$BFont, 
+	       -padx=>0, 
+	       -state=>'disabled', 
+	       -command=>sub{&DeleteAlias($ii,$ADBox[$ii]->get('active'))})->
+	       grid(-column=>3, -row=>0);
+    $ADSwap[$ii]=$ADBFrame[$ii]->
+	Button(-text=>$BNames[$ii], 
+	       -font=>$BFont, 
+	       -padx=>0, 
+	       -state=>'disabled', 
+	       -command=>sub{&SwapType($ii,$ADBox[$ii]->get('active'))})->
+	       grid(-column=>4, -row=>0);
+}
+
+my $DistroFrame=$main->Frame->grid(-column=>1, -row=>1);
+
+my $AddressFrame=$main->Frame->grid(-column=>1, -row=>2,-rowspan=>2);
+my $AddressLabel=$AddressFrame->Label(-text=>'Addresses', -font=>$TFont) ->
+    grid(-column=>1, -row=>0);
+
+my $DistroLabel=$AddressFrame->
+    Label(-text=>'Distro. Tag:',
+	  -font=>$TFont, 
+	  -fg=>$DColour)->
+    grid(-column=>0, -row=>1, -sticky=>'e');
+my $DistroShowFrame=$AddressFrame->Frame->grid(-column=>1, -row=>1,-sticky=>'w');
+my $DistroName=$DistroShowFrame->
+    Entry(-width=>26,
+	  -state=>'disabled',
+	  -font=>$TFont, 
+	  -relief=>'flat', 
+	  -validate=>'focus', 
+	  -validatecommand=>sub{$SetButton->configure(-state=>'normal'); return 1;})->
+    grid(-column=>0, -row=>0, -sticky=>'w');
+my $SetButton=$DistroShowFrame->
+    Button(-text=>'Set', 
+	   -font=>$BFont, 
+	   -padx=>0, 
+	   -state=>'disabled', 
+	   -command=>sub{&ChangeDTag($CDchoice)})->
+    grid(-column=>1, -row=>0, -sticky=>'w');
+
+my $AddressBox=$AddressFrame->
+    Scrolled('Listbox',
+	     -width=>30, -height=>20, -scrollbars=>'osoe', -font=>$TFont) ->
+    grid(-column=>1, -row=>2,-sticky=>'nw');
+$AddressBox->bind('<1>', sub{&show_tag('',2)});
+my $AddressEntry=$AddressFrame->Entry(-width=>38, -font=>$TFont)->
+    grid(-column=>1, -row=>3, -sticky=>'wn');
+$AddressEntry->insert(0,$DefaultAddress) if $DefaultAddress ne "";
+my $EBFrame=$AddressFrame->Frame->grid(-column=>1, -row=>4);
+my $EInsert=$EBFrame->
+    Button(-text=>'Insert', 
+	   -font=>$BFont, 
+	   -padx=>0, 
+	   -state=>'disabled', 
+	   -command=>sub{&InsertAddress($AddressEntry->get)})->
+    grid(-column=>0, -row=>0, -sticky=>'e');
+my $EChange=$EBFrame->
+    Button(-text=>'Change', 
+	   -font=>$BFont, 
+	   -padx=>0, 
+	   -state=>'disabled', 
+	   -command=>sub{&ChangeAddress($AddressEntry->get,$AddressBox->get('active'))})->
+    grid(-column=>1, -row=>0);
+my $EDelete=$EBFrame->
+    Button(-text=>'Delete', 
+	   -font=>$BFont,
+	   -padx=>0, 
+	   -state=>'disabled', 
+	   -command=>sub{&DeleteAddress($AddressBox->get('active'))})->
+    grid(-column=>2, -row=>0, -sticky=>'w');
+my $EExpand=$EBFrame->
+    Button(-text=>'Expand', 
+	   -font=>$BFont,
+	   -padx=>0,
+	   -state=>'disabled',
+	   -command=>sub{&Expansion})->
+    grid(-column=>3, -row=>0, -sticky=>'w');
+my $EContract=$EBFrame->
+    Button(-text=>'Contract', 
+	   -font=>$BFont,
+	   -padx=>0, 
+	   -state=>'disabled', 
+	   -command=>sub{&Contraction})->
+    grid(-column=>4, -row=>0, -sticky=>'w');
+
+
+#############################################################
+# Now, populate the Aliases and Distributions
+#############################################################
+
+&ReadFile($CurrentFile, $ADBox[0], $ADBox[1]);
+
+
+MainLoop;
+
+##############################################################
+
+sub Expansion{
+
+    local (@newlist)=();
+    local ($curbox, $othbox)=($WhichBox,-1*$WhichBox+1);
+    $changed=0;
+    $CADc=${$CADc[$curbox]};
+    $hname=$hnames[$curbox];
+    $word=${$hname}{$CADc};
+    $special=0;
+    if ($AddressBox->curselection ne '') {
+	$special=1;
+	$spword=$AddressBox->get($AddressBox->curselection);
+    }
+    foreach $key (split(/,\s+/,$word)) {
+	if ($special==0 || ($special==1 && $spword eq $key)) {
+	    if ($aliases{$key}) {
+		foreach $subkey (split(/,\s+/,$aliases{$key})) {
+		    push(@newlist,$subkey);
+		}
+		$changed=1;
+	    } elsif ($distros{$key}) {
+		foreach $subkey (split(/,\s+/,$distros{$key})) {
+		    push(@newlist,$subkey);
+		}
+		$changed=1;
+	    } else {
+		push(@newlist,$key);
+	    }
+	} else {
+	    push(@newlist,$key);
+	}
+    }
+
+########################
+### check for duplicates
+########################
+    @newlist2=();
+    @newlist=sort {lc($a) cmp lc($b)}(@newlist);
+    push(@newlist2,$newlist[0]);
+    foreach $key (@newlist) {
+	push(@newlist2,$key) if $newlist2[$#newlist2] ne $key;
+    }
+    $changed=1 if $#newlist != $#newlist2;
+    @newlist=@newlist2;
+
+    
+    $$hname{$CADc}=join(', ',@newlist);
+    &show_tag($CADc, $curbox);
+    $save->configure(-state=>'normal') if ($changed==1);
+}
+
+sub Contraction{
+
+    local (@newlist,%inlist)=();
+    local ($curbox, $othbox)=($WhichBox,-1*$WhichBox+1);
+    $CADc=${$CADc[$curbox]};
+    $hname=$hnames[$curbox];
+    $word=${$hname}{$CADc};
+
+    $special=0;
+    if ($AddressBox->curselection ne '') {
+	$special=1;
+	$spword=$AddressBox->get($AddressBox->curselection);
+    }
+    $count=0;
+    $changed=0;
+    foreach $supkey (split(/,\s+/,$word)) {
+	$count++;
+	if ($supkey=~/([a-zA-Z0-9_.]+\@[a-zA-Z0-9_.]+)/) {
+	    $key=$1;
+	    if ($special==0 || ($special==1 && $spword eq $supkey)) {
+		if ($akeys{$key} ne '' && $akeys{$key} ne $CADc && $nakeys{$akeys{$key}} <= $UpperLimit) {
+		    push(@newlist,$akeys{$key}) if $inlist{$akeys{$key}} eq '';
+		    $changed=1;
+		    $inlist{$akeys{$key}}=$key;
+#		print "1. $akeys{$key}\n";
+		} elsif ($dkeys{$key} ne '' && $dkeys{$key} ne $CADc && $ndkeys{$dkeys{$key}} <= $UpperLimit) {
+		    push(@newlist,$dkeys{$key}) if $inlist{$dkeys{$key}} eq '';
+		    $changed=1;
+		    $inlist{$dkeys{$key}}=$key;
+#		print "2. $dkeys{$key}\n";
+		} else {
+		    push(@newlist,$supkey);
+#		print "3. $supkey\n";
+		}
+	    } else {
+		push(@newlist,$supkey);
+	    }
+	} else {
+	    push(@newlist,$supkey);
+#	    print "4. $supkey\n";
+	}
+    }
+
+########################
+### check for duplicates
+########################
+    @newlist2=();
+    @newlist=sort {lc($a) cmp lc($b)}(@newlist);
+    push(@newlist2,$newlist[0]);
+    foreach $key (@newlist) {
+	push(@newlist2,$key) if $newlist2[$#newlist2] ne $key;
+    }
+    $changed=1 if $#newlist != $#newlist2;
+    @newlist=@newlist2;
+
+
+#    print "$count ... ".($#newlist+1)."\n";
+#    foreach $key (sort (keys (%akeys))) {print "$key - $akeys{$key}\n";}
+    $$hname{$CADc}=join(', ',@newlist);
+    &show_tag($CADc, $curbox);
+    $save->configure(-state=>'normal') if ($changed==1);
+}
+
+sub ChangeDTag {
+
+    local ($tag)=@_;
+    local $name=$DistroName->get;
+
+    if ($name ne "") {
+	$save->configure(-state=>'normal') if $dtags{$tag} ne $name;
+	$dtags{$tag}=$name;
+    }
+    $SetButton->configure(-state=>'disabled');
+    $ind=&GetInd($CDtag,%distros);
+    $ADBox[1]->selection(set,$ind);
+    $ADBox[1]->see($ind);
+
+}
+
+sub InsertAddress {
+    local ($word)=@_;
+
+    local ($curbox, $othbox)=($WhichBox,-1*$WhichBox+1);
+    $CADc=${$CADc[$curbox]};
+    $hname=$hnames[$curbox];
+
+    if ($word ne "") {
+	${$hname}{$CADc}=&insertion($word,${$hname}{$CADc});
+	&show_tag($CADc,$curbox);
+	$ind=&GetInd2($word,${$hname}{$CADc});
+	$AddressBox->see($ind);
+	$save->configure(-state=>'normal');
+    }
+}
+
+sub insertion {
+    local ($substring, $string)=@_;
+    local (%tempy)=();
+    $substring=~s/^\s+//;
+    $substring=~s/\s+$//;
+    foreach $key (split(/,\s+/,$string)) {
+	$key=~s/^\s+//;
+	$key=~s/\s+$//;
+	$tempy{$key}=$key if !$tempy{$key};
+    }
+    $tempy{$substring}=$substring if ! $tempy{$substring};
+    $string=join(', ',(sort {lc($a) cmp lc($b)} (keys (%tempy))));
+    return $string;
+}
+
+
+sub ChangeAddress {
+    local ($word1,$word2)=@_;
+    local ($curbox, $othbox)=($WhichBox,-1*$WhichBox+1);
+    $CADc=${$CADc[$curbox]};
+    $hname=$hnames[$curbox];
+    if ($word1 ne "") {
+	${$hname}{$CADc}=&change($word1,$word2,${$hname}{$CADc});
+	&show_tag($CADc,$curbox);
+	$ind=&GetInd2($word1,${$hname}{$CADc});
+	$AddressBox->selection(set,$ind);
+	$AddressBox->see($ind);
+	$save->configure(-state=>'normal');
+	$AddressEntry->delete(0,'end');
+	$AddressEntry->insert(0,$word2);
+	$EChange->configure(-state=>'normal');
+    }
+}
+
+sub change {
+    local ($substring1, $substring2, $string)=@_;
+    local (%tempy)=();
+    $substring1=~s/^\s+//;
+    $substring1=~s/\s+$//;
+    $substring2=~s/^\s+//;
+    $substring2=~s/\s+$//;
+    foreach $key (split(/,\s+/,$string)) {
+	$key=~s/^\s+//;
+	$key=~s/\s+$//;
+	$tempy{$key}=$key if (!($tempy{$key}) && ($substring2 ne $key));
+    }
+    $tempy{$substring1}=$substring1 if ! $tempy{$substring1};
+    $string=join(', ',(sort {lc($a) cmp lc($b)} (keys (%tempy))));
+    return $string;
+}
+
+sub DeleteAddress {
+    local ($word)=@_;
+
+    local ($curbox, $othbox)=($WhichBox,-1*$WhichBox+1);
+    $CADc=${$CADc[$curbox]};
+    $hname=$hnames[$curbox];
+
+    if ($word ne "") {
+	${$hname}{$CADc}=&deletion($word,${$hname}{$CADc});
+	&show_tag($CADc,$curbox);
+	$ind=&GetInd($CADc,%{$hname});
+	$ADBox[$curbox]->selection(set,$ind);
+	$ADBox[$curbox]->see($ind);
+	$save->configure(-state=>'normal');
+    }
+}
+
+sub deletion {
+    local ($substring, $string)=@_;
+    local (%tempy)=();
+    $substring=~s/^\s+//;
+    $substring=~s/\s+$//;
+    foreach $key (split(/,\s+/,$string)) {
+	$key=~s/^\s+//;
+	$key=~s/\s+$//;
+	$tempy{$key}=$key if (!($tempy{$key}) && ($substring ne $key));
+    }
+    $string=join(', ',(sort {lc($a) cmp lc($b)} (keys (%tempy))));
+    return $string;
+}
+
+sub InsertAlias {
+    local ($curbox, $word)=@_;
+    $hname=$hnames[$curbox];
+
+    if ($word ne "") {
+	${$hname}{$word}="";
+	&FillFrames($curbox,%{$hname});
+	$ind=&GetInd($word,%{$hname});
+	$ADBox[$curbox]->selection(set,$ind);
+	$ADBox[$curbox]->see($ind);
+	&show_tag($ADBox[$curbox]->get($ADBox[$curbox]->curselection),$curbox);
+	$ADEntry[$curbox]->delete('0','end');
+	if ($curbox==1) {
+	    $dtags{$word}=$Defaultdtag;
+	}
+	$save->configure(-state=>'normal');
+    }
+}
+
+sub ChangeAlias {
+    local ($curbox,$word)=@_;
+    $hname=$hnames[$curbox];
+    local $ll=$ADBox[$curbox]->get($ADBox[$curbox]->curselection);
+    
+    if ($word ne "" && $ll ne "") {
+	if ($curbox==1) {
+	    $dtags{$word}=$dtags{$ll};
+	    delete $distros{$ll};
+	}
+	${$hname}{$word}=${$hname}{$ll};
+	delete ${$hname}{$ll};
+	&FillFrames($curbox,%{$hname});
+	$ind=&GetInd($word,%{$hname});
+	$ADBox[$curbox]->selection(set,$ind);
+	$ADBox[$curbox]->see($ind);
+	&show_tag($ll,$curbox);
+	$ADEntry[$curbox]->delete('0','end');
+	$save->configure(-state=>'normal');
+    }
+}
+sub DeleteAlias {
+    local ($curbox, $word)=@_;
+    
+    $hname=$hnames[$curbox];
+    if ($word ne "") {
+	delete $dtags{$word} if $curbox==1;
+	delete ${$hname}{$word};
+	&FillFrames($curbox,%{$hname});
+	$save->configure(-state=>'normal');
+    }
+    $AddressLabel->configure(-text=>'Addresses');
+    $EInsert->configure(-state=>'disabled');
+    $EChange->configure(-state=>'disabled');
+    $EDelete->configure(-state=>'disabled');
+    $EExpand->configure(-state=>'disabled');
+    $EContract->configure(-state=>'disabled');
+    $DistroName->delete(0,'end');
+    $DistroName->configure(-state=>'disabled', -relief=>'flat');
+    $DistroLabel->configure(-fg=>'grey');
+}
+
+sub SwapType {
+    my ($curbox,$word)=@_;
+    my $othbox=-1*$curbox+1; 
+    my ($hname,$oname)=($hnames[$curbox],$hnames[$othbox]);
+    
+    if ($word ne "") {
+	${$oname}{$word}=${$hname}{$word};
+	if ($curbox==0) {
+	    $dtags{$word}=$Defaultdtag;
+	    $dtags{$word}=$olddtags{$word}if ($olddtags{$word} ne "");
+	} else {
+	    $olddtags{$word}=$dtags{$word};
+	}
+	delete ${$hname}{$word};
+	&FillFrames(0,%aliases);
+	&FillFrames(1,%distros);
+	$ind=&GetInd($word,%{$oname});
+	$ADBox[$othbox]->selection(set,$ind);
+	$ADBox[$othbox]->see($ind);
+	&show_tag($word,$othbox);
+	$save->configure(-state=>'normal');
+    }
+}
+
+sub GetInd {
+    local ($word, %AliasOrDistro)=@_;
+    local $ii=-1;
+    foreach $key (sort {lc($a) cmp lc($b)} (keys (%AliasOrDistro))){
+	$ii++;
+	last if ($key eq $word);
+    }
+    return $ii;
+}
+
+sub GetInd2 {
+    local ($word, $string)=@_;
+    local $ii=-1;
+    foreach $key (sort {lc($a) cmp lc($b)} split(/,\s+/,$string)) {
+	$ii++;
+	last if ($key eq $word);
+    }
+    return $ii;
+}
+
+sub SwitchAliasFile {
+    ($CurrentFile)=@_;
+    if ($CurrentFile ne $oldCFile) {
+	$result="";
+	if ($save->cget(-state) eq 'normal') {
+	    $dialog->configure(-text=>"You are about to leave $oldCFile without saving the changes that you\'ve made!!!");
+	    $result=$dialog->Show();
+	    &SaveData if $result eq 'Save';
+	}
+	
+	if ($result ne 'Cancel') {
+	    &ReadFile($CurrentFile,$ADBox[0], $ADBox[1]);
+	    $save->configure(-state=>'disabled');
+	} else {
+	    $CurrentFile=$oldCFile;
+	    $whichfile->configure(-state=>'normal');
+	    $whichfile->delete(0,'end');
+	    $whichfile->insert(0,$CurrentFile);
+	    $whichfile->configure(-state=>'disabled');
+	}
+    }
+    $oldCFile=$CurrentFile;
+}
+sub ReadFile{
+
+    ($CurrentFile, $ADBox[0], $ADBox[1])=@_;
+    local ($tag,$addresses,$dtag)=();
+
+    open (FILE, $CurrentFile) || 
+	die "Can\'t open the alias file \"$aliasfile\"\n";
+
+    # First, read the alias file and assign the addresses to either 
+    # one of two hashes, depending on the form of the line: 
+    #   (1) %distros if alias: aliasname:, email1@b.c ..., ;
+    #   (2) %aliases if alias: email1@b.c ...
+    (%aliases,%distros,%dtags)=();
+    while (<FILE>) {
+	chomp;
+	if (/^[^:]+:/) {
+	    if ($tag ne '') {
+	    $addresses=~s/\\//g;
+	    $addresses=join(', ',split(/,\s+/,$addresses));
+	    if ($addresses=~/^([^:]+):(.*)/){
+		($addresses,$dtags{$tag})=($2,$1);
+		$addresses=~s/^\s*,\s+//;
+		$addresses=~s/,\s+;//;
+		$distros{$tag}=$addresses;
+	    } else {
+		$aliases{$tag}=$addresses;
+	    }
+	    ($tag, $addresses)=();
+	}
+	    ($tag,$addresses)=($1,$2) if (/([^:]+):(.*)/);
+	    $tag=~s/^\s+//;
+	    $tag=~s/\s+$//;
+	$addresses=~s/^\s+//;
+	$addresses=~s/\s+$//;
+	} else {
+	    $addresses.=$_;
+	}
+    }
+    # in case there is a $tag $address pair which hasn't been put into 
+    # the appropriate hash...
+    if ($addresses=~/^[^:]+:/){
+	$distros{$tag}=$addresses;
+    } else {
+	$aliases{$tag}=$addresses;
+    }
+    close FILE;
+
+# assign each email in the %distros to another hash has whose value is
+# the %distros' key (sort of like a reverse hash)
+    foreach $key (keys (%distros)) {
+	$count==0;
+	foreach $skey (split(/,\s+/,$distros{$key})) {
+	    $count++;
+	    $email=$1 if $skey=~/(\S+\@\S+)/;
+	    $email=~s/[<>]//g;
+	    $dkeys{$email}=$key;
+	}
+	$ndkeys{$key}=$count;
+    }
+# do the same for the %aliases hash
+    foreach $key (keys (%aliases)) {
+	$count=0;
+	foreach $skey (split(/,\s+/,$aliases{$key})) {
+	    $count++;
+	    $email=$1 if $skey=~/(\S+\@\S+)/;
+	    $email=~s/[<>]//g;
+	    $akeys{$email}=$key;
+	}
+	$nakeys{$key}=$count;
+    }
+    &FillFrames(0,%aliases);
+    &FillFrames(1,%distros);
+    $AddressLabel->configure(-text=>"Addresses");
+    $EInsert->configure(-state=>'disabled');
+    $EChange->configure(-state=>'disabled');
+    $EDelete->configure(-state=>'disabled');
+    $EContract->configure(-state=>'disabled');
+    $EExpand->configure(-state=>'disabled');
+#    $ADBox[0]->delete(0,'end');
+#    $ADBox[0]->insert(0,(sort {lc($a) cmp lc($b)} (keys (%aliases))));
+#    $ADBox[1]->delete(0,'end');
+#    $ADBox[1]->insert(0,(sort {lc($a) cmp lc($b)} (keys (%distros))));
+}
+
+sub FillFrames {
+    local ($num, %AliasOrDistro)=@_;
+    
+    $AddressBox->delete(0,'end');
+
+    $ADBox[$num]->delete(0,'end');
+    $ADBox[$num]->insert(0,(sort {lc($a) cmp lc($b)} (keys (%AliasOrDistro))));
+
+}
+
+sub show_tag{
+    local ($tag,$curbox)=@_;
+    local (%list)=();
+
+    if ($curbox==0) {
+	%list=%aliases;
+    } elsif ($curbox==1) {
+	%list=%distros;
+    } else {
+	%list=%aliases if $WhichBox==0;
+	%list=%distros if $WhichBox==1;
+	$tag=$CAchoice if $WhichBox==0;
+	$tag=$CDchoice if $WhichBox==1;
+    }
+    if ($curbox!=2){
+	$WhichBox=$curbox;
+	$AddressBox->delete(0,'end');
+	$AddressBox->insert(0,(sort {lc($a) cmp lc($b)} split(/,\s+/,$list{$tag})));
+	$DistroName->delete(0,'end');
+ 	$EChange->configure(-state=>'disabled');
+	$EDelete->configure(-state=>'disabled');
+	$AddressLabel->configure(-text=>"Addresses for \"$tag\"") if $tag ne "";
+    }
+    if ($list{$tag}=~/\w/) {
+	$EExpand->configure(-state=>'normal');
+	$EContract->configure(-state=>'normal');
+    }
+    $EInsert->configure(-state=>'normal');
+    if ($curbox==1) {
+	$CDchoice=$tag;
+	$DistroName->configure(-state=>'normal', -relief=>'sunken');
+	$DistroName->insert(0,$dtags{$tag});
+	$DistroLabel->configure(-fg=>'black');
+	$ADComp[1]->configure(-state=>'normal');
+	$ADChange[1]->configure(-state=>'normal');
+	$ADDelete[1]->configure(-state=>'normal');
+	$ADSwap[1]->configure(-state=>'normal');
+	$ADComp[0]->configure(-state=>'disabled');
+	$ADChange[0]->configure(-state=>'disabled');
+	$ADDelete[0]->configure(-state=>'disabled');
+	$ADSwap[0]->configure(-state=>'disabled');
+    } elsif ($curbox==0) {
+	$CAchoice=$tag;
+	$DistroName->configure(-state=>'disabled', -relief=>'flat');
+	$DistroLabel->configure(-fg=>'grey');
+	$ADComp[1]->configure(-state=>'disabled');
+	$ADChange[1]->configure(-state=>'disabled');
+	$ADDelete[1]->configure(-state=>'disabled');
+	$ADSwap[1]->configure(-state=>'disabled');
+	$ADComp[0]->configure(-state=>'normal');
+	$ADChange[0]->configure(-state=>'normal');
+	$ADDelete[0]->configure(-state=>'normal');
+	$ADSwap[0]->configure(-state=>'normal');
+    } else {
+	if ($list{$tag}=~/\w/) {
+	    $EChange->configure(-state=>'normal');
+	    $EDelete->configure(-state=>'normal');
+	}
+	$EInsert->configure(-state=>'normal');
+    }
+}
+
+sub SaveData{
+
+    open(OUT, ">$CurrentFile");
+    foreach $key (sort {$a cmp $b} (keys (%distros))) {
+	&splitprint($key.": ".$dtags{$key}.":, ".$distros{$key}.", ;");
+    }
+    foreach $key (sort {$a cmp $b} (keys (%aliases))) {
+	&splitprint($key.": ".$aliases{$key});
+    }
+    close(OUT);
+    
+
+    $save->configure(-state=>'disable');
+}
+
+sub splitprint {
+
+    local ($key)=@_;
+    
+    if (length($key)>$MaxLineLength && $key=~/,\s+/) {
+	$clength=0;
+	($first,@subsequent)=split(/,\s+/,$key);
+	print OUT $first;
+	$clength=length($first);
+	foreach $block (@subsequent) {
+	    if ($clength+length(', '.$block)>$MaxLineLength) {
+		print OUT ", \\\n\t$block";
+		$clength=8+length($block);
+	    } else {
+		print OUT ", $block";
+		$clength+=length(", $block");
+	    }
+	}
+	print OUT "\n";
+    } else {
+	print OUT "$key\n";
+    }
+}
+
+sub Dismiss {
+
+    $result="";
+    if ($save->cget(-state) eq 'normal') {
+	$dialog->configure(-text=>'You are about to quit without saving the changes that you\'ve made!!!');
+	$result=$dialog->Show();
+	&SaveData if $result eq 'Save';
+    }
+
+    exit if $result ne 'Cancel';
+
+}
+
+sub Compose {
+    local ($addr)=@_;
+    $addr =$AddressBox->get('active') if ($AddressBox->curselection) ne "";
+
+    system("exmhmail $addr &");
+}

@@ -1,0 +1,297 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=windows-1252">
+<title>MAFE: MH Alias File Editor</title>
+</head>
+
+<body>
+<A NAME="top">
+<H1> MAFE: MH Alias File Editor</H1>
+by Andrew Billyard <font size=-1>(<A HREF="mailto:andrew_billyard@alumni.REMOVETHISBIT.uwaterloo.ca">andrew_billyard@alumni.REMOVETHISBIT.uwaterloo.ca</A>)</font>
+
+<H2><OL>
+<LI> <A HREF="#intro">Introduction</A>
+<LI> <A HREF="#install">Installation</A>
+<LI> <A HREF="#terms">Terminology</A>
+<LI> <A HREF="#usage">Usage</A>
+<LI> <A HREF="#issues">Issues</A>
+</OL></H2>
+
+<HR>
+
+<A NAME="intro"><H2>Introduction</H2>
+<p>MAFE is a Perl+Tk utility which manipulates the nmh alias file(s).  It
+can add email aliases, delete them and change them.  It is  similar in
+style to <tt>aliases.tcl</tt> by Brent Welch and Scott Stanton in the standard exmh
+package, but has a little more functionality.  Unfortunately, my TCL+TK
+knowledge is limited and it would have taken me too long to learn the
+language to do what I wanted to do, so I've used what I know: Perl.
+However, if anyone wishes to convert this to Tcl, they are most
+welcome.  This is not meant to critize <tt>aliases.tcl</tt> by any means.
+Indeed, <tt>aliases.tcl</tt> is much faster than mafe and is native to exmh
+(whereas mafe needs to be called via exec, see below).</p>
+
+<p>mafe uses two features of nmh alias file(s) which is not currently
+exploited in the exmh alias editor: 
+<ol>
+<li>nmh can
+allow for several alias files, which are all specified on one line in
+.mh_profile, namely,<br>
+&nbsp;&nbsp;&nbsp;<tt>AliasFile: .mh_aliases_research&nbsp;&nbsp;
+.mh_aliases_friends&nbsp;&nbsp; .mh_aliases_family </tt><br>
+<li>nmh alias files can the format<br>
+&nbsp;&nbsp;&nbsp;<tt>friends: All-Friends:, friend1@b.com,
+friend2@c.edu, ... friend@z.ca, <b>;</b></tt><br>
+(note the semicolon at the end as well as the comma usage) so that specifying <tt>friends</tt> in the <tt>To:</tt> field will result in the
+recipients receiving the mail with <tt>To: All-Friends;</tt> in the header
+rather than the entire list of emails.
+</ol>
+</p>
+
+<HR>
+
+<A NAME="terms"><H2>Terminology</H2>
+<p>
+As mentioned above, the nmh
+file can take one of two basic forms:<br>
+<table>
+<tr><td>1:</td><td nowrap><font color="red"><tt>name</tt>: {<i>list</i>}</font></td></tr>
+<tr><td>2:</td><td nowrap><font color="red"><tt>name</tt>: <tt>tag</tt>:,
+{<i>list</i>}, ;</font></td></tr>
+</table>
+where {<i>list</i>} is a comma separated list of email addresses or
+other aliases defined later in the file.  This help file makes use of
+the following terminology:
+<ul>
+<li><b>Alias</b>: An alias will be defined as any line in the alias
+file in the form of line 1.
+<li><b>Alias name</b>: The <font color="red"><tt>name</tt></font> portion of the alias line.
+<li><b>Distribution</b>: A distribution will be defined as any line in
+the alias file in the form of line 2.
+<li><b>Distribution name</b>: The <font color="red"><tt>name</tt></font> portion of the alias line.
+<li><b>Tag</b> Any word(s) found in the <font color="red"><tt>tag</tt></font> location of a
+Distribution line (line 2).  The tag is what the recipients of the
+email will see in the <tt>To:</tt> field.
+<li><b>Address</b> Any words found in the comma separated list of both
+the Alias and Distribution lines.  Note that Address may be anther
+Alias/Distribution found later in the alias file as well as email addresses.
+</ul>
+</p>
+
+<HR>
+
+<A NAME="install"><H2>Installation</H2>
+<b><font size=+1>Requirements: </font></b>mafe requires the Perl::Tk modules.</p>
+
+<p>Presently, there is no "installation" procedure (such as compiling or
+rpm-ing).  Simply place uncompress the mafe tar file into a directory seen by the PATH
+variable.  Mafe also comes with script called <tt>exmhmail</tt> (which
+should also be visible to the PATH environment) which launches a compose
+session in exmh.</p>
+
+<p>To add mafe to exmh, add the following to the <i>beginning</i> of
+<tt>exmh-defaults</tt>
+<table>
+<tr>
+<td nowrap>
+<tt>
+*Main.addr.text:        Address...<BR>
+*Main.addr.m.entrylist: alias alias2 addr<BR>
+*Main.addr.m.l_alias: MH Aliases<BR>
+*Main.addr.m.c_alias: Aliases_Pref<BR>
+*Main.addr.m.l_alias2: MH Alias File Editor (MAFE)<BR>
+*Main.addr.m.c_alias2: exec /<i>path to mafe</i>/mafe \$address &<BR>
+*Main.addr.m.l_addr: Address Book<BR>
+*Main.addr.m.c_addr: Addr_Browse<BR>
+</tt>
+</td></tr></table>
+
+<hr>
+<A NAME="usage"><H2>Usage</H2>
+
+<p>The program <tt>mafe</tt> can be called from within <tt>exmh</tt> (as
+described above) or can be called on its own via<br>
+&nbsp;&nbsp;<tt>mafe <i>address</i></tt>
+where <tt><i>address</i></tt> will appear in the Addresses' Entry Box(see below).
+</p>
+<p>
+When it first starts, <tt>mafe</tt> first reads
+<tt>$HOME/.exmh/exmh-defaults</tt> to obtain which fonts are used by
+<tt>exmh</tt>.  Next, it reads the file <tt>$HOME/.mh_profile</tt> and
+looks for the alias file names given in the line starting with
+<tt>AliasFile:</tt>.  It then proceeds to open the first alias file
+mentioned on that line.
+</p>
+
+<H3>Layout</H3>
+<p>
+A screen shot of <tt>mafe</tt> is given below.  <br>
+<img src="mafe_start.gif"><br><br>
+In the upper right
+corner are several buttons whose meaning is pretty much
+self-explanatory. <br><img src="mafe_buttons.gif"><br>
+The name of the nmh alias file is displayed at the
+upper left.<br><img src="mafe_file.gif"><br>
+  If there are more than one nmh alias (as specified in
+<tt>.mh_profile</tt>) then the label is replaced with a pull down
+combo-box to switch between different files.  <I>Note:</I> if a change
+has been made to an alias file and has not been saved, then either
+selecting a different alias file or
+clicking the <B>Dismiss</B> dismiss button will result in the user to
+be prompted to save the file first.
+</p>
+
+<p>
+<A NAME="LS"><U><B>Left Side</B></U>:  On the left hand side of the window there are two nearly-identical
+units above one another.  Each unit contains: a list box, an entry box and a row of
+buttons.  With the exception of the last button in each set, all look
+the same.  The upper unit is reserved for aliases (as defined in the
+<A HREF="#intro">Introduction</A>) while the lower unit is reserved
+for the distributions (again, as defined in the
+<A HREF="#intro">Introduction</A>).<br>
+<table>
+<tr>
+<td><img src="mafe_alias.gif"></td>
+<td><img src="mafe_distro.gif"></td></tr>
+<tr>
+<td align="middle"><i>Alias unit (upper).</i></td>
+<td align="middle"><i>Distribution unit (lower).</i></td>
+</tr></table>
+<ol>
+<LI><b>List Box</b>: This box will display all the aliases/distributions defined in
+the alias file.  Clicking a particular alias/distribution in this box
+will list all of the associated addresses in the
+list box on the right hand side (see <A HREF="#RS">below</A>).
+<li><b>Entry Box</b>: Any changes to be made to an alias or
+distribution is to be put into the entry box.
+<li><b>Buttons</b>:
+<ol>
+<li><B>Comp</b>:  If a particular item in the list box is selected and
+the <B>Comp</B> button is pressed, <tt>mafe</tt> launches a compose
+sedit window from within <tt>exmh</tt>.  The <tt>To:</tt> field
+will be filled in with the List Box's selection.
+<li><B>Insert</B>: Inserts whatever is in the Entry Box (if not empty)
+into the List Box and generates a new alias/distribution.  Any
+addresses to be added will be done on the right hand frame (see
+<A HREF="#RS">below</A>).
+<li><B>Change</B>: If an entry is selected in the List Box and the
+Entry Box is not empty, the two values will be swapped.
+<li><B>Delete</B>: Delete the selection in the List Box.
+<li><B>Alias</B> or <B>Distro</B>: If the selection is a distribution,
+it (and its addresses) will be moved to the Alias unit.  Similarly for
+aliases.  However, distributions require an addition distribution tag
+(see <A HREF="#intro">Introduction</A>) and the default value of
+"<tt>Undisclosed Recipients</tt>" will be used.  This value can be changed
+in the right hand frame (see <A HREF="#RS">below</A>).
+</ol>
+</ol>
+</p>
+<p>
+<A NAME="RS"><U><B>Right Side Frame</B></U>: In this frame, changes
+can be made to the addresses belonging to the selected
+alias/distribution.<br>
+<img src="mafe_addr.gif"><br>
+<ol>
+<LI><b>Distro. Tag Entry Box</b>:  This box remains inactive if an
+alias is selected.  If a distribution is selected, this box becomes
+active and displays the distribution's tag.
+<LI><b>Set Button</b>: If the user changes the distribution's tag (in
+the Entry Box), this button will become active.  Click to permanently
+change the distribution's tag.
+<LI><b>List Box</b>: Once an alias/distribution is selected on the
+left side, its addresses will be displayed in this box.
+<li><b>Entry Box</b>: Any changes to be made to an address is to be put into the entry box.
+<li><b>Buttons</b>:
+<ol>
+<li><B>Insert</B>: Adds whatever is in the Entry Box (if not empty)
+to the list of addresses in the List Box.
+<li><B>Change</B>: If an entry is selected in the List Box and the
+Entry Box is not empty, the two values will be swapped.
+<li><B>Delete</B>: Delete the selection in the List Box.
+<li><B>Expand</B>: If a particular address is selected and it is an
+alias/distribution, clicking Expand will substitute the address with
+the addresses found in the corresponding alias/distribution.  If no
+item is selected in the list box, Expand will perform a similar operation on all
+addresses in the list box which are aliases/distributions.  Note,
+Expand only expands alias/distribution which are defined in
+the current alias file being edited.  For example if an alias contains
+the alias "john", "john" will only be expanded if it is defined in the
+current file.  
+<li><B>Contract</B>: This is nearly the opposite of Expand.  Like
+Expand, it will operate only on one address if it is selected,
+otherwise it will operate on all addresses in the list box.  However,
+Contract is careful about what it contracts.  In particular, it
+operates on an address if and only if:
+<ul>
+<li> the email address is explicitly defined in another alias/distribution in
+the current file and 
+<li> this other alias/distribution in which the email address is
+defined has, at most, three addresses in its definition.
+</ul>
+This is a bit terse, but for a good reason.  To demonstrate why,
+consider the following alias file:<br>
+<tt>
+<table>
+<tr>
+<td>
+ProjectList:</td><td nowrap> jordan1@home.ca, jordan2@work.ca, tracy@foo.bar</td></tr><tr>
+<td>
+Jordan: </td><td nowrap>jordan1@home.ca, jordan2@work.ca, jordan3@laptop.com</TD></TR><TR>
+<td>
+DistroList:</td><td nowrap>   tracy@foo.bar, hans@down.de, einstein@hair.com, \</TD></TR><TR>
+<td></td><td nowrap> fred@rick.com, apple@day.ca, ... , person100@years.old
+</td>
+</tr>
+</table>
+</tt>
+Now, suppose the <tt>ProjectList</tt> alias was selected and the
+Contract button pressed.  If there were not a three-address limit, the
+alias would then read<br>
+<tt><table><tr><td nowrap>
+ProjectList: Jordan, DistroList
+</td></</td></tr></table></tt>
+and so <i>all</i> of <tt>DistroList</tt> is included in
+<tt>ProjectList</tt> and not just <tt>tracy@foo.bar</tt>.  This may
+not be desirable. With the three-address limit, the line would become
+<tt><table><tr><td nowrap>
+ProjectList: Jordan, tracy@foo.bar
+</td></</td></tr></table></tt>
+(note, that <tt>Jordan</tt> contains one more email address than what
+was in the original <tt>ProjectList</tt>.  This might be ok if all the
+addresses in <tt>Jordan</tt> belongs to the same person).
+
+ Really, Contract is meant to replace
+several email addresses in an alias/distribution which belong to one
+person only and replace these addresses with an alias or distribution
+name for brevity.  So use with caution.<br><br>
+If the number 3 is unsatisfactory (i.e., you want the limit to be 2
+addresses or 8, etc.), change the line <tt>$UpperLimit=3;</tt>.
+</ol>
+</ol>
+</p>
+
+<hr>
+<A NAME="issues"><H2>Issues</H2>
+
+<p>The following lists a few issues with <tt>mafe</tt>
+<ol>
+<li> When saving an alias file, <tt>mafe</tt> first saves the
+distributions in alphabetical order and then the aliases in
+alphabetical order.  It just looks nice to read.  However, it does
+potentially pose a problem since an alias may then be defined before it is used
+(since in <tt>nmh</tt> an alias needs to be referenced before it is
+defined).  If this is the case, repeat the alias file name in
+<tt>.mh_profile</tt>:<br>
+<tt>
+AliasFile: .mh_aliases1 .mh_aliases2  .mh_aliases1 .mh_aliases2 
+</tt><br><br>
+<li> <tt>mafe</tt> was written in Perl with the Tk module.  It would
+have been nice to have written it in Tcl+Tk, so that it would be more
+native to the exmh package.  Perhaps one day I'll sit down and learn
+Tcl and do this.  Anyone up for the challenge of porting is more than welcome.
+</ol></P>
+<font size=-2>
+Andrew Billyard (<A HREF="mailto:andrew_billyard@alumni.REMOVETHISBIT.uwaterloo.ca">andrew_billyard@alumni.REMOVETHISBIT.uwaterloo.ca</A>)</font>
+</body>
+</html>

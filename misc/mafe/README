@@ -1,0 +1,4 @@
+To use mafe:
+- extract mafe.tar.gz
+- copy the perl file mafe to a directory which is in the $PATH environment
+- to hook mafe into exmh, read help/mafe.html

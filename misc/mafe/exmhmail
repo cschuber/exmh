@@ -1,0 +1,4 @@
+#!/usr/bin/wish -f
+
+wm withdraw .
+send exmh "Sedit_Mailto $argv"
