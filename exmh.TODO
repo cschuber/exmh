@@ -1,15 +1,11 @@
 
 Number: 1
 Priority: High
-Scope: varies
-Complexity: varies
+Scope: Medium
+Complexity: High
 
-Incorporate any outstanding patches from the patch page.  And troll
-thru the mailing list archive for other patches
-
-Here's the 2.0.2 patch list:
-
-- PGP 5.0 support
+Incorporate The PGP 5.0 patch from the 2.0.2 patch list.
+Unfortunately, it conflicts with some other already installed patches.
 
 
 Number: 2
@@ -116,8 +112,9 @@ Priority: Med
 Scope: Narrow
 Complexity: 
 
-Support GnuPG (or does it already work?)
+Support GnuPG.
 
+This is believed to be covered by the PGP5 patch.
 
 
 Number: 13
@@ -127,7 +124,7 @@ Complexity:
 
 Put a real menu bar on the top of the windows and move many of the
 buttons into the menu bar.  Those items that make sense as buttons,
-could remain buttons, but the look of them should be more like the
+should remain buttons, but the look of them should be more like the
 ones in other applications we use.
 
 
@@ -137,9 +134,7 @@ Priority: Med
 Scope: 
 Complexity: 
 
-Support for RFC2369.  This is new functionality, but it's also a look
-and feel issue because it's an interface to the mailing lists.  It
-should probably happen after the real menu bar is added.
+Support for RFC2369.  
 
 
 
@@ -160,7 +155,7 @@ Scope:
 Complexity: 
 
 Display of multipart messages is less than ideal (ugly, but not as
-ugly as the composition).  I wrote it before tk had the ability to
+ugly as the composition).  I (cwg) wrote it before tk had the ability to
 in-line graphics.
 
 
