@@ -256,13 +256,13 @@ proc Fcache_Folder { folder } {
 	} else {
 	    lappend fcache(folders) $folder
 	    lappend fcache(LRU) $folder
-	    FcacheLRU
 	}
-	Fcache_Display
     } else {
 	set fcache(LRU) [lreplace $fcache(LRU) $ix $ix]
 	lappend fcache(LRU) $folder
     }
+    FcacheLRU
+    Fcache_Display
 }
 proc FcacheLRU {} {
     global fcache fdisp

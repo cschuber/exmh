@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 03/12/2003 valdis.kletnieks@vt.edu
+    fcache.tcl - Fix problem with fcache listing.  The rows would be packed
+      to fit 'folder' and then expanded with 'folder:NNN' for unseen msgs,
+      which could cause it to wrap to a next line, leaving you with (for
+      example) two rows and an orphan on a 3rd row.
 cvs repository 03/11/2003 welch@panasas.com
     flag.tcl - Removed trace on flist(totalcount,$mhProfile(unseen-sequence)) and
       replaced with explicit call to Flag_Trace in Flist_Done.  This is to
