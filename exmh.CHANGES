@@ -1,5 +1,7 @@
 HISTORY
 
+Released exmh-2.1.2 6/8/2000 Brent Welch <welch@ajubasolutions.com>
+
 cvs repository 06/07/2000  Scott Lipcon <slipcon@acm.jhu.edu>
     misc/RPM/: added and fixed 2.1.2 RPM generation
     lib/sound.tcl: added ~ glob to sound file paths (untested)

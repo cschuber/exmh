@@ -2,7 +2,7 @@
 
 # Remember to update exmh.install when changing version numbers.
 
-VERSION=2.1.1
+VERSION=2.1.2
 
 srctar: version htmltar
 	echo ./CVS > Tar.exclude
