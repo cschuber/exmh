@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 03/21/2003 welch@panasas.com
+    scan.tcl - Added -noheader to the scan invocation.
+    ftoc.tcl - protected against unfound message in Ftoc_MoveFeedback,
+        although I'm unsure how this error could have come up.
+
 cvs repository 03/20/2003 haldevore@acm.org
     html/reference.html - Expand description of Sequences... menu
 

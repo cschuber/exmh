@@ -1291,6 +1291,9 @@ proc FtocMakeReversePairs { list } {
 proc Ftoc_MoveFeedback { msgid } {
     global exwin ftoc
     set lineno [Ftoc_FindMsg $msgid]
+    if {$lineno == ""} {
+        return
+    }
     set msg [Exmh_OldStatus]
     foreach tag [$exwin(ftext) tag names $lineno.0] {
 	if [regexp {moved (.+)} $tag match folder] {
