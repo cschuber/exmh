@@ -183,6 +183,7 @@ proc Html_MimeShow {win part} {
 	    $win insert insert "Showing frames in external viewer\n"
 	    URI_StartViewer $var(S_url)
 	} else {
+	    $win config -wrap word
 	    Html_DisplayInline $win $var(S_url) $html
 	}
     }
@@ -195,7 +196,6 @@ proc Html_Stop {win} {
     Head_ResetColors $win	;# reset window
     Head_Reset $win		;# clear memory
     $win configure -tabs {}
-    Exmh_Debug resetting wrapping to [option get $win wrap Text]
     $win config -wrap [option get $win wrap Text]
 }
 proc HtmlHit {win x y} {

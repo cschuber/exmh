@@ -1,5 +1,8 @@
 HISTORY
 cvs repository 02/02/2000
+    Fixed hard-coded '-wrap word' -vklenieks
+
+cvs repository 02/02/2000
     Fixed hard-coded 'config -cursor xterm' -vkletnieks
 
 cvs repository 02/01/2000
