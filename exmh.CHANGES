@@ -3,6 +3,9 @@ HISTORY
 Released exmh-2.1.2 6/8/2000 Brent Welch <welch@ajubasolutions.com>
 
 cvs repository 06/08/2000  Hal DeVore <hdevore@earthling.net>
+    lib/extrasInit.tcl: Corrected help text for Play Multiple
+
+cvs repository 06/08/2000  Hal DeVore <hdevore@earthling.net>
     lib/extrasInit.tcl: Clarified wording of help for Play Multiple
     Also added help about globbing for sound file paths
     lib/mime.tcl: nearly lost this change from Christopher Hall:

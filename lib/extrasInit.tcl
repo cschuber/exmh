@@ -344,15 +344,15 @@ new messages are incorporated into your folders
 (except during startup) and when you try to change
 folders without committing moves and delete operations."} \
 	{ sound(multifile) soundMultiFile OFF {Play Multiple}
-"Exmh will play the sound once for each new message or 
-error.  If your play command can handle multiple audio 
-files in one invocation, then set this option.  With 
-this option on Exmh will run the play command in the 
-background and the sound filename will be repeated as an 
-argument for each new message.  
+"Exmh will play the sound more than once if a large 
+number of messages arrive.  If your play command can 
+handle multiple audio files in one invocation, then 
+set this option.  With this option on Exmh will run 
+the play command in the background and the sound 
+filename will be repeated as an argument.
 
 For example, \"play sound sound sound\" would be run 
-in the background if three new messages arrived."} \
+in the background if three sounds were to be played."} \
 	[list sound(bell) soundBell OFF {Use terminal bell} \
 "Ring the terminal bell instead of playing an audio file."] \
 	[list sound(cmd) soundCmd $cmd {Play command} \
