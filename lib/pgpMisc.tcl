@@ -8,6 +8,10 @@
 # todo:
 
 # $Log$
+# Revision 1.13  1999/08/03 15:08:48  bmah
+# Check that pgp is enabled before attempting to check the version
+# used for a message.  Don't log PGP passphrase anymore.
+#
 # Revision 1.12  1999/08/03 04:05:55  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -306,7 +310,6 @@ proc Misc_PostProcess { srcfile } {
     global mhProfile pgp pgpPass
 
     set id [SeditId $srcfile]
-    set v $pgp(version,$id)
 
     set dstfile [Mh_Path $mhProfile(draft-folder) new]
     set curfile $srcfile
@@ -318,6 +321,7 @@ proc Misc_PostProcess { srcfile } {
 
     # call the pgp postprocesing if necessary
     if {$pgp(enabled)} {
+	set v $pgp(version,$id)
 	if {$pgp(encrypt,$id) || $pgp(sign,$id)} {
 	    # If there's a passphrase from sedit and it's non-empty, use it
 	    # but otherwise don't touch passphrase for current key
@@ -333,8 +337,8 @@ proc Misc_PostProcess { srcfile } {
 		set pgp($v,pass,$keyid) [Pgp_GetPass $v $pgp($pgp(version,$id),myname)]
 	    } 
 	    Pgp_SetPassTimeout $pgp(version,$id) $keyid
-# XXX Danger Wil Robinson!
-	    Exmh_Debug pass=>$pgp($v,pass,$keyid)<
+# Danger Wil Robinson!
+	    #Exmh_Debug pass=>$pgp($v,pass,$keyid)<
 	    if {[string length $pgp($v,pass,$keyid)] > 0} {
 		Pgp_Process $pgp(version,$id) $curfile $dstfile
 		set curfile $dstfile
