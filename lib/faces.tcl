@@ -96,7 +96,7 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} {newsgrps {}} } {
     set ximageurlAvail 0
 
     # Don't do any of this if we're on a slow display
-    if {$exmh(slowDisp) && !$exmh(slowDispFaces)} {
+    if {!$exmh(slowDispShowFaces)} {
       return 0
     }
 

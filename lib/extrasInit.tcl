@@ -107,13 +107,38 @@ proc SlowDisplay_Init {} {
 "These items determine which parts of the system to disable when you have a 
 slow display" {
         {exmh(slowDispLimit) slowDispLimit 200000	{Slow Display Limit}
-"This is the microsecond count used to determine if the user is on a
-\"slow display\"."}
-        {exmh(slowDispFaces) slowDispFaces OFF {Show faces on a slow display}
-	"Do faces processing if the display is slow"}
-        {exmh(slowDispIcons) slowDispIcons OFF {Show color icons on a slow display}
-	"Use color icons if the display is slow."}
+"Exmh will time how long takes to create and destroy a test icon.
+If it takes more microseconds than the number specified here,
+exmh will consider itself to be on a \"slow display\"."}
+        {exmh(slowDispFaces) slowDispFaces {CHOICE {when fast} always never} {Show Faces}
+"Based on whether exmh could manipulate color icons in times faster
+than the Slow Display Limit, exmh can decide whether to show any
+Faces icons which happen to be associated with the current message.
+Selecting \"when fast\" lets exmh use its own judgment about the
+message icons; selecting \"always\" or \"never\" force exmh to
+behave the way you specify."}
+        {exmh(slowDispIcons) slowDispIcons {CHOICE {when fast} always never} {Show color icons}
+"Based on whether exmh could manipulate color icons in times faster
+than the Slow Display Limit, exmh can decide whether to display a
+color icon when its main window is iconified.  Selecting \"when fast\"
+lets exmh use its own judgment about its main icon; selecting
+\"always\" or \"never\" force exmh to behave the way you specify.
+
+If you try to use the color icon but find that you have trouble
+clicking on an iconified exmh to de-iconify it, you should set
+this value to \"never\"."}
     }
+
+    # Change users' slowDispFaces,slowDispIcons, from ON/OFF to CHOICE:
+    switch $exmh(slowDispFaces) {
+	1 {set exmh(slowDispFaces) always}
+	0 {set exmh(slowDispFaces) {when fast}}
+    }
+    switch $exmh(slowDispIcons) {
+	1 {set exmh(slowDispIcons) always}
+	0 {set exmh(slowDispIcons) {when fast}}
+    }
+
     Preferences_Resource exmh(testglyph) testGlyph flagdown.gif
     if ![string match /* exmh(testglyph)] {
 	set exmh(testglyph) $exmh(library)/$exmh(testglyph)
@@ -128,9 +153,13 @@ slow display" {
     }] 0]
     set exmh(slowDisp) [expr {$time > $exmh(slowDispLimit)}]
     if $exmh(slowDisp) {
-	Exmh_Debug "Slow display: $time"
+	Exmh_Debug "Slow display: took $time microseconds to create test icon"
+	set exmh(slowDispShowFaces) [string match $exmh(slowDispFaces) {always}]
+	set exmh(slowDispColorIcon) [string match $exmh(slowDispIcons) {always}]
     } else {
-	Exmh_Debug "Fast display: $time"
+	Exmh_Debug "Fast display: took $time microseconds to create test icon"
+	set exmh(slowDispShowFaces) [expr { ![string match $exmh(slowDispFaces) {never}] }]
+	set exmh(slowDispColorIcon) [expr { ![string match $exmh(slowDispIcons) {never}] }]
     }
 }
 
@@ -230,7 +259,7 @@ proc Faces_Setup args {
 	$faces(parent) config -width 0
     }
 
-    if {$faces(rowEnabled) && (!$exmh(slowDisp) || $exmh(slowDispFaces))} {
+    if {$faces(rowEnabled) && $exmh(slowDispShowFaces)} {
 	set row [Widget_Frame $faces(rowparent) faceRow Face {top fill}]
 	pack $row -before $faces(parent) -side bottom
 
@@ -245,7 +274,7 @@ proc Faces_Setup args {
 			-bitmap @$exmh(library)/exmh.bitmap]
 
     # kludge to get default background of the labels
-    if {$faces(rowEnabled) && (!$exmh(slowDisp) || $exmh(slowDispFaces))} {
+    if {$faces(rowEnabled) && $exmh(slowDispShowFaces)} {
 	set f [FaceAlloc]
 	set faces(facebg) [lindex [$f config -bg] 4]
 	Face_Delete

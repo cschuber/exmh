@@ -50,7 +50,7 @@ proc Flag_Init {} {
 	    set flag($i) 0
 	}
     }
-    if {!$exmh(slowDisp) || $exmh(slowDispIcons)} {
+    if {$exmh(slowDispColorIcon)} {
 	if [catch {
 	    Exmh_Debug "Creating .icon"
 	    toplevel .icon
