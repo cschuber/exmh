@@ -74,15 +74,6 @@ Status:
 Add ability to have multiple FTOCs viewed.
 
 ----------------------------------------------------------------------
-Number: 10
-Priority: Med
-Scope: Narrow
-Complexity: 
-Status: 
-
-Add LDAP lookup module to address book using OpenLDAP.
-
-----------------------------------------------------------------------
 Number: 11
 Priority: Med
 Scope: Narrow
@@ -90,7 +81,8 @@ Complexity:
 Status: 
 
 Convert address book to use some sort of real database instead of a
-dumped tcl list (may be synonymous with adding LDAP lookup).
+dumped tcl list, or flesh out the LDAP support to provide this
+functionality. 
 
 ----------------------------------------------------------------------
 Number: 12
@@ -409,6 +401,29 @@ In the HTML docs, under "Find SEL", I found this:
 	    in the Bind dialog. -don't ask...). 
 
 so...that cleanup is now on the TODO.
+
+----------------------------------------------------------------------
+Number: 48
+Priority: Medium
+Scope: Narrow (?)
+Complexity: Low
+Status:
+
+Support multiple LDAP servers in the address book
+
+----------------------------------------------------------------------
+Number: 49
+Priority: Medium
+Scope: Narrow (?)
+Complexity: Low
+Status:
+
+Allow the addition of entries to an LDAP server if the user has write
+access.  These might include info from:
+
+  o Email addresses and names from the From: line
+  o x-vcards
+  o RFC2369 list headers
 
 ----------------------------------------------------------------------
 

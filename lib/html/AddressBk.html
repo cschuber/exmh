@@ -36,6 +36,16 @@ Saving" to "off".  When you are viewing a message with a sender whose
 address you wish to keep, press the key defined in the "Key to save an
 address" field (default is Ctrl-Tab).
 
+<a name=ldap><h3>Use of LDAP servers</h3></a>
+
+<p>You can also use addresses stored in an LDAP server.
+
+<p>You will need to have openldap installed on your system.  Enabling
+LDAP requires that you add <code>LDAP_Lookup</code> to the "Expand
+Methods to use" field in the Address Database Preferences window. You
+will also need to provide the name of the LDAP server and the root for
+your LDAP search.
+
 <h3>Address Expansion: using data from the Address Database</h3>
 
 <p><b>Note:</b> Address expansion is only supported in the <a
@@ -88,11 +98,11 @@ automatically causing updates to the Address Database.  All email
 addresses listed as "Alternate-Mailboxes:" in your .mh_profile will be
 automatically ignored.
 
-<p>Filtering is controlled from the Address Database Preferences panel.  If the
-"From" address for a particular message is not being updated due to
-your preference settings you can still force it to be stored by
-pressing the key defined in the "Key to save an address" preference
-setting.  The default setting is Control-Tab.
+<p>Filtering is controlled from the Address Database Preferences
+panel.  If the "From" address for a particular message is not being
+updated due to your preference settings you can still force it to be
+stored by pressing the key defined in the "Key to save an address"
+preference setting.  The default setting is Control-Tab.
 
 </ul>
 
