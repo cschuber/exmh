@@ -440,6 +440,7 @@ proc MhReadSeqs {folder seqsvar} {
 		Exmh_Debug MhReadSeqs Reading $filename
 		set old [read $in]
 		close $in
+		set mhPriv(otherpriv) {}
 		foreach line [split $old \n] {
 		    if {$line != {}} {
 			if {[regexp {^([^:]*):\s*(.*)$} $line foo tag msgids]} {
