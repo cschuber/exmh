@@ -10,6 +10,9 @@
 # -- Markus Gruber
 #
 # $Log$
+# Revision 1.5  2000/06/16 23:41:37  jmorzins
+# Corrected the email address for the pgp.mit.edu email keyserver.
+#
 # Revision 1.4  2000/06/09 03:19:55  valdis
 # Provide known working default URL for PGP keys - www-swiss.ai.mit.edu wasnt working
 #
@@ -43,7 +46,7 @@ set pgp(pref,keyserver) { keyserver KeyServer "pgp-public-keys@keys.pgp.net"
 exmh allows you to ask a key server for the key.
 Please select a key server that's close to
 you so as to spread the load.  Examples include
-public-key-server@pgp.mit.edu
+pgp-public-keys@pgp.mit.edu
 pgp-public-keys@keys.pgp.net
 pgp-public-keys@keys.us.pgp.net
 There are pgp-public-keys@keys.*.pgp.net servers for these domains:
