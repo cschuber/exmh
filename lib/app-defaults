@@ -2,7 +2,7 @@
 ! Application defaults for Exmh
 !
 ! The best place to put your personal defaults for exmh is
-! in the beginning of your ~/.exmh-defaults.  You'll note that
+! in the beginning of your ~/.exmh/exmh-defaults.  You'll note that
 ! the tail of that file is written by the Preferences dialog.
 ! If you put anything into ~/.Xresources, then you'll need to
 ! use "exmh" as the prefix for the resource name (not *).
