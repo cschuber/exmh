@@ -153,6 +153,10 @@
   <dd><a HREF="#22">How do I make exmh want to display messages
       as plain-text rather than HTML-formatted?</a>
 
+  <dt>23
+  <dd><a HREF="#23">How can I stop my own address from appearing on 
+      the cc list when I reply to messages?</a>
+
 </dl>
 <hr>
 <dl COMPACT>
@@ -956,7 +960,35 @@ and restart exmh.
 <code>
 *mime_alternative_prefs: text/plain text/richtext text/html
 </code>
-</p>
+<p>
+
+<h3><a NAME="23">23. How can I stop my own address from appearing on 
+the cc list when I reply to messages?</a></h3>
+<p>
+MH/nmh needs to be told not to include you in replies. To do this it
+also needs to know what address(es) are yours. Both of these things are
+specified in your ~/.mh_profile file:
+<ol>
+<li>
+Add this line to your .mh_profile:
+<pre>
+repl: -nocc me
+</pre>
+(or add "-nocc me" to the repl line if you already have one)
+<li>
+Add the following line to your .mh_profile:
+<pre>
+alternate-mailboxes: your_address@your_domain
+</pre>
+(if you have more than one address that you want considered
+to be your address, add an entry for each. Like this: 
+<pre>
+alternate-mailboxes: your_addr@your_domain, your_addr2@your_domain2, ...
+</pre>
+(these can contain "*" as a wildcard if you want).
+<p>
+See the mh-profile manpage for more details.
+</ol>
 
 <a HREF="index.html"><img SRC="left-arrow.gif" ALT="" WIDTH=36 HEIGHT=23>Back
 to the exmh index</a> 

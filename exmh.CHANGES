@@ -7,6 +7,10 @@ cvs repository 06/22/2000 Bruce A. Mah <bmah@cisco.com>
     lib/html/exmh-faq.html:  Added FAQ #15a on folder-specific template 
     files.
 
+    lib/html/exmh-faq.html: Added FAQ #23 on keeping sender's address
+    from appearing in the cc line, written by Pete Gelbman 
+    <pete@arraycomm.com>.
+
 cvs repository 06/21/2000 Bruce A. Mah <bmah@cisco.com>
     lib/html/custom.html: Updated "Preferences Sections" and "Code
     Organization".
