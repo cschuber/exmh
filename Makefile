@@ -11,6 +11,7 @@ srctar: version htmltar
 	echo ./misc/CVS >> Tar.exclude
 	echo ./misc/RPM/CVS >> Tar.exclude
 	echo ./lib/html/CVS >> Tar.exclude
+	echo ./lib/bitmaps/CVS >> Tar.exclude
 	echo ./lib/html/Tar.exclude >> Tar.exclude
 	echo ./.exmhinstall >> Tar.exclude
 	echo ./Tar.exclude >> Tar.exclude
@@ -20,6 +21,8 @@ srctar: version htmltar
 	echo ./exmh-\*.noarch.rpm >> Tar.exclude
 	echo ./rpmroot >> Tar.exclude
 	echo ./exmh-$(VERSION) >> Tar.exclude
+	echo ./exmh-$(VERSION).tar.gz >> Tar.exclude
+	echo ./html-$(VERSION).tar.gz >> Tar.exclude
 	rm -rf ./exmh-$(VERSION)
 	mkdir ./exmh-$(VERSION)
 	tar cvfX - Tar.exclude . | (cd ./exmh-$(VERSION) ; tar xf -)
