@@ -418,7 +418,7 @@ exmh.iconic:		0
 *Mops.more.m.l_apply2: 	Apply command to body
 *Mops.more.m.c_apply2:	Message_Apply body
 *Mops.more.m.l_munseen: Mark Unseen
-*Mops.more.m.c_munseen:	Msg_MarkUnseen
+*Mops.more.m.c_munseen:	Msg_Mark unseen
 *Mops.more.m.l_pgp:	old PGP...
 *Mops.more.m.t_pgp:	cascade
 *Mops.more.m.m_pgp:	pgp
