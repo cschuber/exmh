@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.3  1999/04/01 15:38:10  cwg
+# Bug fix.  Wasn't working for people with PGP disabled.
+#
 # Revision 1.2  1999/03/26 08:41:55  cwg
 # Changes to PGP interface to use preferences variables instead of
 # message headers.  Also, reorganize the "PGP..." menu and rename it
@@ -283,12 +286,14 @@ proc Misc_PostProcess { srcfile } {
     close $in
 
     # call the pgp postprocesing if necessary
-    set keyid [lindex $pgp(myname) 0]
-    Exmh_Debug keyid=$keyid
-    Exmh_Debug pass=>$pgpPass($keyid)<
-    if {($pgp(encrypt) || $pgp(sign)) && ([string length $pgpPass($keyid)] > 0)} {
-	Pgp_Process $curfile $dstfile
-	set curfile $dstfile
+    if {$pgp(enabled) && $pgp(seditpgp)} {
+	set keyid [lindex $pgp(myname) 0]
+	Exmh_Debug keyid=$keyid
+	Exmh_Debug pass=>$pgpPass($keyid)<
+	if {($pgp(encrypt) || $pgp(sign)) && ([string length $pgpPass($keyid)] > 0)} {
+	    Pgp_Process $curfile $dstfile
+	    set curfile $dstfile
+	}
     }
 
     return [file tail $curfile]
