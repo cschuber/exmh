@@ -28,8 +28,8 @@ I call it from a cronjob which runs at the start of each month.
 
 Limitations
 -----------
-At present the code for telling exmh to rescan the folders seems to
-behave a little strangely.
+If exmh isn't actually running when this script runs, its caches will
+not be updated.
 
 Suggestions
 -----------

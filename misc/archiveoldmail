@@ -5,20 +5,19 @@ $MHLIB = "/usr/local/nmh/lib";
 
 open(FOLDERS, "$MHPATH/folder -recurse -all -fast|") or 
     die "Couldn't read folders: $!";
-@folders = grep !/\/old/, <FOLDERS>;
-close(FOLDERS);
-chomp @folders;
-
-foreach $folder (@folders) {
-    print "$folder:\n";
-    open(OLDMSGS, "$MHPATH/pick +$folder -before -60|") or 
+while (<FOLDERS>) {
+    next if (/\/old/);
+    print;
+    chomp;
+    $folder = $_;
+    open(OLDMSGS, "$MHPATH/pick '+$folder' -before -60|") or 
 	die "Couldn't pick messages from $folder: $!";
     @msgids = grep !/^0$/, <OLDMSGS>;
     close(OLDMSGS);
     chomp @msgids;
     if (@msgids) {
 	foreach $msgid (@msgids) {
-	    open(MSG, "$MHPATH/show +$folder $msgid -nocheckmime -noheader -showproc cat|") or
+	    open(MSG, "$MHPATH/show '+$folder' $msgid -nocheckmime -noheader -showproc cat|") or
 		die "Couldn't show $msgid in $folder: $!";
 	    while (<MSG>) {
 		chomp;
@@ -29,10 +28,10 @@ foreach $folder (@folders) {
 		}
 	    }
 	    close(MSG);
-	    $subdir = `$MHLIB/dp '$date' -format 'old/%(putnum(year{text}))/%(putstr(month{text}))'`;
+	    $subdir = `$MHLIB/dp '$date' -format '%(putnum(year{text}))/%(putstr(month{text}))'`;
 	    chomp($subdir);
-	    print "refile $msgid -src +$folder -nolink +$folder/$subdir\n";
-	    system "$MHPATH/refile $msgid -src +$folder -nolink +$folder/$subdir";
+	    print "refile $msgid -src +$folder -nolink +$folder/old/$subdir\n";
+	    system "$MHPATH/refile $msgid -src '+$folder' -nolink '+$folder/old/$subdir'";
 	}
 	$exmhdisplayfile = "$ENV{'HOME'}/.exmhdisplay";
 	if (-f $exmhdisplayfile) {
@@ -51,3 +50,12 @@ EOF
 	}
     }
 }
+close(FOLDERS);
+print "Telling exmh to find all the folders\n";
+open(WISH, "|wish -f -display $exmhdisplay") or
+    die "Couldn't open wish on $exmhdisplay: $!";
+print WISH <<EOF;
+catch { send exmh { Flist_Refresh } } err
+exit 0
+EOF
+    close(WISH);

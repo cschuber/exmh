@@ -110,19 +110,22 @@ proc Scan_FolderForce {{F ""}} {
     set cacheFile $mhProfile(path)/$F/.xmhcache
     if {$F == ""} {
 	Exmh_Status "No current folder" red
-    } else {
-	if {! [Ftoc_Changes Rescan]} {
-	    Background_Wait
-	    Label_Folder $F
-	    Exmh_Status "rescanning $F ..."
-	    Scan_IO $F [open "|$mhProfile(scan-proc) +$F -width $ftoc(scanWidth)"]
-	    set ftoc(displayValid) 1
-	    set ftoc(displayDirty) 1
-	    Ftoc_Yview end
-	    Flist_ForgetUnseen $F
-	    Ftoc_ShowUnseen $F
-	    Exmh_Status ok
-	}
+    } elseif {$F != $exmh(folder)} {
+	# If we aren't currently viewing the folder, just delete
+	# the cache file and we'll take care of this later
+	Exmh_Debug "Clearing $cacheFile"
+	file delete $cacheFile
+    } elseif {! [Ftoc_Changes Rescan]} {
+	Background_Wait
+	Label_Folder $F
+	Exmh_Status "rescanning $F ..."
+	Scan_IO $F [open "|$mhProfile(scan-proc) +$F -width $ftoc(scanWidth)"]
+	set ftoc(displayValid) 1
+	set ftoc(displayDirty) 1
+	Ftoc_Yview end
+	Flist_ForgetUnseen $F
+	Ftoc_ShowUnseen $F
+	Exmh_Status ok
     }
 }
 proc Scan_FolderUpdate { f } {

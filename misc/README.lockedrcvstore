@@ -16,7 +16,7 @@ message.
 What You'll Need
 ----------------
 I use it with qmail.  I haven't thought about how to make it work with
-sendmail.
+sendmail.  It also calls 'lockfile' which comes with procmail.
 
 Instructions
 ------------
