@@ -1,4 +1,10 @@
 HISTORY
+cvs repostiory 06/16/2000 Brent Welch <welch@ajubasolutions.com>
+    (By way of Jacob Morzinski)
+    lib/extrasInit.tcl, lib/faces.tcl, lib/flag.tcl
+    Generalized the "slow display icon" preference item to give
+    control over using color icons for the Exmh desktop icon as
+    well as for the faces icons.
 
 cvs repository 06/15/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/main.tcl, lib/sedit.tcl, lib/seditMime.tcl - output MH version
