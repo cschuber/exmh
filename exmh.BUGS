@@ -1,0 +1,45 @@
+These are known bugs in exmh, along with the release under which they
+were reported.
+
+
+
+Number: 1
+Version: 2.0.3
+Priority: Low
+Scope: Narrow
+Complexity: ?
+
+When you launch the installer, it brings up an HTML window as well as the 
+installer window.  If you dismiss the HTML window before it finishes rendering 
+all the text, it dies with an error because exwin(mtext) is not yet defined.
+
+If, however, you wait a few more seconds, it'll work fine.
+
+
+
+Number: 2
+Version: 2.0.3
+Priority: Medium
+Scope: Narrow
+Complexity: High
+
+With the new PGP composition code, the PGP password no longer times
+out.
+
+When I first wrote this code a year ago, I couldn't figure out why.
+It's probably worth a relook to see if it's easier than it seemed at
+the time.
+
+
+
+Number: 3
+Version: 2.0.3
+Priority: Low
+Scope: Narrow
+Complexity: Medium
+
+This is an old bug.  The MIME display code misses one part of the RFC's
+requirements on multiparts in which the number of CRLFs at the end of
+a section have a meaning that I don't actually recall at the moment.
+I discovered it a while after I wrote the code.  It probably isn't
+hard, but I haven't looked at that code in 5 years or more.
