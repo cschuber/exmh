@@ -457,14 +457,9 @@ proc Ftoc_BindRight { cmd } {
 
 proc Ftoc_FindMsg { msgid {line {}} } {
     global ftoc msgtolinecache
-    if {[array get msgtolinecache $msgid] != {}} {
-	set L $msgtolinecache($msgid)
-	if {$L == -1} {
-	    return ""
-	} else {
-	    return $L
-	}
-    } 
+    if {![catch {set msgtolinecache($msgid)} L]} {
+	return $L
+    }
     if {$line != {}} {
 	switch -glob -- $line {
 	    first  {return 1}
@@ -507,12 +502,12 @@ proc Ftoc_FindMsg { msgid {line {}} } {
     while (1) {
 	if {$msgid > $maxMsg || $msgid < $minMsg} {
 	    Exmh_Status "Cannot find $msgid ($minMsg,$maxMsg)" warn
-	    set msgtolinecache($msgid) -1
-	    return "" ;# new message not listed
+	    set msgtolinecache($msgid) {}
+	    return {} ;# new message not listed
 	}
 	if {$maxLine == $minLine} {
-	    set msgtolinecache($msgid) -1
-	    return ""	;# not found
+	    set msgtolinecache($msgid) {}
+	    return {}	;# not found
 	}
 	#set nextLine [expr int(($maxLine+$minLine)/2)]
 	# Don't divide in two, guestimate the where the line might be instead
@@ -525,8 +520,8 @@ proc Ftoc_FindMsg { msgid {line {}} } {
 	    set maxMsg $nextMsg
 	} elseif {$minLine == $nextLine} {
 	    Exmh_Status "Cannot find $msgid" warn
-	    set msgtolinecache($msgid) -1
-	    return "" ;# new message not listed
+	    set msgtolinecache($msgid) {}
+	    return {} ;# new message not listed
 	} else {
 	    set minLine $nextLine
 	    set minMsg $nextMsg
@@ -541,21 +536,15 @@ proc Ftoc_ClearMsgCache {} {
 }
 proc Ftoc_MsgNumber { L } {
     global exwin linetomsgcache msgtolinecache
-    if {[array get linetomsgcache $L] != {}} {
-	set msgno $linetomsgcache($L)
-	if {$msgno == -1} {
+    if [catch {set linetomsgcache($L)} msgno] {
+	if [catch {$exwin(ftext) get $L.0 $L.end} line] {
+	    set linetomsgcache($L) {}
 	    return {}
-	} else {
-	    return $msgno
 	}
-    } 
-    if [catch {$exwin(ftext) get $L.0 $L.end} line] {
-	set linetomsgcache($L) -1
-	return ""
+	set msgno [Ftoc_MsgNumberRaw $line]
+	set msgtolinecache($msgno) $L
+	set linetomsgcache($L) $msgno
     }
-    set msgno [Ftoc_MsgNumberRaw $line]
-    set msgtolinecache($msgno) $L
-    set linetomsgcache($L) $msgno
     return $msgno
 }
 proc Ftoc_MsgNumberRaw { line } {
