@@ -1251,15 +1251,23 @@ proc MimeShowTime { tkw time } {
     }
 }
 
+proc MimeSortHeaders { a b } {
+    global mhProfile
+
+   return [expr [lsearch -regexp $mhProfile(header-display) $a] - \
+	[lsearch -regexp $mhProfile(header-display) $b]]
+ 
+}
 proc MimeShowMinHeaders {tkw part inlin} {
     global mimeHdr mhProfile msg mime
     
     if ![info exists mimeHdr($part,hdrs)] {
-	return
+        return
     }
     set hideMark 1.0
-    foreach hdr $mimeHdr($part,hdrs) {
-	# Check for multiple headers
+
+    foreach hdr [lsort -command MimeSortHeaders $mimeHdr($part,hdrs)] {
+        # Check for multiple headers
 	# Replied:
 	# :0:Replied:
 	# :1:Replied:

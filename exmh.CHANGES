@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 10/25/2000 Anders Eriksson <aer-list@mailandnews.com>
+    lib/mime.tcl - Headers are now displayed in the order expressed
+    in mhProfile(header-display)
+
 cvs repository 10/23/2000 Brent Welch <welch@acm.org>
     lib/ispell.tcl - replaced some debug "puts" with Exmh_Debug
     lib/uri.tcl - trim white space off the URI that is matched to handle
