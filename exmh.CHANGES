@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 09/03/1999
+    Allow (again) spaces in address search strings. (addr.tcl) - kchrist
+
 cvs repository 09/01/1999
     Fixed text/plain to application/pgp hack in mime.tcl so it ignores
         the format parameter of text/plain. -kchrist

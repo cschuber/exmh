@@ -210,7 +210,7 @@ proc Hook_MsgShowAddr {path headervar } {
         return
     }
     Addr_Save [MsgParseFrom $header(0=1,hdr,from)] $path \
-            $header(0=1,hdr,from) 	$header(0=1,hdr,date)
+            $header(0=1,hdr,from)       $header(0=1,hdr,date)
 }
 
 #
@@ -221,7 +221,7 @@ proc Hook_FolderChangeAddr {newfolder} {
     global addr_db
 
     if {$addr_db(changed) && $addr_db(checkpoint_on_folder_change)} {
-		Addr_SaveFile
+        Addr_SaveFile
     }
 }
 
@@ -231,7 +231,7 @@ proc Hook_FolderChangeAddr {newfolder} {
 # database here.
 #
 proc Addr_CheckPoint {} {
-	Addr_SaveFile
+    Addr_SaveFile
 }
 
 #####
@@ -268,7 +268,7 @@ proc SaveTo { w } {
     # Only allows expansion on addressable header lines.
     if [regexp -nocase {^(to: *|resent-to: *|cc: *|resent-cc: *|bcc: *|dcc: *)(.*)} $line t0 t1 t2] {
         ##  AddrDebug  "  matched! keep is \"$t1\", partial name=\"$t2\""
-		if [regexp -indices ",?.*, *" $t2 t0] {
+        if [regexp -indices ",?.*, *" $t2 t0] {
             set t0 [lindex $t0 end]
             ##  AddrDebug "got comma at $t0"
             set t3 [string range $t2 0 $t0]
@@ -422,9 +422,9 @@ proc Addr_Entry_ToggleExcluded {key} {
 
 # Format an address with full name.  The result may be either
 #
-#	address (full name)
+#       address (full name)
 # or
-#	full name <address>
+#       full name <address>
 #
 # depending on the state of the standard_address_format flag.
 proc Addr_Entry_FormatForMail {key} {
@@ -532,10 +532,10 @@ proc Addr_Save {from path rawfrom date {forcesave "not"}} {
         Exmh_Status "Updating address \"$from\"."
         if {[string length [Addr_ParseFrom $rawfrom]] == 0} {
             set newone [list $path $date  \
-					[lindex $addr_list($from) 2] $rawfrom [Addr_Entry_IsExcluded $from]]
+                    [lindex $addr_list($from) 2] $rawfrom [Addr_Entry_IsExcluded $from]]
         } else {
             set newone [list $path $date  \
-					[Addr_ParseFrom $rawfrom] $rawfrom [Addr_Entry_IsExcluded $from]]
+                    [Addr_ParseFrom $rawfrom] $rawfrom [Addr_Entry_IsExcluded $from]]
         }
     } else {
         Exmh_Status "Saving address \"$from\"."
@@ -567,7 +567,7 @@ proc Addr_KeyExpand { w } {
             [regexp -nocase {^([-a-z]+: *)?(.*)} $line t0 t1 t2]} {
         ##  AddrDebug  "  matched! keep is \"$t1\", partial name=\"$t2\""
         if {[regexp -indices ",?.*, *" $t2 t0] || \
-                [regexp -indices " +" $t2 t0]} {
+                [regexp -indices "^ +" $t2 t0]} {
             set t0 [lindex $t0 end]
             ##  AddrDebug "got comma at $t0"
             set t3 [string range $t2 0 $t0]
@@ -584,14 +584,14 @@ proc Addr_KeyExpand { w } {
             set addr_db(laststring) $t2
         } else {
             if {$addr_db(curmethod) != 0} {
-            	set t2 $addr_db(laststring)
+                set t2 $addr_db(laststring)
             }
         }
         foreach proc [lrange $addr_db(searchlist) $addr_db(curmethod) end] {
             incr addr_db(curmethod)
             Exmh_Status "$proc $t2"
-			set result [busy $proc $t2]
-			if {[string compare $result ""] == 0} continue
+            set result [busy $proc $t2]
+            if {[string compare $result ""] == 0} continue
             if {[llength $result] == 1} {
                 # unique match
                 $w delete  {insert linestart} {insert lineend}
@@ -610,7 +610,7 @@ proc Addr_KeyExpand { w } {
                     $w insert insert [format "%s%s" $t1 $new]
                 }
             }
-			break
+            break
         }
     } else {
         Exmh_Status "Error in name expansion: not on supported field"
@@ -620,13 +620,13 @@ proc Addr_KeyExpand { w } {
 
 proc Alias_Lookup {n} {
     global aliases
-	Aliases_Load
-	set t2 [string trim $n]
-	if {[string length [array names aliases $t2]] == 0} {
-		Exmh_Status "No match found for \"$t2\""
-		return {}
-	} {
-		Exmh_Status "Found alias: \"$aliases($t2)\""
+    Aliases_Load
+    set t2 [string trim $n]
+    if {[string length [array names aliases $t2]] == 0} {
+        Exmh_Status "No match found for \"$t2\""
+        return {}
+    } else {
+        Exmh_Status "Found alias: \"$aliases($t2)\""
         if {1 == [llength $aliases($t2)] && \
             0 != [string compare "\{" [string range $aliases($t2) 0 0]] } {
             return [list [Addr_Entry_FormatForMail $aliases($t2)]]
@@ -634,8 +634,8 @@ proc Alias_Lookup {n} {
         # Note: cannot use Address_Entry_FormatForMail here since contents
         # of alias is too unpredicatble.  May be a list of names, may be 
         # a preformatted fullname and address.  So send it back as-is
-		return $aliases($t2)
-	}
+        return $aliases($t2)
+    }
 }
 
 proc Addr_FullNameMatch {n}  {
@@ -680,7 +680,7 @@ proc LDAP_Lookup {n} {
 
     set query "(|(cn=*$n*)(mail=*$n*)(sn=*$n*)(givenname=*$n*))"
     if [catch {set ldap_results [exec ldapsearch -h [string trim $addr_db(ldap_server)] \
-	                                         -b $addr_db(ldap_searchbase) \
+                                                 -b $addr_db(ldap_searchbase) \
                                                  "$query" cn mail]} err] {
         Exmh_Status "Error executing ldapsearch: $err"
         return {}
@@ -774,13 +774,13 @@ proc Addr_ParseFrom { fromline } {
 
     # if it's "xxx <foo@bar>"...
     if [regexp {([^<]*)(<.*>)} $line t1 t2 t3] {
-        #	AddrDebug "  Matched: ( $t1 )( $t2 )( $t3 )"
+        #       AddrDebug "  Matched: ( $t1 )( $t2 )( $t3 )"
         set token [string trim $t2 ]
     } else {
         # nope, try foo@bar (xxx)
-        #	AddrDebug "  Not xxx <foo@bar>, try foo@bar (xxx)"
+        #       AddrDebug "  Not xxx <foo@bar>, try foo@bar (xxx)"
         if [regexp {^([^\(]*)(\(.*\))[^\)]*$} $line t1 t2 t3] {
-            #	    AddrDebug "  Matched: ( $t1 )( $t2 )( $t3 )"
+            #       AddrDebug "  Matched: ( $t1 )( $t2 )( $t3 )"
             set token $t3
         } else {
             # none of the above, give up.
@@ -843,10 +843,10 @@ proc AddrShowDialog {w list} {
     Widget_PlaceDialog $w $f
     tkwait window $f
     if [info exists addr_db(expansion)] {
-    	Exmh_Status "returning $addr_db(expansion)"
-    	return $addr_db(expansion)
+        Exmh_Status "returning $addr_db(expansion)"
+        return $addr_db(expansion)
     } else {
-		return {}
+        return {}
     }
 }
 
@@ -915,9 +915,9 @@ proc Addr_Browse { {state normal} } {
                 { Addr_Browse_Reload } <Meta-r>
         Widget_AddMenuItem $menu_db   "Sort"   \
                 { Addr_Browse_LoadListbox "Sorting database..." normal } <Meta-t>
-        if { $Addr_debug == 1 }  {	Widget_AddBut $f ldsrc  "LdSrc"  { Addr_Load_Source } }
+        if { $Addr_debug == 1 }  { Widget_AddBut $f ldsrc  "LdSrc"  { Addr_Load_Source } }
 
- 	# Create the New button
+        # Create the New button
         Widget_AddBut $f new   "New"   { Addr_Browse_New }
 
         # Finally, create the Help button
@@ -987,12 +987,12 @@ proc Addr_Browse { {state normal} } {
 proc Addr_Browse_TrackSel {} {
     global addr_db
 
-    catch {	;# windows may not exist
-	if { 0 != [string length [$addr_db(win) curselection]] } {
-	    $addr_db(selmenu) configure -state normal
-	} else {
-	    $addr_db(selmenu) configure -state disabled
-	}
+    catch {     ;# windows may not exist
+        if { 0 != [string length [$addr_db(win) curselection]] } {
+            $addr_db(selmenu) configure -state normal
+        } else {
+            $addr_db(selmenu) configure -state disabled
+        }
     }
 }
 
@@ -1000,11 +1000,11 @@ proc Addr_Browse_LoadListbox { {ldmsg ""} {state normal}} {
     global addr_db addr_list
 
     if {![info exists addr_db(win)] ||
-	![winfo exists $addr_db(win)]}  return
+        ![winfo exists $addr_db(win)]}  return
 
     if {[catch {regexp -nocase -- $addr_db(filterstring) {}} err]} {
-	Exmh_Status $err	;# bad pattern
-	return
+        Exmh_Status $err        ;# bad pattern
+        return
     }
 
     $addr_db(win) delete 0 end
@@ -1021,38 +1021,38 @@ proc Addr_Browse_LoadListbox { {ldmsg ""} {state normal}} {
     }
 
     if {[llength $l]} {
-	if {0 == [string compare "$state" "normal"]} { 
-	    Exmh_Status "$ldmsg sorting names..."
-	}
-	set l [lsort $l]
-	set n 0
-	set whiz [list | \\ - /]
-	set w 0
-	if {[string length $addr_db(filterstring)] > 0} {
-	    foreach i $l {
-		if [regexp -nocase -- $addr_db(filterstring) $i] {
-			$addr_db(win) insert end $i
-		}
-		incr n
-		if { 0==($n%100) } {
-		    if {0 == [string compare "$state" "normal"]} { 
-			Exmh_Status "$ldmsg inserting names... [lindex $whiz $w]"
-		    }
-		    set w [expr {($w+1)%4}]
-		}
-	    }    
-	} else {
-	    foreach i $l {
-		$addr_db(win) insert end $i
-		incr n
-		if { 0==($n%100) } {
-		    if {0 == [string compare "$state" "normal"]} { 
-			Exmh_Status "$ldmsg inserting names... [lindex $whiz $w]"
-		    }
-		    set w [expr {($w+1)%4}]
-		}
-	    }    
-	}
+        if {0 == [string compare "$state" "normal"]} { 
+            Exmh_Status "$ldmsg sorting names..."
+        }
+        set l [lsort $l]
+        set n 0
+        set whiz [list | \\ - /]
+        set w 0
+        if {[string length $addr_db(filterstring)] > 0} {
+            foreach i $l {
+                if [regexp -nocase -- $addr_db(filterstring) $i] {
+                    $addr_db(win) insert end $i
+                }
+                incr n
+                if { 0==($n%100) } {
+                    if {0 == [string compare "$state" "normal"]} { 
+                        Exmh_Status "$ldmsg inserting names... [lindex $whiz $w]"
+                    }
+                    set w [expr {($w+1)%4}]
+                }
+            }
+        } else {
+            foreach i $l {
+                $addr_db(win) insert end $i
+                incr n
+                if { 0==($n%100) } {
+                    if {0 == [string compare "$state" "normal"]} { 
+                        Exmh_Status "$ldmsg inserting names... [lindex $whiz $w]"
+                    }
+                    set w [expr {($w+1)%4}]
+                }
+            }
+        }
     }
     if {0 == [string compare "$state" "normal"]} { 
         Exmh_Status  "$ldmsg done"
@@ -1069,7 +1069,7 @@ proc Addr_Browse_Exclude_Change {name element op} {
 }
 
 proc Addr_Browse_Clip {sel} {
-	global addr_db addr_list mhProfile
+        global addr_db addr_list mhProfile
 
     set victim [MsgParseFrom [$addr_db(win) get $sel]]
     set last [lindex $addr_list($victim) 0]
@@ -1146,11 +1146,11 @@ proc Addr_Browse_Selected { { op Noop } } {
 
         switch $op {
 
-	    MailTo {
-		append to $sep[Addr_Entry_FormatForMail \
-			[MsgParseFrom [$addr_db(win) get $sel]]]
-		set sep ", "
-	    }
+            MailTo {
+                append to $sep[Addr_Entry_FormatForMail \
+                    [MsgParseFrom [$addr_db(win) get $sel]]]
+                set sep ", "
+            }
 
             Edit {
                 Addr_Browse_Edit $sel
@@ -1185,7 +1185,7 @@ proc Addr_Browse_Selected { { op Noop } } {
         }
     }
     if {[string length $to] > 0} {
-	Msg_CompTo $to
+        Msg_CompTo $to
     }
 
     Addr_Browse_TrackSel
@@ -1228,15 +1228,15 @@ proc Addr_Browse_Edit {sel} {
 
         Widget_AddBut $f save   "Save"            "Addr_Edit_Save $t $sel"
         Widget_AddBut $f delete "Delete"          "Addr_Edit_Delete $t $sel"
-        Widget_AddBut $f last	"ViewLastMsg"	  "Addr_Browse_Clip $sel"
-        set e [Widget_AddBut $f ignore	"Exclude" "Addr_Edit_Exclude $t $sel"]
+        Widget_AddBut $f last   "ViewLastMsg"     "Addr_Browse_Clip $sel"
+        set e [Widget_AddBut $f ignore  "Exclude" "Addr_Edit_Exclude $t $sel"]
 
-        set n [Addr_LabelledTextField $t.name		"Full Name"	12 "Addr_Edit_Save $t $sel" ]
-        set a [Addr_LabelledTextField $t.address	"Address"	12 "Addr_Edit_Save $t $sel" ]
-        set l [Addr_LabelledTextField $t.lastMsg	"Last Message"	12 "Addr_Edit_Save $t $sel" ]
-        set d [Addr_LabelledTextField $t.date		"Date"		12 "Addr_Edit_Save $t $sel" ]
+        set n [Addr_LabelledTextField $t.name     "Full Name"     12 "Addr_Edit_Save $t $sel" ]
+        set a [Addr_LabelledTextField $t.address  "Address"       12 "Addr_Edit_Save $t $sel" ]
+        set l [Addr_LabelledTextField $t.lastMsg  "Last Message"  12 "Addr_Edit_Save $t $sel" ]
+        set d [Addr_LabelledTextField $t.date     "Date"          12 "Addr_Edit_Save $t $sel" ]
         
-        pack $t.name $t.address	 $t.lastMsg  $t.date
+        pack $t.name $t.address  $t.lastMsg  $t.date
 
     }
 
@@ -1244,12 +1244,12 @@ proc Addr_Browse_Edit {sel} {
     $a delete 0 end;    $a insert 0 $addr
     $l delete 0 end;    $l insert 0 $last
     $d delete 0 end;    $d insert 0 $date
-	
+        
     if {$exclude == 1} {
-       	$e config -text "Include"
+        $e config -text "Include"
         AddrDebug "$e config -text Include"
     } else {
-       	$e config -text "Exclude"
+        $e config -text "Exclude"
         AddrDebug "$e config -text Exclude"
     }
 }
@@ -1335,7 +1335,7 @@ proc Addr_Edit_Exclude {winname sel} {
     # update browser window...
     $addr_db(win) delete $sel
     if {$addr_db(hideexcluded) == 0 || $exclude == 0} {
-    	$addr_db(win) insert $sel [Addr_Entry_FormatForListbox $victim]
+        $addr_db(win) insert $sel [Addr_Entry_FormatForListbox $victim]
     }
 
     # make it all go away so we can redo it next time.
@@ -1353,7 +1353,7 @@ proc Addr_Edit_Save {winname sel} {
     set index [MsgParseFrom $addr]
     # NEED TO STUFF new NAME into entry!
     set addr [format "%s <%s>" $name $index]
-	Exmh_Status "Updating address \"$index\"."
+    Exmh_Status "Updating address \"$index\"."
     set addr_db(changed) 1
     set addr_list($index) [list $last $date  \
             [Addr_ParseFrom $addr] $addr] 
@@ -1391,5 +1391,3 @@ proc Addr_Edit_Dismiss { winname } {
 # done loading...
 #
 if {$Addr_debug} { puts stdout "done." }
-
-
