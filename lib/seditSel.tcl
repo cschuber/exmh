@@ -130,7 +130,7 @@ proc SeditSelFmtArg {t} {
 
 
 proc SeditSelSpell { f t } {
-    global sedit editor wish install
+    global sedit editor wish argv0
 
     set parent [file root $f]
     catch {[destroy $parent.spell]}
@@ -145,12 +145,13 @@ proc SeditSelSpell { f t } {
     puts $out $txt
     close $out
 
+    set async_hack 0
     switch -- $sedit(spell) {
-	ispell {set prog "$install(dir,bin)/exmh-async xterm -e ispell"}
+	ispell {set prog "${argv0}-async xterm -e ispell" ; set async_hack 1}
 	custom {set prog $editor(spell)}
 	default {set prog spell}
     }
-    if [string match exmh-async* $prog] {
+    if {$async_hack} {
 	# exmh-async isn't really right
 	# craft a wish script instead
 	set script [Env_Tmp]/exmh.w[pid].[file tail $t]

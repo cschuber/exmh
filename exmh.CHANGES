@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 1/17/2005 welch@panasas.com
+  lib/seditExtras.tcl: fixed exmh-async variation of ispell command.
+  lib/seditSel.tcl: fixed exmh-async variation of ispell command
+
 cvs repository 1/12/2005 welch@panasas.com
   lib/uri.tcl: changed use of "file link" back to exec ln
   lib/quote.tcl: changed use of "file link" back to exec ln

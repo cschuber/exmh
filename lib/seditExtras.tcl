@@ -674,7 +674,7 @@ proc SeditFormatNewPart { t f {doit 0} } {
     destroy $f
 }
 proc SeditSpell { draft f t } {
-    global sedit editor wish install
+    global sedit editor wish argv0
     set parent [file root $f]
     if {[winfo exists $parent.spell]} {
 	destroy $parent.spell
@@ -684,12 +684,13 @@ proc SeditSpell { draft f t } {
     set path [Env_Tmp]/exmh.s[pid].[file tail $t]
     SeditSaveBody $t $path
 
+    set async_hack 0
     switch -- $sedit(spell) {
-	ispell {set prog "$install(dir,bin)/exmh-async xterm -e ispell"}
+	ispell {set prog "${argv0}-async xterm -e ispell" ; set async_hack 1}
 	custom {set prog $editor(spell)}
 	default {set prog spell}
     }
-    if [string match exmh-async* $prog] {
+    if {$async_hack} {
 	# exmh-async isn't really right
 	# craft a wish script instead
 	set script [Env_Tmp]/exmh.w[pid].[file tail $t]
