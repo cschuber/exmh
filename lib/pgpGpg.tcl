@@ -1,6 +1,10 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.5  1999/08/13 15:10:06  bmah
+# One more try at fixing the problems with 8-byte GPG keyIDs, with a
+# patch from Kevin.Christian@lsil.com.
+#
 # Revision 1.4  1999/08/13 00:39:05  bmah
 # Fix a number of key/passphrase management problems:  pgpsedit now
 # manages PGP versions, keys, and passphrases on a per-window
@@ -394,6 +398,12 @@ set pgp(gpg,cmd_Keyid) {
     if {[regexp {GOODSIG ([^ ]*)} $in {} pgpresult(keyid)]} {
     } elseif {[regexp {BADSIG ([^ ]*)} $in {} pgpresult(keyid)]} {
     } else {regexp {ERRSIG ([^ ]*)} $in {} pgpresult(keyid)}
+
+    # Keyservers like only the last four octets of the keyid.
+    if {[info exists pgpresult(keyid)]} {
+	set keyidLength [string length $pgpresult(keyid)]
+	set pgpresult(keyid) [string range $pgpresult(keyid) [expr $keyidLength-8] $keyidLength]
+    }
 }
 # command that tailors output to be nice looking
 set pgp(gpg,cmd_Beauty) {
