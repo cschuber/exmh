@@ -592,8 +592,9 @@ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
 	set mhPriv(changed,$mhPriv(mode,$seq)) 1
     }
     set mhPriv(mode,$seq) $which
-    if {$seqs($seq) != [MhSeqMake $oldmsgids]} {
-	Exmh_Debug "$seq: $oldmsgids => $seqs($seq)"
+    set oldseq [MhSeqMake $oldmsgids]
+    if {$seqs($seq) != $oldseq} {
+	Exmh_Debug "$seq: $oldseq => $seqs($seq)"
 	set mhPriv(changed,$which) 1
     }
     if {$mhPriv(changed,public) == 1} {

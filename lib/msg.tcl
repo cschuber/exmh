@@ -645,9 +645,7 @@ proc Msg_UUdecode {} {
 proc Msg_Mark {seq} {
     global exmh mhProfile
     Msg_CheckPoint
-    Ftoc_MsgIterate msgid {
-	Seq_Add $exmh(folder) $seq $msgid
-    }
+    Seq_Add $exmh(folder) $seq [Ftoc_CurMsgs]
     if {$seq == $mhProfile(unseen-sequence)} {
 	Msg_ClearCurrent
 	Ftoc_ClearCurrent
@@ -657,9 +655,7 @@ proc Msg_Mark {seq} {
 proc Msg_UnMark {seq} {
     global exmh mhProfile
     Msg_CheckPoint
-    Ftoc_MsgIterate msgid {
-	Seq_Del $exmh(folder) $seq $msgid
-    }
+    Seq_Del $exmh(folder) $seq [Ftoc_CurMsgs]
     Ftoc_ShowSequences $exmh(folder)
 }
 

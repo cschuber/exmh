@@ -7,6 +7,7 @@ cvs repository 08/21/2002 cwg-exmh@deepeddy.com
     seqwin.tcl - Fix "Hide When Empty" and possibly "Icon Window".
     sequences.tcl - Speed up Seq_Del.
     pick.tcl - Redisplay sequences at the end of PicMarkSeen.
+    msg.tcl - Don't use Ftoc_MsgIterate in Msg_Mark and Msg_UnMark.
 
 cvs repository 08/21/2002 cwg-exmh@deepeddy.com
     flag.tcl - Don't die in Flag_MsgSeen if flist(totalcount,unseen)
