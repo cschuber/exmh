@@ -8,6 +8,10 @@
 # todo:
 
 # $Log$
+# Revision 1.14  1999/08/03 17:19:51  bmah
+# Fix some procedures that were mis-named.  Also retrieve
+# Pgp_Misc_RemovePgpActionHeader from multipgp branch.
+#
 # Revision 1.13  1999/08/03 15:08:48  bmah
 # Check that pgp is enabled before attempting to check the version
 # used for a message.  Don't log PGP passphrase anymore.
@@ -99,14 +103,14 @@
 #
 
 # creates the file and put the string in it
-proc Misc_StringFile { str filename } {
+proc Pgp_Misc_StringFile { str filename } {
     set file [open $filename w 0600]
     puts -nonewline $file $str
     close $file
 }
 
 # returns a string containing the whole file's content
-proc Misc_FileString { filename } {
+proc Pgp_Misc_FileString { filename } {
     set file [open $filename r]
     set result [read $file]
     close $file
@@ -114,9 +118,9 @@ proc Misc_FileString { filename } {
 }
 
 # unsign a pgp clearsigned message (take the pgp stuff out)
-proc Pgp_Unsign { text } {
+proc Pgp_Misc_Unsign { text } {
     if {![regexp "^(.*\n)?-+BEGIN PGP SIGNED\[^\n]*\n(Hash:\[^\n]*\n)?\n(.*)\n-+BEGIN PGP SIGNATURE" $text {} {} {} text]} {
-#	error "<Misc_Unsign> can't find the message"
+#	error "<Pgp_Misc_Unsign> can't find the message"
 # it is inconvenient and probably wrong to eat the message
 	return "Error in stripping PGP armor:\n$text"
     }
@@ -393,5 +397,30 @@ proc Pgp_Misc_FixHeader { line } {
 	return $newline
     } else {
 	return $line
+    }
+}
+# This was part of SeditEncrypt
+proc Pgp_Misc_RemovePgpActionHeader { t varHasfcc } {
+    global miscRE
+    upvar $varHasfcc hasfcc
+
+    set linenb 1
+    set line [$t get $linenb.0 $linenb.end]
+
+    set hasfcc 0
+    while {![regexp $miscRE(headerend) $line]} {
+	if [regexp -nocase {^pgp-action:} $line] {
+	    set line " dummy"
+	    while {[regexp "^\[ \t]" $line]} {
+		$t delete $linenb.0 [expr {$linenb + 1}].0
+		set line [$t get $linenb.0 $linenb.end]
+	    }
+	} else {
+	    if [regexp -nocase {^fcc:} $line] {
+		set hasfcc 1
+	    }
+	    set linenb [expr {$linenb + 1}]
+	}
+	set line [$t get $linenb.0 $linenb.end]
     }
 }
