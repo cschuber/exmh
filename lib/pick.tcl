@@ -173,14 +173,16 @@ proc Pick_It {} {
 	}
 	if {$inpane == $pane} {lappend cmd -rbrace}
     }
-    foreach s $pick(sequence) {
-	lappend cmd -sequence $s
+    foreach seq $pick(sequence) {
+	lappend cmd -sequence $seq
     }
     lappend cmd -list
 
     Exmh_Debug Pick_It $cmd $pick(msgs)
     busy PickInner $cmd $pick(msgs)
-    Ftoc_ShowSequences $exmh(folder)
+    foreach seq $pick(sequence) {
+	Ftoc_ShowSequence $seq $pick(msgs)
+    }
     Exmh_Focus
 }
 proc PickInner {cmd msgs} {
@@ -204,7 +206,7 @@ proc PickMarkSeen {} {
 	return
     }
     Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $pick(ids)
-    Ftoc_ShowSequences $exmh(folder)
+    Ftoc_ShowSequence $mhProfile(unseen-sequence) $pick(ids)
 }
 proc Pick_MarkSeen {} {
     global exmh pick mhProfile

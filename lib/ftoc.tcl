@@ -82,10 +82,10 @@ proc Ftoc_Reset { numMsgs msgid folder } {
     set ftoc(curLine) $msgid		;# current display line number
     Ftoc_ClearMsgCache
 }
-proc Ftoc_Update { numMsgs folder } {
+proc Ftoc_Update { numMsgs } {
     # Update size of message list after inc'ing into current folder
     global ftoc
-    Exmh_Debug Ftoc_Update $folder has $numMsgs msgs
+    Exmh_Debug Ftoc_Update $ftoc(folder) has $numMsgs msgs
     set ftoc(numMsgs) $numMsgs
 }
 
@@ -665,23 +665,39 @@ proc Ftoc_InitSequences { w } {
 	$w tag raise $seq
     }
 }
-proc Ftoc_ShowSequences { folder } {
-    global exwin
-    Exmh_Debug Ftoc_ShowSequences $folder
-    set seqs [option get . sequences {}]
-    set hiddenseqs [option get . hiddensequences {}]
-    foreach seq $seqs {
-	if {[lsearch -exact $hiddenseqs $seq] == -1} {
-	    $exwin(ftext) tag remove $seq 1.0 end
+proc Ftoc_ShowSequence { seq {msgids {}} } {
+    global exwin exmh
+    set seqids [Seq_Msgs $exmh(folder) $seq]
+    if {$msgids != {}} {
+	foreach msg $msgids {
+	    set lineno [Ftoc_FindMsg $msg]
+	    if {[lsearch -exact $seqids $msg] == -1} {
+		$exwin(ftext) tag remove $seq $lineno.0 $lineno.end
+	    } else {
+		$exwin(ftext) tag add $seq $lineno.0 $lineno.end
+	    }
 	}
-    }
-    foreach seq [Mh_Sequences $folder] {
-	$exwin(ftext) tag remove $seq 0.0 end
-	set msgids [Seq_Msgs $folder $seq]
-	Exmh_Debug $seq: [MhSeqMake $msgids]
-	foreach lineno [Ftoc_FindMsgs $msgids] {
+    } else {
+	$exwin(ftext) tag remove $seq 1.0 end
+	foreach lineno [Ftoc_FindMsgs $seqids] {
 	    $exwin(ftext) tag add $seq $lineno.0 $lineno.end
 	}
+    }
+}
+
+proc Ftoc_ShowSequences { {msgids {}} } {
+    global exwin exmh
+    if {$msgids == {}} {
+	set seqs [option get . sequences {}]
+	set hiddenseqs [option get . hiddensequences {}]
+	foreach seq $seqs {
+	    if {[lsearch -exact $hiddenseqs $seq] == -1} {
+		$exwin(ftext) tag remove $seq 1.0 end
+	    }
+	}
+    }
+    foreach seq [Mh_Sequences $exmh(folder)] {
+	Ftoc_ShowSequence $seq $msgids
     }
 }
 proc Ftoc_RescanLine { ix {plus none} } {
@@ -1377,6 +1393,6 @@ proc FtocToggleSequence { seq } {
 	} else {
 	    Seq_Add $folder $seq $selmsgids
 	}
-	Ftoc_ShowSequences $folder
+	Ftoc_ShowSequence $seq $selmsgids
     }
 }

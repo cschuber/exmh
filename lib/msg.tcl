@@ -121,8 +121,9 @@ proc MsgChange {msgid {show show}} {
     global exmh exwin msg mhProfile
     
     Ftoc_ClearCurrent
+    set oldcur [Seq_Msgs $exmh(folder) cur]
     Mh_SetCur $exmh(folder) $msgid
-    Ftoc_ShowSequences $exmh(folder)
+    Ftoc_ShowSequence cur [concat $oldcur $msgid]
     set lineno [Ftoc_FindMsg $msgid]
     if {! [Ftoc_Change $lineno $show]} {
 	Exmh_Status "Cannot find msg $msgid - Rescan?"
@@ -645,18 +646,20 @@ proc Msg_UUdecode {} {
 proc Msg_Mark {seq} {
     global exmh mhProfile
     Msg_CheckPoint
-    Seq_Add $exmh(folder) $seq [Ftoc_CurMsgs]
+    set msgids [Ftoc_CurMsgs]
+    Seq_Add $exmh(folder) $seq $msgids
     if {$seq == $mhProfile(unseen-sequence)} {
 	Msg_ClearCurrent
 	Ftoc_ClearCurrent
     }
-    Ftoc_ShowSequences $exmh(folder)
+    Ftoc_ShowSequence $seq $msgids
 }
 proc Msg_UnMark {seq} {
     global exmh mhProfile
     Msg_CheckPoint
-    Seq_Del $exmh(folder) $seq [Ftoc_CurMsgs]
-    Ftoc_ShowSequences $exmh(folder)
+    set msgids [Ftoc_CurMsgs]
+    Seq_Del $exmh(folder) $seq $msgids
+    Ftoc_ShowSequence $seq $msgids
 }
 
 proc Msg_ReplyHelp {} {

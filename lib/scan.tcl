@@ -92,13 +92,13 @@ proc ScanFolder {folder adjustDisplay} {
     if {! $samefolder} {
 	Msg_Reset [Widget_TextEnd $exwin(ftext)] $folder
     } else {
-	Ftoc_Update [Widget_TextEnd $exwin(ftext)] $folder
+	Ftoc_Update [Widget_TextEnd $exwin(ftext)]
     }
     set ftoc(displayValid) 1
     if {$adjustDisplay} {
 	Ftoc_Yview end
     }
-    Ftoc_ShowSequences $folder
+    Ftoc_ShowSequences
     return
 }
 proc Scan_FolderForce {{folder ""}} {
@@ -124,7 +124,7 @@ proc Scan_FolderForce {{folder ""}} {
 	set ftoc(displayDirty) 1
 	Ftoc_Yview end
 	Seq_Msgs $folder $mhProfile(unseen-sequence)
-	Ftoc_ShowSequences $folder
+	Ftoc_ShowSequences
 	Exmh_Status ok
     }
 }
@@ -153,16 +153,16 @@ proc Scan_Inc {folder incOutput} {
     global exwin ftoc
     # Append output of an Inc to the scan display
     ScanAddLineInit
-    Scan_Iterate $incOutput l {
-	ScanAddLine $l
+    Scan_Iterate $incOutput line {
+	ScanAddLine $line
     }
     ScanAddLineCleanup $folder
-    Ftoc_Update [Widget_TextEnd $exwin(ftext)] $folder
+    Ftoc_Update [Widget_TextEnd $exwin(ftext)]
     set ftoc(displayDirty) 1
     if {$ftoc(showNew)} {
 	Ftoc_Yview end
     }
-    Ftoc_ShowSequences $folder
+    Ftoc_ShowSequences
     Label_Folder $folder
 }
 proc Scan_IO {folder scanIO } {
@@ -216,22 +216,22 @@ proc ScanAddLineCleanup { folder } {
 }
 proc Scan_ProjectSelection { msgids } {
     global ftoc exwin
-    set linenos {}
+    set lines {}
     set num 0
     foreach lineno [Ftoc_FindMsgs $msgids] {
 	if {$lineno != {}} {
-	    lappend linenos [$exwin(ftext) get $lineno.0 $lineno.end]
+	    lappend lines [$exwin(ftext) get $lineno.0 $lineno.end]
 	    incr num
 	}
     }
     set ftoc(displayValid) 0	;# Don't cache this display
     ScanAddLineReset $ftoc(folder)
-    foreach lineno $linenos {
-	ScanAddLine $lineno
+    foreach line $lines {
+	ScanAddLine $line
     }
     ScanAddLineCleanup $ftoc(folder)
     Ftoc_ClearMsgCache
-    Ftoc_ShowSequences $ftoc(folder)
+    Ftoc_ShowSequences $msgids
     Msg_ClearCurrent
     Msg_Reset $num
 }

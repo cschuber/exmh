@@ -1,4 +1,14 @@
 HISTORY
+cvs repository 09/20/2002 cwg-exmh@deepeddy.com
+    ftoc.tcl, msg.tcl, pick.tcl, scan.tcl, thread.tcl -
+	Remove the $folder argument from Ftoc_ShowSequence and
+	Ftoc_Update because it's always the current folder; break
+	Ftoc_ShowSequence out of Ftoc_ShowSequences; add an optional
+	argument to both procedures that specifies the particular
+	message ids to show; and change most calls to
+	Ftoc_ShowSequences to call Ftoc_ShowSequence or to specify the
+	optional argument or both.
+
 cvs repository 09/09/2002 Robert Elz <kre@munnari.OZ.AU> via 
 	welch@panasas.com
     ftoc.tcl - Fixed reference to $L
@@ -20,7 +30,7 @@ cvs repository 08/22/2002 cwg-exmh@deepeddy.com
 	of sequences panes.
     seqwin.tcl - Fix "Hide When Empty" and possibly "Icon Window".
     sequences.tcl - Speed up Seq_Del.
-    pick.tcl - Redisplay sequences at the end of PicMarkSeen.
+    pick.tcl - Redisplay sequences at the end of PickMarkSeen.
     msg.tcl - Don't use Ftoc_MsgIterate in Msg_Mark and Msg_UnMark.
 
 cvs repository 08/21/2002 cwg-exmh@deepeddy.com
