@@ -1,6 +1,14 @@
 # pgpPgp2.tcl
 
 # $Log$
+# Revision 1.4  1999/09/27 23:18:46  kchrist
+# More PGP changes. Consolidated passphrase entry to sedit field or
+# pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
+# and pgp(echopass). Moved pgp(keeppass), pgp(echopass) and
+# pgp(grabfocus) to PGP General Interface. Fixed a minor bug left
+# over from my previous GUI changes. Made pgp-sedit field appear and
+# disappear based on its enable preference setting.
+#
 # Revision 1.3  1999/08/13 00:39:05  bmah
 # Fix a number of key/passphrase management problems:  pgpsedit now
 # manages PGP versions, keys, and passphrases on a per-window
@@ -42,7 +50,7 @@ A user-supplied proc (other) can also be given to fetch the key." }
 
 # Needed for Preferences
 set pgp(pgp,description) "PGP is the Pretty Good Privacy package from Zimmerman."
-set pgp(pgp,prefs) [list keeppass echopass grabfocus rfc822 \
+set pgp(pgp,prefs) [list  rfc822 \
                          choosekey useexpectk cacheids minmatch showinline shortmsgs \
                          autoextract keyserver keyquerymethod keyserverUrl keyothermethod ]
 

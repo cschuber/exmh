@@ -6,6 +6,14 @@
 # 
 
 # $Log$
+# Revision 1.11  1999/09/27 23:18:45  kchrist
+# More PGP changes. Consolidated passphrase entry to sedit field or
+# pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
+# and pgp(echopass). Moved pgp(keeppass), pgp(echopass) and
+# pgp(grabfocus) to PGP General Interface. Fixed a minor bug left
+# over from my previous GUI changes. Made pgp-sedit field appear and
+# disappear based on its enable preference setting.
+#
 # Revision 1.10  1999/09/22 16:36:44  kchrist
 # Changes made to support a different structure under the PGP Crypt... button.
 # Instead of an ON/OFF pgp($v,sign) variable now we use it to specify
@@ -113,10 +121,10 @@ proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
     }
 
     set output {}
-    if {![set pgp($v,keeppass)]} {
+    if {![set pgp(keeppass)]} {
 	Pgp_ClearPassword $v
     }
-    if {$interactive || !([set pgp($v,keeppass)] || ($privatekey == {}))} {
+    if {$interactive || !([set pgp(keeppass)] || ($privatekey == {}))} {
         Exmh_Debug "<Pgp_Exec> Pgp_Exec_Interactive $v $exectype $arglist output"
 	return [Pgp_Exec_Interactive $v $exectype $arglist output]
     } else {
@@ -128,12 +136,8 @@ proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
 
 	    set keyid [lindex $privatekey 0]
 	    Exmh_Debug keyid=$keyid
-	    if {!$pgp(seditpgp)} {
-		Exmh_Debug "<Pgp_Exec> Pgp_GetPass $v $privatekey"
-		set p [Pgp_GetPass $v $privatekey]
-	    } else {
-		set p $pgp($v,pass,$keyid)
-	    }
+	    # Check for passphrase. Pgp_GetPass is cache and expire aware!
+	    set p [Pgp_GetPass $v $privatekey]
 	    #Exmh_Debug "<Pgp_Exec> got passwd >$p<"
 
 	    if {[string length $p] == 0} {
@@ -404,7 +408,7 @@ proc Pgp_Exec_Sign { v in out sigkey opt } {
     }
     Pgp_Exec_CheckSuccess $v $out $output "signed text"
 }
-
+    
 # Look if pgp generated pgp code
 proc Pgp_Exec_CheckSuccess {v out output object} {
     global pgp
@@ -441,10 +445,8 @@ proc Pgp_Exec_GetDecryptKey {v in recipients} {
     # and has set preferences to run pgp twice,
     # run pgp a first time to get out the decryption keyid
     set runtwice 0
-    if {[info exists pgp($v,runtwice)]} {
-      if {[set pgp($v,runtwice)]} {
+    if {[info exists pgp($v,runtwice)] && [set pgp($v,runtwice)]} {
         set runtwice 1
-      }
     }
     if {$runtwice} {
       Exmh_Debug "<Pgp_Exec_GetDecryptKey> Pgp_Exec_GetDecryptKeyid $v $in"
@@ -518,15 +520,6 @@ proc Pgp_Exec_Decrypt { v in out outvar recipients } {
     set key [Pgp_Exec_GetDecryptKey $v $in $recipients]
     Exmh_Debug "<Pgp_Exec_Decrypt> $key"
     
-    # See if we have a passphrase for this key.  If not, go get it.
-    set keyid [lindex $key 0]
-    if {![info exists pgp($v,pass,$keyid)]} {
-	set p [Pgp_GetPass $v $key]
-	if {[string length $p] == 0} {
-	    set pgp($v,pass,$keyid) $p
-	}
-    }
-
     Pgp_Exec $v verify [subst [set pgp($v,args_decrypt)]] output $key
 }
 
@@ -623,7 +616,8 @@ proc Pgp_Exec_ExtractKeys { v file outvar {interactive 1} } {
     }
 }
 
-# Get the passphrase for keyinstance key
+# Get the passphrase for keyinstance key. We also take care of setting
+# passphrase timeouts. Return a stored passphrase when possible.
 proc Pgp_GetPass { v key } {
     global pgp
 
@@ -633,16 +627,27 @@ proc Pgp_GetPass { v key } {
         return {}
     }
 
+    # Search the passphrase "cache". Need to set-timeout here in case
+    # the pass phrase was created via the seditpgp entry field.
     # Because of DecryptExpects asymmetric passphrase storage
     # we need to look for both mainkey and subkey separately
     set keyid [lindex $key 0]
     set subkeyid [lindex $key 2]
-    if {([info exists pgp($v,pass,$keyid)]) && ([string length $pgp($v,pass,$keyid)] > 0)} {
+    if {([info exists pgp($v,pass,$keyid)]) && \
+	    ([string length $pgp($v,pass,$keyid)] > 0)} {
+	Pgp_SetPassTimeout $v $keyid
+	if {[string length $subkeyid] > 0} {
+	    Pgp_SetPassTimeout $v $subkeyid
+	}
         return [set pgp($v,pass,$keyid)]
-    } elseif {([string length $subkeyid] > 0) && ([info exists pgp($v,pass,$subkeyid)]) && ([string length $pgp($v,pass,$subkeyid)] > 0)} {
+    } elseif {([string length $subkeyid] > 0) && \
+	    ([info exists pgp($v,pass,$subkeyid)]) && \
+	    ([string length $pgp($v,pass,$subkeyid)] > 0)} {
+	Pgp_SetPassTimeout $v $subkeyid
         return [set pgp($v,pass,$subkeyid)]
     }
 
+    # Not in "cache" (or expired) go ask for it.
     while 1 {
 	Exmh_Debug "Attempt to get passphrase for [lindex $key 0] [lindex $key 1] [lindex $key 4]"
         if [catch {Pgp_Misc_GetPass $v "Enter [set pgp($v,fullName)] passphrase" \
@@ -652,15 +657,15 @@ proc Pgp_GetPass { v key } {
             # SYMMETRIC ENCRYPTION
             return $password
         } elseif {[Pgp_Exec_CheckPassword $v $password $key]} {
-            if [set pgp($v,keeppass)] {
+            if [set pgp(keeppass)] {
                 set pgp($v,pass,$keyid) $password
+		Pgp_SetPassTimeout $v $keyid
                 # Because of DecryptExpect we need to store passphrase
                 # for mainkey and subkey
                 if {[string length $subkeyid] > 0} {
                     set pgp($v,pass,$subkeyid) $password
+		    Pgp_SetPassTimeout $v $subkeyid
                 }
-                after [expr [set pgp(passtimeout)] * 60 * 1000] \
-                        [list Pgp_ClearPassword $v $keyid]
             }
             return $password
         }

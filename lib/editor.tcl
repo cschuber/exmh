@@ -150,6 +150,45 @@ proc Edit_Dialog {draftID} {
 proc EditDialog {draftID} {
     Edit_Dialog $draftID
 }
+
+# Turn passphrase pane ON/OFF/disabled depending on pgp(seditpgp) and
+# pgp(keeppass)
+proc EditMaybeAddPhrasePane {id w} {
+    global pgp
+
+    if {!$pgp(enabled)} {
+	return
+    }
+
+    set dismsg "Disabled since passphrases are not being kept."
+    if {$pgp(seditpgp)} {
+	# Need to add pane
+	if {[lsearch [pack slaves $w] $w.pgp] < 0} {
+	    EditAddPassPhrasePane $id $w
+	}
+	# Just in case the user is playing with pgp(keeppass) value
+	if {$pgp(echopass)} {
+	    $w.pgp.e configure -show * -state normal
+	} else {
+	    $w.pgp.e configure -show {} -state normal
+	}
+	if {![string compare $pgp(cur,pass,$id) $dismsg]} {
+	    set pgp(cur,pass,$id) {}
+	}
+    } else {
+	# Need to take away the pane (if it is there)
+	if {[lsearch [pack slaves $w] $w.pgp] >= 0} {
+	    destroy $w.pgp
+	}
+    }
+
+    if {!$pgp(keeppass) && [lsearch [pack slaves $w] $w.pgp] >= 0} {
+	# Need to disable the pane (if it is there)
+	set pgp(cur,pass,$id) $dismsg
+	$w.pgp.e configure -show {} -state disabled
+    }
+}
+
 proc EditAddPassPhrasePane {id w} {
     global pgp
     if {$pgp(enabled) && $pgp(seditpgp)} {
@@ -175,9 +214,11 @@ proc EditAddPassPhrasePane {id w} {
 		    -side left
 	}
 	if {![winfo exists $w.pgp.e]} {
-	    set v $pgp(version,$id)
-	    pack [entry $w.pgp.e -textvariable pgp(cur,pass,$id) -show *] \
+	    pack [entry $w.pgp.e -textvariable pgp(cur,pass,$id)] \
 		    -side left -expand yes -fill x -ipady 2
+	    if {$pgp(echopass)} {
+		$w.pgp.e configure -show *
+	    }
 	}
 
 	# Add extras if requested
@@ -207,7 +248,7 @@ proc EditShowDialog {id text} {
 	    if {![info exists pgp($pgp(version,$id),myname,$id)]} {
 		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
 	    }
-	    EditAddPassPhrasePane $id $d
+	    EditMaybeAddPhrasePane $id $d
 	}
 
 	foreach but [Widget_GetButDef $d] {
@@ -233,6 +274,7 @@ proc EditShowDialog {id text} {
     } else {
 	set d .edit$id
         catch {destroy $d.f}	;# Whom results
+	EditMaybeAddPhrasePane $id $d
     }
     if $editor(autowhom) {
 	EditDialogDone whom $id nohide

@@ -61,6 +61,7 @@ proc Sedit_Start { draft } {
 	$t delete 1.0 end
 	.sedit$id.but.send config -state normal
 	set sedit($t,sigfile) [SeditSigfileDefault]
+	EditMaybeAddPhrasePane $id .sedit$id
     } else {
 	wm iconname .sedit$id draft/$id
 	set f [Widget_Frame .sedit$id f Frame {top expand fill}]
@@ -73,7 +74,7 @@ proc Sedit_Start { draft } {
 	    if {![info exists pgp($pgp(version,$id),myname,$id)]} {
 		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
 	    }
-	    EditAddPassPhrasePane $id .sedit$id
+	    EditMaybeAddPhrasePane $id .sedit$id
 	}
 
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]
@@ -208,7 +209,7 @@ proc Sedit_Start { draft } {
     set sedit($t,encoding) {}
     set sedit($t,Acharset) {}	;# for iso-2022-jp - see SeditKinput_start
     set sedit(t) $t	;# ugly state hack
-    global exmh
+
     if {! [info exists exmh($id,action)]} {
 	# If someone cares to figure out how this happens, that would be nice.
 	# It might happen after a send error.

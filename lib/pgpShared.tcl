@@ -1,6 +1,14 @@
 # pgpShared.tcl
 
 # $Log$
+# Revision 1.5  1999/09/27 23:18:46  kchrist
+# More PGP changes. Consolidated passphrase entry to sedit field or
+# pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
+# and pgp(echopass). Moved pgp(keeppass), pgp(echopass) and
+# pgp(grabfocus) to PGP General Interface. Fixed a minor bug left
+# over from my previous GUI changes. Made pgp-sedit field appear and
+# disappear based on its enable preference setting.
+#
 # Revision 1.4  1999/08/13 00:39:06  bmah
 # Fix a number of key/passphrase management problems:  pgpsedit now
 # manages PGP versions, keys, and passphrases on a per-window
@@ -71,24 +79,6 @@ if {[winfo depth .] > 4} {
 
 #######################
 # Standard Preferences
-#
-set pgp(pref,keeppass) { keeppass KeepPass ON {Keep <label> passphrase}
-"Exmh tries to remember your <label> passphrase between pgp
-invocations. But the passphrase is then kept in a global
-variable, which is not safe, because of \"send\"'s power.
-If you turn this feature off, exmh will use xterm to run
-pgp so that it doesn't have to deal with the passphrase at all." }
-#
-set pgp(pref,echopass) { echopass EchoPass  ON {Echo '*' when typing pass}
-"If you have pgpKeepPass on, Exmh will prompt for your <label> passphrase.
-A * will be echoed for every character typed depending on this option." }
-#
-set pgp(pref,grabfocus) { grabfocus GrabFocus  ON {Passphrase dialog grabs input focus}
-"When exmh prompts for the $label passphrase it will globally grab input 
-focus if this is on.  Some users like it because they don't need to
-select the popup dialog or because it lessens the risk they will type
-their passphrase in the wrong window.  It annoys or does not work for
-other people." }
 #
 set pgp(pref,rfc822) { rfc822 Rfc822 OFF {Encrypt headers}
 "Used to encrypt the whole message, instead of only encrypting

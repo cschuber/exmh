@@ -1,5 +1,12 @@
 HISTORY
 
+cvs repository 09/27/1999
+    More PGP changes. Consolidated passphrase entry to sedit field or
+    pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass) 
+    and pgp(echopass). Moved pgp(keeppass), pgp(echopass) and 
+    pgp(grabfocus) to PGP General Interface. Fixed a minor bug left
+    over from my previous GUI changes. -kchrist
+
 cvs repository 09/22/1999
     Changed the PGP interface, basically the stuff under the Crypt... 
     button. The hope is that the change will help make the different

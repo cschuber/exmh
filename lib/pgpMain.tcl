@@ -19,6 +19,14 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.14  1999/09/27 23:18:45  kchrist
+# More PGP changes. Consolidated passphrase entry to sedit field or
+# pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
+# and pgp(echopass). Moved pgp(keeppass), pgp(echopass) and
+# pgp(grabfocus) to PGP General Interface. Fixed a minor bug left
+# over from my previous GUI changes. Made pgp-sedit field appear and
+# disappear based on its enable preference setting.
+#
 # Revision 1.13  1999/09/22 16:36:44  kchrist
 # Changes made to support a different structure under the PGP Crypt... button.
 # Instead of an ON/OFF pgp($v,sign) variable now we use it to specify
@@ -321,7 +329,7 @@ proc Pgp_ExmhEncrypt { v } {
     set pgp(sign,$id) "none";
     set pgp(format,$id) "pm";
 
-    Pgp_Process $v $file $tmpfile 1
+    Pgp_Process $v $file $tmpfile
 
     Mh_Rename $tmpfile $file
 
@@ -331,6 +339,7 @@ proc Pgp_ExmhEncrypt { v } {
     return 1
 }
 
+# XXX Orphaned code (pgp-action headers no longer used)
 # Removes any pgp-action header and inserts a brand new one
 proc Pgp_SeditEncrypt { action v draft t } {
     global pgp
@@ -442,7 +451,8 @@ proc Pgp_EncryptDebug { srcfile } {
 
 }
 
-# Choose the private key to use
+# Choose the private key to use. Default is 1st element of pgp($v,myname) 
+# which is set by Pgp_Exec_Init.
 proc Pgp_ChoosePrivateKey { v text } {
     global pgp
 
@@ -456,27 +466,34 @@ proc Pgp_ChoosePrivateKey { v text } {
     }
 }
 
+# Change pgp($v,myname,$id) variable and update pgp(cur,pass,$id) along 
+# the way. Function is called from the Crypt... menu in Sedit and WhatNow.
 proc Pgp_SetMyName { v id } {
    global pgp
 
-# first, save old pgp passphrase if set
-   if {[info exists pgp($v,pass,cur$id)] && [info exists pgp($v,myname,$id)]} {
+    # first, save old pgp passphrase if set
+   if {[info exists pgp(cur,pass,$id)] && \
+	   ([string length $pgp(cur,pass,$id)] > 0) && \
+	   [info exists pgp($v,myname,$id)]} {
       set keyid [lindex $pgp($v,myname,$id) 0]
-      set pgp($v,pass,$keyid) $pgp($v,pass,cur$id)
+      set pgp($v,pass,$keyid) $pgp(cur,pass,$id)
+      if {![info exists pgp(timeout,$keyid)]} {
+	 Pgp_SetPassTimeout $v $keyid
+      }
    }
 
    set newname [Pgp_ChoosePrivateKey $v \
 	 "Please select a $pgp($v,fullName) key to use for signing"]
-   if ([string length $newname]) {
+   if {[string length $newname]} {
        set pgp($v,myname,$id) [lindex $newname 0]
 
        Exmh_Debug "Pgp_SetMyName: myname now $pgp($v,myname,$id)"
 
        set keyid [lindex $pgp($v,myname,$id) 0]
        if [info exists pgp($v,pass,$keyid)] {
-	   set pgp($v,pass,cur$id) $pgp($v,pass,$keyid)
+	   set pgp(cur,pass,$id) $pgp($v,pass,$keyid)
        } else {
-	   set pgp($v,pass,cur$id) {}
+	   set pgp(cur,pass,$id) {}
        }
        Pgp_SetSeditPgpName $pgp($v,myname,$id) $id
    }
@@ -500,11 +517,16 @@ proc Pgp_SetSeditPgpName { myname id } {
 proc Pgp_SetSeditPgpVersion { v id } {
     global pgp
 
-    # Get old PGP passphrase and save it away if it exists.
+    # Get old PGP passphrase and save it away if it has content.
     set oldv $pgp(version,$id)
-    if {[info exists pgp(cur,pass,$id)] && [info exists pgp($oldv,myname,$id)]} {
+    if {[info exists pgp(cur,pass,$id)] && \
+	    ([string length $pgp(cur,pass,$id)] > 0) && \
+	    [info exists pgp($oldv,myname,$id)]} {
 	set keyid [lindex $pgp($oldv,myname,$id) 0]
 	set pgp($oldv,pass,$keyid) $pgp(cur,pass,$id)
+	if {![info exists pgp(timeout,$keyid)]} {
+	    Pgp_SetPassTimeout $oldv $keyid
+	}
     }
 
     # If we didn't pick a key for this PGP version yet in this
@@ -526,7 +548,7 @@ proc Pgp_SetSeditPgpVersion { v id } {
 
 }
 
-proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
+proc Pgp_Process { v srcfile dstfile } {
     global pgp env miscRE
 
     set orig [open $srcfile r]
@@ -554,7 +576,7 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
     if {$pgp(format,$id) == "app"} {
 	Exmh_Debug app format
 	if {$pgp(encrypt,$id)} {
-		set typeparams "; x-action=encrypt;"
+	    set typeparams "; x-action=encrypt;"
 	} else {
 	    switch $pgp(sign,$id) {
 		detached -
@@ -570,7 +592,7 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
 	set rfc822 [regexp -nocase $miscRE(true) $pgp(param,rfc822)]
     } else {
 	set rfc822 $pgp($v,rfc822)
-  }
+    }
 
     # setup the originator (if necessary)
     if {$pgp(sign,$id) != "none"} {
@@ -600,7 +622,7 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
 	if {$pgp(format,$id) == "app"} {
 	    append typeparams ";\n\tx-recipients=\"[join [Pgp_Misc_Map key {string range [lindex $key 0] 2 end} $ids] ", "]\""
 	}
-      }
+    }
       
     # remove pgp-action and mime-version headers
     set mailheaders [Pgp_Misc_Filter line \
@@ -634,7 +656,7 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
     if [catch {
 	Exmh_Debug "encrypt=$pgp(encrypt,$id); sign=$pgp(sign,$id)"
 	if {$pgp(encrypt,$id)} {
-		Pgp_Exec_Encrypt $pgp(version,$id) $msgfile $pgpfile $ids 
+	    Pgp_Exec_Encrypt $pgp(version,$id) $msgfile $pgpfile $ids 
 	} else {
 	    switch $pgp(sign,$id) {
 		standard -
@@ -643,8 +665,8 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
 		encryptsign {Pgp_Exec_EncryptSign $pgp(version,$id) $msgfile $pgpfile $originator $ids}
 		none -
 		default {error "<PGP> Message is neither signed, nor encrypted"}
-		}
 	    }
+	}
     } err] {
 	File_Delete $msgfile
 	error $err
@@ -952,7 +974,7 @@ proc Pgp_MimeShowMultipartEncryptedPgp {tkw part} {
     # Decide whether or not to use expect
     set decrypt 1
     if {[info exists pgp($v,useexpectk)]} {
-        if {[set pgp($v,keeppass)] && \
+        if {[set pgp(keeppass)] && \
                     [info exists exmh(expectk)] && [set pgp($v,useexpectk)]} {
 	    # Decrypt with expect
 	    Pgp_Exec_DecryptExpect $v $mimeHdr($part=2,file) $tmpfile msg
@@ -1162,7 +1184,7 @@ proc Pgp_ShowMessage { tkw part } {
 		# Decide whether or not to use expect
                 set decrypt 1
                 if {[info exists pgp($v,useexpectk)]} {
-		    if {[set pgp($v,keeppass)] && [info exists exmh(expectk)] \
+		    if {[set pgp(keeppass)] && [info exists exmh(expectk)] \
 			&& [set pgp($v,useexpectk)]} {
 		        Exmh_Debug "<Pgp_ShowMessage> Using expect"
 		        Pgp_Exec_DecryptExpect $v $mimeHdr($part,file) $tmpfile msg

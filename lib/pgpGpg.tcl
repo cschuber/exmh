@@ -1,6 +1,14 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.7  1999/09/27 23:18:45  kchrist
+# More PGP changes. Consolidated passphrase entry to sedit field or
+# pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
+# and pgp(echopass). Moved pgp(keeppass), pgp(echopass) and
+# pgp(grabfocus) to PGP General Interface. Fixed a minor bug left
+# over from my previous GUI changes. Made pgp-sedit field appear and
+# disappear based on its enable preference setting.
+#
 # Revision 1.6  1999/08/24 15:51:07  bmah
 # Patch from Kevin Christian to make email PGP key queries work, and
 # to make key attachment RFC 2015 compliant.
@@ -61,7 +69,7 @@ Give here a hkp server name." }
 
 # Needed for Preferences
 set pgp(gpg,description) "GNUPG is a free GPLed PGP clone written by Werner Koch"
-set pgp(gpg,prefs) [list keeppass echopass grabfocus rfc822 \
+set pgp(gpg,prefs) [list rfc822 \
                          choosekey runtwice cacheids minmatch showinline \
                          shortmsgs autoextract \
                          keyserver keyquerymethod HKPkeyserverUrl keyserverUrl \

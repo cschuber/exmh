@@ -553,9 +553,24 @@ This can be changed on the fly from the sedit window." }
     PGP5:   Pretty Good Privacy, Version 5
     GPG:    GNU Privacy Guard
 This can be changed on the fly from the sedit window." }
+    {pgp(keeppass) pgpKeepPass ON {Keep PGP passphrase}
+"Exmh tries to remember your passphrase between PGP
+invocations. But the passphrase is then kept in a global
+variable, which is not safe, because of \"send\"'s power.
+If you turn this feature off, exmh will use xterm to run
+pgp so that it doesn't have to deal with the passphrase at all." }
+    {pgp(echopass) pgpEchoPass  ON {Echo '*' when typing pass}
+"If you have pgpKeepPass on, Exmh will prompt for your passphrase.
+A * will be echoed for every character typed depending on this option." }
+    {pgp(grabfocus) pgpGrabFocus  ON {Passphrase dialog grabs input focus}
+"When exmh prompts for the PGP passphrase it will globally grab input 
+focus if this is on.  Some users like it because they don't need to
+select the popup dialog or because it lessens the risk they will type
+their passphrase in the wrong window.  It annoys or does not work for
+other people." }
     {pgp(passtimeout) pgpPassTimeout 60 {Minutes to cache PGP passphrase}
 "Exmh will clear its memory of PGP passphrases after
-this time period, in minutes, has elapesed." }
+this time period, in minutes, has elapsed." }
     }
 
     # And now load the version specific stuff

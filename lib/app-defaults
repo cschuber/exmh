@@ -1137,35 +1137,35 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.l_pgpsign:	Sign
 *WhatNow.more.m.encrypt.t_pgpsign:	cascade
 *WhatNow.more.m.encrypt.m_pgpsign:	sign
-*WhatNow.more.m.encrypt.m.sign.entrylist:	none std det clr enc
-*WhatNow.more.m.encrypt.m.sign.l_none:	None
-*WhatNow.more.m.encrypt.m.sign.t_none:	radio
-*WhatNow.more.m.encrypt.m.sign.v_none:	pgp(sign,$id)
-*WhatNow.more.m.encrypt.m.sign.x_none:	none
-*WhatNow.more.m.encrypt.m.sign.l_std:	Standard
-*WhatNow.more.m.encrypt.m.sign.t_std:	radio
-*WhatNow.more.m.encrypt.m.sign.v_std:	pgp(sign,$id)
-*WhatNow.more.m.encrypt.m.sign.x_std:	standard
-*WhatNow.more.m.encrypt.m.sign.l_det:	Detached
-*WhatNow.more.m.encrypt.m.sign.t_det:	radio
-*WhatNow.more.m.encrypt.m.sign.v_det:	pgp(sign,$id)
-*WhatNow.more.m.encrypt.m.sign.x_det:	detached
-*WhatNow.more.m.encrypt.m.sign.l_clr:	Clear Sign
-*WhatNow.more.m.encrypt.m.sign.t_clr:	radio
-*WhatNow.more.m.encrypt.m.sign.v_clr:	pgp(sign,$id)
-*WhatNow.more.m.encrypt.m.sign.x_clr:	clearsign
-*WhatNow.more.m.encrypt.m.sign.l_enc:	plus Encrypt
-*WhatNow.more.m.encrypt.m.sign.t_enc:	radio
-*WhatNow.more.m.encrypt.m.sign.v_enc:	pgp(sign,$id)
-*WhatNow.more.m.encrypt.m.sign.x_enc:	encryptsign
+*WhatNow.more.m.encrypt.sign.entrylist:	none std det clr enc
+*WhatNow.more.m.encrypt.sign.l_none:	None
+*WhatNow.more.m.encrypt.sign.t_none:	radio
+*WhatNow.more.m.encrypt.sign.v_none:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.sign.x_none:	none
+*WhatNow.more.m.encrypt.sign.l_std:	Standard
+*WhatNow.more.m.encrypt.sign.t_std:	radio
+*WhatNow.more.m.encrypt.sign.v_std:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.sign.x_std:	standard
+*WhatNow.more.m.encrypt.sign.l_det:	Detached
+*WhatNow.more.m.encrypt.sign.t_det:	radio
+*WhatNow.more.m.encrypt.sign.v_det:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.sign.x_det:	detached
+*WhatNow.more.m.encrypt.sign.l_clr:	Clear Sign
+*WhatNow.more.m.encrypt.sign.t_clr:	radio
+*WhatNow.more.m.encrypt.sign.v_clr:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.sign.x_clr:	clearsign
+*WhatNow.more.m.encrypt.sign.l_enc:	plus Encrypt
+*WhatNow.more.m.encrypt.sign.t_enc:	radio
+*WhatNow.more.m.encrypt.sign.v_enc:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.sign.x_enc:	encryptsign
 
 *WhatNow.more.m.encrypt.l_pgpchoosekey:	Choose Key
 *WhatNow.more.m.encrypt.c_pgpchoosekey:	Pgp_SetMyName \$pgp(version,$id) $id
 *WhatNow.more.m.encrypt.l_pgpencrypt:	Encrypt
 *WhatNow.more.m.encrypt.t_pgpencrypt:	check
 *WhatNow.more.m.encrypt.v_pgpencrypt:	pgp(encrypt,$id)
-*WhatNow.more.m.encrypt.l_clear:	Clear Cached Password
-*WhatNow.more.m.encrypt.c_clear:	Pgp_ClearPassword \$pgp(version,$id)
+*WhatNow.more.m.encrypt.l_pgpclearpp:	Clear Cached Password
+*WhatNow.more.m.encrypt.c_pgpclearpp:	Pgp_ClearPassword \$pgp(version,$id)
 
 ! Sedit bindings
 *sedit_typeKillsSel: 1
