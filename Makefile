@@ -42,6 +42,7 @@ rpm:	srctar
 	cp exmh-$(VERSION).tar.gz rpmroot/SOURCES/
 	sed 's/VERSION/$(VERSION)/g' < misc/RPM/exmh-conf.patch > rpmroot/SOURCES/exmh-$(VERSION)-conf.patch
 	cp misc/RPM/exmh.wmconfig rpmroot/SOURCES/
+	cp misc/RPM/exmh.desktop rpmroot/SOURCES/
 	sed 's/EXMHVERSION/$(VERSION)/g' < misc/RPM/exmh.spec > rpmroot/SPECS/exmh.spec
 	rpm -ba --define "_topdir `pwd`/rpmroot" --buildroot=`pwd`/rpmroot/BUILDROOT rpmroot/SPECS/exmh.spec
 	cp rpmroot/RPMS/noarch/exmh-$(VERSION)-1.noarch.rpm .

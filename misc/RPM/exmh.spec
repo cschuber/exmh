@@ -1,16 +1,24 @@
-Summary: EXMH mail program
+Summary: The exmh mail handling system.
 Name: exmh
 Version: EXMHVERSION 
 Release: 1
-Requires: mh metamail
+Requires: mh, metamail
 Copyright: freeware
 Group: Applications/Mail
 BuildArchitectures: noarch
-Source0: ftp://ftp.scriptics.com/pub/tcl/exmh/exmh-EXMHVERSION.tar.gz
+Source0: ftp://ftp.scriptics.com/pub/tcl/exmh/exmh-%{version}.tar.gz
 Url: http://www.beedub.com/exmh/
 Source1: exmh.wmconfig
-Patch1: exmh-EXMHVERSION-conf.patch
-BuildRoot: /var/tmp/exmh-root
+Source2: exmh.desktop
+# The conf patch includes the version number, so it needs to be
+# updated for every revision even if it applies without being
+# updated.   Use the exmh.install script to make sure that we
+# keep up with new paths that exmh wants to know about, and 
+# make sure to change all the paths that need to be changed
+# by comparing to the previous conf patch.
+Patch0: exmh-%{version}-conf.patch
+BuildRoot: %{_tmppath}/%{name}-root
+
 Summary(de): EXMH-Mail-Programm
 Summary(fr): Programme de courrier EXMH
 Summary(tr): e-posta yazýlýmý
@@ -48,8 +56,7 @@ vardýr. Ses desteði için sox (ya da play) gerekir.
 for i in *.MASTER; do
 	cp $i ${i%%.MASTER}
 done
-%patch1 -p1
-find . -name "*.orig" -exec rm {} \;
+%patch0 -p1 -b .conf
 
 %build
 echo 'auto_mkindex ./lib *.tcl' | tclsh
@@ -57,18 +64,20 @@ echo 'auto_mkindex ./lib *.tcl' | tclsh
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/etc/X11/wmconfig
-mkdir -p $RPM_BUILD_ROOT/usr/{bin,man/man1}
-mkdir -p $RPM_BUILD_ROOT/usr/lib/exmh-%{PACKAGE_VERSION}
+mkdir -p $RPM_BUILD_ROOT/etc/X11/applnk/Internet
+mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man1}
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/exmh-%{version}
 
 for i in exmh exmh-bg exmh-async ftp.expect; do
-	install -m755 $i $RPM_BUILD_ROOT/usr/bin
+	install -m755 $i $RPM_BUILD_ROOT/%{_bindir}
 done
 for i in *.l; do
-	install -m644 $i $RPM_BUILD_ROOT/usr/man/man1/${i%%.l}.1
+	install -m644 $i $RPM_BUILD_ROOT%{_mandir}/man1/${i%%.l}.1
 done
 
-cp -ar lib/* $RPM_BUILD_ROOT/usr/lib/exmh-%{PACKAGE_VERSION}
+cp -ar lib/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}
 
+cp %SOURCE2 $RPM_BUILD_ROOT/etc/X11/applnk/Internet/
 install -m644 $RPM_SOURCE_DIR/exmh.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/exmh
 
 %clean
@@ -77,15 +86,19 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc COPYRIGHT exmh.BUGS exmh.CHANGES exmh.TODO exmh.README
-%config /etc/X11/wmconfig/exmh
-/usr/bin/exmh
-/usr/bin/exmh-bg
-/usr/bin/exmh-async
-/usr/bin/ftp.expect
-/usr/lib/exmh-%{PACKAGE_VERSION}
-/usr/man/man1/exmh.1
+%config /etc/X11/wmconfig/exmh 
+%config /etc/X11/applnk/Internet/exmh.desktop
+%{_bindir}/exmh
+%{_bindir}/exmh-bg
+%{_bindir}/exmh-async
+%{_bindir}/ftp.expect
+%{_libdir}/exmh-%{version}
+%{_mandir}/man1/exmh.1*
 
 %changelog
+* Sat Oct 14 2000 Scott Lipcon <slipcon@acm.jhu.edu>
+- changes to support RPM4, bring specfile in line with Redhat's, hopefully
+
 * Sun Aug 20 2000 Scott Lipcon <slipcon@acm.jhu.edu>
 - overdue 2.2 patch, fixes pgp6
 
