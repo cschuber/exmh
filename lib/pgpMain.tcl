@@ -19,6 +19,12 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.17  1999/10/07 14:29:28  kchrist
+# Changed quote file name documentation string to remove ambiguity regarding
+# the location of this file.
+#
+# Fixed a PGP bug when sign-encrypting a MIME message.
+#
 # Revision 1.16  1999/09/30 14:55:20  kchrist
 # One more fix to the cmd_User issue.
 #
@@ -727,7 +733,7 @@ proc Pgp_ProcessPM {v dstfile pgpfile mailheaders plainfile id} {
 
     # Put in specified headers.  
     lappend mailheaders "mime-version: 1.0"
-    if {$pgp(encrypt,$id)} {
+    if {$pgp(encrypt,$id)  || $pgp(sign,$id) == "encryptsign"} {
 	lappend mailheaders "content-type: multipart/encrypted; boundary=\"$boundary\";\n\t protocol=\"application/pgp-encrypted\""
     } else {
 	lappend mailheaders "content-type: multipart/signed; boundary=\"$boundary\";\n\t micalg=pgp-${micalg}; protocol=\"application/pgp-signature\""
@@ -741,7 +747,7 @@ proc Pgp_ProcessPM {v dstfile pgpfile mailheaders plainfile id} {
     foreach line $mailheaders { puts $dst [Pgp_Misc_FixHeader $line] }
     puts $dst ""
     puts $dst "--$boundary"
-    if {$pgp(encrypt,$id)} {
+    if {$pgp(encrypt,$id) || $pgp(sign,$id) == "encryptsign"} {
 	puts $dst "Content-Type: application/pgp-encrypted"
 	puts $dst ""
 	puts $dst "Version: 1"

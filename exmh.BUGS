@@ -303,3 +303,28 @@ Found this in Intro.html:
 BUG: if you have projected a New FTOC, a subsequent pick will only
 select messages still on the display. You need to rescan the folder
 to start over. Sigh. 
+----------------------------------------------------------------------
+Number: 23
+Version: 2.1.0
+Priority: medium
+Scope: Narrow
+Complexity: 
+Status:
+
+Pgp_Exec sometimes indicates a PGP operation has failed when it actually
+suceeded. As far as I can tell the problem is that in a [catch {exec $cmd}]
+the catch gets triggered if the cmd uses stderr. Some form of smarter
+error checking seems necessary. - kchrist
+----------------------------------------------------------------------
+Number: 24
+Version: 2.1.0
+Priority: medium
+Scope: Narrow
+Complexity: 
+Status:
+
+Detected a pgpMatch failure. While trying to match user@hotmail.com 
+a key search for @hotmail.com was done. The search returned 
+wronguser@hotmail.com (single match) and the key was used although
+user != wronguser. I suspect having a single match for a key may
+be responsible here. - kchrist

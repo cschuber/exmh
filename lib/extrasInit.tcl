@@ -315,9 +315,10 @@ unquotable MIME type." {
 "If you do not enabled quoting, exmh will not create any quote file
 when replying." }
     {quote(filename) quoteFilename @ {Quote file name}
-"The filename of the quote file relative to the exmh home directory,
-which is usually the user's home directory.  The default is @, I
-have mine set to Mail/@." }
+"The filename of the quote file, either with an absolute path or
+relative to the exmh startup directory.  The default is @, but you may
+want to pick another location such as Mail/@ if the exmh startup
+directory is world readable." }
     {quote(symlink) quoteSymlink OFF {Only symlink}
 "In previous versions of exmh, the quote file was only a symlink to
 the message being replied to.  Select this if you want to override

@@ -1,5 +1,12 @@
 HISTORY
 
+cvs repository 10/07/1999
+    Changed documentation string for quote file name to indicate it
+    is created relative to the exmh startup directory.
+    Fixed a bug in sign+encrypt processing when composing a MIME 
+    message. Added a couple of bugs to the list to remind me of what
+    still needs to be done. -kchrist
+
 cvs repository 09/29/1999
     Fixed a bug in the shorten output processing of GPG. -kchrist
 
