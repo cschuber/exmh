@@ -1,11 +1,11 @@
-Last modified: Fri Jun 23 00:39:09 PDT 2000
-exmh version: 2.2
+Last modified: Sun Jan 14 21:51:15 PST 2001
+exmh version: 2.3
 welch@acm.org
  
-exmh is a TCL/TK based interface to the MH mail system,
-which can be found at http://www.mhost.com/nmh/
-Version 2.2 requires Tk 8.0 or higher - works with
-the latest (8.3.1 and 8.4a1)
+exmh is a TCL/TK based interface to the MH mail system.
+MH can be found at http://www.mhost.com/nmh/
+Version 2.3 requires Tk 8.0 or higher - works with
+the latest (8.3.2 and 8.4a2)
 
 All the docs have moved into html and are viewable from within
 the installer as well as from within a running exmh.
@@ -13,6 +13,8 @@ The exmh home page is
 http://www.beedub.com/exmh/
 Exmh builds on many related software packages:
 http://www.beedub.com/exmh/software.html
+Exmh sources live at SourceForge under
+http://sourceforge.net/projects/exmh/
 
 To install, run
 
@@ -39,3 +41,5 @@ valdis		Valdis.Kletnieks@vt.edu
 bmah		bmah@CA.Sandia.GOV (Bruce A. Mah)
 kchrist		Kevin.Christian@lsil.com
 jmorzins	Jacob Morzinski <jmorzins@MIT.EDU>
+aer		Anders Eriksson	<aer@users.sourceforge.net>
+stanton		Scott Stanton <stanton@users.sourceforge.net>

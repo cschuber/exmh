@@ -14,15 +14,11 @@
 source ./install.tcl
 
 set program exmh
-set vers 2.2
-set date 06/23/2000
+set vers 2.3
+set date 01/14/2001
 
-if [catch {file join a b}] {
-    if {$tk_version == 4.1} {
-	error "Tk 4.1 or higher required for exmh 2.0\nBeta versions of Tk 4.1 will not work."
-    } else {
-	error "Tk 4.1 (final release) or higher required."
-    }
+if [catch {package require Tcl 8.0}] {
+    error "Tcl/Tk 8.0 or higher required for exmh.  You have $tcl_version"
 }
 
 # Define app name and install save file
