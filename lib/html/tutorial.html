@@ -48,22 +48,27 @@ read mail, manage your messages in folders, and adjust some of the
 <button -command Preferences_Dialog>Preferences</button> user
 interface. 
 <p>
-There are three other exmh man pages. <a
-HREF="exmh-use.n.html"><b>exmh-use</b></a> provides information about
-using the more advanced features of <i>exmh</i>. If you are already an
-experienced email user, you may want to just read the 
-<a HREF="#GETTING STARTED">GETTING STARTED</a> section here and then
-skip to <a HREF="exmh-use.n.html"><b>exmh-use</b></a>.
-<a HREF="exmh-custom.n.html"><b>exmh-custom</b></a> describes how to
-customize exmh to suit your needs. 
-<a HREF="exmh-ref.n.html"><b>exmh-ref</b></a> lists each button and
-menu entry in <i>exmh</i> and explains what they do. If you are an
-experienced <i>exmh</i> user, this may be the most useful man page for
-you.
+Other places to get information:
+<dl>
+  <dt><a HREF="guide.html">Guide</a>
+  <dd>Provides information about using the more advanced features of
+      <i>exmh</i>. If you are already an experienced email user, you
+      may want to just read the <a HREF="#GETTING STARTED">GETTING
+      STARTED</a> section here and then skip to 
+      <a HREF="guide.html">the guide</a>. 
+
+  <dt><a HREF="custom.html">Customization</a>
+  <dd>Describes how to customize exmh to suit your needs.
+
+  <dt><a HREF="reference.html">Reference</a>
+  <dd>Lists each button and menu entry in <i>exmh</i> and explains
+      what they do. If you are an experienced <i>exmh</i> user, this
+      may be the most useful page for you.
+</dl>
 <p>
-A cleaned up version of these man pages appear in the 3rd edition of
-the book by Jerry Peek, <i>MH &amp; xmh: email for users and programmers</i>,
-which is published by O'Reilly &amp; Associates. 
+A cleaned up version of an earlier release of these pages appear in
+the 3rd edition of the book by Jerry Peek, <i>MH &amp; xmh: email for
+users and programmers</i>, which is published by O'Reilly &amp; Associates. 
 
 <h3><a NAME="GETTING STARTED" HREF="#CONTENTS">GETTING STARTED</a></h3>
 <p>
@@ -87,16 +92,15 @@ in your MH profile. In particular, it depends on the
 components. If these profile components are not present, a dialog
 appears and <i>exmh</i> can set them up for you. If you do not let
 <i>exmh</i> create them nor set them up by hand, <i>exmh</i> will not
-work properly. These profile entries are described in <a
-HREF="exmh-ref.n.html"><b>exmh-ref</b></a>.
+work properly. These profile entries are described 
+<a HREF="reference.html">here</a>.
 <p>
 <i>Exmh</i> has been designed to be very flexible, although it will
 work just fine "out of the box". The
 <button -command Preferences_Dialog>Preferences</button> package used
 to adjust some of the settings in exmh is introduced in this man page,
 and some of the important settings are described here. A more complete
-guide to customizing <i>exmh</i> is given in 
-<a HREF="exmh-custom.n.html">exmh-custom</a>. 
+guide to customizing <i>exmh</i> is given <a HREF="custom.html">here</a>. 
 
 <h3><a NAME="RUNNING EXMH" HREF="#CONTENTS">RUNNING EXMH</a></h3>
 <p>
@@ -111,7 +115,7 @@ and size the window using your window manager. When <i>exmh</i> quits,
 it saves the geometry information so you don't have to worry about
 it. It does this with all its top level windows, so you can adjust
 their position once and then forget about it. There are more command
-line options described in <a HREF="exmh-ref.n.html">exmh-ref</a>. 
+line options described <a HREF="reference.html">here</a>. 
 <p>
 You can add the exmh command to your startup X environment by editing
 your startup file (like <code>.xsession</code>). You might also want
@@ -149,8 +153,8 @@ main sub-windows.
       your new messages, and the drafts folder is for messages you are
       writing.  If you have used MH (or xmh) before, then you may have
       many more folders that will appear in this display. The mouse
-      bindings for folder labels are explained in 
-      <a HREF="exmh-use.n.html"><b>exmh-use</b></a>. The
+      bindings for folder labels are explained 
+      <a HREF="guide.html">here</a>. The
       <button -command Help_KeyDisplay>Color Legend</button> from the
       Help... menu also tells you how the folder labels respond to
       mouse clicks. 
@@ -174,8 +178,7 @@ main sub-windows.
       More... button displays a popup menu with several more
       operations you can apply to folders. Some of these buttons will
       be introduced in this page. All of these buttons and menus are
-      explained in detail in 
-      <a HREF="exmh-ref.n.html"><b>exmh-ref</b></a> . 
+      explained in detail <a HREF="reference.html">here</a>. 
       <p>
       To the left of the folder buttons, summary information about the
       current folder is displayed. 
@@ -187,7 +190,7 @@ main sub-windows.
       the first few words of the message. Left click on a line in the
       table of contents to view the corresponding message. The mouse
       bindings for the table of contents are described in more detail
-      in <a HREF="exmh-use.n.html"><b>exmh-use</b></a>. 
+      <a HREF="guide.html">here</a>. 
       <p>
       MH experts: The display in this window comes from both the MH
       scan program or MH inc programs, so it is affected by the form
@@ -201,10 +204,9 @@ main sub-windows.
       highlighted in the folder display. Pull down the main
       Help... menu and select <button -command Help_KeyDisplay>Color
       Legend</button> to display a key to the highlights for your
-      display. The highlighting is covered in more detail later in 
-      <a HREF="exmh-use.n.html">exmh-use</a>. 
-      <a HREF="exmh-custom.n.html">exmh-custom</a> tells how you can
-      control the highlighting yourself. 
+      display. The highlighting is covered in more detail later
+      <a HREF="guide.html">here</a>, and controlling it yourself is
+      covered <a HREF="custom.html">here</a>.
 
   <dt>Status Line
   <dd>Just below the table of contents is the status line. This has
@@ -230,8 +232,7 @@ main sub-windows.
       <i>Hint:</i> Many of these message operations have keyboard
       shortcuts that make it easy to use <i>exmh</i> with your hands
       on the keyboard. Some of the short-cuts are introduced in this
-      page, and all of them are listed in 
-      <a HREF="exmh-use.n.html"><b>exmh-use</b></a>. 
+      page, and all of them are listed <a HREF="guide.html">here</a>. 
 
   <dt>Message Display
   <dd>The bottom sub-window displays the current message, if any. Some
@@ -308,8 +309,7 @@ are the steps you take to do that:
       If you do not want to send the message, press the Abort button
       instead. If you want to save the message draft and continue to
       work on it later, press the Save&amp;Quit button. Working on a
-      saved draft message is described in 
-      <a HREF="exmh-use.n.html"><b>exmh-use</b></a>. 
+      saved draft message is described <a HREF="guide.html">here</a>. 
 </ol>
 Send yourself a few messages, or have a friend send you a few test
 messages. You will use these test messages to practice moving around
@@ -481,8 +481,7 @@ messages. The MH <code>repl</code> command has several formatting
 options, and because <i>exmh</i> uses <code>repl</code> to set up the
 reply message, you can customize your reply format. <i>Exmh</i> lets
 you define several variations on reply and add them to the
-Reply... menu. This is described in 
-<a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>.
+Reply... menu. This is described <a HREF="custom.html">here</a>.
 <p>
 It should not take long for you to get the copy of the reply message.
 Wait a minute or so and press the <button -command "Inc">Inc</button>
@@ -684,9 +683,8 @@ waiting in your system spool file.
 <p>
 More details about the 
 <button -command Preferences_Dialog>Preferences</button> dialog are
-given in <a HREF="exmh-use.n.html">exmh-use</a>,
-and an overview of the various preference sections is given in 
-<a HREF="exmh-custom.n.html">exmh-custom</a>. 
+given <a HREF="guide.html">here</a>, and an overview of the various
+preference sections is given <a HREF="custom.html">here</a>. 
 
 <h3><a NAME="WHAT IS MH MAIL?" HREF="#CONTENTS">WHAT IS MH MAIL?</a></h3>
 <p>
@@ -838,24 +836,19 @@ in the other <i>exmh</i> pages.
       and menus and add new Tcl code to its implementation. 
 </dl>
 
-<h3><a NAME="SEE ALSO" HREF="#CONTENTS">SEE ALSO</a></h3>
-<a HREF="exmh-use.n.html">exmh-use</a>, <a
-HREF="exmh-ref.n.html">exmh-ref</a>, <a
-HREF="exmh-custom.n.html">exmh-custom</a>, mh 
-
 <h3><a NAME="AUTHOR" HREF="#CONTENTS">AUTHOR</a></h3>
 welch@acm.org "Brent Welch"
 
 <h3><a NAME="THANKS" HREF="#CONTENTS">THANKS</a></h3>
 To Xerox PARC/CSL, for supporting this work initially, to Sun Microsystems
-Laboratories for continuing the support, and to all the <a HREF="index.html">exmh</a>
+Laboratories for continuing the support, and to all the exmh
 users that contributed ideas and code. 
 <hr><a HREF="index.html">exmh</a> | 
 <a HREF="software.html">software</a> |
 <a HREF="Intro.html">intro</a> |
 <a HREF="exmh-faq.html">faq</a> |
-<a HREF="exmh-use.n.html">guide</a> |
-<a HREF="exmh-ref.n.html">reference</a> ] 
+<a HREF="guide.html">guide</a> |
+<a HREF="reference.html">reference</a> ] 
 
 </Body>
 </Html>

@@ -2,6 +2,7 @@ HISTORY
 
 cvs repository 08/04/1999
     Fixed problems with not providing a password under pgp2 -cwg
+    Renamed the *.n.html pages and rephrased links to them -cwg
 
 cvs repository 08/03/1999
     Display the body of a message which fails to be decoded by

@@ -45,13 +45,13 @@
 <h3><a NAME="NAME" HREF="#CONTENTS">NAME</a></h3>
 exmh-use - A more advanced user guide to the exmh mail user interface.
 <h3><a NAME="INTRODUCTION" HREF="#CONTENTS">INTRODUCTION</a></h3>
-<p>
-This page provides more detailed information about using <i>exmh</i>,
-such as managing nested folders, filtering mail, and using an external
-editor. <a HREF="exmh.n.html"><code>exmh</code></a> is an
-introduction. <a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>
-describes customization of <i>exmh</i>, and 
-<a HREF="exmh-ref.n.html"><code>exmh-ref</code></a> describes all the
+
+<p>This page provides more detailed information about using
+<i>exmh</i>, such as managing nested folders, filtering mail, and
+using an external editor. Other pages include our
+<a HREF="tutorial.html">tutorial</a>; information on
+<a HREF="custom.html">customization</a>, and 
+<a HREF="reference.html">reference documentation</a> on all the
 buttons and menus of <i>exmh</i>.
 <p>
 <i>Exmh</i> uses the regular MH programs to manipulate your mail folders
@@ -176,16 +176,14 @@ of other features:
   <dd>If the preference settings are not enough for you, you can
       program <i>exmh</i> more directly. You can define new buttons
       and menus and add new Tcl code to its implementation. This is
-      described in the <a
-      HREF="exmh-custom.n.html"><code>exmh-custom</code></a> man
-      page.
+      described in <a HREF="custom.html">here</a>.
 
 <dl>
 
 <h3><a NAME="GETTING STARTED" HREF="#CONTENTS">GETTING STARTED</a></h3>
 <p>
 Mostly likely you are already an MH user. If not, go through the 
-<a href="exmh.n.html">tutorial</a>. 
+<a href="tutorial.html">tutorial</a>. 
 <p>
 If you previously used a mail reader like Elm or Sun's mailtool that
 manages mail folders in mbox-like files, then you can use the 
@@ -201,7 +199,7 @@ page, references to
 be made when there are tunable parameters associated with a feature. A
 more complete description of the 
 <button -command Preferences_Dialog>Preferences</button> facility is
-given in <a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>.
+given onn <a HREF="custom.html">the custoization page</a>.
 
 <h3><a NAME="KEYBOARD COMMANDS" HREF="#CONTENTS">KEYBOARD COMMANDS</a></h3>
 <p>
@@ -209,12 +207,11 @@ Several of the folder and message operations have keystroke bindings
 so you can do much of your browsing with hands on the keyboard. The
 <a HREF="Keys.html">default bindings</a> are defined with the Tk syntax
 that you'll need to use in the Bind dialogs. Capitalization is important.
-For more information, see <a
-HREF="exmh-custom.n.html"><code>exmh-custom</code></a>. You can
-browse, change, and define new command keystrokes via the Bind user
-interfaces available under the Bindings menu. There are two dialogs:
-one for editing commands in the built-in editor, and another for the
-command bindings described above.
+For more information, see <a HREF="custom.html">here</a>. You
+can browse, change, and define new command keystrokes via the Bind
+user interfaces available under the Bindings menu. There are two
+dialogs: one for editing commands in the built-in editor, and another
+for the command bindings described above.
 
 <h3><a NAME="THE EXMH DISPLAY" HREF="#CONTENTS">THE EXMH DISPLAY</a></h3>
 <p>
@@ -402,10 +399,10 @@ in your profile for both <code>inc</code> and <code>scan</code>.
 <p>
 The current message, if any, is displayed in the bottom sub-window.
 The uninteresting mail headers are scrolled off the top of this display
-initially. You can control this with the Header-Display and
-Header-Suppress profile entries as described in 
-<a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>. That page
-also describes how to colorize different mail headers. 
+initially. You can control this with the <code>Header-Display</code>
+and <code>Header-Suppress</code> profile entries as described on 
+<a HREF="custom.html">the customization page</a>. That page also
+describes how to colorize different mail headers.
 <p>
 Pressing the space bar will page you through the message, or take you
 to the next message if you are at the end of the current message. Backspace
@@ -591,8 +588,8 @@ feature with the <i>Cycle back to first</i>
 <button -command Preferences_Dialog>Preferences</button> item. The
 default Folder-Order profile component defines inbox to be the first
 folder, so ordinarily you will change back there. The Folder-Order
-profile component is described in 
-<a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>. 
+profile component is described in the 
+<a HREF="custom.html">customization page</a>. 
 
 <h3><a NAME="SENDING MAIL" HREF="#CONTENTS">SENDING MAIL</a></h3>
 This section describes how to start a mail message. The messages are
@@ -617,8 +614,8 @@ the reply just goes to the sender and you, while the other entry uses
 <code>-cc all</code> so that the reply goes to everyone in the To and
 Cc headers of the original message. There is also an entry that
 displays instructions for adding more entries to the
-Reply... menu. This is described in more detail in
-<a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>. 
+Reply... menu. This is described in more detail on the
+<a HREF="custom.html">customization page</a>. 
 <p>
 <b>Forwarding a Message</b>. Use the 
 <button -command "MsgForward">Forward</button> button to forward the
@@ -1172,9 +1169,9 @@ versions of <i>exmh</i> will cache the results of decompressing the
 X-Face line in a personal faces database, but in the current version
 it just writes the file to /tmp/FACES.[pid]. If you are inspired you
 could add a Hook_MsgDisplay to stash this file into a real facesaver
-database. <a HREF="exmh-custom.n.html"><code>exmh-custom</code></a>
-describes hook procedures.  If you do this, please post your
-inspiration to 
+database. <a HREF="custom.html">More information on hook procedures
+can be found here.</a>  If you do this, please post your inspiration
+to
 <a href="mailto:exmh-workers@redhat.com">exmh-workers@redhat.com</a>.
 <p>
 <b>X-image-url headers</b>.  The X-image-url header contains a URL
@@ -1204,7 +1201,7 @@ There are several ways to search for things in exmh:
       choose more than one option, the messages must match all of
       them, unless you use the Not and Or buttons to build up more
       complex criteria. This interface is explained in more detail in
-      <a HREF="exmh.n.html"><i>exmh</i></a>. 
+      the <a HREF="tutorial.html">tutorial</a>. 
       <br>
       The "Add to Sequence(s)" option will add the matching messages
       to an MH sequence. Just pick a meaningful name for the
@@ -1499,23 +1496,19 @@ exmh do not interfere with each other. The .folders file lists all
 the mail folders you have. Each folder has a .xmhcache file that has
 a cache of the scan output. 
 
-<h3><a NAME="SEE ALSO" HREF="#CONTENTS">SEE ALSO</a></h3>
-<a HREF="exmh.n.html">exmh</a>, <a HREF="exmh-ref.n.html">exmh-ref</a>,
-<a HREF="exmh-custom.n.html">exmh-custom</a>, mh 
-
 <h3><a NAME="AUTHOR" HREF="#CONTENTS">AUTHOR</a></h3>
 welch@acm.org "Brent Welch"
 
 <h3><a NAME="THANKS" HREF="#CONTENTS">THANKS</a></h3>
 To Xerox PARC/CSL, for supporting this work initially, to Sun Microsystems
-Laboratories for continuing the support, and to all the <a HREF="exmh.n.html">exmh</a>
-users that contributed ideas and code. 
+Laboratories for continuing the support, and to all the exmh users
+that contributed ideas and code. 
 <hr>[ <a HREF="index.html">exmh</a> | 
 <a HREF="software.html">software</a> |
 <a HREF="Intro.html">intro</a> |
 <a HREF="exmh-faq.html">faq</a> |
-<a HREF="exmh.n.html">basics</a> |
-<a HREF="exmh-ref.n.html">reference</a> ] 
+<a HREF="tutorial.html">tutorial</a> |
+<a HREF="reference.html">reference</a> ] 
 
 
 
