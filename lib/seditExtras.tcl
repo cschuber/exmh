@@ -431,7 +431,14 @@ proc Sedit_FormatParagraph { t } {
 
 proc SeditInsertFileDirect { draft t } {
     global sedit
-    set name [FSBox "Select file name" "" "" "" 0]
+    set types {
+	{{All Files} *}
+    }
+    set name [tk_getOpenFile \
+		  -defaultextension '.tcl' \
+		  -filetypes $types \
+		  -title "Select file name" \
+		  -parent $t]
     if {$name != ""} {
 	if [file readable $name] {
 	    # check for 8bit characters in the file
@@ -450,7 +457,14 @@ proc SeditInsertFileDirect { draft t } {
 }
 proc SeditInsertFileDialog { draft t } {
     global sedit
-    set name [FSBox "Select file name" "" "" "" 0]
+    set types {
+	{{All Files} *}
+    }
+    set name [tk_getOpenFile \
+		  -defaultextension '.tcl' \
+		  -filetypes $types \
+		  -title "Select file name" \
+		  -parent $t]
     if {$name != ""} {
 	if [file readable $name] {
 	    set options [SeditFormatDialog $t $name]
@@ -499,7 +513,14 @@ proc SeditInsertExternalDialog { draft t } {
 	set name {}
 	set options [SeditExternalUrlDialog $t $name]
     } else {
-        set name [FSBox "(Optionally) Select file name" "" "" "" 0]
+	set types {
+	    {{All Files} *}
+	}
+	set name [tk_getOpenFile \
+		      -defaultextension '.tcl' \
+		      -filetypes $types \
+		      -title "(Optionally) Select file name" \
+		      -parent $t]
         set options [SeditExternalFileDialog $t $name]
         }
     set tmpfname [Mime_TempFile extern]
@@ -1075,7 +1096,15 @@ proc SeditAttachQuotedMessage { draft t name } {
 
 proc SeditInsertMessageDialog { draft t } {
     global sedit msg
-    set name [FSBox "Select message" $msg(path) "" "" 0]
+    set types {
+	{{All Files} *}
+    }
+    set name [tk_getOpenFile \
+		  -defaultextension '.tcl' \
+		  -filetypes $types \
+		  -initialfile $msg(path)
+		  -title "Select message" \
+		  -parent $t]
     if {$name != ""} {
 	if [file readable $name] {
 	    set options [SeditFormatDialog $t $name]

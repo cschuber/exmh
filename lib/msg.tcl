@@ -551,13 +551,19 @@ proc Msg_BurstDigest {} {
     }
 }
 proc Msg_Save {} {
-    global exmh mhProfile
+    global exmh mhProfile exwin
     set files {}
     Ftoc_MsgIterate msgid {
 	lappend files $mhProfile(path)/$exmh(folder)/$msgid
     }
     
-    set name [FSBox "Select file to create/append to:" ]
+    set types {
+	{{All Files} *}
+    }
+    set name [tk_getSaveFile \
+		  -title "Select file to create/append to:" \
+		  -filetypes $types \
+		  -parent $exwin(mtext)]
     if {$name != {}} {
 	set exists [file exists $name]
 	if [catch {eval {exec cat} $files {>> $name}} err] {
@@ -605,8 +611,14 @@ proc Msg_Edit {} {
 }
 
 proc Msg_UUdecode {} {
-    global msg
-    set name [FSBox "Select file to decode into:" ]
+    global msg exwin
+    set types {
+	{{All Files} *}
+    }
+    set name [tk_getSaveFile \
+		  -title "Select file to decode into:" \
+		  -filetypes $types \
+		  -parent $exwin(mtext)]
     if {$name != {}} {
 	Mime_Uudecode $msg(path) $name
     } else {

@@ -1,5 +1,14 @@
 HISTORY
 cvs repository 3/1/2005 cwg-exmh@deepeddy.com
+  lib/html_content.tcl, lib/main.tcl, lib/mime.tcl, lib/msg.tcl, 
+  lib/seditExtras.tcl - Call tk_getOpenDialog or tk_GetSaveDialog
+  instead of FSBox.
+
+cvs repository 3/1/2005 cwg-exmh@deepeddy.com
+  lib/main.tcl: Add 'Source' button to log window so I can read in a
+  new source file w/o erasing what's in the command line.
+
+cvs repository 3/1/2005 cwg-exmh@deepeddy.com
   lib/flist.tcl: Run FlistUnseenFoldersInit in the foreground so that
   it actually works.
 

@@ -38,8 +38,15 @@ proc Content_default {win url} {
 	return 1
     } else {
 	if {[info exists data(file)] && [file exists $data(file)]} {
-	    set localname \
-		[FSBox "Location for downloaded file"]
+	    set types {
+		{{HTML} {*.html}}
+		{{All Files} *}
+	    }
+	    set localname [tk_getSaveFile \
+			       -title "Location for downloaded file" \
+			       -defaultextension '.html' \
+			       -filetypes $types \
+			       -parent $win]
 	    while {$localname != {}} {
 		if [catch {
 		    file copy -- $data(file) $localname
