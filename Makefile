@@ -2,7 +2,7 @@
 
 VERSION=2.0.3
 
-srctar:
+srctar: htmltar
 	echo ./CVS > Tar.exclude
 	echo ./misc >> Tar.exclude
 	echo ./lib/CVS >> Tar.exclude
@@ -24,7 +24,8 @@ ftpdist:
 htmltar:
 	echo ./CVS > lib/html/Tar.exclude
 	echo ./Tar.exclude >> lib/html/Tar.exclude
+	cp exmh.CHANGES lib/html/exmh.CHANGES.txt
 	(chdir lib/html ; tar cfX - ./Tar.exclude . | gzip > ../../html-$(VERSION).tar.gz)
 
-install: htmltar srctar ftpdist
+install: srctar ftpdist
 
