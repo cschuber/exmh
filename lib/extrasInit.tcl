@@ -540,9 +540,9 @@ non-PGP mail readers." }
     Plain:  No MIME headers at all
     App:    Use the now deprecated application/pgp standard.
 This can be changed on the fly from the sedit window" }
-    {pgp(version) pgpVersion {CHOICE pgp2 pgp5 gpg} {Version of PGP for new messages}
+    {pgp(version) pgpVersion {CHOICE pgp pgp5 gpg} {Version of PGP for new messages}
 "There are multiple versions of the PGP program.
-    PGP2:   Pretty Good Privacy, Version 2
+    PGP:    Pretty Good Privacy, Version 2
     PGP5:   Pretty Good Privacy, Version 5
     GPG:    GNU Privacy Guard
 This can be changed on the fly from the sedit window" }
