@@ -1,4 +1,23 @@
 HISTORY
+cvs repository 07/25/2002 welch@panasas.com
+    lib/app-defaults-color: added "urgent" sequence so it shows up in the
+      Sequences menu.  It has -foreground purple by default.
+    lib/exwin.tcl: added "raise" to Exwin_Toplevel so that hidden windows
+      have a better chance of coming to the top when they are opened.
+    lib/inc.tcl: sort the MyIncTmp directory before processing so that
+      messages get ordered date correctly after filtering.
+    lib/mh.tcl: fixes to turn of regexp special characters from folder
+      names - contributed by John Farrell
+    lib/mime.tcl:
+    lib/uri.tcl: Added way to display defered HTML inside exmh.  Contributed
+      by Tomas Gradin
+    lib/msg.tcl: Added Msg_Mark and Msg_UnMark, but these are not used.
+      Thought I needed them for Sequence support, but the Sequences... 
+      menu already works without them.
+    lib/seditBind.tcl: Moved the SeditBeautify binding to the correct
+      bindtag so it doesn't fire on the main message window.
+    lib/widgets.tcl: Added catch inside Widget_ReEvalCmd
+    
 cvs repository 07/26/2002 cwg-exmh@deepeddy.com
     folder.tcl - Call Msg_Change with skipdisplay in Folder_Pack too.
 

@@ -467,8 +467,12 @@ proc Mh_Sequences { f } {
     if {[catch {open $mhProfile(context) r} in] == 0} {
 	set old [read $in]
 	close $in
+        # Turn off all special characters in folder name (e.g., c++)
+        # Thanks to John Farrell
+        set pattern $mhProfile(path)/$f
+        regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
 	foreach line [split $old \n] {
-	    if {[regexp "^atr-(.*)-$mhProfile(path)/$f" $line x seq]} {
+	    if {[regexp "^atr-(.*)-$pattern" $line x seq]} {
 		lappend result $seq
 	    }
 	}
@@ -492,11 +496,11 @@ proc Mh_Sequence { f seq } {
     if {[catch {open $mhProfile(context) r} in] == 0} {
 	set old [read $in]
 	close $in
+        # Turn off all special characters in folder name (e.g., c++)
+        # Thanks to John Farrell
+        set pattern atr-$seq-$mhProfile(path)/$f
+        regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
 	foreach line [split $old \n] {
-	    set pattern atr-$seq-$mhProfile(path)/$f
-	    # Turn off all special characters in folder name (e.g., c++)
-	    # Thanks to John Farrell
-	    regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
 	    if {[regexp "$pattern: (.*)" $line x msgs]} {
 		set result [MhSeq add $result $msgs]
 	    }
@@ -534,10 +538,12 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} {which public}} {
     if {[catch {open $mhProfile(context) r} in] == 0} {
 	set old [read $in]
 	close $in
+        set pattern $mhProfile(path)/$f
+        regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
 	foreach line [split $old \n] {
 	    if {$line != {}} {
 		if {[regexp {^([^:]*):(.*)$} $line foo tag thisseq]} {
-		    if {[regexp "atr-(.*)-$mhProfile(path)/$f" $tag foo thisseqname]} {
+		    if {[regexp "atr-(.*)-$pattern" $tag foo thisseqname]} {
 			set sequences($thisseqname) $thisseq
 			set mode($thisseqname) private
 		    } else {

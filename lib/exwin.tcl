@@ -433,6 +433,19 @@ proc Exwin_Toplevel { path name {class Dialog} {dismiss yes}} {
 		Exmh_Debug Exwin_Toplevel $path $exwin(geometry,$path)
 	    }
 	    wm deiconify $path
+
+            # Some window managers (KDE 3.0?) need extra coaxing
+            # to get the dialog to appear on top
+
+            # This update make windows appear before they
+            # update
+            # are fully populated, or, for sedit, they appear with
+            # old data and then are redrawn.  I'm running on a slow 
+            # displayand it is annoying
+
+            # But this raise reportedly helps
+            raise $path
+
 	} else {
 	    catch {
 		if {! $exwin(keepPlaces)} {

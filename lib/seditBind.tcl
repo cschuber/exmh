@@ -433,6 +433,8 @@ proc Sedit_ClassBindings { } {
 
     SeditBind SeditText addrexpand {Addr_KeyExpand %W}
     SeditBind SeditText format {Sedit_FormatParagraph %W}
+    SeditBind SeditText highlight { SeditBeautify %W }
+
 
     foreach cmd [info commands Hook_TextBind*] {
 	$cmd $tclass
@@ -489,10 +491,6 @@ proc Sedit_ClassBindings { } {
     SeditBind Entry selextend {
 	%W select to insert
     }
-    SeditBind $tclass highlight {
-	SeditBeautify %W
-    }
-
     bind $tclass <Button-1>		{WidgetTextSelBegin %W %x %y char}
     bind $tclass <Double-Button-1>	{WidgetTextSelBegin %W %x %y word}
     bind $tclass <Triple-Button-1>	{WidgetTextSelBegin %W %x %y line}

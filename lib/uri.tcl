@@ -53,6 +53,8 @@ for the URL to display."}
 inline - display text/html directly in the message window.
 defer - use buttons to display in an external viewer.
 external - display text/html immediatly, using an external viewer."}
+	{uri(deferDisplaysInline) deferDisplaysInline OFF {Defer displays inline}
+"If enabled, defer also shows text/html inline."}
 	{uri(mosaicApp) uriMosaicApp	{Mosaic} {Mosaic program name}
 "This is the name of the binary program that corresponds to the
 Mosaic viewer option.  For example, some sites use \"xmosaic\"."}
@@ -113,7 +115,7 @@ NOTE: When you change the option you have to rescan your
     }
 }
 proc Uri_ShowPart { tkw part } {
-    global uri
+    global uri mimeHdr
     switch -- $uri(viewHtml) {
 	defer {
 	    set start [$tkw index insert]
@@ -125,7 +127,39 @@ proc Uri_ShowPart { tkw part } {
 	    }
 	    set end [$tkw index insert]
 	    $tkw insert insert "\n"
+
 	    TextButtonRange $tkw $start $end [list Uri_ShowPartDirect $tkw $part]
+
+	    MimeMenuAdd $part checkbutton \
+		    -label "Display HTML inline" \
+		    -command [list busy MimeRedisplayPart $tkw $part] \
+		    -variable mimeHdr($part,display)
+
+	    if {$mimeHdr($part,display)} {
+		uplevel {
+		    if [info exists mimeHdr($part,hdr,content-base)] {
+			set var(S_url) $mimeHdr($part,hdr,content-base)
+		    } else {
+			set var(S_url) file:$mimeHdr($part,file)
+		    }
+		    if [catch {open $mimeHdr($part,file)} in] {
+			$tkw insert insert "Cannot open temp file: $in\n"
+		    } else {
+			set html [read $in]
+			close $in
+			if [regexp -nocase <frameset $html] {
+			    $tkw insert insert "Frames will not display inline\n"
+			} else {
+			    $tkw config -wrap word
+			    Html_DisplayInline $tkw $var(S_url) $html
+			}
+		    }
+		}
+	    } else {
+		$tkw insert insert ". . .\t"
+		MimeInsertNote $tkw [MimeLabel $part part] \
+			"Invoke menu with right button."
+	    }
 	}
 	external {
 	    Uri_ShowPartDirect $tkw $part

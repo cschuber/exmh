@@ -603,7 +603,7 @@ proc MimeClose { fileIO } {
     }
 }
 proc MimeSetDisplayFlag {part} {
-    global mime mimeHdr msg
+    global mime mimeHdr msg uri
 
     # Flag to determine if we display the part or not.	We display it
     # if it's a multipart (other than multipart/parallel).  We display 
@@ -616,6 +616,9 @@ proc MimeSetDisplayFlag {part} {
 	    return
 	} elseif [regexp {^image} $mimeHdr($part,type)] {
 	    set mimeHdr($part,display) $mime(showImage)
+	    return
+	} elseif [regexp {text/html} $mimeHdr($part,type)] {
+	    set mimeHdr($part,display) $uri(deferDisplaysInline)
 	    return
 	}
 	if [regexp {^text.*vcard} $mimeHdr($part,type)] {

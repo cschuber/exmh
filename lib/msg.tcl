@@ -109,6 +109,7 @@ proc Msg_First { {show noshow} } {
 }
 
 proc Msg_Last { {show noshow} } {
+    global ftoc
     Msg_Change [Ftoc_MsgNumber $ftoc(numMsgs)] $show
 }
 
@@ -661,6 +662,32 @@ proc Msg_MarkUnseen {} {
     Msg_ClearCurrent
     Ftoc_ClearCurrent
     Flist_ForgetUnseen $exmh(folder)
+    Ftoc_ShowSequences $exmh(folder)
+}
+
+proc Msg_Mark {seq} {
+    global exmh
+    if {$seq == "unseen"} {
+      return [Msg_MarkUnseen]
+    }
+    Msg_CheckPoint
+    Ftoc_Iterate line {
+	set msgid [Ftoc_MsgNumber $line]
+        Mh_SequenceUpdate $exmh(folder) add $seq $msgid
+    }
+    Ftoc_ShowSequences $exmh(folder)
+}
+proc Msg_UnMark {seq} {
+    global exmh
+    if {$seq == "unseen"} {
+      # Not sure if this is correct
+      return [Msg_MarkSeen $exmh(folder) $msg(seen)]
+    }
+    Msg_CheckPoint
+    Ftoc_Iterate line {
+	set msgid [Ftoc_MsgNumber $line]
+        Mh_SequenceUpdate $exmh(folder) del $seq $msgid
+    }
     Ftoc_ShowSequences $exmh(folder)
 }
 

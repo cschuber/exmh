@@ -235,7 +235,7 @@ proc Inc_Presort {{doinc 1}} {
 	    set user ""
 	}
     }
-    if {[catch {glob $mhProfile(path)/MyIncTmp/*} files] == 0} {
+    if {[catch {lsort -dictionary [glob $mhProfile(path)/MyIncTmp/*]} files] == 0} {
 	Exmh_Status "incfilter ..."
 	foreach file $files {
 	    if {![regexp {^[0-9]+$} [file tail $file]]} {

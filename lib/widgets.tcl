@@ -106,7 +106,11 @@ proc Widget_AddButDef {par but {where {right padx 1 filly}} } {
     return $par.$but
 }
 proc Widget_ReEvalCmd { but } {
-    uplevel "$but config -command \[subst \[$but cget -command]]"
+    if {[catch {
+      uplevel "$but config -command \[subst \[$but cget -command]]"
+    } err]} {
+      Exmh_Debug "$but Failed to subst \[[$but cget -command]\]"
+    }
 }
 
 proc Widget_AddBut {par but txt cmd {where {right padx 1 filly}} } {
