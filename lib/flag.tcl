@@ -24,7 +24,7 @@
 # any specification.
 
 proc Flag_Init {} {
-    global flag exmh
+    global flag exmh flist
     set flag(state) init
     
     # Note - if you change the icon, there is some code in ExmhArgv
@@ -68,6 +68,31 @@ proc Flag_Init {} {
 	}
     }
     FlagInner down icondown labeldown
+    trace variable flist(totalcount,unseen) wu Flag_Trace
+}
+proc Flag_Trace args {
+    global flist
+
+    if {[info exists flist(oldtotalcount,unseen)]} {
+	set oldtotal $flist(oldtotalcount,unseen)
+    } else {
+	set oldtotal 0
+    }
+    set delta [expr {$flist(totalcount,unseen) - $oldtotal}]
+    set flist(oldtotalcount,unseen) $flist(totalcount,unseen)
+    if {($delta > 0) && ($flist(totalcount,unseen) > 0)} {
+	set count $flist(totalcount,unseen)
+	if {$count == 1} {set m ""} else {set m "s"}
+	set len [llength $flist(unseen)]
+	if {$len == 1} {set f ""} else {set f "s"}
+	Exmh_Status "$count unseen message$m in $len folder$f"
+	Flag_NewMail
+	Sound_Feedback $delta
+    }
+    if {($flist(totalcount,unseen) <= 0) && ($delta != 0)} {
+	Flag_NoUnseen
+	Exmh_Status "No unseen messages"
+    }
 }
 proc Flag_NewMail { {folder {}} } {
     FlagInner up iconup labelup

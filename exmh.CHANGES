@@ -1,4 +1,11 @@
 HISTORY
+cvs repository 08/08/2002 cwg-exmh@deepeddy.com
+    sequences.tcl, flag.tcl - move flag handling from Seq_Trace
+	into new Flag_Trace.
+    sequences.tcl - code cleanup.
+    flist.tcl - Don't unset totalcount, it breaks Flag_Trace; set to
+	zero instead.
+
 cvs repository 08/06/2002 cwg-exmh@deepeddy.com
     folder.tcl - Mark display valid when we change folders.
     unseenwin.tcl - Change folder if the display isn't valid.

@@ -49,9 +49,12 @@ proc FlistResetVars {} {
     # flist(totalcount,$seq)	;# Total count of unseen messages
 
     foreach x [array names flist] {
-	if [regexp {^(seqcount|oldseqcount|seq|mtime|totalcount),} $x] {
+	if [regexp {^(seqcount|oldseqcount|seq|mtime),} $x] {
 	    # reset state
 	    unset flist($x)
+	} elseif [regexp {^(totalcount),} $x] {
+	    # reset state
+	    set flist($x) 0
 	}
     }
     if ![info exists flist(debug)] {

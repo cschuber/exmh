@@ -10,7 +10,7 @@ proc Seq_Init {} {
     trace variable flist wu Seq_Trace
 }
 proc Seq_Trace {array elem op} {
-    global flist unseenwin
+    global flist
 
     set indices [split $elem ,]
     set var [lindex $indices 0]
@@ -57,21 +57,6 @@ proc Seq_Trace {array elem op} {
 	}
     }
     Exmh_Debug "$flist(totalcount,$sequence) $sequence msgs in [llength $flist($sequence)] folders ($flist($sequence))"
-    if {$sequence == {unseen}} {
-	if {($delta > 0) && ($flist(totalcount,$sequence) > 0)} {
-	    set count $flist(totalcount,$sequence)
-	    if {$count == 1} {set m ""} else {set m "s"}
-	    set len [llength $flist($sequence)]
-	    if {$len == 1} {set f ""} else {set f "s"}
-	    Exmh_Status "$count $sequence message$m in $len folder$f"
-	    Flag_NewMail
-	    Sound_Feedback $delta
-	}
-	if {($flist(totalcount,$sequence) <= 0) && ($delta != 0)} {
-	    Flag_NoUnseen
-	    Exmh_Status "No $sequence messages"
-	}
-    }
 }
 
 # The routines below here manage sequence state per folder.
@@ -118,10 +103,8 @@ proc Seq_Forget {folder seq} {
     set flist(seq,$folder,$seq) {}
     set flist(seqcount,$folder,$seq) 0
     set ix [lsearch $flist($seq) $folder]
-    if {$seq == {unseen}} {
-	if {$ix >= 0} {
-	    set flist(unseen) [lreplace $flist(unseen) $ix $ix]
-	}
+    if {$ix >= 0} {
+	set flist($seq) [lreplace $flist($seq) $ix $ix]
     }
 }
 
@@ -171,10 +154,10 @@ proc Seq_Add {folder seq msgids} {
     }
     set flist(seqcount,$folder,$seq) [expr $new + $num]
     set flist(seq,$folder,$seq) [concat $flist(seq,$folder,$seq) $msgids]
+    if {[lsearch $flist($seq) $folder] < 0} {
+	lappend flist($seq) $folder
+    }
     if {$seq == {unseen}} {
-	if {[lsearch $flist(unseen) $folder] < 0} {
-	    lappend flist(unseen) $folder
-	}
 	if {[string compare $folder $exmh(folder)] != 0 &&
 	    [lsearch $flist(unvisited) $folder] < 0} {
 	    lappend flist(unvisitedNext) $folder
@@ -199,10 +182,10 @@ proc Seq_Set {folder seq msgids} {
     }
     set flist(seqcount,$folder,$seq) $newnum
     set flist(seq,$folder,$seq) $msgids
+    if {[lsearch $flist($seq) $folder] < 0} {
+	lappend flist($seq) $folder
+    }
     if {$seq == {unseen}} {
-	if {[lsearch $flist(unseen) $folder] < 0} {
-	    lappend flist(unseen) $folder
-	}
 	if {[string compare $folder $exmh(folder)] != 0 &&
 	    [lsearch $flist(unvisited) $folder] < 0} {
 	    lappend flist(unvisitedNext) $folder
@@ -231,8 +214,10 @@ proc Seq_RemoveMsg { seq msgid } {
 	    set flist(seq,$exmh(folder),$seq) \
 		[lreplace $flist(seq,$exmh(folder),$seq) $ix $ix]
 	    incr flist(seqcount,$exmh(folder),$seq) -1
-	    if {$flist(seqcount,$exmh(folder),$seq) == 0} {
-		FlistUnseenFolder $exmh(folder)
+	    if {$seq == {unseen}} {
+		if {$flist(seqcount,$exmh(folder),$seq) == 0} {
+		    FlistUnseenFolder $exmh(folder)
+		}
 	    }
 	    if {$flist(totalcount,$seq) <  0} {
 		Exmh_Status "$flist(totalcount,$seq) $seq!"
