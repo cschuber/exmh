@@ -304,3 +304,16 @@ Date: Fri, 02 Apr 1999 13:59:44 -0800
 
 This is an exmh bug...
 
+
+
+
+
+Number: 17
+Version: unknown
+Priority: ?
+Scope: ?
+Complexity: ?
+Status: 
+
+If the drafts folder is being viewed and there are no messages in it
+compose messes up by trying to "use" a non-existent draft.
