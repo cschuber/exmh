@@ -201,21 +201,21 @@ proc HMlink_callback {win href {query ""}} {
 		set var(S_urlPending) $url
 		if {$query != ""} {
 		    dputs stderr "Query: $query"
-		    Http_post $url $query [list UrlDisplay $win $href] \
+		    Http_post $url $query [list UrlDisplay $win $url] \
 					  [list Url_Progress $win $href]
 		} else {
-		    Http_get $url [list UrlDisplay $win $href] \
+		    Http_get $url [list UrlDisplay $win $url] \
 				   [list Url_Progress $win $href]
 		}
 	    }
 	    file {
 		regsub {(file:(//?localhost)?)} $href {} file
+		regsub {#.*$} $file {} file
 		if [catch {UrlGetFile $file} html] {
 		    Status $win "Error: $html"
 		    set var(S_urlDisplay) $href
 		} else {
 		    regsub {\?.*} $href {} url
-		    regsub {#.*} $url {} url
 		    set var(S_url) $url
 		    Status $win "Displaying $var(S_url)"
 		    Url_DisplayHtml $win $var(S_url) $html
@@ -446,6 +446,10 @@ proc Url_DisplayHtml {win url html {saveundo ""} {setInsert 1}} {
     bindtags $win [list TScroll all]	;# Disable input to the widget
     Feedback $win busy
     HMset_state $win -update 10		;# Frequent updates during 1st display
+    set href [string first # $url]
+    if $href {
+	HMgoto $win [string range $url [expr {$href + 1}] end]
+    }
     HMparse_html $html [list HMrender $win]
     Input_Mode $win			;# Restore edit or browse mode
     HMset_state $win -update 1000	;# Rare updates during editting

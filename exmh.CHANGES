@@ -6,6 +6,8 @@ cvs repository 07/30/1999
     Support access to nntp servers which require authentication
 	-Gareth Owen <oweng@aston.ac.uk> and cwg
     Added newfeatures.html and bugfixes.html to documentation -cwg
+    Support for <a HREF="file.html#location"> mo that the above
+	documentation actually works -cwg
 
 cvs repository 07/22/1999
     added code from Red Hat patch to base -Red Hat 6.0 SRPM via haldevore
