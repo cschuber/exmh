@@ -17,6 +17,7 @@ cvs repository 4/1/1999
     New black&white and color icons -jbeck@eng.sun.com  via cwg
 
 cvs repository 3/31/1999
+    Make it possible to have more than one exmh on one display (iko)
     New interface for PGP composition -cwg
     Dates display localtime in parentheses -patch page via cwg
     Better support for WindowMaker -cwg
