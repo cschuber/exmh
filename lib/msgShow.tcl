@@ -82,7 +82,7 @@ proc MsgShow { msgid } {
 	set mime(stop) 0
 	update idletasks	;# Faces display can be slow
 
-	Face_Show [MsgParseFrom $mimeHdr(0=1,hdr,from)] $mimeHdr(0=1,hdr,x-face) $mimeHdr(0=1,hdr,x-image-url)
+	Face_Show [MsgParseFrom $mimeHdr(0=1,hdr,from)] $mimeHdr(0=1,hdr,x-face) $mimeHdr(0=1,hdr,x-image-url) $mimeHdr(0=1,hdr,newsgroups)
 
 	foreach cmd [info commands Hook_MsgShow*] {
 	    $cmd $mhProfile(path)/$exmh(folder)/$msgid mimeHdr
@@ -112,6 +112,7 @@ proc MsgShowInText { win file } {
     set mimeHdr($part=$subpart,hdr,subject) {}
     set mimeHdr($part=$subpart,hdr,x-face) {}
     set mimeHdr($part=$subpart,hdr,x-image-url) {}
+    set mimeHdr($part=$subpart,hdr,newsgroups) {}
     set mimeHdr($part=$subpart,fullHeaders) $mime(fullHeaders)
     set mimeHdr($part=$subpart,yview) 1.0
 

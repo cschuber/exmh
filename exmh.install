@@ -45,6 +45,7 @@ install_var	faces(set,user)	{local users usenix misc} \
 						{Search path for user faces}
 install_var	faces(set,unknown)	{domains unknown} \
 						{Search path for generic faces}
+install_var	faces(set,news)	{news}	{Search path for news faces}
 install_var	faces(defaultDomain) eng.sun.com	{Your default domain}
 install_var	faces(suffix) {xpm gif xbm}	{Faces file suffixes}
 install_dirVar	pgp(path)	/usr/local/bin    	{PGP bin directory}

@@ -29,6 +29,7 @@ proc Face_SetPath {} {
 	    # backwards compatibility with old "exmh" script
 	    set faces(set,user) $faces(set)
 	    set faces(set,unknown) $faces(set)
+	    set faces(set,news) $faces(set)
 	}
 	set faces(sets) {user unknown}
     }
@@ -36,6 +37,7 @@ proc Face_SetPath {} {
     # tail component for each set
     set faces(name,user) {$user}
     set faces(name,unknown) unknown
+    set faces(name,news) unknown
 
     set faces(defaultDomain) [string tolower \
 	[string trim $faces(defaultDomain) ". "]]
@@ -43,6 +45,7 @@ proc Face_SetPath {} {
     foreach set $faces(sets) {
 	set faces(path,$set) {}
     }
+    set faces(path,news) {}
     if [info exists env(FACEPATH)] {
 	set faces(base) ""
 	foreach dir [split $env(FACEPATH) :] {
@@ -53,6 +56,7 @@ proc Face_SetPath {} {
 		} else {
 		    FaceAddPath user $dir
 		    FaceAddPath unknown $dir
+		    FaceAddPath news $dir
 		}
 	    }
 	}
@@ -63,6 +67,10 @@ proc Face_SetPath {} {
 		if ![file isdirectory $faces(base)$dir] continue
 		FaceAddPath $set $dir
 	    }
+	}
+	foreach dir $faces(set,news) {
+	    if ![file isdirectory $faces(base)$dir] continue
+	    FaceAddPath news $dir
 	}
     }
 }
@@ -79,7 +87,7 @@ proc FaceAddPath {set dir} {
 }
 
 
-proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
+proc Face_Show { fromwho {xface {}} {ximageurl {}} {newsgrps {}} } {
     global faces faceCache failedURLs
 
     set xfaceAvail 0
@@ -124,11 +132,11 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
     }
 
     # Check for cached lookup result
-    if [info exists faceCache($fromwho)] {
-	if [Face_ShowFace $faceCache($fromwho)] {
+    if [info exists faceCache($fromwho,$newsgrps)] {
+	if [Face_ShowFace $faceCache($fromwho,$newsgrps)] {
 		return 1
 	}
-	unset faceCache($fromwho)
+	unset faceCache($fromwho,$newsgrps)
 	Face_Delete
     }
 
@@ -142,12 +150,22 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
 	set machine [string tolower $faces(defaultDomain)]
     } elseif {[string first . $machine] == -1} {
       append machine . $faces(defaultDomain)
-   }
+    }
 
     set from [split $machine .]
     set pathlist [FacePathlist $from]
 
 #Exmh_Debug \n$user ==> $pathlist
+
+    set pathlistngfull {}
+    if {[string compare "" $newsgrps]} {
+	set newsgrplist [string tolower [split $newsgrps ,]]
+	foreach ng $newsgrplist {
+	    set ngparts [split $ng .]
+	    set pathlistng [FacePathNGlist $ngparts]
+	    set pathlistngfull [concat $pathlistng $pathlistngfull]
+	}
+    }
 
     # Loop through Face path
 #Tputs lookup: [time {
@@ -177,7 +195,7 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
 		    break
 		}
 		set path $dir/$part/$name
-#	Exmh_Debug $path
+#		Exmh_Debug $path
 		# skip non-existent directories
 		if ![file exists $faces(base)$path] continue
 
@@ -191,20 +209,42 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
 	}
     }
 #   }]
+    eval set tail $faces(name,news)
+    foreach dir $faces(path,news) {
+	set name $tail
+	set map {}
+	foreach part [concat $map $pathlistngfull] {
+#	    if {([string match unknown* $dir] || [string match misc* $dir])
+#		 && [llength $matches]} {
+#		break
+#	    }
+	    set path $dir/$part/$name
+#	    Exmh_Debug $path
+	    # skip non-existent directories
+	    if ![file exists $faces(base)$path] continue
+
+	    foreach suf $faces(suffix) {
+		if [file exists $faces(base)$path/face.$suf] {
+		    lappend matches $path/face.$suf
+		    break
+	        }
+	    }
+	}
+    }
 
 #    Exmh_Debug Faces matches $matches
 
     if !$faces(rowEnabled) {
 	foreach face $matches {
 	    if [Face_ShowFile $face] {
-		set faceCache($fromwho) $face
+		set faceCache($fromwho,$newsgrps) $face
 		Exmh_Status $msg
 		return 1
 	    }
 	}
     # braces around cmdsubst NECESSARY!
     } elseif {[Face_ShowFace $matches]} {
-	set faceCache($fromwho) $matches
+	set faceCache($fromwho,$newsgrps) $matches
 	Exmh_Status $msg
 	return 1
     }
@@ -223,6 +263,19 @@ proc FacePathlist { from } {
     set pathlist {}
     for {set i [expr [llength $from]-1]} {$i>=0} {incr i -1} {
 	append path $prefix [lindex $from $i]
+	set prefix /
+	set pathlist [concat $path $pathlist]
+    }
+    lappend pathlist {}
+    return $pathlist
+}
+
+proc FacePathNGlist { ng } {
+    set path {}
+    set prefix {}
+    set pathlist {}
+    for {set i 0} {$i <= [expr [llength $ng]-1]} {incr i 1} {
+	append path $prefix [lindex $ng $i]
 	set prefix /
 	set pathlist [concat $path $pathlist]
     }

@@ -204,7 +204,6 @@ Complexity: varies
 Incorporate patches from the New Features section of the Patch page
 
   1.Fixes for PGP 4.0 
-  3.Faces for newsgroups. 
   4.Patch to slocal.c that allows regular expressions in .maildelivery files. 
   5.Updates to the MDN message disposition handling (Anund Lie) 
   6.Preference item to do flist on startup. 
