@@ -118,6 +118,9 @@ proc bgerror [info args tkerror] [info body tkerror]
 
 proc ExmhMailError { w errInfo } {
     global exmh
+    if [file exists [Env_Tmp]/exmhErrorMsg] {
+        file delete [Env_Tmp]/exmhErrorMsg
+    }
     if [catch {open [Env_Tmp]/exmhErrorMsg w} out] {
 	Exmh_Status "Cannot open [Env_Tmp]/exmhErrorMsg" purple
 	return

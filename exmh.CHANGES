@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 01/03/2001 Hal DeVore <haldevore@acm.org>
+    lib/error.tcl - Remove file [Env_Tmp]/exmhErrorMsg if it exists
+    prior to writing to it.  Addresses a bug reported to BUGTRAQ.
+
 cvs repository 12/13/2000 Brent Welch <brent.welch@interwoven.com>
     lib/html/sedit.html - Added explanation from John Klassa about
     the Filter mechanism in Sedit.
