@@ -4,17 +4,20 @@
 </head>
 <body>
 <pre>
-ABOUT SETTING UP MAIL ON PPP-CONNECTED DIAL-UP MACHINES.
-=======================================================
+ABOUT SETTING UP MAIL ON PPP-CONNECTED DIAL-UP MACHINES OR
+        WORKSTATIONS USING A CENTRAL MAIL SYSTEM.
+==========================================================
 
 # This howto is distributed in the hope that it will be useful,        #
 # but WITHOUT ANY WARRANTY; without even the implied warranty of       #
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                 #
 
-This howto is for you if you have a Linux machine that does not have a
+This howto is for you if you have a Unix machine that does not have a
 permanent Internet connection but rather uses dial-up PPP to connect to
-your Internet service provider. A common problem is how to masquerade as
-your ISP's mailhost to get
+your Internet service provider. The problem also affects those using a
+central mail system for a workstation and want the central address to
+show up as the "From:" address in the header. A common problem is how
+to masquerade as your ISP's mailhost to get
 
 From: me@myispprovider.com
 
@@ -26,14 +29,17 @@ Another problem is how to send and receive mail.
 
 0.) Fixing MH 
 =============
-You just need to add two lines to your MH mail transport configuration
-file.  For original MH this file is called mtstailor (typically
-installed in /usr/local/lib/mh).  For nmh it is mts.conf (typically
-installed in /usr/local/nmh/etc).  In either case you put in two
-entries: "localname" defines the machine name used in From: lines,
-"clientname" the machine name used in the SMTP HELO header.
-(If you don't put a clientname entry then localname gets used, which
-may make your SMTP server unhappy if it tries to verify HELO.)
+This section is probably not relevant to use of a central mail system.
+
+For PPP connections you just need to add two lines to your MH mail
+transport configuration file.  For original MH this file is called
+mtstailor (typically installed in /usr/local/lib/mh).  For nmh it is
+mts.conf (typically installed in /usr/local/nmh/etc).  In either case
+you put in two entries: "localname" defines the machine name used in
+From: lines, "clientname" the machine name used in the SMTP HELO
+header.  (If you don't put a clientname entry then localname gets
+used, which may make your SMTP server unhappy if it tries to verify
+HELO.)
 
 For example, I have:
 
@@ -42,13 +48,14 @@ clientname:     sss.sss.pgh.pa.us
 
 If you do step 0 then you probably do not have to setup sendmail masquerading.
 
-1.) Setting up sendmail for masquerading
-========================================
+1a.) Setting up sendmail for masquerading
+=========================================
 
-If you don't use sendmail, you're on your own. If you're using sendmail,
-all you need to do is to replace your /etc/sendmail.cf with a new
-sendmail.cf that you generate using the m4 files that come with any
-(newer) sendmail source distribution.
+If you don't use sendmail or Postfix, you're on your own. (See 1b if
+you use Postfix.) If you're using sendmail, all you need to do is to
+replace your /etc/sendmail.cf with a new sendmail.cf that you generate
+using the m4 files that come with any (newer) sendmail source
+distribution.
 
 In that distribution you'll find directories ./cf/cf, ./cf/domain,
 ../cf/feature, ... You first have to create an m4 config file for your
@@ -105,6 +112,20 @@ touch /etc/sendmail.cw
 
 and restart sendmail. That's all.
 
+1b.) Setting up postfix for masquerading
+========================================
+
+You will need to edit the postfix main.cf file often found in
+/usr/local/etc/postfix. No other file needs adjustment.
+
+In the section titled "SENDING MAIL", uncomment the line reading
+"myorigin=$mydomain".
+
+In the section titles "ADDRESS REWRITING", add the lines:
+masquerade_domains = $mydomain
+masquerade_exceptions = root,mailer-daemon
+
+You can find more information on these changes in sample-rewrite.cf.
 
 2.) Setting up fetchmail
 ========================

@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 01/25/2002 slipcon@mercea.net
+    lib/html/ppp.howto.html - added postfix instructions, using
+        Kevin Oberman (oberman@es.net)'s diff
+
 cvs repository 01/24/2002 valdis.kletnieks@vt.edu
     lib/sedit.tcl - missed a readonly/disabled issue for Tk8.4 (status field)
 
