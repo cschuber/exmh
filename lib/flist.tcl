@@ -33,14 +33,11 @@ proc Flist_Init {} {
     # NOTE the flist variable is traced by Seq_Trace
 }
 proc FlistResetVars {} {
-    global flist mhProfile flistcache
+    global flist mhProfile
     set flist($mhProfile(unseen-sequence)) {}	;# Sequence of folders to visit
     set flist(unvisited) {}	;# Unseen folders not yet visited
     Exmh_Debug FlistResetVars
     set flist(unvisitedNext) {}	;# Temporary copy (next iteration)
-    if {[info exist flistcache]} {
-        unset flistcache
-    }
 
     # flist(seqcount,$folder,$seq)
     #	number of sequence elements in a folder
@@ -303,22 +300,18 @@ proc FlistFindStart {reset} {
 }
 
 proc FlistFindSeqsInner {} {
-    global flist seqwin flistcache
+    global flist seqwin mhProfile
     if {[catch {
     FlistGetContext
     foreach folder $flist(unseenfolders) {
         foreach seq [Mh_Sequences $folder] {
             if {[lsearch $seqwin(nevershow) $seq] < 0} {
                 set seqlist [MhGetSeqCache $folder $seq]
-                if {![info exist flistcache($folder,$seq)] ||
-                    [string compare $seqlist $flistcache($folder,$seq)]} {
-
-                  # Cache added 2/11/03
-                  # Sequence is different than last time we checked
-
-                  set flistcache($folder,$seq) $seqlist
-                  BgRPC Seq_Set $folder $seq $seqlist
-                }
+                # Used to have a sequence cache here, but
+                # it did not handle the case where the sequence remains
+                # the same, but the UI had deleted messages in between
+                # samples of the sequence, so the message state changed.
+                BgRPC Seq_Set $folder $seq $seqlist
             }
 	}
     }

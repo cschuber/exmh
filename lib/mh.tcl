@@ -434,8 +434,7 @@ proc MhReadSeqs {folder seqsvar} {
     # First read the private sequence
     set mhPriv(changed,private) 0
     set filename $mhProfile(context)
-    if [file exists $filename] {
-	set mtime [file mtime $filename]
+    if {![catch {set mtime [file mtime $filename]}]} {
 	if {![info exists mhPriv(privmtime)] || ($mtime != $mhPriv(privmtime))} {
 	    foreach elem [array names mhPriv] {
 		set indices [split $elem ,]
@@ -467,6 +466,16 @@ proc MhReadSeqs {folder seqsvar} {
 		set mhPriv(privmtime) $mtime
 	    }
 	}
+    } elseif {[info exists mhPriv(privmtime)]} {
+	unset mhPriv(privmtime)
+	foreach elem [array names mhPriv] {
+	    set indices [split $elem ,]
+	    if {[lindex $indices 0] == {privseq}} {
+	        if {[lindex $indices 1] == $folder} {
+		    unset mhPriv($elem)
+		}
+	    }
+	}
     }
     foreach elem [array names mhPriv] {
 	set indices [split $elem ,]
@@ -479,8 +488,7 @@ proc MhReadSeqs {folder seqsvar} {
     # Then read the public sequence
     set mhPriv(changed,public) 0
     set filename "$mhProfile(path)/$folder/$mhProfile(mh-sequences)"
-    if [file exists $filename] {
-	set mtime [file mtime $filename]
+    if {![catch {set mtime [file mtime $filename]}]} {
 	if {![info exists mhPriv(seqmtime,$folder)] || ($mtime != $mhPriv(seqmtime,$folder))} {
 	    foreach elem [array names mhPriv] {
 		set indices [split $elem ,]
@@ -514,6 +522,16 @@ proc MhReadSeqs {folder seqsvar} {
 		set mhPriv(seqmtime,$folder) $mtime
 	    }
 	}
+    } elseif {[info exists mhPriv(seqmtime,$folder)]} {
+	unset mhPriv(seqmtime,$folder)
+	foreach elem [array names mhPriv] {
+	    set indices [split $elem ,]
+	    if {[lindex $indices 0] == {pubseq}} {
+	        if {[lindex $indices 1] == $folder} {
+		    unset mhPriv($elem)
+		}
+	    }
+        }
     }
     foreach elem [array names mhPriv] {
 	set indices [split $elem ,]

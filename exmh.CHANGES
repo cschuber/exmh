@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 09/10/2004 welch@panasas.com
+  lib/flist.tcl: removed the flistcache as inspired by Harvey Eneman and
+    Jongki Suwandi.  This cache caused message highlighting to not occur
+    in some cases.
+  lib/mh.tcl: patch from Harvey Eneman to fix the problem where Mh_Sequences
+    does not clear the in-memory sequence state if a sequence file no
+    longer exists.
+
 cvs repository 08/23/2004 welch@panasas.com
    lib/base64.tcl: fix two bugs, one with perfectly aligned blocks
      where there was an "undefined result" error.  The other was that
