@@ -138,8 +138,8 @@ proc Scan_FolderUpdate { folder } {
     Label_Folder $folder
     Scan_Folder $folder 0
 }
-proc Scan_Iterate { incout lineVar body } {
-    upvar $lineVar line
+proc Scan_Iterate { incout linenoVar body } {
+    upvar $linenoVar lineno
     foreach lineno [split $incout \n] {
 	if [regexp ^Incorporating $lineno] {
 	    continue

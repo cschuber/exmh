@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 02/10/2003 welch@panasas.com
+    scan.tcl - fix lineVar and line references to linenoVar and lineno.
+
 cvs repository 02/09/2003 welch@panasas.com
     Making the 2.6 release, cvs tag exmh-2-6
     These files were updated:
