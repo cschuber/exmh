@@ -245,11 +245,17 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 	    }
 	}
     }
-    catch {destroy $exwin(mopButtons).list}
     if {$menuitems != {}} {
-	set menu [Widget_AddMenuB $exwin(mopButtons) list "List..." {right padx 1}]
+	if [winfo exists $exwin(mopButtons).list] {
+	    set menu $exwin(mopButtons).list.m
+	} else {
+	    set menu [Widget_AddMenuB $exwin(mopButtons) list "List..." {right padx 1}]
+	}
+	$exwin(mopButtons).list.m delete 1 99
 	foreach {name url} $menuitems {
 	    Widget_AddMenuItem $menu $name [list URI_StartViewer $url]
 	}
+    } else {
+	catch {destroy $exwin(mopButtons).list}
     }
 }

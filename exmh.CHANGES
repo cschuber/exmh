@@ -7,6 +7,8 @@ cvs repository 4/30/1999
 	doing so adds a passphrase field to the What Now window.
 	Also updated the pgp... menu in the whatnow window to be a crypt... 
 	menu just like sedit's.  -cwg
+    Minor change to List... menu so it will not disappear when you
+	change messages if detached. -cwg
 
 cvs repository 4/29/1999
     Fixed bug in which people using an external editor get a PGP related 
