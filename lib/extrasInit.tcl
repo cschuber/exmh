@@ -683,7 +683,7 @@ proc Glimpse_Init {} {
 	}
 	if [info exists glimpse(init)] { return }
 
-	if [catch {exec $glimpse(path)/glimpse -V} voutput] {
+	if {[catch {exec $glimpse(path)/glimpse -V} voutput] >= 2} {
 	    ExmhLog "$voutput"
 	    return
 	}

@@ -4,6 +4,8 @@ cvs repository 10/23/2000 Brent Welch <welch@acm.org>
     lib/ispell.tcl - replaced some debug "puts" with Exmh_Debug
     lib/uri.tcl - trim white space off the URI that is matched to handle
     the funky <a href=" http://mumble.com ">Visit</a> links.
+    lib/glimpse.tcl - fixed glimpse -V test during startup to
+    handle both old and new versions of glimpse.
 
 cvs repository 09/21/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/glimpse.tcl - Glimpse 4.12.6 output <homedir>/Mail//folder - the
