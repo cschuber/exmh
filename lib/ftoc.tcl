@@ -79,11 +79,7 @@ proc Ftoc_Reset { numMsgs msgid folder } {
     set ftoc(direction) next		;# assumed next direction
     set ftoc(softChange) [expr {! $ftoc(nextGuard)}]
     set ftoc(lasthit) {}		;# search anchor
-    if {$msgid == {}} {
-	set ftoc(curLine) {}		;# current display line number
-    } else {
-	set ftoc(curLine) {}		;# Set later in Msg_Change ?
-    }
+    set ftoc(curLine) $msgid		;# current display line number
     Ftoc_ClearMsgCache
 }
 proc Ftoc_Update { numMsgs folder } {

@@ -1,8 +1,7 @@
 HISTORY
 cvs repository 07/26/2002 cwg-exmh@deepeddy.com
-    scan.tcl - set ftoc(curLine) directly instead of calling
-	Ftoc_Change.  I'll probably change how this works eventually,
-	but for now, this is better than calling Ftoc_Change.
+    scan.tcl,ftoc.tcl - Found the bug in ftoc.tcl which was causing
+	the current message to get lost.
 
 cvs repository 07/25/2002 cwg-exmh@deepeddy.com
     flist.tcl - New proc Flist_SetUnseen which can be called instead

@@ -125,9 +125,6 @@ proc Scan_FolderForce {{folder ""}} {
 	Ftoc_Yview end
 	Flist_UnseenMsgs $folder
 	Ftoc_ShowSequences $folder
-	# Should probably figure out why we've lost the current folder 
-	# instead of resetting it here.
-	set ftoc(curLine) [Ftoc_FindMsg [Mh_Cur $folder]]
 	Exmh_Status ok
     }
 }
