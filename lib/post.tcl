@@ -22,7 +22,13 @@ and retrieve new articles from selected newsgroups." {
     {NNTP(emailaddr) nntpEmailAddr {}  {My address when posting}
 "E-mail address to use when posting to newsgroups.
 Typically: First Last <login@domain>"}
-    {NNTP(moderated) nntpModerated {} {Groups you moderate}
+     {NNTP(user) nntpUser {} {NNTP Username}
+"If your news server requires you to authenticate put your
+username here else leave blank"}
+    {NNTP(pass) nntpPass {} {NNTP Password}
+"If your news server requires you to authenticate put your
+password here. Ignored unless Username is defined."}
+   {NNTP(moderated) nntpModerated {} {Groups you moderate}
 "A list of groups which you moderate separated by whitespace.
 If one of these is in the Newsgroups header then an Approved
 header will be added to the posting"}
@@ -58,7 +64,7 @@ proc Post {} {
     # and CNews which get upset when they can't do it
     set header_throwAway \
 	{{return-path:} {received:} {path:} {date:} {message-id:} {to:} \
-	     {lines:} {x-exmh-isig-} {cc:}}
+	     {lines:} {x-exmh-isig-} {cc:} {from }}
 
     # Headers INN wants to add  itself get X-original- shoved in front
     # if we want to keep them
@@ -213,7 +219,6 @@ proc Post_Article {} {
     }
 }
 
-
 #
 # NNTP posting client
 #
@@ -225,37 +230,48 @@ proc PostIt {article} {
 	return $conn
     }
 
-    set line [gets $conn]
+    set line [NNTPReply $conn]
     if {[string first 200 $line]} {
-	puts $conn QUIT
+	NNTPCommand $conn QUIT
 	close $conn
 	return $line
     }
 
-    puts $conn POST
-    flush $conn
+    NNTPCommand $conn POST
 
-    set line [gets $conn]
+    set line [NNTPReply $conn]
     if {[string first 340 $line]} {
-	puts $conn QUIT
-	close $conn
-	return $line
+	set ok 0
+	if ![string first 480 $line] {
+	    set ok [NNTPAuthenticate $conn]
+	    if $ok {
+		NNTPCommand $conn POST
+		set line [NNTPReply $conn]
+		if [string first 340 $line] {
+		    set ok 0
+		}
+	    }
+	}	
+	if {!$ok} {
+	    NNTPCommand $conn QUIT
+	    close $conn
+	    return $line
+	}
     }
 
     puts $conn "$article\n.\n"
     flush $conn
-    set line [gets $conn]
+    set line [NNTPReply $conn]
     if {[string first 240 $line]} {
-	puts $conn QUIT
+	NNTPCommand $conn QUIT
 	close $conn
 	return $line
     }
     
-    puts $conn QUIT
-    flush $conn
-    set line [gets $conn]
+    NNTPCommand $conn QUIT
+    set line [NNTPReply $conn]
     if {[string first 205 $line]} {
-	puts $conn QUIT
+	NNTPCommand $conn QUIT
 	close $conn
 	return $line
     }

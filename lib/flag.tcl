@@ -97,7 +97,7 @@ proc FlagInner {state icon label} {
     if {$flag(state) != $state} {
 	if [winfo exists .icon.c] {
 	    Exmh_Debug "Setting flag glyph to $icon"
-	    .icon.c delete image -tag $icon
+	    .icon.c delete image -tag icon
 	    .icon.c create image 0 0 -anchor nw -image $icon -tag icon
 	} else {
 	    Exmh_Debug "Setting flag bitmap to $icon"

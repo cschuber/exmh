@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 07/30/1999
+    Fixed stupid typo in flag.tcl
+	-Steven Bakker <steven@icoe.att.com> via cwg 
+    Support access to nntp servers which require authentication
+	-Gareth Owen <oweng@aston.ac.uk> and cwg
+
 cvs repository 07/22/1999
     added code from Red Hat patch to base -Red Hat 6.0 SRPM via haldevore
 

@@ -47,7 +47,7 @@ proc GetNewsInt {} {
 	return $nntpskt
     }
 
-    set line [gets $nntpskt]
+    set line [NNTPReply $nntpskt]
     if {[string first 200 $line] && [string first 201 $line]} {
 	NNTPClose $nntpskt $rcfile
 	return $line
@@ -91,9 +91,17 @@ proc GetNewsInt {} {
     Exmh_Status "Retrieving articles..."
     while {$thisg < $gcount} {
 	NNTPCommand $nntpskt "GROUP $thegrps($thisg)"
-	set line [gets $nntpskt]
+	set line [NNTPReply $nntpskt]
+	if ![string first 480 $line] {
+	    set ok [NNTPAutenticate $nntpskt]
+	    if $ok {
+		NNTPCommand $nntpskt "GROUP $thegrps($thisg)"
+		set line [NNTPReply $nntpskt]
+	    }
+	}	
 	if {[string first 211 $line]} {
 	    Exmh_Status "Cannot select newsgroup $thegrps($thisg)"
+	    Exmh_Debug "Line: $line"
 	    set thearts($thisg) "X"
 	    incr thisg
 	    continue
@@ -121,7 +129,7 @@ proc GetNewsInt {} {
 		break
 	    }
 	    NNTPCommand $nntpskt "STAT $first"
-	    set line [gets $nntpskt]
+	    set line [NNTPReply $nntpskt]
 	    if {![string first 223 $line]} {
 		break
 	    }
@@ -142,7 +150,7 @@ proc GetNewsInt {} {
 	Exmh_Status "Reading group $thegrps($thisg) (max [expr $last-$first+1] articles)..."
 	while {![string first 223 $line]} {
 	    NNTPCommand $nntpskt "ARTICLE"
-	    set line [gets $nntpskt]
+	    set line [NNTPReply $nntpskt]
 	    if {[string first 220 $line]} {
 		NNTPClose $nntpskt $rcfile
 		return "unexpected server response"
@@ -165,7 +173,7 @@ proc GetNewsInt {} {
 	    close $afile
 
 	    NNTPCommand $nntpskt "NEXT"
-	    set line [gets $nntpskt]
+	    set line [NNTPReply $nntpskt]
 	    if {[string first 223 $line] && [string first 421 $line]} {
 		NNTPClose $nntpskt $rcfile
 		return $line
@@ -257,7 +265,15 @@ proc AL_Update {rcentry next} {
 
 proc NNTPCommand {nntpskt cmd} {
     puts $nntpskt $cmd
+    regsub {pass.*$} $cmd {pass *****} cmd
+    Exmh_Debug NNTPCommand: $cmd
     flush $nntpskt
+}
+
+proc NNTPReply {nntpskt} {
+    set line [gets $nntpskt]
+    Exmh_Debug NNTPReply: $line
+    return $line
 }
 
 proc NNTPClose {nntpskt rcfiles} {
@@ -274,3 +290,30 @@ proc NNTPClose {nntpskt rcfiles} {
     catch {exec rmdir $mhProfile(path)/MyIncTmp}
 }
 
+#
+# 'Original' AUTHINFO implementation
+# i.e., not AUTHINFO SIMPLE or AUTHINFO GENERIC
+# see 'Common NNTP extensions'
+#
+proc NNTPAutenticate {sock} {
+
+    global NNTP
+
+    if {$NNTP(user)==""} {
+	tk_messageBox -message {News server requires authentication.
+	    Check username and password in NNTP preferences} -type ok
+	return 0
+    }
+
+    NNTPCommand $sock "authinfo user $NNTP(user)"
+    set line [NNTPReply $sock]
+    NNTPCommand $sock "authinfo pass $NNTP(pass)"
+    set line [NNTPReply $sock]
+    if [string first 281 $line] {
+	tk_messageBox -message {Authentication to NNTP server failed.
+	    Check username and password in NNTP preferences} -type ok
+	return 0
+    } else {
+	return 1
+    }
+}
