@@ -1,5 +1,11 @@
 HISTORY
 
+cvs respository 11/22/2000 Hal DeVore <haldevore@acm.org>
+    lib/html/guide.html - Corrected a couple of improperly closed
+    <code> tags
+    lib/sedit.tcl - patch from Chris Keane to eliminate the 
+    removal of charset in SeditSetHeader proc
+
 cvs repository 11/17/2000 Brent Welch <brent.welch@interwoven.com>
     lib/glimpse.tcl - Grouped some expressions with { } to avoid 
     double-substitutions on file and directory names.  If they had

@@ -731,7 +731,7 @@ proc SeditSetHeader { t key value {append NO}} {
 
     # insert the new/replaced header
     $t insert $start "[string toupper [string index $key 0]][string tolower [string range $key 1 end]]: $value\n"
-    $t tag remove Charset $start "$start lineend"
+#    $t tag remove Charset $start "$start lineend"
 }
 
 
