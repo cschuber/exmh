@@ -55,8 +55,8 @@ NNTP support for more information"} \
     # I can hack around it by tracing the bgPeriod, which is always
     # set by Preferences because it is an entry
     trace variable exmh(bgPeriod) w BackgroundFixup
-    if {$exmh(background) <= 0} {
-        set exmh(background) 10
+    if {$exmh(bgPeriod) <= 0} {
+        set exmh(bgPeriod) 10
     }
     set exmh(lastBackground) $exmh(background)
 

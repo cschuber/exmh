@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 6/15/1999
+    References to exmh(background) should have been to exmh(bgPeriod)
+	in BackgroundFixup. -cwg
+
 cvs repository 6/11/1999
     Fix to error caused by annotation settings change
         -Kevin Christian via haldevore

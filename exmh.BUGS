@@ -288,3 +288,26 @@ Status:
 
 The Hook_SeditInit predefined hooks are not mentioned in the html doc.
 There might be others, review the code and document any missing ones
+
+
+----------------------------------------------------------------------
+Number: 22
+Version: 2.1.0 (4/14/1999)
+Priority: Low
+Scope: Narrow
+Complexity: Unknown
+Status:
+
+If you change the background processing period, background processing
+may stop working until you restart exmh.
+
+Apparently something is setting the value of exmh(background) to off
+in the background process (but not in the foreground process).
+
+This is what appears in the log when this occurs:
+
+-----
+BackgroundFixup flist flist
+exmh-bg {BackgroundFixup flist off}
+exmh-bg {Background_DoPeriodic off}
+-----
