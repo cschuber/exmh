@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 02/02/2000
+    Fixed hard-coded 'config -cursor xterm' -vkletnieks
+
+cvs repository 02/01/2000
+    Fixed regexp for glimps version detection -vkletnieks
+
 cvs repository 12/6/1999
     Added character encoding support to LDAP lookup -iko
 
