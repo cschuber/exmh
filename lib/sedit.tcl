@@ -75,10 +75,6 @@ proc Sedit_Start { draft } {
 	    Widget_LabeledEntry .sedit$id.pgp $label pgpPass($keyid) \
 		    -show *
 	    Widget_EndEntries
-	    # Copy the default PGP values into this window
-	    foreach var {encrypt sign mime clearsign format} {
-		set pgp($var,$id) $pgp($var)
-	    }
 	}
 
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]
@@ -183,6 +179,13 @@ proc Sedit_Start { draft } {
 	set sedit(.sedit$id,id) $id
     }
     focus $t
+
+    if $pgp(enabled) {
+	# Copy the default PGP values into this window
+	foreach var {encrypt sign mime clearsign format} {
+	    set pgp($var,$id) $pgp($var)
+	}
+    }
     
     SeditTextBindings $draft $t		;# set up sendMsg binding
     if [file readable $quote(filename)] {
