@@ -17,6 +17,7 @@ cvs repository 6/10/1999
     this pulls the message out of the enclosing message 
     and puts it into the current folder.
         -cwg via Valdis Kletnieks via haldevore
+    DNS/MDN documentation -Valdis Kletnieks via cwg
     
 cvs repository 6/9/1999
     Changed $HOME/.exmhdisplay to $HOME/.exmh/.display in misc scripts -cwg

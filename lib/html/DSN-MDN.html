@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Delivery Status Notifications, Message Delivery Notifications, and you...</title>
+  </head>
+
+  <body>
+    <h1>Delivery Status Notifications</h1>
+    <p>Basically, Delivery Status Notifications (DSNs) define a special MIME type
+      to report message status information.  The types of information that
+      are transmitted are sucessful delivery, delayed delivery, or failure,
+      with possibly additional diagnostic information. A DSN is <em>not</em>
+      able to report if a user has actually looked at a message, or any other
+      status beyond "it was placed in their mailbox".
+    <h1>Message Delivery Notifications</h1>
+    <p>Message Delivery Notifications (MDNs) build on the DSN framework to report
+      the final disposition (seen, discarded, etc) once it has been placed in a user's
+      mailbox.  There are some caveats here:
+    <ul>
+      <li>Receipt of a "read" MDN does <em>not</em> imply that the message was understood
+	or dealt with - merely that it was displayed for the user to read.  The user
+	may have been asleep, on the phone, or just didn't want to act on your mail.</li>
+      <li>Not all mail programs support MDNs.  If the recipient's software doesn't support it,
+	you won't get one back.</li>
+    </ul>
+    <h1>EXMH Support</h1>
+    <p> EXMH is able to display both DSNs and MDNs without further configuration.
+      Some additional configuration is required to make full use of the support.
+    <p>DSN options are located on the 'Preferences - Simple Editor' panel, and
+      are also settable on a per-message basis via the 'DSN...' menu in Sedit.
+      Note that for DSN support to work, you <em>must</em> have a version of
+      MH that supports it (which requires some patching).
+    <p>A patch is available <A HREF="http://black-ice.cc.vt.edu/~valdis/mh-dsn.patch">here</A>
+    <p>The EXMH MDN support is able to display a MDN without further configuration.
+      However, to ask for a MDN on a given message, you need to select 'Ask for Receipt'
+      in the Sedit 'More...' menu.  In addition, you must put the address to send the MDN
+      to in the 'Preferences - MIME' panel, in the 'Disposition Notification To:' field.
+      This should probably be set to the same address as your From: field, unless
+      you've read <A HREF="ftp://ftp.isi.edu/in-notes/rfc2298.txt"> RFC2298</a>
+      and fully understand the implications.
+    <p>The 'Send MDNs' button in the 'Preferences - MIME' panel controls when
+      to send an MDN.  By default, MDNs are not sent.  A reasonable value is
+      'Auto/Ask', which will automatically send an MDN unless a condition is
+      detected prompting a check with the user (such as an MDN directed to a mailing list,
+      or not back to the message sender, etc).
+    <p>
+    <h2>The nitty gritty technical stuff</h2>
+    <p>DSNs and MDNs are defined in the following IETF RFCs:
+    <UL>
+      <LI> <A HREF="ftp://ftp.isi.edu/in-notes/rfc1891.txt">RFC1891 - SMTP Service Extension for Delivery Status Notifications</A>  </LI>
+      <li> <A HREF="ftp://ftp.isi.edu/in-notes/rfc1892.txt">RFC1892 - The Multipart/Report Content Type for the Reporting of Mail System Administrative Messages</A>  </li>
+      <li> <A HREF="ftp://ftp.isi.edu/in-notes/rfc1893.txt">RFC1893 - Enhanced Mail System Status Codes</A>  </li>
+      <li> <A HREF="ftp://ftp.isi.edu/in-notes/rfc1894.txt">RFC1894 - An Extensible Message Format for Delivery Status Notifications</A>  </li>
+       <li> <A HREF="ftp://ftp.isi.edu/in-notes/rfc2298.txt">RFC2298 - An Extensible Message Format for Message Disposition Notifications</A>  </li>
+    </UL>
+
+    <hr>
+    <address><a href="mailto:valdis.kletnieks@vt.edu">Valdis Kletnieks</a></address>
+<!-- Created: Thu Jun 10 16:22:40 EDT 1999 -->
+<!-- hhmts start -->
+Last modified: Thu Jun 10 17:32:09 EDT 1999
+<!-- hhmts end -->
+  </body>
+</html>
