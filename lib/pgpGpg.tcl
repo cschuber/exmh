@@ -1,6 +1,9 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.10  2000/02/07 13:23:34  gruber
+# fixed run twice function to work with now short keyids
+#
 # Revision 1.9  1999/10/25 15:38:39  kchrist
 # Added a dropKeys pattern to pgpGPG.tcl.
 #
@@ -133,13 +136,10 @@ Having this enabled, you don´t need PGP 5.0 any more." ] ]
     Preferences_Add "$label interface" {} [list \
                 [list pgp(gpg,cipheralgo) gpgCipherAlgo \
 [concat CHOICE $pgp(gpg,cipheralgos)] "Default Cipher Algo" \
-"NOTE: If you mark twofish, skipjack or idea as your default
-cipher, please make sure, that you have these
-extension modules installed."] \
+"Your preferred cipher algorithm."] \
                 [list pgp(gpg,digestalgo) gpgDigestAlgo \
 [concat CHOICE $pgp(gpg,digestalgos)] "Default Digest Algo" \
-"NOTE: If you mark tiger as your default digest, please 
-make sure, that the tiger extension module is installed."] \
+"Your preferred digest algorithm."] \
                 [list pgp(gpg,compressalgo) gpgCompressAlgo \
 [concat CHOICE $pgp(gpg,compressalgos)] "Default Compress Algo" \
 "The algorithm, GnuPG uses to compress the text before encrypting.
@@ -385,7 +385,7 @@ set pgp(gpg,pat_checkError) "(BAD_PASSPHRASE\[^\n]+)\n"
 #######################
 # Exec_DetDecryptKeyid
 set pgp(gpg,args_getDecryptKeyid) {--dry-run $in}
-set pgp(gpg,pat_getDecryptKeyid) "NEED_PASSPHRASE (\[^ \n]*)"
+set pgp(gpg,pat_getDecryptKeyid) "NEED_PASSPHRASE ........(........)"
 set pgp(gpg,pat_getDecryptSym) "NEED_PASSPHRASE_SYM"
 
 ###############
