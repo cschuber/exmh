@@ -110,14 +110,15 @@ proc SeqWinShowSeqPane {seq} {
 	set num $flist(totalcount,$seq)
 	if {$num <= 0} {
 	    SeqWinEmptyMsg $seq
-	    if {[lsearch $seqwin(alwaysshow) $seq] < 0} {
+	    if {[patlsearch $seqwin(alwaysshow) $seq] < 0} {
 		if {[winfo ismapped .sequences.pane$seq]} {
 		    SeqWinHideSeqPane $seq
 		}
 	    }
 	}
-	if {[lsearch $seqwin(nevershow) $seq] < 0} {
-	    if {($num > 0) || ([lsearch $seqwin(alwaysshow) $seq] >= 0)} {
+	if {[patlsearch $seqwin(show) $seq] >= 0 ||
+            [patlsearch $seqwin(nevershow) $seq] < 0} {
+	    if {($num > 0) || ([patlsearch $seqwin(alwaysshow) $seq] >= 0)} {
 		if {![winfo ismapped .sequences.pane$seq]} {
 		    if {$seqwin(orientation) == "Horizontal"} {
 			pack .sequences.pane$seq -side left -anchor n -fill y
@@ -156,9 +157,10 @@ proc SeqWinFixShowList {args} {
 	if {![info exists flist(totalcount,$seq)]} {
 	    set flist(totalcount,$seq) 0
 	}
-	if {([lsearch $seqwin(alwaysshow) $seq] >= 0) ||
+	if {([patlsearch $seqwin(alwaysshow) $seq] >= 0) ||
 	    (($flist(totalcount,$seq) > 0) && 
-	     ([lsearch $seqwin(nevershow) $seq] < 0))} {
+	     ([patlsearch $seqwin(show) $seq] >= 0 ||
+              [patlsearch $seqwin(nevershow) $seq] < 0))} {
 	    SeqWinShowSeqPane $seq
 	} else {
 	    SeqWinHideSeqPane $seq

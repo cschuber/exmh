@@ -73,6 +73,10 @@ folder width."
 "Sequences to never display in the sequences window."
     }
 
+    { seqwin(show) seqShow {cur} {Show Sequences}
+"Sequences to display in the sequences window."
+    }
+
     { seqwin(alwaysshow) seqAlwaysShow {} {Always Show Sequences}
 "Sequences to always display, even when they're empty."
     }
@@ -165,6 +169,7 @@ proc Seq_TraceInit {} {
     trace variable seqwin(on) w SeqWinToggle
     trace variable seqwin(nevershow) w SeqWinFixShowList
     trace variable seqwin(alwaysshow) w SeqWinFixShowList
+    trace variable seqwin(show) w SeqWinFixShowList
     trace variable seqwin(orientation) w SeqWinFixOrientation
 
     SeqWin_Init

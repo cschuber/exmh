@@ -48,6 +48,18 @@ proc ldelete {varList value} {
     }
 }
 
+# Match a value (v) against a list of patterns (l)
+proc patsearch {l v} {
+    set i 0
+    foreach e $l {
+        if {[string match $e $v]} {
+            return $i
+        }
+        incr i
+    }
+    return -1
+}
+
 # This doesn't seem to be used by anything...
 #proc makedir { pathname } {
 #    file mkdir $pathname

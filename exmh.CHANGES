@@ -2,6 +2,12 @@ HISTORY
 cvs repository 07/26/2004 welch@panasas.com
   lib/pick.tcl: Applied patch from Bruce Mah to search over
     sender or mailing-list headers
+  lib/seqin.tcl: Applied patch from Axel Belinfante to be able
+    to have sequences that are always shown, and those that
+    are never shown.
+  lib/sequences.tcl: Added preference for sequences to always show
+  lib/utils.tcl
+    Moved Axel's "mylsearch" into utils.tcl as "patsearch"
 
 cvs repository 07/26/2004 valdis.kletnieks@vt.edu
   catch CVS up to a weekend's worth of concentrated coding...
