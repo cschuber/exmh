@@ -561,7 +561,7 @@ message.
 <dd>This sets up an Message/External-Body MIME message part. This is
 useful for sending around pointers to files available via FTP or on
 your local file system. 
-<dt>Attatch PGP Keys... 
+<dt>Attach PGP Keys... 
 <dd>Insert your PGP keys into the mail message. You can use the key
 selector to choose any key in your public keyring. Just type in a pattern
 that matches part of the key ID. Matching keys are displayed in the
@@ -600,19 +600,58 @@ Define the alternate under the Editor Support preferences..
 <br>
 
 
-<dt>PGP... 
+<dt>Crypt... 
 <dd>This is a menu of options that use the Pretty Good Privacy package
 to to encryption and authentication. An explaination of pgp is beyond
-the scope of this manual. This works by inserting a header into your
-message that indicates what action to do. The actual encryption or
-whatever is done after you hit the Send button. If you use an external
-editor you can insert the headers in that, and exmh will run your message
-through PGP for you when you send it. The four supported headers are:
-<pre><blockquote>pgp-action: signclear
-pgp-action: signbinary
-pgp-action: encrypt
-pgp-action: encryptsign
-</blockquote></dl></pre>
+the scope of this manual. 
+
+The options in the menu determine how your message will be encrypted
+or signed when the message is sent.
+
+There are currently three formats supported for signed or encrypted
+messages:
+
+<dl>
+<dt>Plain
+<dd>This uses no encapsulation whatsoever for the signed message.
+This format is compatible with older non-MIME compliant mail programs.
+<dt>Application/PGP
+<dd>This uses the now deprecated Application/PGP MIME type.  This type
+was deprecated because it turned out to be insufficiently flexible.
+<dt>Multipart/MIME
+<dd>This uses Multipart/signed MIME type with the signature part
+encoded as an application/pgp-signature.  This is compatible with
+other non-PGP digital signature schemes.  Many minimally compliant
+mail programs see your signature as an attachment. 
+</dl>
+
+There are also four togglable values which may be used in various
+combinations:
+
+<dl>
+<dt>Encrypt
+<dd>This causes the message to be encrypted so that only the intended
+recipient can read it.
+<dt>Sign
+<dd>This causes the message to be digitally signed so that the
+recipient can determine that you were really the author.
+<dt>Mime
+<dd>This allows the encrypted or signed message to itself contain MIME
+subparts.  This flag cannot be specified with the "Plain" format.  In
+the future, it may be required for the other formats.
+<dt>Clear Sign
+<dd>This causes a signed, but not encrypted message to be passed in
+clear text so even if a recipient doesn't have PGP available, they can
+still read the text.
+</dl>
+
+</dl>
+
+<p>If PGP is enabled, a field for entering a PGP password appears at
+the bottom of the SEDIT window.  If your password is provided in this
+field, then the values set in the Crypt... menu are envoked.  If no
+password is provided, then encryption is not used.  This makes it easy
+to go between using PGP and not using it for particular messages.
 
 <h3><a NAME="SEE ALSO" HREF="#CONTENTS">SEE ALSO</a></h3>
 <a HREF="exmh-use.n.html">exmh-use</a>, <a HREF="exmh.n.html">exmh</a>,
