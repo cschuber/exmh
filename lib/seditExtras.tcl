@@ -172,7 +172,7 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 	    set inheaders 1
 	    set quoted 0
 	    while {[gets $in line] > -1} {
-		if {! $inheaders} {
+		if {! $inheaders || !$quote(symlink)} {
 		    $t insert insert $sedit(pref,replPrefix)$line\n
 		} else {
 		    # This simple hack doesn't work for multiparts.
@@ -182,6 +182,9 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 			if {$sedit($t,quote) < 0} {
 			    set sedit($t,quote) 1
 			}
+		    }
+		    if {$quote(headers)} {
+			$t insert insert $sedit(pref,replPrefix)$line\n
 		    }
 		    if {[string length $line] == 0} {
 			set inheaders 0
