@@ -1,15 +1,15 @@
 Summary: EXMH mail program
 Name: exmh
-Version: 2.1.0
+Version: 2.1.1
 Release: 1
 Requires: mh metamail
 Copyright: freeware
 Group: Applications/Mail
 BuildArchitectures: noarch
-Source0: ftp://ftp.scriptics.com/pub/tcl/exmh/exmh-2.1.0.tar.gz
+Source0: ftp://ftp.scriptics.com/pub/tcl/exmh/exmh-2.1.1.tar.gz
 Url: http://www.beedub.com/exmh/
 Source1: exmh.wmconfig
-Patch1: exmh-2.1.0-conf.patch
+Patch1: exmh-2.1.1-conf.patch
 BuildRoot: /var/tmp/exmh-root
 Summary(de): EXMH-Mail-Programm
 Summary(fr): Programme de courrier EXMH
@@ -108,3 +108,4 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Oct 22 1997 Donnie Barnes <djb@redhat.com>
 - added wmconfig support
+
