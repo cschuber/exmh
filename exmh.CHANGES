@@ -1,4 +1,10 @@
 HISTORY
+
+cvs repository 05/30/2000  Bruce A. Mah <bmah@cisco.com>
+    lib/seditMime.tcl: Fix a bug introduced in last commit to this
+    file; when creating a multipart message, don't assume where the
+    separator is, just scan for it.
+
 cvs repository 05/09/2000  Valdis Kletnieks <valdis.kletnieks@vt.edu>
     exmh.TODO: remove following 2 patches from #25, add RFC2646 as #50
     Also, removed line item 8, it was already in the CVS tree..

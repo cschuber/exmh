@@ -364,9 +364,18 @@ proc SeditStartMulti {t type {empty {}} } {
     $t mark set start $h
 
     if {$sedit($t,dash)} {
+	
+	# We need to find the dash.  Rather than assume that it has
+	# a particular relation to the start index, it's probably
+	# safer to just scan for it, since the user could either
+	# 1) Delete the Content-Type: header that usually precedes
+	# the dash or 2) Insert something else before the dash.
+	# Things could be bad for us if they actually deleted the dash.
 	set dash start
-	set start "start lineend + 1c"
-#	set dash "start lineend + 1c"
+	while {[$t get $dash "$dash + 1c"] != "-"} {
+	    set dash "$dash lineend + 1c"
+	}
+
 	# Insert copy of dashed line into outer body
 	$t insert start [$t get $dash "$dash lineend"]
 	# Remove dashed line from inner body, replacing it with blank line
