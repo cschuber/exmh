@@ -69,10 +69,24 @@ proc HMtag_/head {win param textVar} {
 proc HMtag_body {win param textVar} {
     upvar #0 Head$win head
     upvar #0 HM$win var
+    
     HMextract_param $param bgcolor head(bgcolor)
     HMextract_param $param text head(foreground)
     HMextract_param $param link head(c_link)
     HMextract_param $param alink head(c_alink)
+    # Now, default any that werent in the html...
+    if {![info exists head(foreground)]} {
+	set head(foreground) [option get $win foreground Text]
+    }
+    if {![info exists head(bgcolor)]} {
+	set head(bgcolor) [option get $win background Text]
+    }
+    if {![info exists head(c_alink)]} {
+	set head(c_alink) [option get $win c_alink Text]
+    }
+    if {![info exists head(c_link)]} {
+	set head(c_link) [option get $win c_link Text]
+    }
     # Ignoring vlink, background
     set head(bodyparam) $param
     if {[info exists var(S_exmhpart)]} {
@@ -99,6 +113,7 @@ proc Head_SetColors {win w} {
 	     ([winfo class [winfo parent $w]] == "Textarea"))} {
 	return	;# Keep input form elements the original color...
     }
+    # Now, set some colors...
     if {[catch {$w config -background $head(bgcolor)}] &&
 	    [catch {$w config -background #$head(bgcolor)}]} {
 	# do nothing

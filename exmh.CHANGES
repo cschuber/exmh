@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 04/05/2000
+    lib/html_head.tcl, lib/html_links.tcl - Use app-defaults
+    c_link, c_alink values for links. - vkletnieks
+
 cvs repository 03/29/2000
     Updated lib/html/software.html - note *actual* latest versions,
     removed some dead mirrors, and added a note that nmh 1.0.3 is

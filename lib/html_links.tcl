@@ -25,6 +25,7 @@ proc HMlink_setup {win htag} {
 
     HMextract_param $htag href
     regsub -all % $href %% href2
+    $win tag configure $tag -foreground [Widget_ColorDefault $win c_link] -underline 1
     $win tag bind $tag <Enter> \
 	    [list HMlink_feedback $win hand2 $href2 $tag c_alink]
     $win tag bind $tag <Leave> \
