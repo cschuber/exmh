@@ -6,6 +6,16 @@
 #
 
 # $Log$
+# Revision 1.7  2001/05/18 22:54:22  bmah
+# Made the PGP detection code actually try to execute a program
+# (e.g. "gpg --version") and parse the output to determine the presence
+# of installed PGP versions.  Formerly, only the existence of files
+# was checked.
+#
+# For the most part, there shouldn't be any change, but this makes it easier
+# to support PGP6 under FreeBSD (the FreeBSD Ports Collection installs PGP
+# as /usr/local/bin/pgp).
+#
 # Revision 1.6  2000/06/16 18:16:26  valdis
 # Various PGP fixes...
 #
@@ -61,6 +71,9 @@ set pgp(gpg,executable,key) gpg
 set pgp(gpg,executable,verify) gpg
 set pgp(gpg,executable,encrypt) gpg
 set pgp(gpg,executable,sign) gpg
+set pgp(gpg,executable,version) gpg
+set pgp(gpg,executable,versionflags) "--version"
+set pgp(gpg,executable,versionregexp) "^gpg"
 
 if [info exists env(GNUPGHOME)] {
     set pgp(gpg,defaultPath) "$env(GNUPGHOME)"
@@ -90,6 +103,9 @@ set pgp(pgp,executable,key) pgp
 set pgp(pgp,executable,verify) pgp
 set pgp(pgp,executable,encrypt) pgp
 set pgp(pgp,executable,sign) pgp
+set pgp(pgp,executable,version) pgp
+set pgp(pgp,executable,versionflags) "-v"
+set pgp(pgp,executable,versionregexp) "^Pretty Good Privacy.* 2\."
 
 if [info exists env(PGPPATH)] {
     set pgp(pgp,defaultPath) "$env(PGPPATH)"
@@ -128,6 +144,9 @@ set pgp(pgp5,executable,key) pgpk
 set pgp(pgp5,executable,verify) pgpv
 set pgp(pgp5,executable,encrypt) pgpe
 set pgp(pgp5,executable,sign) pgps
+set pgp(pgp5,executable,version) pgpv
+set pgp(pgp5,executable,versionflags) "--version"
+set pgp(pgp5,executable,versionregexp) "^PGP.* unix5"
 
 set pgp(pgp5,defaultPath) "$pgp(pgp,defaultPath)"
 set pgp(pgp5,configFile) "$pgp(pgp5,defaultPath)/pgp.cfg"
@@ -151,6 +170,9 @@ set pgp(pgp6,executable,key) pgp6
 set pgp(pgp6,executable,verify) pgp6
 set pgp(pgp6,executable,encrypt) pgp6
 set pgp(pgp6,executable,sign) pgp6
+set pgp(pgp6,executable,version) pgp6
+set pgp(pgp6,executable,versionflags) "-v"
+set pgp(pgp6,executable,versionregexp) "^Pretty Good Privacy.* 6"
 
 if [info exists env(PGPPATH)] {
     set pgp(pgp6,defaultPath) "$env(PGPPATH)"

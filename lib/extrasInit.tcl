@@ -542,11 +542,24 @@ proc Pgp_Init {} {
     foreach v $pgp(supportedversions) {
         if { [file exists [set pgp($v,pubring)]] && 
              [file isdirectory [set pgp($v,path)]] &&
-	     [file exists $pgp($v,path)/$pgp($v,executable,verify)]} {
-            set pgp($v,enabled) 1
-            set pgp(enabled) 1
-            lappend setup $v
-        }
+	     [file exists $pgp($v,path)/$pgp($v,executable,version)]} {
+
+		 ExmhLog "Check for PGP version $v"
+
+		 catch {exec $pgp($v,path)/$pgp($v,executable,version) $pgp($v,executable,versionflags)} voutput
+
+		 ExmhLog "exec returned $voutput"
+
+		 if {[regexp $pgp($v,executable,versionregexp) $voutput]} {
+
+		     set pgp($v,enabled) 1
+		     set pgp(enabled) 1
+		     lappend setup $v
+
+		     ExmhLog "enable pgp version $v"
+
+		 }
+	}
     }
     if { ![info exists setup] } {
         return
