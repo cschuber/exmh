@@ -5,14 +5,15 @@
 VERSION=2.1.1
 
 srctar: version htmltar
-	echo CVS > Tar.exclude
-	echo misc >> Tar.exclude
-	echo lib/CVS >> Tar.exclude
-	echo lib/html/CVS >> Tar.exclude
-	echo lib/html/Tar.exclude >> Tar.exclude
-	echo .exmhinstall >> Tar.exclude
-	echo Tar.exclude >> Tar.exclude
-	echo html-$(VERSION).tar.gz >> Tar.exclude
+	echo ./CVS > Tar.exclude
+	echo ./misc >> Tar.exclude
+	echo ./lib/CVS >> Tar.exclude
+	echo ./lib/html/CVS >> Tar.exclude
+	echo ./lib/html/Tar.exclude >> Tar.exclude
+	echo ./.exmhinstall >> Tar.exclude
+	echo ./Tar.exclude >> Tar.exclude
+	echo ./html-$(VERSION).tar.gz >> Tar.exclude
+	echo ./exmh-$(VERSION).tar.gz >> Tar.exclude
 	rm -rf /tmp/exmh-$(VERSION)
 	mkdir /tmp/exmh-$(VERSION)
 	tar cvfX - Tar.exclude . | (cd /tmp/exmh-$(VERSION) ; tar xf -)
