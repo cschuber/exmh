@@ -50,26 +50,28 @@ proc ScanFolder {folder adjustDisplay} {
 	if {! $samefolder} {
 	    Ftoc_Reset [Widget_TextEnd $exwin(ftext)] {} $folder
 	}
-	set id [Ftoc_MsgNumber $ftoc(numMsgs)]
-	if [catch {
-	    Exmh_Debug Scanning new messages $id-last
-	    set input [open "|$mhProfile(scan-proc) [list +$folder] \
+	if {$ftoc(numMsgs) > 0} {
+	    set id [Ftoc_MsgNumber $ftoc(numMsgs)]
+	    if [catch {
+		Exmh_Debug Scanning new messages $id-last
+		set input [open "|$mhProfile(scan-proc) [list +$folder] \
 		    $id-last -width $ftoc(scanWidth)"]
-	    set check [gets $input]
-	    set new [read $input]
-	    close $input
-	} err] {
-	    # The last message no longer exists
-	    Exmh_Debug No last msg $id: $err
-        } else {
-	    set id2 [Ftoc_MsgNumberRaw $check]
-	    if {$id2 == $id} {
-		# Last message still matches: add the new lines
-		ScanAddLines $new
-		set ftoc(displayDirty) 1
-		set update 0	;# OK
+		set check [gets $input]
+		set new [read $input]
+		close $input
+	    } err] {
+		# The last message no longer exists
+		Exmh_Debug No last msg $id: $err
 	    } else {
-		Exmh_Debug "My last $id != $id2"
+		set id2 [Ftoc_MsgNumberRaw $check]
+		if {$id2 == $id} {
+		    # Last message still matches: add the new lines
+		    ScanAddLines $new
+		    set ftoc(displayDirty) 1
+		    set update 0	;# OK
+		} else {
+		    Exmh_Debug "My last $id != $id2"
+		}
 	    }
 	}
 	if {$update} {
