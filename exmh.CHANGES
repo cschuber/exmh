@@ -15,6 +15,9 @@ cvs repository 4/1/1999
         -Chris Keane via haldevore
     Support for color icons on main window -cwg
     New black&white and color icons -jbeck@eng.sun.com  via cwg
+    Trivial change to extrasInit.tcl to make address database
+        setting consistent between "top ten" and "address
+        database" preferences panels  -haldevore
 
 cvs repository 3/31/1999
     Make it possible to have more than one exmh on one display (iko)

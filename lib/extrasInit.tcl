@@ -89,14 +89,13 @@ folders without committing moves and delete operations.
 	{faces(enabled) facesEnabled ON {Use faces database}
 "Search for and display images from the facesaver database.
 (Faces Preferences.)"}
-
-        {   addr_db(enabled)
+	{
+            addr_db(enabled)
             addressdbEnabled
             ON
-            "Enable address saving"
-"If set, From addresses are remembered and available in an address
-browser.  Type <Control-Tab> in \"sedit\" to get address completion.
-(Address Database Preferences.)" }
+            "Automatic address saving"
+            "If set, From addresses are remembered and available in an address browser."
+	}
 
     }
 }
