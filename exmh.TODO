@@ -271,6 +271,10 @@ alternative to Content-type. Way too many attachments comes as
 application/octet-stream which effectively disables all mime display magic in 
 exmh.
 
+This should be mostly working already, save some editing of 
+app-defaults to get it to match the output of file. A quick
+look at the distributed app-defaults reveal that they seem
+to match Solaris' file. /Iko
 
 
 $Id$
