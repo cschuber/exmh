@@ -10,19 +10,6 @@
 # makes no warranty about the software, its performance or its conformity to
 # any specification.
 #
-#  Version 1.3
-#
-#  7/5/96 tlm
-#  -	Replaced 1.1's code which checked "local" and system magic files
-#	with code to check "local.magic," only.  ("file" doesn't set a
-#	return code if it doesn't get match - it returns "data," which
-#	lead to problems.)
-#  -	Added application/x-interleaf.
-#  7/11/96 tlm
-#  -	Replaced "hostname" with "uname -n".
-#  -	Added "filenameOrig" argument to "SeditTweakContentType".  Without
-#	it, "exmh" appeared to strip the path from external file reference 
-#	attachments when attempting to figure out content type.
 #
 
 proc SeditWhom { draft f t } {
@@ -170,15 +157,15 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 	    append type " ; name=\"$uuname\""
 	}
 	switch -- $encoding {
-	    base64 {   append cmd "| $mime(encode) -b " }
-	    quoted-printable {   append cmd "| $mime(encode) -q " }
+	    base64 {   lappend cmd | $mime(encode) -b }
+	    quoted-printable {   lappend cmd | $mime(encode) -q }
 	    none {set encoding {}}
-	    x-uuencode {   append cmd "| uuencode $uuname " }
+	    x-uuencode {   lappend cmd | uuencode $uuname }
 	}
 	if {[string length $cmd] == 0} {
 	    set in [open $file]
 	} else {
-	    append cmd " < $file"
+	    lappend cmd < $file
 	    Exmh_Status $cmd
 	    set in [open $cmd r]
 	}
@@ -885,3 +872,27 @@ proc SeditExternalCmd { draft t cmd } {
     }
 }
 
+proc SeditAttachQuotedMessage { draft t name } {
+	global sedit
+	if {$name != ""} {
+		if [file readable $name] {
+			set options [SeditFormatDialog $t $name]
+			eval {SeditInsertFile $draft $t $name} $options
+		} else {
+			SeditMsg $t "Cannot read $name"
+		}
+	}
+}
+
+proc SeditInsertMessageDialog { draft t } {
+	global sedit msg
+	set name [FSBox "Select message" $msg(path)]
+	if {$name != ""} {
+		if [file readable $name] {
+		set options [SeditFormatDialog $t $name]
+		eval {SeditInsertFile $draft $t $name} $options
+		} else {
+			SeditMsg $t "Cannot read $name"
+		}
+	}
+}
