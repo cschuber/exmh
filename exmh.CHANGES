@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 02/19/2003 welch@panasas.com
+    flist.tcl - fixed the Flist button, which was broken by the flistcache
+      Also fixed the autoSort feature in Flist_UpdateUnseen
+
 cvs repository 02/18/2003 welch@panasas.com
     flist.tcl, folder.tcl - oops! botched change related to Flist_UpdateUnseen
     described below.  Repackaged 2.6.1 and updated cvs tag.

@@ -64,6 +64,9 @@ proc Msg_Show { {seq cur} {show show} } {
 proc Msg_ShowCurrent {} {
     Msg_Show cur
 }
+proc Msg_ShowUnseen {} {
+    Msg_Show unseen
+}
 proc Msg_ClearCurrent { } {
     global msg exmh
     set msg(id) {}		;# Clear current message
@@ -688,6 +691,5 @@ proc MsgDecodeURL { url } {
 # Msg_CheckPoint
 # Msg_MarkUnseen
 # Msg_Seen
-# Msg_ShowUnseen
 # Msg_ShowWhat
 # Msg_UnSeen

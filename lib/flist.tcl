@@ -32,11 +32,14 @@ proc Flist_Init {} {
     Flist_FindAllFolders
 }
 proc FlistResetVars {} {
-    global flist mhProfile
+    global flist mhProfile flistcache
     set flist($mhProfile(unseen-sequence)) {}	;# Sequence of folders to visit
     set flist(unvisited) {}	;# Unseen folders not yet visited
     Exmh_Debug FlistResetVars
     set flist(unvisitedNext) {}	;# Temporary copy (next iteration)
+    if {[info exist flistcache]} {
+        unset flistcache
+    }
 
     # flist(seqcount,$folder,$seq)
     #	number of sequence elements in a folder
@@ -513,6 +516,9 @@ proc Flist_Visited { f } {
 # exmh-2.5 APIS
 proc Flist_FindUnseen args {
   eval Flist_FindSeqs $args
+}
+proc Flist_NumUnseen {folder seq} {
+  Seq_Count $folder $seq
 }
 # Flist_AddUnseen
 # Flist_ForgetUnseen
