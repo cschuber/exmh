@@ -975,6 +975,31 @@ proc Mime_ShowText {tkw part} {
     }
     return 1
 }
+proc Mime_ShowMsWord { tkw part } {
+    global mimeHdr mime miscRE
+    
+    MimeWithDisplayHiding $tkw $part {
+	set subtype [file tail $mimeHdr($part,type)]
+	Mime_WithTextFile fileIO $tkw $part {
+	    gets $fileIO firstLine
+	    if [regexp $miscRE(beginpgp) $firstLine] {
+		set mimeHdr($part,type) "application/pgp"
+		catch { unset mimeHdr($part,typeDescr) }
+		Pgp_ShowMessage $tkw $part
+	    } else {
+		set fileName [Mime_GetUnencodedFile $part]
+		if {[catch { set G [open "| antiword $fileName" r]}] && \
+                       [catch { set G [open "| lhalw -F $fileName" r]}]} {
+		    return 0;
+		}
+		$tkw insert insert [read $G]
+		close $G
+	    }
+	}
+    }
+    return 1
+}
+
 proc Mime_ShowRichText {tkw part} {
     global mimeHdr mime
 

@@ -545,7 +545,7 @@ exmh.iconic:		0
 *mime_image:			Mime_ShowImage
 *mime_application/fv-infohaus:	Mime_ShowText
 *mime_application/x-url:	Mime_ShowUri
-*mime_application/msword:		Mime_ShowXApp
+*mime_application/msword:		Mime_ShowMsWord
 *mime_application/pdf:			Mime_ShowXApp
 *mime_application/postscript:		Mime_ShowXApp
 *mime_application/x-frame:		Mime_ShowXApp
