@@ -1,4 +1,23 @@
 HISTORY
+cvs repository 02/17/2003 welch@panasas.com
+    extrasInit.tcl, pgp.tcl - picked up pgp(extpass) patch from Alexander Zangerl
+    flist.tcl - FlistFindSeqsInner added check to eliminate calls to
+        Seq_Set if the sequence information for a folder hasn't changed
+    ftoc.tcl - Changed msgtolinecache and linetomsgcache so that
+        they have no entries for empty ({}) mappings.  I was running into
+        a mapping for the last text widget line that didn't contain a message
+        and ended up messing up incremental folder scans
+        Ftoc_MsgNumber doesn't cache anything if there is no mapping
+        Retrieved FtocShowUnseen from exmh-2.5 and use that for the
+        unseen sequence instead of the more general search
+    main.tcl - a slight varition on the fix that slipcon made to the
+        millisecond time stamps.
+    mh.tcl - rooted out an "array unset" that doesn't work in Tcl 8.0
+    thread.tcl - fixed call to Flist_ForgetSequence (changed to Seq_Forget)
+    Minor HTML cleanup, including pointer to the Wiki.
+    I added comments to several files that identify old exmh APIs, including
+    flist.tcl, folder.tcl, mh.tcl, msg.tcl, 
+
 cvs repository 02/16/2003 cwg-exmh@deepeddy.com
     msg.tcl - Only call Ftoc_ShowSequence in MsgChange if we have a valid 
 	message.

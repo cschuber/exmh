@@ -684,3 +684,10 @@ proc MsgDecodeURL { url } {
     return $url
 }
 
+# exmh-2.5 APIs
+# Msg_CheckPoint
+# Msg_MarkUnseen
+# Msg_Seen
+# Msg_ShowUnseen
+# Msg_ShowWhat
+# Msg_UnSeen

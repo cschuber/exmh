@@ -278,6 +278,7 @@ proc Seq_Add {folder seq msgids} {
     }
     set known $flist(seq,$folder,$seq)
     # Subtract elements of $known from $msgids
+  Exmh_Debug Seq_Add list diff [time {
     if {[llength $known] > [llength $msgids]} {
 	set nmsgids {}
 	foreach id $msgids {
@@ -294,6 +295,7 @@ proc Seq_Add {folder seq msgids} {
 	    }
 	}
     }
+  } 1]
     set num [llength $msgids]
     if {$num <= 0} {
 	return

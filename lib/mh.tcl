@@ -436,7 +436,7 @@ proc MhReadSeqs {folder seqsvar} {
 		}
 	    }
 	    if {[catch {open $filename r} in] == 0} {
-		Exmh_Debug Reading $filename
+		Exmh_Debug MhReadSeqs Reading $filename
 		set old [read $in]
 		close $in
 		foreach line [split $old \n] {
@@ -480,7 +480,7 @@ proc MhReadSeqs {folder seqsvar} {
 		}
 	    }
 	    if {[catch {open $filename r} in] == 0} {
-		Exmh_Debug Reading $filename
+		Exmh_Debug MhReadSeq Reading $filename
 		set old [read $in]
 		close $in
 		foreach line [split $old \n] {
@@ -582,7 +582,9 @@ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
 	    Exmh_Debug "    : [info level $l]"
 	}
     }
-    array unset seqs
+    if {[info exist seqs]} {
+      unset seqs
+    }
     foreach elem [array names mhPriv] {
 	set indices [split $elem ,]
 	if {[lindex $indices 0] == {mode}} {
@@ -1209,3 +1211,8 @@ proc Mh_FindFile { filename } {
     return ""
     
 }
+# exmh-2.5 APIs
+# Mh_ClearCur 
+# Mh_MarkSeen
+# Mh_MarkUnseen
+# Mh_Unseen 

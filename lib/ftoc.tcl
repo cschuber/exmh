@@ -465,8 +465,8 @@ proc Ftoc_FindMsg { msgid } {
     if {$msgid == {}} {
         return {}
     }
-    if {![catch {set msgtolinecache($msgid)} lineno]} {
-        return $lineno
+    if {[info exist msgtolinecache($msgid)]} {
+        return $msgtolinecache($msgid)
     }
     if !$ftoc(displayValid) {
         #
@@ -496,11 +496,15 @@ proc Ftoc_FindMsg { msgid } {
     while (1) {
         if {$msgid > $maxmsgid || $msgid < $minmsgid} {
             Exmh_Status "Cannot find $msgid ($minmsgid,$maxmsgid)" warn
-            set msgtolinecache($msgid) {}
+            if {[info exist msgtolinecache($msgid)]} {
+                unset msgtolinecache($msgid)
+            }
             return {} ;# new message not listed
         }
         if {$maxlineno == $minlineno} {
-            set msgtolinecache($msgid) {}
+            if {[info exist msgtolinecache($msgid)]} {
+                unset msgtolinecache($msgid)
+            }
             return {}   ;# not found
         }
         #set nextlineno [expr int(($maxlineno+$minlineno)/2)]
@@ -516,7 +520,9 @@ proc Ftoc_FindMsg { msgid } {
             set maxmsgid $nextmsgid
         } elseif {$minlineno == $nextlineno} {
             Exmh_Status "Cannot find $msgid" warn
-            set msgtolinecache($msgid) {}
+            if {[info exist msgtolinecache($msgid)]} {
+                unset msgtolinecache($msgid)
+            }
             return {} ;# new message not listed
         } else {
             set minlineno $nextlineno
@@ -534,7 +540,7 @@ proc Ftoc_ClearMsgCache {} {
     }
 }
 proc Ftoc_MsgNumbers { linenos } {
-    global exwin linetomsgcache msgtolinecache
+    global exwin
     set msgids {}
     foreach lineno $linenos {
 	set msgid [Ftoc_MsgNumber $lineno]
@@ -546,12 +552,14 @@ proc Ftoc_MsgNumbers { linenos } {
 }
 proc Ftoc_MsgNumber { lineno } {
     global exwin linetomsgcache msgtolinecache
-    if [catch {set linetomsgcache($lineno)} msgid] {
-        if [catch {$exwin(ftext) get $lineno.0 $lineno.end} line] {
-            set linetomsgcache($lineno) {}
-            return {}
-        }
-        set msgid [Ftoc_MsgNumberRaw $line]
+    if {[info exist linetomsgcache($lineno]} {
+        return $linetomsgcache($lineno)
+    }
+    if [catch {$exwin(ftext) get $lineno.0 $lineno.end} line] {
+        return {}
+    }
+    set msgid [Ftoc_MsgNumberRaw $line]
+    if {$msgid != {}} {
         set msgtolinecache($msgid) $lineno
         set linetomsgcache($lineno) $msgid
     }
@@ -674,8 +682,15 @@ proc Ftoc_InitSequences { w } {
 	$w tag raise $seq
     }
 }
+
+# Highlight a set of messages (or all in the folder) that belong
+# to a sequence.  If msgsids is null, then we only work on that
+# subset of the folder.  Otherwise we highlight all the messages
+# in the folder that are in the sequence.
+
 proc Ftoc_ShowSequence { seq {msgids {}} } {
-    global exwin exmh
+    global exwin exmh mhProfile
+Exmh_Debug Ftoc_ShowSequence $seq msgids $msgids
     set seqids [Seq_Msgs $exmh(folder) $seq]
     if {$msgids != {}} {
 	foreach msg $msgids {
@@ -690,8 +705,12 @@ proc Ftoc_ShowSequence { seq {msgids {}} } {
 	}
     } else {
 	$exwin(ftext) tag remove $seq 1.0 end
-	foreach lineno [Ftoc_FindMsgs $seqids] {
-	    $exwin(ftext) tag add $seq $lineno.0 $lineno.end
+        if {$seq == $mhProfile(unseen-sequence)} {
+            FtocShowUnseen $seqids
+        } else {
+            foreach lineno [Ftoc_FindMsgs $seqids] {
+                $exwin(ftext) tag add $seq $lineno.0 $lineno.end
+            }
 	}
     }
 }
@@ -699,6 +718,7 @@ proc Ftoc_ShowSequence { seq {msgids {}} } {
 proc Ftoc_ShowSequences { {msgids {}} } {
     global exwin exmh
     if {$msgids == {}} {
+Exmh_Debug Ftoc_ShowSequences msgids null
 	set seqs [option get . sequences {}]
 	set hiddenseqs [option get . hiddensequences {}]
 	foreach seq $seqs {
@@ -706,11 +726,53 @@ proc Ftoc_ShowSequences { {msgids {}} } {
 		$exwin(ftext) tag remove $seq 1.0 end
 	    }
 	}
+    } else {
+Exmh_Debug Ftoc_ShowSequences msgids $msgids
     }
     foreach seq [Mh_Sequences $exmh(folder)] {
-	Ftoc_ShowSequence $seq $msgids
+        Ftoc_ShowSequence $seq $msgids
     }
 }
+
+# This is optimized for the unseen sequence, which tends to
+# cluster at the end of a folder, and get big
+
+proc FtocShowUnseen { unseen } {
+    global exwin flist
+    if {[llength $unseen] > 0} {
+Exmh_Debug FtocShowUnseen $unseen
+	set end [$exwin(ftext) index end]
+	set line [lindex [split $end .] 0]
+	set msgNum 0
+	for {} {$line > 0} {incr line -1} {
+	    set msgNum [Ftoc_MsgNumber $line]
+	    set i [lsearch $unseen $msgNum]
+	    if {$i >= 0} {
+		$exwin(ftext) tag add unseen $line.0 $line.end
+		set unseen [lreplace $unseen $i $i]
+		if {[llength $unseen] == 0} {
+		    return 1
+		}
+	    }
+	}
+        # Here is some code from the old Ftoc_ShowUnseen that
+        # I don't think we need any more
+        if {0} {
+          # Repair bogus unseen sequences
+          # msgNum is the smallest message number, but it might not be
+          # the first message in the folder because of short scans
+          # Anything in the unseen sequence above msgNum is probably wrong
+          # and can result from races with the background process
+          foreach id $unseen {
+	    if {$id > $msgNum} {
+                # This API doen't exist anymore
+		Flist_MsgSeenXXX $id
+	    }
+          }
+	}
+    }
+}
+
 proc Ftoc_RescanLine { ix {plus none} } {
     global exmh exwin ftoc
     if [catch {
@@ -1404,3 +1466,8 @@ proc FtocToggleSequence { seq } {
 	Ftoc_ShowSequence $seq $selmsgids
     }
 }
+
+# exmh-2.5 APIs
+# Ftoc_ColorConfigure
+# Ftoc_MarkSeen
+# Ftoc_ShowUnseen

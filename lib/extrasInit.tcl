@@ -642,6 +642,18 @@ other people." }
     {pgp(passtimeout) pgpPassTimeout 60 {Minutes to cache PGP passphrase}
 "Exmh will clear its memory of PGP passphrases after
 this time period, in minutes, has elapsed." }
+{pgp(extpass) pgpExtPass OFF {Use external passphrase cache}
+"If this is enabled, then exmh will use an external program to retrieve 
+your passphrase when needed. pgpKeepPass and pgpPassTimeout will 
+be ignored."}
+{pgp(getextcmd) pgpGetExtCmd {/usr/bin/q-client get %s} {Method to query external passphrase cache}
+"This external program is used to retrieve the passphrase for your key,
+if pgpExtPass is active. The passphrase is expected on stdout.
+The key id is substituted with %s (using format)." }
+{pgp(delextcmd) pgpDelExtCmd {/usr/bin/q-client delete %s} {Method to invalidate external passphrase cache}
+"This external program is used to delete the passphrase for your key
+from the external cache, if pgpExtPass is active. 
+The key id is substituted with %s (using format)." }
     }
 
     # Make sure we don't inherit a bad pgp(version) from a previous setup

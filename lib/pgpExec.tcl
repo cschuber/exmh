@@ -6,6 +6,25 @@
 # 
 
 # $Log$
+# Revision 1.20  2003/02/18 06:50:43  welch
+#     extrasInit.tcl, pgp.tcl - picked up pgp(extpass) patch from Alexander Zangerl
+#     flist.tcl - FlistFindSeqsInner added check to eliminate calls to
+#         Seq_Set if the sequence information for a folder hasn't changed
+#     ftoc.tcl - Changed msgtolinecache and linetomsgcache so that
+#         they have no entries for empty ({}) mappings.  I was running into
+#         a mapping for the last text widget line that didn't contain a message
+#         and ended up messing up incremental folder scans
+#         Ftoc_MsgNumber doesn't cache anything if there is no mapping
+#         Retrieved FtocShowUnseen from exmh-2.5 and use that for the
+#         unseen sequence instead of the more general search
+#     main.tcl - a slight varition on the fix that slipcon made to the
+#         millisecond time stamps.
+#     mh.tcl - rooted out an "array unset" that doesn't work in Tcl 8.0
+#     thread.tcl - fixed call to Flist_ForgetSequence (changed to Seq_Forget)
+#     Minor HTML cleanup, including pointer to the Wiki.
+#     I added comments to several files that identify old exmh APIs, including
+#     flist.tcl, folder.tcl, mh.tcl, msg.tcl,
+#
 # Revision 1.19  2002/07/16 01:27:54  sysphrog
 # Fixing problems with PGP sign+encrypt, gnupg 1.0.7 support
 #
@@ -689,6 +708,33 @@ proc Pgp_Exec_ExtractKeys { v file outvar {interactive 1} } {
 proc Pgp_GetPass { v key } {
     global pgp
 
+    if {[info exists pgp(extpass)] && [set pgp(extpass)] \
+	    && [info exists pgp(getextcmd)]} {
+	Exmh_Debug "Pgp_GetPass $v $key external"
+	set keyid [lindex $key 0]
+	set cmd [format $pgp(getextcmd) $keyid]
+	while (1) {
+	    Exmh_Debug "running cmd $cmd"
+	    if [ catch {exec sh -c "$cmd"} result ] {
+		Exmh_Debug "error running cmd: $result"
+		Exmh_Status "Error executing external cmd" warn
+		return {}
+	    } else {
+		if {[Pgp_Exec_CheckPassword $v $result $key]} {
+		    return $result
+		} else {
+		    Exmh_Debug "bad passphrase"
+		    if {[info exists pgp(delextcmd)]} {
+			Exmh_Debug "trying to invalidate bad passphrase"
+			if [catch {exec sh -c "[format $pgp(delextcmd) $keyid]"}] {
+			    Exmh_Debug "invalidation failed"
+			    return {}
+			}
+		    }
+		}
+	    }
+	}
+    } else {
     Exmh_Debug "Pgp_GetPass $v $key"
 
     if {[lsearch -glob [set pgp($v,privatekeys)] "[lindex $key 0]*"] < 0} {
@@ -737,6 +783,7 @@ proc Pgp_GetPass { v key } {
             }
             return $password
         }
+	}
     }
 }
 

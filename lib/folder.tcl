@@ -339,3 +339,7 @@ proc Folder_FindShared {} {
     }
     close $in
 }
+
+# exmh-2.5 APIs
+# Folder_CheckPointShared
+# Folder_Unseen

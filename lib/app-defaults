@@ -230,7 +230,7 @@ exmh.iconic:		0
 *Main.bind.m.c_compose:	Sedit_ComposeUI
 
 *Main.help.text:	Help...
-*Main.help.m.entrylist:	help colorkey html faq sep list bug reg pgp
+*Main.help.m.entrylist:	help colorkey html faq wiki sep list bug reg pgp
 *Main.help.m.l_colorkey:	Color Legend
 *Main.help.m.c_colorkey:	Help_KeyDisplay
 *Main.help.m.l_help:	Quick Intro
@@ -239,6 +239,8 @@ exmh.iconic:		0
 *Main.help.m.c_faq:	Help exmh-faq
 *Main.help.m.l_html:	HTML Docs
 *Main.help.m.c_html:	Html_Window file:\$exmh(library)/html/index.html
+*Main.help.m.l_wiki:	Exmh Wiki
+*Main.help.m.c_wiki:	Html_Window http://www.beedub.com/cgi-bin/wiki.cgi/exmh
 *Main.help.m.t_sep:	separator
 *Main.help.m.l_bug:	Submit Bug Report
 *Main.help.m.c_bug:	Report_Bug

@@ -60,6 +60,10 @@ proc FlistResetVars {} {
     if ![info exists flist(debug)] {
 	set flist(debug) 0
     }
+
+    # Note - I think this flist debugging window is obviated by
+    # the Unseen_window/Sequences_window - consider nuking it.
+
     if {$flist(debug)} {
 	trace variable flist(totalcount,$mhProfile(unseen-sequence)) w FlistTraceTotalUnseen
 	trace variable flist($mhProfile(unseen-sequence)) w FlistTraceUnseen
@@ -265,8 +269,16 @@ proc Flist_FolderSet { {subfolder .} } {
 	return $result
     }
 }
+
+# exmh-2.5
+# FlistSeq
+# Flist_ForgetUnseen
+# Flist_AddUnseen
+
 proc Flist_Done {} {
     global flist exmh
+
+    # See Flag_Trace, which has code that used to be called from this point
 
     Exmh_Debug Flist_Done
     set flist(unvisited) [FlistSort $flist(unvisitedNext)]
@@ -326,13 +338,22 @@ proc FlistFindStart {reset} {
 }
 
 proc FlistFindSeqsInner {} {
-    global flist seqwin
+    global flist seqwin flistcache
     if {[catch {
     FlistGetContext
     foreach folder $flist(unseenfolders) {
         foreach seq [Mh_Sequences $folder] {
             if {[lsearch $seqwin(nevershow) $seq] < 0} {
-                Seq_Set $folder $seq [MhGetSeqCache $folder $seq]
+                set seqlist [MhGetSeqCache $folder $seq]
+                if {![info exist flistcache($folder,$seq)] ||
+                    [string compare $seqlist $flistcache($folder,$seq)]} {
+
+                  # Cache added 2/11/03
+                  # Sequence is different than last time we checked
+
+                  set flistcache($folder,$seq) $seqlist
+                  Seq_Set $folder $seq $seqlist
+                }
             }
 	}
     }
@@ -482,3 +503,15 @@ proc Flist_Visited { f } {
 	set flist(unvisited) [lreplace $flist(unvisited) $ix $ix]
     }
 }
+
+# exmh-2.5 APIS
+proc Flist_FindUnseen args {
+  eval Flist_FindSeqs $args
+}
+# Flist_AddUnseen
+# Flist_ForgetUnseen
+# Flist_MsgSeen
+# Flist_NextUnseen
+# Flist_NumUnseen
+# Flist_ResetUnseen
+# Flist_UnseenMsgs

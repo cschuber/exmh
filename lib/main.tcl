@@ -395,12 +395,20 @@ proc ExmhLog { stuff } {
                 if {[info exist exmh(logLastClicks)]} {
                     set delta [expr {$now - $exmh(logLastClicks)}]
                     set delta_sec [expr {$sec - $exmh(logLastSeconds)}]
-                    if {($delta < 1000) && ($delta_sec > 0)} {
-                        incr delta_sec -1
-                        #set delta [expr 1000000 - $delta]
+
+                    # We don't really know how long the clock clicks value
+                    # runs before wrapping.  If the seconds delta is "too big",
+                    # we just ditch the milliseconds
+                    if {$delta < 0 || $delta_sec > 20} {
+                      $exmh(log) insert end "([format %d. $delta_sec]) "
+                    } else {
+                      set delta_sec 0
+                      while {$delta > 1000} {
+                        incr delta_sec
+                        incr delta -1000
+                      }
+                      $exmh(log) insert end "([format %d.%.03d $delta_sec $delta]) "
                     }
-                    set delta [expr { $delta % 1000 }]
-                    $exmh(log) insert end "([format %d.%.03d $delta_sec $delta]) "
                 }
                 set exmh(logLastClicks) $now
                 set exmh(logLastSeconds) $sec
