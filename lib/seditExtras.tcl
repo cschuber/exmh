@@ -264,8 +264,8 @@ proc SeditCiteSelection { draft t } {
     regsub -all "\n\n+" $line \x01 line
 
     set space ""
-    set limit 70
-    set cutoff 50
+    set limit [expr {$sedit(lineLength) - [string length $sedit(pref,replPrefix)]}]
+    set cutoff [expr {int($limit * .8)}]
 
     regsub -all {]|[.^$*+|()\[\\]} $sedit(pref,replPrefix) {\\&} pattern
     foreach line [split $line \x01] {
