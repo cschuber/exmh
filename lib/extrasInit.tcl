@@ -344,10 +344,15 @@ new messages are incorporated into your folders
 (except during startup) and when you try to change
 folders without committing moves and delete operations."} \
 	{ sound(multifile) soundMultiFile OFF {Play Multiple}
-"If your play command can handle multiple audio files,
-then set this option.  In this case Exmh can run the
-audio program in the background when it needs to
-play multiple sounds."} \
+"Exmh will play the sound once for each new message or 
+error.  If your play command can handle multiple audio 
+files in one invocation, then set this option.  With 
+this option on Exmh will run the play command in the 
+background and the sound filename will be repeated as an 
+argument for each new message.  
+
+For example, \"play sound sound sound\" would be run 
+in the background if three new messages arrived."} \
 	[list sound(bell) soundBell OFF {Use terminal bell} \
 "Ring the terminal bell instead of playing an audio file."] \
 	[list sound(cmd) soundCmd $cmd {Play command} \
@@ -357,11 +362,13 @@ name of the audio file is appended to this command line."] \
 	[list sound(newMsg) soundNewMsg drip.au {Sound for a new message} \
 "The name of an audio file to play when
 new messages have arrived.  Relative pathnames are
-searched for in the exmh script library directory."] \
+searched for in the exmh script library directory.
+Pathnames beginning with \"~\" will be expanded."] \
 	[list sound(error) soundError clink.au {Sound for an error} \
 "The name of an audio file to play when
 you forget to commit pending operations.  Relative pathnames are
-searched for in the exmh script library directory."] \
+searched for in the exmh script library directory.
+Pathnames beginning with \"~\" will be expanded."] \
 ]
     if {$sound(enabled) && ([string length $sound(cmd)] == 0)} {
 	set sound(bell) 1

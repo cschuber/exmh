@@ -2073,6 +2073,7 @@ proc MimeParseSingle {tkw part fileIO } {
 	set mimeHdr($part,params) {}
     }
     if {![info exists firstLine]} {
+	set firstLinePosition [tell $fileIO]
 	gets $fileIO firstLine
 	if [regexp $miscRE(beginpgp) $firstLine] { set mimeHdr($part,decode) 1 }
     }
@@ -2092,7 +2093,13 @@ proc MimeParseSingle {tkw part fileIO } {
 		set tag [MimeSetCharset $tkw $part]
 		$tkw tag remove noteTag "insert -1line"  end
 		$tkw tag add $tag insert end
+		if [info exists firstLinePosition] {
+		    seek $fileIO $firstLinePosition
+		}
 		Mime_SetFileEncoding $fileIO $part
+		if [info exists firstLinePosition] {
+		    gets $fileIO firstLine
+		}
 	    }  else {
 		set tag {}
 	    }
