@@ -90,7 +90,7 @@ proc FolderNewCommit { top entry } {
 	    if [info exists mhProfile(folder-protect)] {
 		exec chmod $mhProfile(folder-protect) $path/.mh_sequences
 	    }
-	} msg] {
+	} msg]} {
 	    Exmh_Debug ".mh_sequences: $msg"
 	}
 	if [info exists mhProfile(folder-protect)] {
