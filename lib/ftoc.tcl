@@ -455,22 +455,8 @@ proc Ftoc_BindRight { cmd } {
     bind $exwin(ftext) <3> $cmd
 }
 
-proc Ftoc_FindMsg { msgid {line {}} } {
+proc Ftoc_FindMsg { msgid } {
     global ftoc msgtolinecache
-    if {$line != {}} {
-	switch -glob -- $line {
-	    first  {return 1}
-	    last   {return $ftoc(numMsgs)}
-	    [0-9]* {
-		if {$line > $ftoc(numMsgs)} {
-		    return $ftoc(numMsgs)
-		} else {
-		    return $line
-		}
-	    }
-	    default {return {}}
-	}
-    }
     if {$msgid == {}} {
 	return {}
     }
@@ -635,9 +621,9 @@ proc Ftoc_ClearCurrent {} {
     }
     return $ftoc(curLine)
 }
-proc Ftoc_Change { msgid line {show show} } {
+proc Ftoc_Change { line {show show} } {
     global ftoc exwin
-    set ftoc(curLine) [Ftoc_FindMsg $msgid $line]
+    set ftoc(curLine) $line
     if {$ftoc(curLine) == {}} {
 	set ok 0
     } else {

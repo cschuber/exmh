@@ -50,7 +50,7 @@ proc ScanFolder {folder adjustDisplay} {
 	if {! $samefolder} {
 	    Ftoc_Reset [Widget_TextEnd $exwin(ftext)] {} $folder
 	}
-	set id [Ftoc_MsgNumber [Ftoc_FindMsg {} last]]
+	set id [Ftoc_MsgNumber $ftoc(numMsgs)]
 	if [catch {
 	    Exmh_Debug Scanning new messages $id-last
 	    set input [open "|$mhProfile(scan-proc) [list +$folder] \
@@ -271,12 +271,12 @@ proc Scan_CacheUpdate {} {
                 Exmh_Status "failed to rescan folder $folder: $err" warn
             }
         }
-	Ftoc_Change [Ftoc_MsgNumber $curLine] $curLine	;# Restore it
+	Ftoc_Change $curLine	;# Restore it
     } elseif [catch {
 	set cacheIO [open $cacheFile w]
 	set curLine [Ftoc_ClearCurrent]			;# Clear +
 	set display [$exwin(ftext) get 1.0 "end -1 char"]
-	Ftoc_Change [Ftoc_MsgNumber $curLine] $curLine	;# Restore it
+	Ftoc_Change $curLine	;# Restore it
 	puts $cacheIO $display nonewline
 	close $cacheIO
 	set ftoc(displayDirty) 0

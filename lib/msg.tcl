@@ -43,7 +43,7 @@ proc Msg_Pick { line {show show} } {
     set msgNum [Ftoc_MsgNumber $line]
     if {$msgNum != {} && $msgNum != 0} {
 	Ftoc_RangeUnHighlight
-	Msg_Change $msgNum $show $line
+	Msg_Change $msgNum $show
     } else {
 	Msg_ClearCurrent
     }
@@ -104,42 +104,26 @@ proc Msg_ShowSomething {} {
     global ftoc
     Msg_Pick $ftoc(numMsgs) show
 }
-proc Msg_ShowWhat { {what last} {show show} } {
-    if {$what == {}} {
-	Msg_ClearCurrent
-	return 0
-    } else {
-	Msg_Change {} $show $what
-	return 1
-    }
-}
 proc Msg_First { {show noshow} } {
-    Msg_Change {} $show first
+    Msg_Change [Ftoc_MsgNumber 1] $show
 }
 
 proc Msg_Last { {show noshow} } {
-    Msg_Change {} $show last
+    Msg_Change [Ftoc_MsgNumber $ftoc(numMsgs)] $show
 }
 
-proc Msg_Change {msgid {show show} {line {}} } {
-    Exmh_Debug Msg_Change id=$msgid line=$line
-    Exmh_Debug Msg_Change [time [list MsgChange $msgid $show $line]]
+proc Msg_Change {msgid {show show} } {
+    Exmh_Debug Msg_Change id=$msgid
+    Exmh_Debug Msg_Change [time [list MsgChange $msgid $show]]
 }
-proc MsgChange {msgid {show show} {line {}} } {
+proc MsgChange {msgid {show show}} {
     global exmh exwin msg mhProfile
 
-    if {$msgid != {}} {
-	# Allow null msgid from Msg_ShowWhat, which supplies line instead
-	if {$msgid < 0}  return
-    } else {
-        # line null too, try using first in folder
-        if {[string length $line] == 0} { set line 1 }
-	set msgid [Ftoc_MsgNumber [Ftoc_FindMsg $msgid $line]]
-    }
     Ftoc_ClearCurrent
     Mh_SetCur $exmh(folder) $msgid
     Ftoc_ShowSequences $exmh(folder)
-    if {! [Ftoc_Change $msgid $line $show]} {
+    set line [Ftoc_FindMsg $msgid]
+    if {! [Ftoc_Change $line $show]} {
 	Exmh_Status "Cannot find msg $msgid - Rescan?"
     } else {
 	if {$msg(id) == {}} {

@@ -1,6 +1,18 @@
 # pgpOld.tcl
 
 # $Log$
+# Revision 1.4  2002/07/22 21:23:48  cwg
+#     ftoc.tcl, msg,tcl, scan.tcl - Eliminate optional "line" argument to
+# 	Ftoc_FindMsg, not incidently removing *all* the code that
+# 	between the old location and the new location in my patch of
+# 	7/19; as a result, also remove the optional line argument to
+# 	Ftoc_Change and the msgid argument to Msg_Change; also, of
+# 	course, change all the callers of these functions, and remove
+# 	the dead Msg_ShowWhat proc.  This gives us a net reduction in
+# 	code and makes it all somewhat clearer. Let's see what I broke
+# 	by doing this.
+#     pgpMain.tcl, pgpOld.Tcl - Call Msg_Change, not MsgChange.
+#
 # Revision 1.3  1999/08/22 19:19:22  bmah
 # Fix typo that prevented Old PGP->Extract Keys from working.
 #
@@ -68,7 +80,7 @@ proc Pgp_Old_Decrypt { } {
     Mh_Rename $outfile $file
     File_Delete $pgpfile
     set msg(dpy) {}
-    MsgChange $msg(id)
+    Msg_Change $msg(id)
 
     return 1
 }

@@ -19,6 +19,18 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.26  2002/07/22 21:23:48  cwg
+#     ftoc.tcl, msg,tcl, scan.tcl - Eliminate optional "line" argument to
+# 	Ftoc_FindMsg, not incidently removing *all* the code that
+# 	between the old location and the new location in my patch of
+# 	7/19; as a result, also remove the optional line argument to
+# 	Ftoc_Change and the msgid argument to Msg_Change; also, of
+# 	course, change all the callers of these functions, and remove
+# 	the dead Msg_ShowWhat proc.  This gives us a net reduction in
+# 	code and makes it all somewhat clearer. Let's see what I broke
+# 	by doing this.
+#     pgpMain.tcl, pgpOld.Tcl - Call Msg_Change, not MsgChange.
+#
 # Revision 1.25  2002/03/28 20:13:12  cwg
 # Generalized unseen sequence handling to support other sequences.
 #
@@ -427,7 +439,7 @@ proc Pgp_ExmhEncrypt { v } {
     Mh_Rename $tmpfile $file
 
     set msg(dpy) {}
-    MsgChange $msg(id)
+    Msg_Change $msg(id)
 
     return 1
 }
