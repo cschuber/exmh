@@ -106,7 +106,8 @@ proc Exmh_Debug { args } {
 }
 
 # We fault in routines from the regular library of exmh procedures.
-set exmh(userLibrary) [glob ~/.tk/exmh]
+# We shouldn't depend on per-user code, so just hardwire userLibrary
+set exmh(userLibrary) ~/.exmh
 Preferences_Init "~/.exmh/exmh-defaults" "$exmh(library)/app-defaults"
 
 Mh_Init

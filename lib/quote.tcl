@@ -23,7 +23,8 @@ proc Quote_MakeFile { folder msg } {
 	return;
     } else {
 	if {$quote(symlink)} {
-	    if [catch {file link -symbolic $mhProfile(path)/$folder/$msg $quote(filename)} err] {
+            # Please avoid "file link" until we commit to Tcl 8.4
+	    if [catch {exec ln -s $mhProfile(path)/$folder/$msg $quote(filename)} err] {
 		Exmh_Debug "Quote_MakeFile: $err"
 	    }
 	} else {

@@ -2902,19 +2902,19 @@ proc Mime_ShowXApp { tkw part } {
 }
 
 proc Mime_SaveAttachments {{dir {}}} {
-    global msg mime install
+    global msg mime install argv0
 
     if {$dir == ""} {
       set dir $mime(saveDir)
     }
     file mkdir $dir
     if {[catch {
-      exec $install(dir,bin)/exmh-strip $msg(path) $dir
+      exec ${argv0}-strip $msg(path) $dir
     } err]} {
         if {[regexp {(.*) exists} $err _ file]} {
             if {[Mime_SaveAttachmentRetry $file]} {
                 file delete $file
-                exec $install(dir,bin)/exmh-strip $msg(path) $dir
+                exec ${argv0}-strip $msg(path) $dir
             }
         }
     }

@@ -174,7 +174,8 @@ proc Uri_ShowPartDirect { tkw part } {
     global mimeHdr mime
     set fileName $mimeHdr($part,file)
     File_Delete [Env_Tmp]/exmh.[pid].html
-    if [catch {file link -hard $fileName [Env_Tmp]/exmh.[pid].html}] {
+    # Please avoid "file link" until we commit to Tcl 8.4
+    if [catch {exec ln $fileName [Env_Tmp]/exmh.[pid].html}] {
 	file copy $fileName [Env_Tmp]/exmh.[pid].html
     }
     set fileName [Env_Tmp]/exmh.[pid].html

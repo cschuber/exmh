@@ -1,4 +1,15 @@
 HISTORY
+cvs repository 1/12/2005 welch@panasas.com
+  lib/uri.tcl: changed use of "file link" back to exec ln
+  lib/quote.tcl: changed use of "file link" back to exec ln
+  exmh-strip.MASTER: eliminated use of [glob ~/.exmh/tk] in
+    the setting of exmh(userLibrary), which we shouldn't need
+  lib/mime.tcl: fix the exec of exmh-strip to be ${argv0}-strip
+    to handle installations with a different base name.
+  Makefile: fixed the ftpdist production
+
+cvs tag exmh-2-7-2
+
 cvs repository 1/7/2005 welch@panasas.com
   lib/exwin.tcl: fixed up lingering focus and position issues
     with the detached message and ftoc windows.  I also trimmed

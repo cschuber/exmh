@@ -67,10 +67,10 @@ version:
 	mv exmh.install.new exmh.install
 
 ftpdist:
-	scp exmh-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
-	scp html-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
-	scp exmh.README www:~ftp/pub/tcl/exmh
-	scp lib/html/exmh.README.html www:~ftp/pub/tcl/exmh
+	scp exmh-$(VERSION).tar.gz www.tcl.tk:~ftp/pub/tcl/exmh
+	scp html-$(VERSION).tar.gz www.tcl.tk:~ftp/pub/tcl/exmh
+	scp exmh.README www.tcl.tk:~ftp/pub/tcl/exmh
+	scp lib/html/exmh.README.html www.tcl.tk:~ftp/pub/tcl/exmh
 
 htmltar:
 	echo CVS > lib/html/Tar.exclude
