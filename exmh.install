@@ -14,8 +14,8 @@
 source ./install.tcl
 
 set program exmh
-set vers 2.0.2
-set date 2/24/98
+set vers 2.0.cvs
+set date 4/99
 
 if [catch {file join a b}] {
     if {$tk_version == 4.1} {
