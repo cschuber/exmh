@@ -14,6 +14,7 @@
 proc Exmh {} {
     global exmh argv nmh
 
+    set nmh 0
     catch {string match *group* [exec repl -help] } nmh
 
     Mh_Init		;# Defines mhProfile
