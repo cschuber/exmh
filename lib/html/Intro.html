@@ -46,10 +46,10 @@ scrolled by using the scrollbar or by dragging the display with the
 middle mouse button. 
 <p>
 The middle pane lists the messages in the current folder, which comes
-from the output of the MH <em>scan</em> command. The display indicates
-the state of the message: (See <button -command Help_KeyDisplay>Color
-Legend</button> under Help... to see how these are marked on your
-display)
+from the output of the MH <code>scan</code> command. The display
+indicates the state of the message: (See 
+<button -command Help_KeyDisplay>Color Legend</button> under
+Help... to see how these are marked on your display)
 
 <ul>
 <li>current message. 
@@ -104,8 +104,9 @@ The top set of buttons are for global commands: Log, Help..., Bindings...,
 <button -command Preferences_Dialog>Preferences</button>, Aliases and
 <button -command Exmh_Done>Quit</button>. 
 <p>
-Log only appears if you enable logging in your Preferences. The log contains
-a record of actions taken, including debugging info. 
+Log only appears if you enable logging in your <button -command
+Preferences_Dialog>Preferences</button>. The log contains a record of
+actions taken, including debugging info.
 <p>
 Under Help, <button -command Help>Quick Intro</button> gives you this
 window. <button -command "Help exmh-faq">FAQ</button> shows the
@@ -160,6 +161,7 @@ The bottom set of buttons are for message operations:
 
   <dt><button -command "MsgForward">Forward</button>
   <dd>forward the current message. 
+
   <dt>More...
   <dd>a menu with more message operations: 
       <dl>
@@ -276,10 +278,10 @@ If you choose "New FTOC", then the selected messages will replace the
 current list of messages displayed in the folder table of contents.
 "Mark Seen" will remove messages from the unseen sequence. 
 <p>
-Pick uses the MH pick program, which runs a bit slowly, so have patience.
-BUG: if you have projected a New FTOC, a subsequent pick will only
-select messages still on the display. You need to rescan the folder
-to start over. Sigh. 
+Pick uses the MH <code>pick</code> program, which runs a bit slowly,
+so have patience. BUG: if you have projected a New FTOC, a subsequent
+pick will only select messages still on the display. You need to
+rescan the folder to start over. Sigh. 
 
 <h3>Miscellaneous Folder Operations</h3>
 <p>
