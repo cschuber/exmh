@@ -1080,8 +1080,19 @@ proc Mime_ShowRfc822 {tkw part} {
 		-label "Show full message headers" \
 		-command [list busy MimeRedisplayHeaders $tkw $part=1] \
 		-variable mimeHdr($part=1,fullHeaders)
+	MimeMenuAdd $part command \
+		-label "Extract a message/rfc822 into current folder" \
+		-command [list busy MimeExtractMessage $tkw $part]
     }
     return 1
+}
+
+proc MimeExtractMessage {tkw part} {
+    global exmh mimeHdr
+
+    Mh_RefileFile $exmh(folder) $mimeHdr($part,file)
+    Scan_Folder $exmh(folder) 0
+    Exmh_Status "Extraction of part $part...done" blue
 }
 
 proc Mime_ShowMDN {tkw part} {

@@ -621,6 +621,10 @@ proc Mh_Refile {srcFolder msgs folder} {
 	eval {MhExec refile} $chunk {-src +$srcFolder +$folder}
     }
 }
+proc Mh_RefileFile {folder file} {
+    Exmh_Debug exec refile -link -file $file +$folder
+    eval {exec refile -link -file $file +$folder}
+}
 proc Mh_Copy {srcFolder msgs folder} {
     while {[llength $msgs] > 0} {
 	set chunk [lrange $msgs 0 19]
