@@ -64,3 +64,13 @@ Complexity: ?
 
 Not cleaning up MIME parts saved into temp files.  Not cleaning up
 audit logs.
+
+
+
+Number: 6
+Version: 2.0.3 + cvs as of around 4/7
+Priority: Medium
+Scope: Narrow
+Complexity: ?
+
+I-Spell seems to have gotten busted.
