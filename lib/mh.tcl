@@ -217,7 +217,7 @@ proc Mh_DistSetup { folder msg } {
     MhExec dist +$folder $msg -nowhatnowproc
     MhAnnoSetup $folder $msg dist
 }
-proc MhAnnoSetup { folder msg key } {
+proc MhAnnoSetup { folder msg key args } {
     global mhProfile exmh
     set draftID [Mh_Cur $mhProfile(draft-folder)]
     set exmh($draftID,mhaltmsg) $mhProfile(path)/$folder/$msg
@@ -226,11 +226,19 @@ proc MhAnnoSetup { folder msg key } {
     set exmh($draftID,mhmessages) $msg
     set exmh($draftID,action) $key
     Exmh_Debug MhAnnoSetup action $key for $draftID
-    if {$exmh(anno,$key)} {
-	set exmh($draftID,mhanno$key) 1
-    }
-    if {$exmh(inplace,$key)} {
-        set exmh($draftID,mhinplace) 1
+
+	# I don't assume both alternative options will be set together
+	set noannoIX [lsearch $args -noannotate]
+	set annoIX [lsearch $args -annotate]
+	if { ($exmh(anno,$key) || ($annoIX >= 0)) &&  ($noannoIX < 0) } {
+		set exmh($draftID,mhanno$key) 1
+	}
+
+	set noinplaceIX [lsearch $args -noinplace]
+	set inplaceIX [lsearch $args -inplace]
+    if { ($exmh(inplace,$key) || ($inplaceIX >= 0)) && \
+		 ($noinplaceIX < 0) } {
+			set exmh($draftID,mhinplace$key) 1
     }
 }
 proc Mh_AnnoEnviron { draftID } {
