@@ -1,6 +1,10 @@
 HISTORY
 
 cvs repository 6/10/1999
+    Fix to error caused by annotation settings change
+        -Kevin Christian via haldevore
+
+cvs repository 6/10/1999
     Change to allow automatic aging and deletion of address book entries
         -Jim McMaster via haldevore
     Re-enabled the timeout of PGP passwords -cwg

@@ -217,7 +217,7 @@ proc Mh_DistSetup { folder msg } {
     MhExec dist +$folder $msg -nowhatnowproc
     MhAnnoSetup $folder $msg dist
 }
-proc MhAnnoSetup { folder msg key args } {
+proc MhAnnoSetup { folder msg key {args {}} } {
     global mhProfile exmh
     set draftID [Mh_Cur $mhProfile(draft-folder)]
     set exmh($draftID,mhaltmsg) $mhProfile(path)/$folder/$msg
