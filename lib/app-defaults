@@ -280,7 +280,7 @@ exmh.iconic:		0
 *Fops.umenulist:
 
 *Fops.more.text: 	More...
-*Fops.more.m.entrylist: rescan project back pack sort thread find delete catchup scanall scanall2 purge purgeall import audit mhprof
+*Fops.more.m.entrylist: rescan project back pack sort thread find delete catchup ketchup scanall scanall2 purge purgeall import audit mhprof
 *Fops.more.m.uentrylist:
 
 *Fops.more.m.l_rescan: 	Rescan folder
@@ -309,6 +309,8 @@ exmh.iconic:		0
 *Fops.more.m.c_delete:	Folder_Delete
 *Fops.more.m.l_catchup:	Catch-up Unseen
 *Fops.more.m.c_catchup:	Pick_MarkSeen
+*Fops.more.m.l_ketchup: Catch-up Unseen to current
+*Fops.more.m.c_ketchup: Pick_Mark2CurSeen
 *Fops.more.m.l_scanall:	Update scan caches
 *Fops.more.m.c_scanall:	Scan_AllFolders
 *Fops.more.m.l_scanall2:	Update all scan caches
