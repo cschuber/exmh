@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.16  1999/09/30 14:55:20  kchrist
+# One more fix to the cmd_User issue.
+#
 # Revision 1.15  1999/09/30 03:51:07  kchrist
 # pgp($v,cmd_Beauty) was getting in the way of pgp($v,cmd_User) for
 # v=gpg so I had to rearrange things a bit.
@@ -1436,6 +1439,9 @@ proc Pgp_InterpretOutput { v in outvar } {
 
     # get out user (for ShortenOutput) now since beautify erases needed info
     eval [set pgp($v,cmd_User)]
+    if {![info exists user]} {
+	set user UNKNOWN
+    }
 
     Exmh_Debug <TUNING>
     # An output tuning command
