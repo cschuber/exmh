@@ -355,7 +355,7 @@ proc ExmhMapped {w} {
 proc Exmh_Debug { args } {
     global exmhDebug
     if ![info exists exmhDebug] {
-	set exmhDebug 0
+	set exmhDebug 1
     }
     if {$exmhDebug} {
 	puts stderr $args
@@ -368,6 +368,7 @@ proc ExmhLogInit {} {
     set exmh(logInit) 1
     set exmh(logButton) 0
     set exmh(logWindow) 0
+    set exmh(logWrite) 0
 }
 proc ExmhLog { stuff } {
     global exmh

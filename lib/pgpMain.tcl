@@ -91,7 +91,7 @@ you want to use to generate your key?"]
 
     foreach v $wantToInstall {
 	# setup directory
-	catch { exec mkdir [set pgp($v,defaultPath)] }
+	catch { file mkdir [set pgp($v,defaultPath)] }
 	# setup config file
 	catch { exec touch [set pgp($v,configFile)] }
 	# make the key pair(s) and self sign it/them

@@ -352,7 +352,7 @@ proc ImageSave {win href} {
 	return
     }
     set path [glob -nocomplain $image(dir)]/[file tail $href]
-    if [catch {exec mv -f $data(file) $path} err] {
+    if [catch {file move -force $data(file) $path} err] {
 	Log $win ImageSave $data(file) $err
 	Status $win $err
     } else {
@@ -375,7 +375,7 @@ proc ImageSaveDir {win newdir} {
     set image(dir) $newdir
     if {[string length $image(dir)] && ![file exists $image(dir)]} {
 	if [catch {
-	    exec mkdir [glob [file dirname $image(dir)]]/[file tail $image(dir)]
+	    file mkdir [glob [file dirname $image(dir)]]/[file tail $image(dir)]
 	} err] {
 	    Status $win $err
 	}

@@ -252,7 +252,7 @@ proc Folder_Purge { {folder {}} } {
 	set folder $exmh(folder)
     }
     set uid 0
-    while {[file exists [set fn /tmp/exmh.[pid].touch.$uid]]} {
+    while {[file exists [set fn [Env_Tmp]/exmh.[pid].touch.$uid]]} {
 	incr uid
     }
     exec touch $fn
@@ -315,7 +315,7 @@ proc Folder_PurgeBg { {folderlist {}} } {
     foreach folder $folderlist {
 	puts $out "Folder_Purge $folder"
     }
-    puts $out "exec rm $fn"
+    puts $out "File_Delete $fn"
     puts $out exit
     close $out
     exec $wish -f $fn &

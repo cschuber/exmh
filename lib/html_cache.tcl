@@ -133,16 +133,7 @@ proc CacheDeleteOne {} {
     }
 }
 proc CacheMkDir {dir} {
-    global tk_version
-    if {$tk_version < 4.2} {
-	set tail [file tail $dir]
-	set dir [file dirname $dir]
-	set dir [glob -nocomplain $dir]/$tail
-	catch {mkdir $dir}
-	catch {exec mkdir $dir}
-    } else {
-	file mkdir $dir
-    }
+    file mkdir $dir
 }
 Cache_Init
 

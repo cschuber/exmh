@@ -141,7 +141,7 @@ proc Pgp_WWW_QueryWWWKey { v key } {
     if {[file exists $tmp]} {
 	Exmh_Status "Saving key $key"
 	if [Pgp_Exec_ExtractKeys $v $tmp out 0] {
-	    exec rm -f $tmp
+	    File_Delete $tmp
 	}
     } else {
 	Exmh_Status "unable to fetch key!"
@@ -163,5 +163,5 @@ proc Pgp_WWW_QueryOtherKey { v id } {
 	Exmh_Status "filing response"
 	Pgp_WWW_make_msg $id $tmp
     }
-    exec rm -f $tmp
+    File_Delete $tmp
 }

@@ -80,7 +80,7 @@ proc FolderNewCommit { top entry } {
 	    Exwin_Dismiss $top
 	    return
 	}
-	if [catch {exec mkdir $path} msg] {
+	if [catch {file mkdir $path} msg] {
 	    Exmh_Status "mkdir $path: $msg"
 	    Exwin_Dismiss $top
 	    return
@@ -88,13 +88,13 @@ proc FolderNewCommit { top entry } {
 	if {[catch {
 	    close [open [file join $path .mh_sequences] w]
 	    if [info exists mhProfile(folder-protect)] {
-		exec chmod $mhProfile(folder-protect) $path/.mh_sequences
+		file attributes $path/.mh_sequences -permissions $mhProfile(folder-protect)
 	    }
 	} msg]} {
 	    Exmh_Debug ".mh_sequences: $msg"
 	}
 	if [info exists mhProfile(folder-protect)] {
-	    exec chmod $mhProfile(folder-protect) $path
+	    file attributes $path -permissions $mhProfile(folder-protect)
 	}
     }
     Exmh_Status "Created folder $name"

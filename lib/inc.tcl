@@ -134,7 +134,7 @@ proc Inc_PresortMultidrop {} {
     # that goes into MyIncTmp will get sorted later.
     global mhProfile
     if ![file isdirectory $mhProfile(path)/MyIncTmp] {
-	exec mkdir $mhProfile(path)/MyIncTmp
+	file mkdir $mhProfile(path)/MyIncTmp
     }
     # Inc, but don't fiddle with scan listings
     Inc_All 0
@@ -223,7 +223,7 @@ proc Inc_Presort {{doinc 1}} {
     global exmh mhProfile env inc pop
     # Use inc to copy stuff into a temp directory
     if ![file isdirectory $mhProfile(path)/MyIncTmp] {
-	exec mkdir $mhProfile(path)/MyIncTmp
+	file mkdir $mhProfile(path)/MyIncTmp
     }
     if {$doinc} {
 	set cmd [list exec inc +MyIncTmp -silent]
@@ -278,7 +278,7 @@ proc Inc_Presort {{doinc 1}} {
 		# (can't stat .) lead to this behavior
 		Exmh_Status "$file - $err - check MyIncErrors"
 		if ![file isdirectory $mhProfile(path)/MyIncErrors] {
-		    exec mkdir $mhProfile(path)/MyIncErrors
+		    file mkdir $mhProfile(path)/MyIncErrors
 		}
 		Mh_Refile MyIncTmp [file tail $file] MyIncErrors 
 	    } else {
@@ -303,7 +303,7 @@ proc Inc_Presort {{doinc 1}} {
 	}
     }
     File_Delete $mhProfile(path)/MyIncTmp/$mhProfile(mh-sequences)
-    catch {exec rmdir $mhProfile(path)/MyIncTmp}
+    catch {file delete $mhProfile(path)/MyIncTmp}
 
     Flist_FindSeqs		;# Needed to set new message state.
     # This after breaks a potential deadlock:

@@ -23,7 +23,7 @@ proc Quote_MakeFile { folder msg } {
 	return;
     } else {
 	if {$quote(symlink)} {
-	    if [catch {exec ln -s $mhProfile(path)/$folder/$msg $quote(filename)} err] {
+	    if [catch {file link -symbolic $mhProfile(path)/$folder/$msg $quote(filename)} err] {
 		Exmh_Debug "Quote_MakeFile: $err"
 	    }
 	} else {

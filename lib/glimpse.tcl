@@ -485,7 +485,7 @@ proc Glimpse_Index { } {
     }
 
     if ![file isdirectory $mhProfile(path)/.glimpse] {
-	if [catch {exec mkdir $mhProfile(path)/.glimpse} err] {
+	if [catch {file mkdir $mhProfile(path)/.glimpse} err] {
 	    set glimpse(info) $err
 	    return
 	}
@@ -638,7 +638,7 @@ proc MakeDir { path } {
 	if ![file isdirectory [file dirname $path]] {
 	    MakeDir [file dirname $path]
 	}
-	exec mkdir $path
+	file mkdir $path
     }
 }
 
@@ -662,7 +662,7 @@ proc Glimpse_Batch { i cmd } {
 	set myname [winfo name .]
 	puts $out "catch \{exec $cmd\} out"
 	puts $out "catch \{send [list $myname] \[list Glimpse_BatchDone \$out\]\}"
-	puts $out "exec rm $path"
+	puts $out "file delete -force $path"
 	puts $out exit
 	close $out
 	set glimpse(done) {}
@@ -718,7 +718,7 @@ proc Glimpse_Delete { f } {
 	    append rmsg "$info"
 	} else {
 	    append rmsg "glimpse index files deleted"
-	    catch {exec rmdir $idir}
+	    catch {file delete $idir}
 	}
     }
     return $rmsg

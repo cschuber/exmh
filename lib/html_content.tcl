@@ -42,7 +42,7 @@ proc Content_default {win url} {
 		[FSBox "Location for downloaded file"]
 	    while {$localname != {}} {
 		if [catch {
-		    exec cp $data(file) $localname
+		    file copy -- $data(file) $localname
 		} err] {
 		    Status $win $err
 		} else {

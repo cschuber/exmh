@@ -81,7 +81,7 @@ proc GetNewsInt {} {
 
     # make a temp directory for putting articles in while we work
     if {![file isdirectory $mhProfile(path)/MyIncTmp]} {
-	exec mkdir $mhProfile(path)/MyIncTmp
+	file mkdir $mhProfile(path)/MyIncTmp
     }
 
     # Now get the articles from the server
@@ -227,8 +227,8 @@ proc GetNewsInt {} {
 
     NNTPClose $nntpskt [list $rcfile $nrcfile]
     if {[string length $rcfile] && [string length $nrcfile] && [catch {
-	    exec mv -f $oldrc $oldrc.old
-	    exec mv -f [glob $newsrc] $oldrc
+	    file rename -force $oldrc $oldrc.old
+	    file rename -force [glob $newsrc] $oldrc
 	    } err]} {
 	return "failed to rename .newsrc files\n$err"
     }
@@ -287,7 +287,7 @@ proc NNTPClose {nntpskt rcfiles} {
 	}
     }
     File_Delete $mhProfile(path)/MyIncTmp/$mhProfile(mh-sequences)
-    catch {exec rmdir $mhProfile(path)/MyIncTmp}
+    catch {file delete $mhProfile(path)/MyIncTmp}
 }
 
 #

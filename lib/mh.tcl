@@ -931,7 +931,7 @@ proc MhParseProfile {} {
 	set mhProfile(draft-folder) [string trim $mhProfile(draft-folder) +]
 	if {![file isdirectory $mhProfile(path)/$mhProfile(draft-folder)]} {
 	    Exmh_Status "Creating drafts folder"
-	    if {[catch {exec mkdir $mhProfile(path)/$mhProfile(draft-folder)} msgid]} {
+	    if {[catch {file mkdir $mhProfile(path)/$mhProfile(draft-folder)} msgid]} {
 		catch {
 		    puts stderr "Cannot create drafts folder $mhProfile(path)/$mhProfile(draft-folder)"
 		}
@@ -1019,7 +1019,7 @@ Is it ok if Exmh sets up your MH environment for you?
 proc MhSetupNewUserInner {} {
     global mhProfile exmh
     set exmh(newuser) 1
-    catch {exec mkdir [glob ~]/Mail}
+    catch {file mkdir [glob ~]/Mail}
     if {![file exists $mhProfile(profile)]} {
 	set out [open $mhProfile(profile) w]
 	puts $out "Path: Mail"
@@ -1063,7 +1063,7 @@ proc MhSetupDraftFolderInner {} {
     set dir $mhProfile(path)/$mhProfile(draft-folder)
     if {![file isdirectory $dir]} {
 	if {[catch {
-	    exec mkdir $dir
+	    file mkdir $dir
 	    Exmh_Status "Created drafts folder \"+drafts\""
 	} err]} {
 	    Exmh_Status "Cannot create a drafts folder! $err" error
@@ -1190,14 +1190,8 @@ proc Mh_Pathname { profile } {
     return $mhProfile(path)/$profile
 }
 
-set mh_mv_flag -f
 proc Mh_Rename { old new } {
-    global mh_mv_flag tk_version
-    if {$tk_version >= 4.2} {
 	file rename -force $old $new
-    } else {
-	eval exec mv $mh_mv_flag {$old $new} < /dev/null
-    }
 }
 
 # find a *comp* file going up from the current folder

@@ -18,6 +18,7 @@ proc Report_Bug {} {
 	Exmh_Status "Cannot write $draft"
 	return
     }
+    Report_UseComp $out
     puts $out "To: $exmh(maintainer)"
     puts $out "Subject: exmh bug"
     puts $out "------"
@@ -35,6 +36,7 @@ proc Report_Registration {} {
 	Exmh_Status "Cannot write $draft"
 	return
     }
+    Report_UseComp $out
     puts $out \
 "To: welch@acm.org
 Subject: Register exmh user
@@ -71,6 +73,7 @@ proc Report_Subscribe {list what} {
 	Exmh_Status "Cannot write $draft"
 	return
     }
+    Report_UseComp $out
     puts $out "To: $list-request@redhat.com"
     puts $out "Subject: $what"
     puts $out "------"
@@ -81,3 +84,25 @@ proc Report_Subscribe {list what} {
     Edit_DraftID [file tail $draft]
 }
 
+proc Report_UseComp {out} {
+    global mhProfile
+
+    set cfile "components"
+    if [info exists mhProfile(comp)] {
+	# ugly regexp, but it works.
+	if [regsub -- {.*-form[[:space:]]*([^[:space:]]*).*} $mhProfile(comp) {\1} profcomp] {
+	    set cfile $profcomp
+	}
+    }
+    set compfile "$mhProfile(path)/$cfile"
+    if {![catch {open $compfile r} in]} {
+	set comps [read $in]
+	close $in
+	# Now copy over the components, but swallow to/subject/cc....
+	foreach line [split $comps \n] {
+	    if ![regexp {^To:|^Subject:|^[Cc][Cc]:|^-----|^$} $line] {
+		puts $out $line
+	    }
+	}
+    }
+}

@@ -14,9 +14,7 @@
 </a>
 <li><a href="#newexmhinstallers">New EXMH Installers 
 </a>
-<li><a href="#requiredpkgs">Required Packages 
-</a>
-<li><a href="#optionalpkgs">Optional Packages 
+<li><a href="#othersoftware">Required and Optional Packages 
 </a>
 <li><a href="#knownbugs">Known Bugs 
 </a>
@@ -40,7 +38,7 @@
 </a>
 <li><a href="#send">Tk Send Problem
 </a>
-<li><a href="#remark">Concluding Remarks 
+<li><a href="#remarks">Concluding Remarks 
 </a>
 <li><a href="#author">Author 
 </a>
@@ -69,16 +67,15 @@ file.
 <hr>
 
 <h3><a NAME="newexmhinstallers">New EXMH installers</a></h3>
-Please read through *all* of this, thanks, especially the part at the
+Please read through <em>all</em> of this, thanks, especially the part at the
 end about the TK send command. See also the on-line FAQ file under
 the Help... menu. 
 <p>
 The exmh documentation is now all in HTML and viewable from within
 exmh. 
-<hr>
 <p>
 Please encourage your <i>exmh</i> users to REGISTER via the Register
-menu entry under the Help... menu. This let's me track <i>exmh</i>
+menu entry under the Help... menu. This lets me track <i>exmh</i>
 usage and get user feedback. I won't abuse this registration - there
 is no obligation associated with registration, but I would like all
 <i>exmh</i> users to do it. 
@@ -86,24 +83,22 @@ is no obligation associated with registration, but I would like all
 All registration does is send me a mail message. You get to add your
 comments, pro and con, about <i>exmh</i>. I've learned a lot from the
 2000+ registrations I have received so far. Thanks! 
-<p>
+<hr>
+<h3><a NAME="othersoftware">Other software you'll need</a></h3>
 EXMH lives "high in the food chain". You'll need some additional software.
 Please review the
 <a href="software.html">necessary and optional packages</a> for exmh.
-
+<hr>
 <h4><a NAME="knownbugs">Known Bugs</a></h4>
-<h5>AIX BUG that results in no buttons or menus</h5>
-The Aix 3.2 compiler does not compile tkOption.c correctly when optimization
-is turned on. The symptom of this is a message like "exmh: Error in
-./lib/app-defaults: missing colon on line 2" and there are no buttons
-or menus in the interface. 
+See the <code>exmh.BUGS</code> and <code>exmh.TODO</code> files in the
+distribution, or the <a HREF="http://sourceforge.net/projects/exmh/">Exmh SourceForge </a> site.
 <hr>
 <h4><a NAME="wiki">Exmh Wiki</a></h4>
-See <a HREF="http://www.beedub.com/cgi-bin/wiki.cgi/exmh/">exmh wiki</a>
+See the <a HREF="http://www.beedub.com/cgi-bin/wiki.cgi/exmh/">exmh wiki</a>
 for a web site you can use to share tips and tricks with other users.
 <hr>
 <h4><a NAME="faq">Frequently Asked Questions</a></h4>
-See <a HREF="http://www.beedub.com/exmh/exmh-faq.html">exmh-faq.html</a> for answers to some frequently
+See the <a HREF="http://www.beedub.com/exmh/exmh-faq.html">exmh-faq.html</a> for answers to some frequently
 asked questions. This information is now available via the FAQ button
 in <i>exmh</i>. 
 <hr>
@@ -205,7 +200,7 @@ to host <i>exmh</i> for a while. Update your bug mail address ("maintainer")
 to Brent.Welch@acm.org
 </ul>
 <p>
-Multidrop+Inc style inc has been added. Set up your <font COLOR="#FFFFF0">.xmhcheck</font>
+Multidrop+Inc style inc has been added. Set up your <code>.xmhcheck</code>
 file to use the MyIncTmp folder. Any messages in that folder get sorted
 by slocal. 
 <p>
@@ -228,7 +223,7 @@ exmh-ref.l - a terse description of all buttons and menu entries.
 <hr>
 <h4><a NAME="performance">Performance Hints</a></h4>
 Grab the <a HREF="http://www.scriptics.com/software/8.0.html">Tcl/Tk
-8.0 </a>releases for a nice performance boost! 
+8.0</a> releases for a nice performance boost! 
 <p>
 Squeeze the last drop out of message display by disabling the separator
 bars in message display. (Show Graphic Part Separator under MIME) 
@@ -237,7 +232,7 @@ Really large folders make <i>exmh</i> run slowly. Take this as a hint
 to reorganize things into sub-folders if you have more than 500 or
 so messages in a folder. 
 <p>
-Bound the unseen folder search by defining the <font COLOR="#FFFFF0">.mh_profile</font>
+Bound the unseen folder search by defining the <code>.mh_profile</code>
 
 <pre>
 	Folder-Unseen: pattern pattern pattern
@@ -245,7 +240,7 @@ Bound the unseen folder search by defining the <font COLOR="#FFFFF0">.mh_profile
 *, so all folders are searched. 
 <hr>
 <h4><a NAME="reverse">Reverse Video</a></h4>
-It takes just a few resource settings in your <font COLOR="#FFFFF0">~/.exmh/exmh-defaults-mono</font>
+It takes just a few resource settings in your <code>~/.exmh/exmh-defaults-mono</code>
 file to get reverse video on a black and white display: 
 <pre>
 ! For widgets
@@ -260,7 +255,7 @@ file to get reverse video on a black and white display:
 Did you know you can colorize rfc822 headers in the message display
 by setting *m_tagnames and related X resources? This feature has been
 around for some time, but seems to be little-known. Here's what I have
-in my <font COLOR="#FFFFF0">~/.exmh/exmh-defaults-color</font> file. 
+in my <code>~/.exmh/exmh-defaults-color</code> file. 
 <pre>
 *m_tagnames:    hidden subject from x-filters-matched content-type x-mailer repl
 ied replied-to
@@ -305,34 +300,34 @@ Scriptics, The Tcl/Tk Platform Company, John Ousterhout.
 <p>
 Honorable mentions: 
 <ul>
-<li>John LoVerso (<a href="mailto:loverso@osf.org">loverso@osf.org</a>
-) who contributed the popup nested folder display. 
-<li>Chris Garrigues (<a href="mailto:cwg@deepeddy.com">cwg@deepeddy.com</a>
-) who rewrote the mime display code, and recently generalized sequence
+<li>John LoVerso (<a href="mailto:loverso@osf.org">loverso@osf.org</a>),
+who contributed the popup nested folder display. 
+<li>Chris Garrigues (<a href="mailto:cwg@deepeddy.com">cwg@deepeddy.com</a>),
+who rewrote the mime display code, and recently generalized sequence
 handling.
-<li>Marc VanHeyningen (<a href="mailto:mvanheyn@cs.indiana.edu">mvanheyn@cs.indiana.edu</a>
-) who wrote the mailcap parsing code. 
-<li>Allen Downey, <a href="mailto:downey@cs.berkeley.edu">downey@cs.berkeley.edu</a>
+<li>Marc VanHeyningen (<a href="mailto:mvanheyn@cs.indiana.edu">mvanheyn@cs.indiana.edu</a>),
+who wrote the mailcap parsing code. 
+<li>Allen Downey (<a href="mailto:downey@cs.berkeley.edu">downey@cs.berkeley.edu</a>),
 who provided PGP support. 
-<li>Scott Stanton, <a href="mailto:sstanton@eng.sun.com">sstanton@eng.sun.com</a>
+<li>Scott Stanton (<a href="mailto:sstanton@eng.sun.com">sstanton@eng.sun.com</a>),
 who contributed the alias browser. 
-<li>Anders Klments, <a href="mailto:klements@it.kth.se">klements@it.kth.se</a>
+<li>Anders Klements (<a href="mailto:klements@it.kth.se">klements@it.kth.se</a>),
 also updated the PGP code, and more 
-<li>Stefan Monnier, <a href="mailto:monnier@di.epfl.ch">monnier@di.epfl.ch</a>
+<li>Stefan Monnier (<a href="mailto:monnier@di.epfl.ch">monnier@di.epfl.ch</a>),
 updated and maintains the PGP code 
-<li>Martin Hamilton, <a href="mailto:martin@mrrl.lut.ac.uk">martin@mrrl.lut.ac.uk</a>
+<li>Martin Hamilton (<a href="mailto:martin@mrrl.lut.ac.uk">martin@mrrl.lut.ac.uk</a>),
 who provided the URL highlighting 
-<li>Achim Bohnet, <a href="mailto:ach@rosat.mpe-garching.mpg.de">ach@rosat.mpe-garching.mpg.de</a>
+<li>Achim Bohnet (<a href="mailto:ach@rosat.mpe-garching.mpg.de">ach@rosat.mpe-garching.mpg.de</a>),
 for cleanup and generalization. 
-<li>Berry Kerchival, <a href="mailto:kerch@parc.xerox.com">kerch@parc.xerox.com</a>
+<li>Berry Kerchival (<a href="mailto:kerch@parc.xerox.com">kerch@parc.xerox.com</a>),
 for the address memorization package. 
 <li>Olly Stephens, who contributed the unseen window display which has
 now been merged into the seqwin display. 
-<li>Ben Escoto, <a href="mailto:bescoto@stanford.edu">bescoto@stanford.edu</a>,
+<li>Ben Escoto (<a href="mailto:bescoto@stanford.edu">bescoto@stanford.edu</a>),
 who contributed the multipart/security code for PGP. 
-<li>Hal DeVore, <a href="mailto:haldevore@geocities.com">haldevore@geocities.com</a>,
+<li>Hal DeVore (<a href="mailto:haldevore@geocities.com">haldevore@geocities.com</a>),
 who overhauled the address book.
-<li>J C Lawrence, <a href="mailto:claw@kanga.nu">claw@kanga.nu</a>,
+<li>J C Lawrence (<a href="mailto:claw@kanga.nu">claw@kanga.nu</a>),
 who worked on the message colorization code.
 
 </ul>
@@ -385,7 +380,7 @@ or just to periodically count up the messages in your mail spool file.
 <b>Various inc styles</b>. <i>Exmh</i> knows about three styles of
 inc usage: Inc from your spool file to your inbox folder. Inc from
 your spool file or POP host to a set of dropboxes as specified by your
-<font COLOR="#FFFFF0">~/.xmhcheck</font> file. Inc from your spool
+<code>~/.xmhcheck</code> file. Inc from your spool
 file directly into folders. <i>exmh</i> can run the MH filtering program
 (<i>slocal</i>) for you, or you can let an external agent presort mail
 into folders for you. 
@@ -409,7 +404,7 @@ and runs quite fast. The indexes are only about 10% of the space of
 your mail database. 
 <p>
 <b>User preferences</b>. You can tune <i>exmh</i> through a dialog
-box. The settings are saved in an Xresource-style file named <font COLOR="#FFFFF0">.exmh/exmh-defaults</font>.
+box. The settings are saved in an Xresource-style file named <code>.exmh/exmh-defaults</code>.
 You can also put font and color resource specifications in this file,
 plus there are a few random parameters not exposed via preferences.
 
@@ -433,11 +428,11 @@ file system specific pathnames and enable or disable features that
 your system cannot support (e.g., facesaver, sound). You can test out
 <i>exmh</i> via this dialog before installing it. 
 <p>
-Upon startup, <i>exmh.install</i> looks around for <font COLOR="#FFFFF0">.exmhinstall</font>
+Upon startup, <i>exmh.install</i> looks around for <code>.exmhinstall</code>
 files from previous installations. It will ask you which one you want
 to use, unless there is already one in the current directory. You can
 also use the <b>Conf button</b> to look for config files. This lets
-you maintain a set of config files, <font COLOR="#FFFFF0">.exmhinstall.*</font>
+you maintain a set of config files, <code>.exmhinstall.*</code>
 if you need this for multiple architectures, for example. 
 <p>
 In the install dialog, the "Script Library" and the "Install lib directory"
@@ -460,7 +455,7 @@ unpacked the <i>tar</i> file.
 After you set things up in the dialog box, then hit some buttons: 
 <ul>
 <li>Patch - to apply site-dependent patches to <i>exmh</i>. The configuration
-is saved into a <font COLOR="#FFFFF0">.exmhinstall</font> file. 
+is saved into a <code>.exmhinstall</code> file. 
 <li>TclIndex - to compute the auto-load library index. 
 <li>Test - to run the patched script. 
 <li>Verify - to see what the Install will do. 
@@ -473,7 +468,7 @@ not correct.
 
 <h3><a NAME="send">Tk Send Problems</a></h3>
 <p>
-<font COLOR="#0FFFFF">VERY IMPORTANT. PLEASE READ. SOURCE OF MANY PROBLEMS.
+<font COLOR="#FF0000">VERY IMPORTANT. PLEASE READ. SOURCE OF MANY PROBLEMS.
 READ THIS HERE :-)</font> 
 <p>
 <i>exmh</i> depends on the TK send facility for its background processing.
@@ -496,7 +491,7 @@ how to start up the X server so it does the right Xauthentication stuff.
 
 <p>
 Here is one example, for SunOS openwindows. This is an excerpt from
-an <font COLOR="#FFFFF0">.xserverrc</font> file: 
+an <code>.xserverrc</code> file: 
 <pre>
     if [ ! \( -d $HOME -a -w $HOME \) ]; then
       echo "Warning: Can't write X authority file" 1&gt;&amp;2 ;
@@ -512,14 +507,14 @@ an <font COLOR="#FFFFF0">.xserverrc</font> file:
 <li>some program generates a magic cookie (arbitrary string) and writes
 this to a file. 
 <li>The name of this file is passed to the X server 
-<li>The X server writes an entry for the DISPLAY into your <font COLOR="#FFFFF0">~/.Xauthority</font>
+<li>The X server writes an entry for the DISPLAY into your <code>~/.Xauthority</code>
 file. 
-<li>Xlib reads <font COLOR="#FFFFF0">~/.Xauthority</font> when you
+<li>Xlib reads <code>~/.Xauthority</code> when you
 create a window, and passes the cookie value back to the X server.
 </ul>
 If you have the <i>xauth</i> program and your server doesn't like to
 be told about the intermediate file, then you can use <i>xauth</i>
-to write into the <font COLOR="#FFFFF0">~/.Xauthority</font> file for
+to write into the <code>~/.Xauthority</code> file for
 you, and apparently the right thing will happen. If this sounds vague,
 it is. For precise details, do some experimentation or ask your local
 X guru. If you come up with particular solutions, feel free to post

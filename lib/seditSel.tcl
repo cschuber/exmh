@@ -163,8 +163,8 @@ proc SeditSelSpell { f t } {
 	puts $out "exec [lrange $editor(spell) 1 end] $path"
 	puts $out "\}"
 	puts $out [list send [winfo name .] [list SeditReplaceSel $t $path]]
-	puts $out "exec rm -f $path"
-	puts $out "exec rm -f $script"
+	puts $out "file delete -force $path"
+	puts $out "file delete -force $script"
 	puts $out exit
 	close $out
 	exec $wish -f $script &
@@ -173,7 +173,7 @@ proc SeditSelSpell { f t } {
 
     # Display the results of the spell program
     catch {eval exec $prog {$path}} result
-    catch {exec rm $path}
+    catch {file delete -force $path}
 
     set f2 [Widget_Frame $parent spell {top fill}]
 

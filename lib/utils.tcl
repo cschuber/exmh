@@ -48,25 +48,20 @@ proc ldelete {varList value} {
     }
 }
 
-proc makedir { pathname } {
-    file mkdir $pathname
-}
+# This doesn't seem to be used by anything...
+#proc makedir { pathname } {
+#    file mkdir $pathname
+#}
 
 proc Visibility_Wait {win} {
     catch {tkwait visibility $win}
 }
+
 proc File_Delete {args} {
-    global tcl_version
-    if {$tcl_version >= 7.6} {
-	foreach f $args {
-	    if [file isdirectory $f] {
-		error "Should not delete directories this way"
-	    }
-	    file delete -force $f
-	}
-    } else {
-	if {[llength $args]} {
-	    eval {exec /bin/rm -f} $args
-	}
+    foreach f $args {
+        if [file isdirectory $f] {
+    	error "Should not delete directories this way"
+        }
+        file delete -force $f
     }
 }

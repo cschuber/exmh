@@ -57,7 +57,7 @@ proc TiogaViewTioga {tkw part} {
     set out [Mime_TempFile tioga]
     exec $tioga(converter) $mimeHdr(0,file) > $out
     exec /import/Xmisc/bin/viewtioga $out &
-    after 60000 [list exec rm -f $out]
+    after 60000 [list file delete -force $out]
 }
 proc TiogaSetDefault {tkw part variable} {
     upvar #0 $variable var

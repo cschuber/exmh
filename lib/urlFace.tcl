@@ -43,7 +43,7 @@ proc UrlGetCachedImageFileName { href } {
 
     set cachedImagesDir "[glob ~]/.exmh/exmh-images"
     if {![file exists $cachedImagesDir]} {
-	exec mkdir $cachedImagesDir
+	file mkdir $cachedImagesDir
     }
     set imageFile "$cachedImagesDir/$trhref"
 
@@ -214,7 +214,7 @@ proc UrlFaceQueryDone { href filename msgPath pane } {
 	UrlFaceLog "normalized file is $normalized"
 
 	UrlFaceLog "executing cp [glob $normalized] $filename"
-	if [catch {exec cp [glob $normalized] $filename} err] {
+	if [catch {file copy  -- [glob $normalized] $filename} err] {
 	    Exmh_Status "cannot create face file in ~/.exmh/exmh-images! ($err)" warning
 	    UrlFaceLog "cannot create face file in ~/.exmh/exmh-images! ($err)"
 	    FaceShowFile $exmh(library)/loaderror.ppm $pane
@@ -235,7 +235,7 @@ proc Url_displayFace { href imageFile {pane {}} } {
     UrlFaceLog "displaying face from $imageFile"
     if ![FaceShowFile $imageFile $pane] {
 	# Remove the cached image in case of errors
-	catch {exec rm -f $imageFile}
+	catch {file delete -f $imageFile}
 	lappend failedURLs $href
 	FaceShowFile $exmh(library)/loaderror.ppm $pane
 	return 0

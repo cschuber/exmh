@@ -339,7 +339,7 @@ proc Scan_AllFolders { {force 0} } {
 	}
     }
     puts $out "catch \{send $myname \{Exmh_Status \"scans completed\"\}\}"
-    puts $out "exec rm $ctx.\[pid\]"
+    puts $out "file delete -force $ctx.\[pid\]"
     puts $out exit
     close $out
     Exmh_Status "wish -f [Env_Tmp]/scancmds &"

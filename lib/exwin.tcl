@@ -178,7 +178,7 @@ proc Exwin_Layout {} {
     pack propagate $exwin(msgframe) 0
 
     # Frame for faces, status, message buttons
-    set mid     [Widget_Frame .msgframe mid Mid $fixed]
+    set mid [Widget_Frame .msgframe mid Mid $fixed]
     Widget_SplitFrameR $mid Face Right
     Faces_Create $mid.left
 

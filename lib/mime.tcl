@@ -2344,8 +2344,8 @@ proc Mime_SavePiece {part type} {
     set name [FSBox "Save $type to:" $default]
     if {$name != {}} {
 	if [catch {
-	    exec cp $fileName $name
-	    exec chmod $mhProfile(msg-protect) $name
+	    file copy -- $fileName $name
+	    file attributes $name -permissions $mhProfile(msg-protect)
 	} err] {
 	    Exmh_Status $err
 	}

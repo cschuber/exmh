@@ -373,7 +373,7 @@ exmh.iconic:		0
 !
 ! Resources that create the Message ops buttons and menus
 !
-*Mops.menulist:		more reply
+*Mops.menulist:		more reply spam
 *Mops.umenulist:
 
 *Mops.reply.text: 	Reply...
@@ -388,6 +388,17 @@ exmh.iconic:		0
 *Mops.reply.m.t_sep:	separator
 *Mops.reply.m.l_help:	Defining more...
 *Mops.reply.m.c_help:	Msg_ReplyHelp
+
+*Mops.spam.text:	Spam...
+*Mops.spam.m.entrylist: yes no f_yes f_no
+*Mops.spam.m.l_yes:	Learn as Spam
+*Mops.spam.m.c_yes:	Bogo_Filter spam
+*Mops.spam.m.l_no:	Learn as Ham
+*Mops.spam.m.c_no:	Bogo_Filter ham
+*Mops.spam.m.l_f_yes:	Learn Folder as Spam
+*Mops.spam.m.c_f_yes:	Bogo_FilterFolder spam
+*Mops.spam.m.l_f_no:	Learn Folder as Ham
+*Mops.spam.m.c_f_no:	Bogo_FilterFolder ham
 
 *Mops.more.text: 	More...
 *Mops.more.m.entrylist: 	print unmark clip xunseen burst distrib save use edit uudecode postscript apply1 apply2 munseen pgp uriscan uriopen partial ref post grabaddr
@@ -476,17 +487,17 @@ exmh.iconic:		0
 
 *Mops.groups:		current range nodraft comp pgp
 
-*Mops.g_current:	link move delete reply forward
+*Mops.g_current:	link move delete reply forward spam
 *Mops.gm_current:	Print {Unmark (Undo)} Clip Redistribute {Burst Digest} {Save to file} {Use message as draft} {Edit message} {uudecode message} {Print postscript content} {Apply command to body} {Apply command to message} {Mark Unseen} {PGP Encrypt} {old PGP...} {Highlight URI} {Scan for URLs} {View selected URL} {Post this message to a Newsgroup} {Automatic Refile} {Concatenate partial messages} {Save "From" address}
 *Mops.ug_current:
 *Mops.ugm_current:
 
-*Mops.g_range:		link move delete forward
+*Mops.g_range:		link move delete forward spam
 *Mops.gm_range:		Print {Unmark (Undo)} {Mark Unseen} {Concatenate partial messages}
 *Mops.ug_range:
 *Mops.ugm_range:
 
-*Mops.g_nodraft:	reply forward
+*Mops.g_nodraft:	reply forward spam
 *Mops.gm_nodraft:	Redistribute
 *Mops.ug_nodraft:
 *Mops.ugm_nodraft:

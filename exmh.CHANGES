@@ -1,4 +1,47 @@
 HISTORY
+
+cvs repository 07/26/2004 valdis.kletnieks@vt.edu
+  catch CVS up to a weekend's worth of concentrated coding...
+
+  Bayesian filter stuff...
+  lib/bogo.tcl - Add support for spamassassin's sa-learn program
+  lib/app-defaults - Add a menu for bogo.tcl calls, as the stuff in
+  misc/README.mybogo.html is woefully out of date - in fact, it didn't
+  handle a "range" of messages at all.  The grey-out code for the Spam...
+  menu is wonky - it *should* grey out if $bogo(inUse) is false, but that's
+  too complicated for 3AM coding.  Also, you can't learn a folder unless you
+  first select a message.  Adding key-S and key-H bindings also not done...
+  If anybody cares enough, feel free to fix/improve/add it... :)
+  lib/html/software.html - Mention spamassassin as an optional package
+  lib/html/custom.html - Document the Preferences pane for bogo.tcl, and
+  sort the list to match the actual display order of the entries. A few small
+  clean-ups..
+
+  Doc fixups..
+  lib/html/exmh.README.html - fix a typo in Anders Klement's name, and
+  cleaned up some broken HTML links/etc and outdated info (like an AIX 3.2
+  bug - if anybody's trying to install exmh on a 3.2 system, that's the least
+  of their worries...)
+
+  lib/report.tcl - DTRT if user has a personalized 'components' file, or
+  a 'comp: -form some.other.comps' MH profile.. (very important if they 
+  have stuff like a From: header needed to make the mail actually usable...)
+
+  lib/folder.tcl - Change a /tmp to [Env_Tmp] to stop races
+  lib/utils.tcl - remove pre-TCL 8.0 code from File_Delete
+  lib/mh.tcl - remove ancient tk4.2 code from Mh_Rename
+
+  lib/folder.tcl, lib/glimpse.tcl, lib/pgpWWW.tcl, lib/scan.tcl,
+  lib/seditExtras.tcl, lib/seditSel.tcl, lib/tioga.tcl, lib/urlFace.tcl,
+  lib/folderNew.tcl, lib/getnews.tcl, lib/glimpse.tcl, lib/html_content.tcl,
+  lib/html_cache.tcl, lib/html_images.tcl, lib/inc.tcl, lib/mime.tcl,
+  lib/mh.tcl, lib/quote.tcl, lib/pgpMain.tcl, lib/preferences.tcl,
+  lib/uri.tcl - replace 'exec chmod' with 'file attributes -permissions'
+  replace 'exec mkdir' with 'file mkdir', 'exec ln' with 'file link',
+  'exec mv' with 'file rename',  most 'exec cp' with 'file copy',
+  'exec rmdir' with 'file delete',
+  mass change of 'exec rm' to either File_Delete or [file delete -force'
+
 cvs repository 07/18/2004 valdis.kletnieks@vt.edu
   lib/fileselect.tcl - Be more anal-retentive in what default names we
   will accept. Alphanumeric, period, hyphen, underscore only.  Also, we
