@@ -15,6 +15,11 @@ cvs repository 05/10/2001 Brent Welch <welch@panasas.com>
     lib/main.tcl: Removed the exmh(userLibrary) preference setting.
 	This is hardwired (the code is in exmh.MASTER) to be either
 	~/.exmh/lib (a new, preferred value) or
+	~/.tk/exmh (the old, historical location)
+	The first directory that exists is used.
+    lib/pop.tcl: Minor tweak to focus settings in password dialog.
+    lib/seditBind.tcl: Added auto_loads to try and avoid loosing
+    	bindings when Tk library files are loaded.
 
 cvs repository 04/20/2001 Ovidiu Predescu <ovidiu@cup.hp.com>
     lib/uri.tcl (URI_StartViewer): Invoke Msg_CompTo instead of
