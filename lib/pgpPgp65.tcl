@@ -1,6 +1,9 @@
 # pgpPgp65.tcl
 
 # $Log$
+# Revision 1.4  2000/06/15 17:03:11  valdis
+# Add X-Mailer: change, fix PGP Comment: line...
+#
 # Revision 1.3  2000/06/09 05:42:17  valdis
 # Fixed the OTHER broken regexp...
 #
@@ -40,7 +43,7 @@ proc Pgp_pgp6_Preferences {} {
     set label $pgp(pgp6,fullName)
     Preferences_Add "$label interface" {} [list \
 	[list pgp(pgp6,comment) pgp6Comment \
-	"Exmh $exmh(version)" "PGP 6.5 Comment" \
+	"Exmh [set exmh(version)]" "PGP 6.5 Comment" \
 	"Specify the comment PGP 6.5 should put in the comment field
 	of encrypted or signed text."]
 	]
@@ -167,7 +170,7 @@ set pgp(pgp6,pat_validKeys) "\n(Type.*\n(sig|pub|sec)\[^\n]*)"
 ##################
 # InterpretOutput
 # command that matches out keyid in pgp output
-set pgp(pgp6,cmd_Keyid) {if {![regexp -nocase {KeyID: ([0-9a-f]+)} $in {} pgpresult(keyid)]} {
+set pgp(pgp6,cmd_Keyid) {if {![regexp -nocase {KeyID: (?:0x)([0-9a-f]+)} $in {} pgpresult(keyid)]} {
 		regexp {0x([0-9A-F]+)} $in {} pgpresult(keyid) } }
 
 

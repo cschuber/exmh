@@ -1,6 +1,9 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.12  2000/06/15 17:03:11  valdis
+# Add X-Mailer: change, fix PGP Comment: line...
+#
 # Revision 1.11  2000/04/18 18:38:33  valdis
 # Fix quote character to use ascii rather than iso8859-ish one
 #
@@ -103,7 +106,7 @@ proc Pgp_gpg_Preferences {} {
     set label $pgp(gpg,fullName)
     Preferences_Add "$label interface" {} [list \
                 [list pgp(gpg,comment) gpgComment \
-"Exmh $exmh(version)" "GnuPG Comment" \
+"Exmh [set exmh(version)]" "GnuPG Comment" \
 "Specify the comment GnuPG should put in the comment field
 of encrypted or signed text."] \
                 [list pgp(gpg,modulepath) gpgModulePath \

@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 06/15/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
+    lib/main.tcl, lib/sedit.tcl, lib/seditMime.tcl - output MH version
+    as well as Exmh on X-Mailer: line
+    lib/pgpExec.tcl, lib/pgpGpg.tcl, lib/pgpPgp65.tcl - make PGP Comment: 
+    line track the Exmh version actually used...
+
 cvs repository 06/12/2000 Brent Welch <welch@ajubasolutions.com>
 
     sedit.tcl: Fixed auto-sign bug having to do with {$t} in app-defaults.

@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.13  2000/06/15 17:03:11  valdis
+# Add X-Mailer: change, fix PGP Comment: line...
+#
 # Revision 1.12  2000/04/18 18:38:33  valdis
 # Fix quote character to use ascii rather than iso8859-ish one
 #
@@ -154,7 +157,7 @@ proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
 
 # batch mode
 proc Pgp_Exec_Batch { v exectype arglist outvar {password {}} } {
-    global pgp
+    global pgp exmh
     upvar $outvar output
 
     Exmh_Debug "Pgp_Exec_Batch $v $exectype $arglist $outvar \(password\)"
