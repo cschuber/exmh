@@ -1397,17 +1397,10 @@ proc FtocToggleSequence { sequencename } {
     set msgs {}
     Ftoc_Iterate line {
 	set msgid [Ftoc_MsgNumber $line]	
-	if {$flag == {del}} {
-	    if {[lsearch -exact $sequence $msgid] == -1} {
-		    set flag add
-		set msgs {}
-	    }
-	    lappend msgs $msgid
-	} else {
-	    if {[lsearch -exact $sequence $msgid] == -1} {
-		lappend msgs $msgid
-	    }
+	if {[lsearch -exact $sequence $msgid] == -1} {
+	    set flag add
 	}
+	lappend msgs $msgid
     }
     if {$msgs != {}} {
 	Mh_SequenceUpdate $folder $flag $sequencename $msgs

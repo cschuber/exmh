@@ -664,15 +664,17 @@ proc MhSeqMake { msgs } {
     set last $result
     set id {}
     foreach id [lrange $msgs 1 end] {
-	if {$id == $last + 1} {
-	    set last $id
-	} else {
-	    if {$last != $first} {
-		append result -$last
+	if {$id != $last} {
+	    if {$id == $last + 1} {
+		set last $id
+	    } else {
+		if {$last != $first} {
+		    append result -$last
+		}
+		set first $id
+		set last $id
+		append result " $first"
 	    }
-	    set first $id
-	    set last $id
-	    append result " $first"
 	}
     }
     if {$id == $last && [string length $msgs]} {
