@@ -63,7 +63,7 @@ install_sed  .MASTER	exmh exmh-bg exmh-async ftp.expect
 install_dir  man	/usr/man/manl	{Install man directory}
 install_glob man	exmh*.l
 install_dir  lib	/usr/local/lib/exmh-$vers	{Install lib directory}
-install_glob lib	lib/*.tcl lib/*.bitmap lib/*.ppm lib/help.* lib/*.FAQ lib/tclIndex lib/app-defaults*  lib/*.mask lib/*.exp lib/mime.types lib/*.au lib/html lib/PgpDecryptExpect
+install_glob lib	lib/*.tcl lib/*.bitmap lib/*.gif lib/*.ppm lib/help.* lib/*.FAQ lib/tclIndex lib/app-defaults*  lib/*.mask lib/*.exp lib/mime.types lib/*.au lib/html lib/PgpDecryptExpect
 
 # Define test command
 install_test exec ./exmh &
