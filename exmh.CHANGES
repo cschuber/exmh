@@ -6,6 +6,8 @@ cvs repository 08/12/1999
 	basis.  Decryption now works when no passphrases are cached.
 	One timeout parameter controls passphrases for all PGP 
 	versions.  seditpgp UI slightly modified.  --bmah
+    Get rid of "PGP Preview" menu item in sedit left over from
+	debugging.  --bmah
 
 cvs repository 08/10/1999
     Properly use [Env_Tmp] in the below patch -cwg

@@ -895,7 +895,7 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.c_alt: SeditAlternate $draft $t
 
 *Sedit.Menubar.pgp.text:	Crypt...
-*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpversion pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey pgppreview
+*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpversion pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey
 *Sedit.Menubar.pgp.m.l_pgpencrypt:	Encrypt
 *Sedit.Menubar.pgp.m.t_pgpencrypt:	check
 *Sedit.Menubar.pgp.m.v_pgpencrypt:	pgp(encrypt,$id)
@@ -951,9 +951,6 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.c_signkey:	Pgp_SetMyName \$pgp(version,$id) $id
 *Sedit.Menubar.pgp.m.l_clear:	Clear Cached Password
 *Sedit.Menubar.pgp.m.c_clear:	Pgp_ClearPassword
-
-*Sedit.Menubar.pgp.m.l_pgppreview: PGP Preview
-*Sedit.Menubar.pgp.m.c_pgppreview: Pgp_EncryptDebug $draft
 
 ! This stuff is just a skeleton.  The functions don't do much yet
 *Sedit.Menubar.mime.text:	Mime...
