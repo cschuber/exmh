@@ -997,9 +997,9 @@ proc Mime_ShowMsWord { tkw part } {
 		Pgp_ShowMessage $tkw $part
 	    } else {
 		set fileName [Mime_GetUnencodedFile $part]
-		if {[catch { set G [open "| antiword $fileName" r]}] && \
-                       [catch { set G [open "| lhalw -F $fileName" r]}]} {
-		    return 0;
+		if {[catch {open "| antiword $fileName" r} G] && \
+                       [catch {open "| lhalw -F $fileName" r} G]} {
+		    return 0
 		}
 		$tkw insert insert [read $G]
 		close $G
@@ -1036,9 +1036,15 @@ proc Mime_WithTextFile {fileIOVar tkw part body} {
 
     Mime_SetFileEncoding $fileIO $part
 
-    uplevel $body
+    # Errors or "return" statements hit this catch
+
+    set code [catch {uplevel $body} err]
 
     MimeClose $fileIO
+
+    # Reflect errors or early returns like a true control structure
+
+    return -code $code $err
 }
 
 proc Mime_SetFileEncoding {fileIO part} {
