@@ -19,12 +19,12 @@ srctar: version htmltar
 	echo ./exmh-\*.src.rpm >> Tar.exclude
 	echo ./exmh-\*.noarch.rpm >> Tar.exclude
 	echo ./rpmroot >> Tar.exclude
-	rm -rf /tmp/exmh-$(VERSION)
-	mkdir /tmp/exmh-$(VERSION)
-	tar cvfX - Tar.exclude . | (cd /tmp/exmh-$(VERSION) ; tar xf -)
-	(cd /tmp ; tar cf - exmh-$(VERSION) | gzip > /tmp/exmh-$(VERSION).tar.gz)
-	mv /tmp/exmh-$(VERSION).tar.gz .
-	rm -rf /tmp/exmh-$(VERSION)
+	echo ./exmh-$(VERSION) >> Tar.exclude
+	rm -rf ./exmh-$(VERSION)
+	mkdir ./exmh-$(VERSION)
+	tar cvfX - Tar.exclude . | (cd ./exmh-$(VERSION) ; tar xf -)
+	(tar cf - exmh-$(VERSION) | gzip > ./exmh-$(VERSION).tar.gz)
+	rm -rf ./exmh-$(VERSION)
 
 clean:
 	rm -f ./Tar.exclude
@@ -35,6 +35,7 @@ clean:
 	rm -f ./exmh-*.src.rpm
 	rm -f ./lib/html/exmh.CHANGES.txt
 	rm -rf ./rpmroot/
+	rm -rf ./exmh-$(VERSION)
 
 rpm:	srctar
 	mkdir -p rpmroot/{SOURCES,SPECS,BUILDROOT,RPMS/noarch,SRPMS,BUILD}
@@ -45,30 +46,6 @@ rpm:	srctar
 	rpm -ba --define "_topdir `pwd`/rpmroot" --buildroot=`pwd`/rpmroot/BUILDROOT rpmroot/SPECS/exmh.spec
 	cp rpmroot/RPMS/noarch/exmh-$(VERSION)-1.noarch.rpm .
 	cp rpmroot/SRPMS/exmh-$(VERSION)-1.src.rpm .
-
-userrpm:	srctar
-	mkdir /tmp/exmhredhat/
-	mkdir /tmp/exmhredhat/BUILD
-	mkdir /tmp/exmhredhat/RPMS
-	mkdir /tmp/exmhredhat/RPMS/noarch
-	mkdir /tmp/exmhredhat/SOURCES
-	mkdir /tmp/exmhredhat/SPECS
-	mkdir /tmp/exmhredhat/SRPMS
-	mkdir /tmp/exmhredhat/BUILDROOT
-	echo -e "include: /usr/lib/rpm/rpmrc \
-	\nmacrofiles: /usr/lib/rpm/macros:/usr/lib/rpm/%{_target}/macros:/etc/rpm/macros:/etc/rpm/%{_target}/macros:~/.rpmmacros:./rpmmacros" > /tmp/exmhredhat//rpmrc
-	echo "%_topdir /tmp/exmhredhat" > /tmp/exmhredhat/rpmmacros
-	cp exmh-$(VERSION).tar.gz /tmp/exmhredhat/SOURCES/
-	sed 's/VERSION/$(VERSION)/g' < misc/RPM/exmh-conf.patch > /tmp/exmhredhat/SOURCES/exmh-$(VERSION)-conf.patch
-	cp misc/RPM/exmh.wmconfig /tmp/exmhredhat/SOURCES/
-	sed 's/EXMHVERSION/$(VERSION)/g' < misc/RPM/exmh.spec > /tmp/exmhredhat/SPECS/exmh.spec
-	(cd /tmp/exmhredhat/ ; rpm -ba --rcfile /tmp/exmhredhat/rpmrc /tmp/exmhredhat/SPECS/exmh.spec)
-	cp /tmp/exmhredhat/RPMS/noarch/exmh-$(VERSION)-1.noarch.rpm .
-	cp /tmp/exmhredhat/SRPMS/exmh-$(VERSION)-1.src.rpm .
-	rm -rf /tmp/exmhredhat
-
-snapuserrpm:
-	make userrpm VERSION=$(VERSION)_$(SNAPDATE)
 
 snaprpm:
 	make rpm VERSION=$(VERSION)_$(SNAPDATE)
