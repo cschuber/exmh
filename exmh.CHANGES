@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 03/29/2000
+    Updated lib/html/software.html - note *actual* latest versions,
+    removed some dead mirrors, and added a note that nmh 1.0.3 is
+    recommended due to security issues.
+			-vkletnieks
+
 cvs repository 03/23/2000
     Some work on the FAQ
     a)  Added new question 2c, dealing with RFC2047 encoded headers,
@@ -22,7 +28,7 @@ cvs repository 02/29/2000
     Happy leap century day!
 
 cvs repository 02/02/2000
-    Fixed hard-coded '-wrap word' -vklenieks
+    Fixed hard-coded '-wrap word' -vkletnieks
 
 cvs repository 02/02/2000
     Fixed hard-coded 'config -cursor xterm' -vkletnieks
