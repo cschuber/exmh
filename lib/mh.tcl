@@ -427,7 +427,7 @@ proc Mh_SetCur { f msgid } {
     }
     Exmh_Debug Mh_SetCur +$f cur $msgid
     Mh_SequenceUpdate $f replace cur $msgid
-    catch {MhExec mark +$f $msgid -seq cur -zero}
+#    catch {MhExec mark +$f $msgid -seq cur -zero}
     set mhPriv(cur,$f) $msgid
 }
 proc Mh_Cur { f } {
