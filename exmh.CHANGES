@@ -1,9 +1,14 @@
 HISTORY
 cvs repository 07/03/2001 cwg-exmh@deepeddy.com
-    scan.tcl = Remove unnecessary call to Ftoc_Reset in ScanFolder
+    scan.tcl - Remove unnecessary call to Scan_Folder in FolderChange.
+	Probably should have removed this when I added the call to
+	Flist_UnseenUpdate at the same point yesterday.
+
+cvs repository 07/03/2001 cwg-exmh@deepeddy.com
+    scan.tcl - Remove unnecessary call to Ftoc_Reset in ScanFolder
 
 cvs repository 07/02/2001 cwg-exmh@deepeddy.com
-    folder.tcl - Call Flist_UnseenUpdate just before callig Scan_Folder 
+    folder.tcl - Call Flist_UnseenUpdate just before calling Scan_Folder 
 	in FolderChange
 
 cvs repository 07/02/2001 cwg-exmh@deepeddy.com
