@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 11/17/2000 Brent Welch <brent.welch@interwoven.com>
+    lib/glimpse.tcl - Grouped some expressions with { } to avoid 
+    double-substitutions on file and directory names.  If they had
+    $ in them it would raise errors.
+
 cvs repository 11/08/2000 Brent Welch <brent.welch@interwoven.com>
     lib/inc.tcl - Added the option to use an expect script that
     wraps the "inc" program and deals with the password prompt.

@@ -492,7 +492,7 @@ proc Glimpse_Index { } {
     }
 
     if {! $glimpse(singleIndex)} {
-	set folders [expr $glimpse(giall)?"$flist(allfolders)":"$exmh(folder)"]
+	set folders [expr {$glimpse(giall)?"$flist(allfolders)":"$exmh(folder)"}]
 
 	# only update if out of date
 	set i 0
@@ -562,8 +562,8 @@ proc Glimpse_Index { } {
 		regexp -- {.*= ([0-9]+) B.* = ([0-9]+)$} \
 			[lindex $rl $ix] all bytes files
 		set isize [expr \
-			[file size $idir/.glimpse_index] + \
-			[file size $idir/.glimpse_filenames]]
+			{[file size $idir/.glimpse_index] + \
+			[file size $idir/.glimpse_filenames]}]
 		if {$bytes > 0} {
 		    set overhead [expr 100.0 * $isize / $bytes]
 		} else {
@@ -606,8 +606,8 @@ proc Glimpse_Index { } {
 		regexp -- {.*= ([0-9]+) B.* = ([0-9]+)$} \
 			[lindex $rl $ix] all bytes files
 		set isize [expr \
-			[file size $gdir/.glimpse_index] + \
-			[file size $gdir/.glimpse_filenames]]
+			{[file size $gdir/.glimpse_index] + \
+			[file size $gdir/.glimpse_filenames]}]
 		if {$bytes > 0} {
 		    set overhead [expr 100.0 * $isize / $bytes]
 		} else {
@@ -688,7 +688,7 @@ proc Glimpse_Unindex {} {
     $t mark set insert 1.0
     $t configure -state disabled
     if {! $glimpse(singleIndex)} {
-	set folders [expr $glimpse(giall)?"$flist(allfolders)":"$exmh(folder)"]
+	set folders [expr {$glimpse(giall)?"$flist(allfolders)":"$exmh(folder)"}]
     } else {
 	set folders "."
     }
