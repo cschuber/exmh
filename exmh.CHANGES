@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 11/04/1999
+    Disable PGP sign and/or encrypt when doing a redistribute. -kchrist
+
 cvs repository 10/29/1999
     Fix bug introduced with previous PGP options change. -kchrist
 

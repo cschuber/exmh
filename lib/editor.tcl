@@ -321,13 +321,26 @@ proc EditStart { draft {type prog} } {
     Exmh_Debug EditStart $draft $type
 
     if $pgp(enabled) {
-	# Copy the default PGP values into this window only if they
-	# don't already exists. This way, we preserve values between
-	# re-edit sessions. Edit_Done takes care of resetting to 
-	# preference values when we send or abort (ie. get done draft).
 	set id [SeditId $draft]
-	foreach var {encrypt sign format version} {
-	    if ![info exists pgp($var,$id)] {set pgp($var,$id) $pgp($var)}
+	if {$exmh(ctype) == "dist"} {
+	    # Disable PGP operations when redistributing a message
+	    set pgp(sign,$id) none
+	    set pgp(encrypt,$id) 0
+	    foreach var {format version} {
+		if ![info exists pgp($var,$id)] {
+		    set pgp($var,$id) $pgp($var)
+		}
+	    }
+	} else {
+	    # Copy the default PGP values into this window only if they
+	    # don't already exists. This way, we preserve values between
+	    # re-edit sessions. Edit_Done takes care of resetting to 
+	    # preference values when we send or abort (ie. get done draft).
+	    foreach var {encrypt sign format version} {
+		if ![info exists pgp($var,$id)] {
+		    set pgp($var,$id) $pgp($var)
+		}
+	    }
 	}
     }
     
