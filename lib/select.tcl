@@ -50,6 +50,7 @@ proc Select_EntryBind { w } {
     bind $w <Any-Key>	{SelectTypein %W %A}
     bind $w <Key-plus>	{SelectToggle %W }
     bind $w <space>	{SelectComplete %W}
+    bind $w <Tab>	{SelectComplete %W}
     bind $w <Return>	{SelectReturn %W}
     bind $w <BackSpace>	{SelectBackSpace %W}
     bind $w <Control-h>	{SelectBackSpace %W}
