@@ -199,6 +199,15 @@ own email address."}
 	{mime(explainReport) explainReports OFF {Show report explanations}
 "This controls whether human-readable explanations are presented along
 with the machine-readable part (part 2) of multipart/report messages."}
+{mime(mime_alternative_prefs) mime_alternative_prefs {} 
+{multipart/alternative precedence} 
+"If a message contains a MIME part of type multipart/alternative, exmh 
+will select one of the alternatives for display. You can control the 
+order of preference of the various alternatives. The most common use 
+for this is to establish the precedence of text/plain over text/html 
+for exmh users who do not use the in-line html viewer for showing 
+text/html content. If no value of mime_alternative_prefs is provided, 
+exmh will display the last alternative that it is capable of displaying."}
     }
     set i 0
     foreach char {A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \
