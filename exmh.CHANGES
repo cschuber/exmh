@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 1/3/2005 welch@panasas.com
+  lib/exwin.tcl: Fixed packing bug for ftoc window that means it
+    didn't match the ftext lines preference setting.
+
 cvs repository 1/2/2005 welch@panasas.com
   lib/app-defaults: added "Save/Extract Attachments" that calls
     Mime_SaveAttachments.

@@ -136,7 +136,8 @@ proc Exwin_Layout {} {
     Buttons_Main $exwin(mainButtons)
     Label_MainSetup $exwin(mainButtons)
 
-    # Folders with unread messages
+    # Fdisp is a canvas that displays a "button for each folder
+    # that indicates its unseen message state.
     Fdisp_Window [Widget_Frame . flist Fdisp $fixed]
 
     # The folder buttons and Ftoc display are put in here
@@ -145,16 +146,16 @@ proc Exwin_Layout {} {
     } else {
         set exwin(ftocframe) [Widget_Frame . ftocframe Ftoc $fixed]
     }
-    # Turning off pack propagation is almost never a good thing
-    # pack propagate $exwin(ftocframe) 0
-
     # Second row of buttons for folder ops and current folder label
     set exwin(fopButtons) [Widget_Frame .ftocframe fops Fops $fixed]
     Buttons_Folder $exwin(fopButtons)
     Label_FolderSetup $exwin(fopButtons)
 
-    # Folder display (Ftoc)
-    set exwin(ftext) [Widget_Text [Widget_Frame .ftocframe ftoc Ftoc $expand] \
+    # Folder display (Ftoc).  If this shares the window with the message
+    # display, then do the non-expand (i.e., fixed) packing.  Otherwise
+    # pack it so it with expand enabled so it fills up the window.
+    set pack_opts [expr {$exwin(toplevelMsg) ? "$expand" : "$fixed"}]
+    set exwin(ftext) [Widget_Text [Widget_Frame .ftocframe ftoc Ftoc $pack_opts] \
 				$exwin(ftextLines)]
     Ftoc_Bindings $exwin(ftext)
     Ftoc_InitSequences $exwin(ftext)
