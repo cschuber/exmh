@@ -1,7 +1,7 @@
 Summary: The exmh mail handling system.
 Name: exmh
 Version: EXMHVERSION 
-Release: 1
+Release: 3
 BuildArchitectures: noarch
 Requires: mh, metamail
 Copyright: freeware
@@ -94,8 +94,14 @@ find $RPM_BUILD_ROOT/usr/lib/exmh-%{version}    -type f | grep -v $RPM_BUILD_ROO
 cat filelist
 %clean
 rm -rf $RPM_BUILD_ROOT
-
+#
+# Maybe the /usr/lib stuff in the %dir clause and the find statement should
+# be changed to use %{_libdir}? Does %files -f support macros?
+#
 %files -f filelist
+%dir /usr/lib/exmh-%{version}
+%dir /usr/lib/exmh-%{version}/html
+%dir /usr/lib/exmh-%{version}/bitmaps
 %defattr(-,root,root)
 %doc COPYRIGHT exmh.BUGS exmh.CHANGES exmh.TODO exmh.README lib/html/
 %config /etc/X11/wmconfig/exmh 
