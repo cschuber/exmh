@@ -4,6 +4,10 @@ cvs repository 4/14/1999
     Added Mime_SetFileEncoding to set the character set encodings when
 	reading mail messages. Tcl 8.1 automatically converts the characters
 	to Unicode as it reads the file. -welch
+    Fixed installation glitch where hitting Verify before Patch would
+	raise an error about an undefined variable. - welch
+    Tweaked Makefile and added PatchVersion to help in making releases. -welch
+    Added a file create of .mh_sequences to the New Folder code - welch.
 
 cvs repository 4/13/1999
     Took the "Dates display localtime in parentheses" enhancement from March
