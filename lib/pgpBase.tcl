@@ -6,6 +6,10 @@
 #
 
 # $Log$
+# Revision 1.8  2003/05/20 03:43:30  welch
+# pgpPgp65.tcl added version check improvement for PGP 6.5 (Neil Rickert)
+#   (added . - and _ to the pattern, too (kre))
+#
 # Revision 1.7  2001/05/18 22:54:22  bmah
 # Made the PGP detection code actually try to execute a program
 # (e.g. "gpg --version") and parse the output to determine the presence
@@ -202,7 +206,7 @@ set pgp(pgp6,ownPattern) "."
 ## ButtonMenuInner
 set pgp(pgp6,pat_MenuInner) {PGP6}
 ## Version checking and Compatibilty
-set pgp(pgp6,pat_Version) "Version:\[ \t\]*6\.5.*"
+set pgp(pgp6,pat_Version) "Version:\[ \t-._A-Za-z\]*6\.5.*"
 set pgp(pgp6,list_Alien) {pgp pgp5 gpg}
 
 ###

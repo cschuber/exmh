@@ -1,6 +1,8 @@
 HISTORY
 cvs repository 05/19/2003 welch@panasas.com
   pgpPgp65.tcl - Added +compatible=off to batchmode flags (Neil Rickert)
+    added version check improvement for PGP 6.5 (Neil Rickert)
+    (added . - and _ to the pattern, too (kre))
   preferences.tcl - In the toplevel display, 
       changed row of unsorted buttons to a sorted listbox
 
