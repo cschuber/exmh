@@ -409,7 +409,7 @@ proc UnseenWinMove {y} {
 }
 
 proc UnseenWinClick {y mode} {
-    global unseenwin exmh
+    global unseenwin exmh ftoc
     
     set mode $unseenwin($mode)
     
@@ -429,6 +429,9 @@ proc UnseenWinClick {y mode} {
 		Folder_Change $folder Msg_ShowUnseen
 	    }
 	} elseif {[string compare $mode "Warp & Show"] == 0} {
+	    if {!$ftoc(displayValid)} {
+		Folder_Change $folder
+	    }
 	    Msg_ShowUnseen
 	}
     }

@@ -108,6 +108,7 @@ proc FolderChange {folder msgShowProc} {
         }
 	set summary {}
     }
+    set ftoc(displayValid) 1
     set exmh(started) 1
     global folderHook
     if [info exists folderHook(leave,$oldFolder)] {

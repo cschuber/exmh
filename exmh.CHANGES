@@ -1,5 +1,9 @@
 HISTORY
 cvs repository 08/06/2002 cwg-exmh@deepeddy.com
+    folder.tcl - Mark display valid when we change folders.
+    unseenwin.tcl - Change folder if the display isn't valid.
+
+cvs repository 08/06/2002 cwg-exmh@deepeddy.com
     app-defaults, fcache.tcl, flag.tcl, flist.tcl, ftoc.tcl, inc.tcl,
     main.tcl, mh.tcl, msg.tcl, pick.tcl, scan.tcl, sequences.tcl
     thread.tcl, unseenwin.tcl - 
