@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 06/20/2000 Brent Welch <welch@ajubasolutions.com>
+    lib/exec.tcl: Put catch around the unsets of ExecCache.
+    Errors can occur in Pgp_Exec_Init if the path to PGP is wrong.
+
 cvs repository 06/16/2000 Bruce A. Mah <bmah@cisco.com>
     lib/html/exmh-faq.html:  Add FAQ #22 about giving preference 
       to displaying text/plain over text/html.  Fix minor HTML glitch 
