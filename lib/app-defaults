@@ -450,7 +450,7 @@ exmh.iconic:		0
 *Mops.more.m.c_ref: Folder_AutoRefile
 *Mops.more.m.l_post: Post this message to a Newsgroup
 *Mops.more.m.c_post: Post
-*Mops.more.m.l_grabaddr: Save "From" address
+*Mops.more.m.l_grabaddr: Save From address
 *Mops.more.m.c_grabaddr: Address_Save
 *Mops.more.m.l_attach: Save/Extract Attachments
 *Mops.more.m.c_attach: Mime_SaveAttachments

@@ -1,4 +1,5 @@
 #!wish
+#(Note - you should also be able to use tclsh with this.)
 #
 # Utility to strip out attachments from MIME messages.
 # They are replaced with references to the external files.
@@ -13,13 +14,21 @@
 # that reference the saved attachment. 
 #
 # This script is invoked from a procedure like the following,
-# which you can put into your ~/.tk/exmh library of custom scripts.
+# which is now build into mime.tcl.  There is also a MIME preference
+# to choose the save directory, which is hardwired in this example.
 
-proc Save_Attachments {} {
+proc Mime_SaveAttachments {} {
     global msg
 
     exec [glob ~/bin/exmh-strip] $msg(path) [glob ~/doc]
     Msg_ShowCurrent
+}
+
+# You can also use this from a small shell script, e.g.:
+if {0} {
+  #!/bin/csh
+  tclsh8.3 ~/bin/exmh-strip `mhpath cur` ~/doc
+  ls -lt ~/doc | head -2
 }
 
 # Here are some resources for your exmh-defaults that add this to a new menu.
@@ -46,6 +55,7 @@ proc Save_Attachments {} {
 if {[catch {wm withdraw .}]} {
     # Stub out stuff when not running under wish
     proc option {args} {return ""}
+    proc winfo {args} {return ""}
     set pref(panes) ""
     set exmh(userLibrary) ""
 }

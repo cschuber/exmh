@@ -1,5 +1,11 @@
 HISTORY
 cvs repository 1/4/2005 welch@panasas.com
+  exmh-strip.MASTER: Added stub for "winfo" so I could run this with
+   tclsh instead of wish.  Updated comments.
+  lib/app-defaults: Eliminated " " from the {Save "From" addr} menu entry
+    because it looks like that entry raises errors sometimes.
+
+cvs repository 1/4/2005 welch@panasas.com
   lib/mime.tcl: fixed handling of non-existent attachement save directory
 
 cvs repository 1/3/2005 welch@panasas.com
