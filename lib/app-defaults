@@ -522,8 +522,8 @@ exmh.iconic:		0
 *mime_multipart/parallel:	Mime_ShowMultipartParallel
 *mime_multipart/alternative:	Mime_ShowMultipartAlternative
 *mime_multipart/x-tioga:	Tioga_ShowMsg
-*mime_multipart/encrypted:		Pgp_MimeShowMultipartEncryptedPgp
-*mime_multipart/signed:			Pgp_MimeShowMultipartSignedPgp
+*mime_multipart/encrypted:		MimeShowMultipartEncrypted
+*mime_multipart/signed:			MimeShowMultipartSigned
 *mime_multipart/report:			Mime_ShowMultipartReport
 *mime_application/x-shell-script:	Mime_ShowShellScript
 *mime_audio/basic:			Mime_ShowAudio
@@ -583,7 +583,7 @@ exmh.iconic:		0
 *sigProts:		application/pgp-signature
 *sigUProts:
 !
-*sig_application/pgp-signature:	MimeShowMultipartSignedPgp
+*sig_application/pgp-signature:	Pgp_MimeShowMultipartSignedPgp
 !
 ! Encryption message type handlers
 ! cryptProts lists the known encryption protocols
@@ -593,7 +593,7 @@ exmh.iconic:		0
 *cryptProts:		application/pgp-encrypted
 *cryptUProts:
 !
-*crypt_application/pgp-encrypted:	MimeShowMultipartEncryptedPgp
+*crypt_application/pgp-encrypted:	Pgp_MimeShowMultipartEncryptedPgp
 
 ! Quoting options
 ! quoteAdd or quoteUAdd list the MIME types to add

@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 11/05/1999
+    Removed app-defaults assumption of PGP use when treating 
+    multipart/signed or multipart/encrypted -kchrist
+
 cvs repository 11/04/1999
     Disable PGP sign and/or encrypt when doing a redistribute. -kchrist
 
