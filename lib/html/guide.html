@@ -741,12 +741,17 @@ The <i>Insert File...</i> menu entry is used to insert a file as-is,
 with no MIME structure. The file is inserted at the current insert
 point in the editor. 
 <p>
-The <i>Insert @</i> button is used to insert the body of the message
-being replied to. This button is only enabled when you are replying
-to a message. The body is formatted a little, just by prefixing each
-line of the message body with a string. The default is "&gt; ", and
-you can change this via the Simple Editor 
-<Button -Command Preferences_Dialog>Preferences</Button> section.  
+The <i>Quote...</i> menu is used to quote the message you are
+replying to. This menu is only enabled when you are replying
+to a message. 
+<p>
+The <i>Quote</i> menu entry formats the replied-to body a little, 
+just by prefixing each line of the message body with a string. 
+The default is "&gt; ", and you can change this via the Simple Editor
+<Button -Command Preferences_Dialog>Preferences</Button> section.
+</P>
+The <i>Quote</i> menu entry produces a mime attachment which contains the
+replied-to message.
 <p>
 <i>Note</i>: it is apparently not possible to define a repl prefix
 with leading spaces. This is a side effect of storing the prefix in
@@ -839,9 +844,9 @@ The built-in editor handles the special coding required when including
 8-bit characters in mail headers. 
 <p>
 When you are replying to a message that contains 8-bit characters,
-it may be encoded, too. The Insert @ operation will first decode the
+it may be encoded, too. The <i>Quote</i> operation will first decode the
 message so that the true 8-bit characters are inserted into the editor
-buffer. This works better than the repl filters than include the message
+buffer. This works better than the repl filters that include the message
 body. If you use one of those, then you'll see the quoted-printable
 encoding instead of the 8-bit character. 
 

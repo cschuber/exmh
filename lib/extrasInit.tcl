@@ -421,7 +421,7 @@ You can tune these bindings with the Bind dialog that defines
 bindings for the Text and Entry widget classes."  {
     {sedit(pref,replPrefix) replPrefix "> " {Reply insert prefix}
 "This string is prepended to lines included from the reply message
-when you use the Insert @ command."}
+when you use the Quote command."}
     {sedit(formatChoice) seditFormatMail {CHOICE OnSend OnType Never} {Format Mail default}
 "Sedit can format mail at two different times:
 OnSend converts soft line wraps to hard line breaks when you hit the send button.
