@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 05/16/2001 kchrist
+    lib/sedit.tcl: Make sure exmh($id,action) survives a 'Keep on send'.
+
 cvs repository 05/15/2001 Brent Welch <welch@panasas.com>
     Makefile:
     exmh.README:

@@ -497,6 +497,7 @@ proc SeditSendOnly { draft t } {
 	    if {$async == "async"} {
 		set mhProfile(sendType) "wait"
 	    }
+            set action $exmh($id,action)
 	}
 	SeditMsg $t "Sending message..."
 	SeditMarkSent $t
@@ -507,6 +508,7 @@ proc SeditSendOnly { draft t } {
 	if {! $sedit($t,keep)} {
 	    SeditNuke $draft $t
 	} else {
+            set exmh($id,action) $action
 	    SeditSave $draft $t		;# Restore draft deleted by MH
 	    set mhProfile(sendasync) $async
 	    $sedit($t,toplevel).but.send config -state normal
