@@ -151,13 +151,13 @@ proc MsgSeen { msgid } {
     if {[lsearch $msg(seen) $msgid] < 0} {
 	lappend msg(seen) $msgid
     }
-    Seq_Del $exmh(folder) mhProfile(unseen-sequence) $msgid
+    Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $msgid
     Flag_MsgSeen
 }
 proc Msg_UnSeen { msgid } {
     # We nuke deleted and moved messages from the seen list because
     # marking them confuses MH.  However, we still need to remember
-    # them to properly maintain our unseen state in the presense of
+    # them to properly maintain our unseen state in the presence of
     # background Flist_FindSeqs calls.  Hence msg(seenOld)
     global msg
     set ix [lsearch $msg(seen) $msgid]

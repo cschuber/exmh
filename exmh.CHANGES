@@ -3,6 +3,7 @@ cvs repository 08/21/2002 cwg-exmh@deepeddy.com
     flag.tcl - Don't die in Flag_MsgSeen if flist(totalcount,unseen)
 	is undefined. 
     app-defaults - Msg_MarkUnseen is now {Msg_Mark unseen}.
+    msg.tcl - left a $ off of $mhProfile(unseen-sequence)
 
 cvs repository 08/20/2002 cwg-exmh@deepeddy.com
     app-defaults-color - Change default colors of ftoc so highlighted
