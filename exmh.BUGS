@@ -2,22 +2,6 @@ These are known bugs in exmh, along with the release under which they
 were reported.
 
 
-
-Number: 1
-Version: 2.0.3
-Priority: Low
-Scope: Narrow
-Complexity: ?
-Status: assigned to slipcon; fixed by welch; CLOSED!!!
-
-When you launch the installer, it brings up an HTML window as well as the 
-installer window.  If you dismiss the HTML window before it finishes rendering 
-all the text, it dies with an error because exwin(mtext) is not yet defined.
-
-If, however, you wait a few more seconds, it'll work fine.
-
-
-
 Number: 2
 Version: 2.0.3
 Priority: Medium
