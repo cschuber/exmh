@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 07/19/2002 cwg-exmh@deepeddy.com
+    ftoc.tcl - In Ftoc_FindMsg, move the cache check until after the
+	processing of $line.
+
 cvs repository 07/18/2002 cwg-exmh@deepeddy.com
     scan.tcl - Don't clear the "+" from cur.
 

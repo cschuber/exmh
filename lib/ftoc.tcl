@@ -457,9 +457,6 @@ proc Ftoc_BindRight { cmd } {
 
 proc Ftoc_FindMsg { msgid {line {}} } {
     global ftoc msgtolinecache
-    if {![catch {set msgtolinecache($msgid)} L]} {
-	return $L
-    }
     if {$line != {}} {
 	switch -glob -- $line {
 	    first  {return 1}
@@ -476,6 +473,9 @@ proc Ftoc_FindMsg { msgid {line {}} } {
     }
     if {$msgid == {}} {
 	return {}
+    }
+    if {![catch {set msgtolinecache($msgid)} L]} {
+	return $L
     }
 #
 # Linear search for pick and thread FTOCs (pseudo-displays)
