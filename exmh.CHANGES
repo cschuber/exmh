@@ -1,5 +1,10 @@
 HISTORY
 cvs repository 04/03/2003 haldevore@acm.org
+  patch from Klaus Elsbernd elsbernd@dfki.uni-kl.de
+    mh.tcl fix variable usage in sequences, corrects a problem
+      with private sequences
+
+cvs repository 04/03/2003 haldevore@acm.org
   select.tcl patch from Robert Elz (kre@munnari.OZ.AU)
   select.tcl - Thorough input validation when selecting message
     by keying message number
