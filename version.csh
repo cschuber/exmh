@@ -1,4 +1,12 @@
 #!/bin/csh
+
+# To change the version, first edit the Makefile and
+# change the version there, and frob the patterns in
+# version.sed.  Then type "make version"
+
+# You still want to add release notes to
+# exmh.README and probably the other html files.
+
 foreach f ( Makefile exmh.README exmh.install lib/html/index.html lib/html/software.html lib/html/exmh.README.html )
     echo $f
     sed -f version.sed < $f > $f.new

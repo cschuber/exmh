@@ -1,5 +1,16 @@
 HISTORY
 cvs repository 1/3/2005 welch@panasas.com
+  Makefile:
+  exmh.README:
+  exmh.install:
+  version.sed:
+  lib/html/index.html
+  lib/html/software.html
+    changed version to 2.7.2
+  version.csh: Added comments
+  lib/html/exmh.README.html: Added notes about 2.7.2
+
+cvs repository 1/3/2005 welch@panasas.com
   lib/exwin.tcl: Fixed packing bug for ftoc window that means it
     didn't match the ftext lines preference setting.
 
