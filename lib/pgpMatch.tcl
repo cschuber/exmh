@@ -6,6 +6,11 @@
 # 
 
 # $Log$
+# Revision 1.9  1999/08/14 06:18:22  bmah
+# If we need to ask the user for help in picking a PGP key (while
+# determining receipients of an encrypted message), and they cancel
+# out of the resulting dialog, generate an error rather than loop forever.
+#
 # Revision 1.8  1999/08/13 00:39:05  bmah
 # Fix a number of key/passphrase management problems:  pgpsedit now
 # manages PGP versions, keys, and passphrases on a per-window
@@ -170,12 +175,19 @@ proc Pgp_Match_Email { v email keyringtype } {
        set pgpbestkeys [concat $pgpbestkeys $pgpnextkeys]
        ExmhLog "<Pgp_Match_Email> $id is ambiguous: [join $pgpbestkeys ", "]"
        set result [Pgp_KeyBox $v "Please select a $pgp($v,fullName) key for $id" $keyringtype $pgpbestkeys]
+
     } else {
        set result $pgpbestkeys
     }
-    while {$result == {}} {
-	set result [Pgp_KeyBox $v "You didn't select a $pgp($v,fullName) key for $id" $keyringtype $pgpbestkeys]
+
+    # If the user cancelled out of the key selection dialog, generate
+    # an error since we needed the user's help to pick a key and she 
+    # didn't give it to us.  (Should this go in the first clause of
+    # of the if statement above?)
+    if {$result == {}} {
+	error "No $pgp($v,fullName) key selected for recipient $id."
     }
+
     set pgp($v,match,$email) $result
     foreach key $result {
 	set pgp($v,simpleMatch,[string tolower [string trim [lindex $key 4]]]) $key

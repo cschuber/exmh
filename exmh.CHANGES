@@ -6,6 +6,9 @@ cvs repository 08/13/1999
     Really fix problems with 8-byte GPG keyIDs and keyservers this
 	time.  --Kevin.Christian@lsil.com, via bmah
     Rudimentary support for LDAP  --Jason Day <jday@ixl.com> and cwg
+    If we ask the user for help in picking the PGP key to use for a
+	receipient and they cancel the resulting dialog, generate 
+	an error (instead of asking the user ad infinitum).  --bmah
 
 cvs repository 08/12/1999
     Fix a number of key/passphrase management problems:  pgpsedit now
