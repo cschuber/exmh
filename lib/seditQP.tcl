@@ -49,7 +49,7 @@ proc SeditFixupEncoding { draft t quote } {
     if [catch {open $draft.new w} out] {
 	close $in
 	SeditMsg $t $out
-	error "Cannot fix encoding"
+	error "Cannot fix encoding: $out"
     }
     if {$quote} {
 	SeditMsg $t "Quoting text"
