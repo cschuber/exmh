@@ -26,9 +26,8 @@ lockedrcvstore.
 lockedrcvstore provides the '+', so you'll need to remove that from
 your rcvstore call.
 
-Note that the conditional flagging as read only works if .mh_profile
+Note that the conditional flagging only works if .mh_profile
 does *not* specify an unseen-sequence.
-
 
 For example, .qmail-important might look something like this:
 
