@@ -632,7 +632,7 @@ proc Glimpse_Init {} {
 	    ExmhLog "$voutput"
 	    return
 	}
-	if {! [regexp {[0-9]\.[0-9]} $voutput glimpse(version)] } {
+	if {! [regexp {[0-9]\.[0-9]*} $voutput glimpse(version)] } {
 	    ExmhLog "glimpse version info error : $voutput"
 	    return
 	}
