@@ -318,6 +318,26 @@ Complexity: Low
 Update overview.html to current version.
 
 
+Number: 35
+Priority: Low
+Scope: Narrow
+Complexity: Low
+
+Review Exmh_Status and make more friendly to long messages.
+
+
+
+Number: 36
+Priority: Low
+Scope: Wide
+Complexity: Low
+
+Review handling of user-specified file and directory names, allow "~"
+in all cases.  Change internally using glob but do NOT save the
+"globbed" version.
+
+
+
 $Id$
 
 # Emacs stuff
