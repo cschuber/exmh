@@ -2,7 +2,7 @@
 
 # Remember to update exmh.install when changing version numbers.
 
-VERSION=2.4
+VERSION=2.5
 SNAPDATE=`/bin/date +%Y%m%d`
 
 srctar: version htmltar

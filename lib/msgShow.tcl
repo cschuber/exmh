@@ -12,8 +12,12 @@
 
 set msg(maxsize) 50000
 
+# This procedure allocates text tags used in message display.
+# This is done once to avoid the cost of doing it on every message.
+# Tag creation order is important - later tags have higher priority and
+# appear "on top" of tags created earlier.
+
 proc Msg_Setup { t } {
-    # Tags to pre-allocate other important colors
     global fdisp exmh
     foreach level {error warn normal background} {
 	$t tag configure hdrlook=exmhColor$level -background $exmh(c_st_$level)
@@ -41,9 +45,27 @@ proc Msg_Setup { t } {
 	    $t tag configure hdrlook=exmhColor$level -background $color
 	}
     }
+
+    # Create the part tags first so the highlight tags are higher priority
+
+    set part 0
+    set defaultTag [MimeLabel $part=1 part]
+    $t tag configure $defaultTag -background [$t cget -background] \
+	-foreground [$t cget -foreground]
+
     # Allocate active button colors, too
     TextButton_Init $t
 
+    # Tags for text highlighting
+
+    foreach tagname {attrib_me quote_me attrib1 attrib2 attrib3 attrib4 \
+			 attrib5 quote1 quote2 quote3 quote4 quote5 signature \
+			 listsig msheader1 msheader2 udiffold udiffnew \
+			 bugrpttok} {
+        set rval [option get . b_$tagname {}]
+        eval {$t tag configure $tagname} $rval
+    }
+        
     $t tag raise sel
 
     # HACK To cache font for graphics part separator.
@@ -258,4 +280,319 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
     } else {
 	catch {destroy $exwin(mopButtons).list}
     }
+}
+
+# Highlight text/plain regions of the message
+
+proc MsgTextHighlight {tkw start end} {
+    Exmh_Debug MsgTextHighlight $start $end
+    foreach cmd [info commands Hook_MsgHighlight*] {
+	$cmd $tkw $start $end
+    }
+}
+
+# The original version of this file can always be found here:
+#
+#   ftp://ftp.kanga.nu/pub/users/claw/dot/tk/exmh/quote-colour.tcl
+#
+#
+# Please send patches and bug reports to claw@kanga.nu and/or the
+# exmh-users list at exmh-users@redhat.com
+#
+# A working set of surrounding configuration files can be found here:
+# 
+#   ftp://ftp.kanga.nu/pub/users/claw/dot/tk/
+#   ftp://ftp.kanga.nu/pub/users/claw/dot/exmh
+#
+# Screenshots of the quote colourising code in action can be found
+# here:
+#
+#   ftp://ftp.kanga.nu/pub/users/claw/screenshots/exmh/JCL.exmh.9.png
+#   ftp://ftp.kanga.nu/pub/users/claw/screenshots/exmh/JCL.exmh.10.png
+#   ftp://ftp.kanga.nu/pub/users/claw/screenshots/exmh/JCL.exmh.11.png
+
+# Enable this with the "Highlight Message Quotes" under Mime preferences
+
+# Contributors to the quote colouring code:
+#
+#   Anthony DeStefano <destefan@vaxcave.com>
+#   J C Lawrence <claw@kanga.nu>
+#   John Beck <jbeck@eng.sun.com>
+#   John Klassa <klassa@ipass.net>
+#   Joseph V Moss <jmoss@ichips.intel.com>
+#   Iain MacDonnell <Iain.MacDonnell@Sun.COM>
+#    
+# Changelog:
+#   Tue, 05 Jun 2001 23:25:38 -0700
+#     Initial request to exmh-users list for quote colouring code
+#     by J C Lawrence 
+#   Thu, 21 Jun 2001 10:08:11 -0400
+#     John Klasse posted his quote colouring code
+#   Thu, 21 Jun 2001 23:58:17 -0700
+#     J C Lawrence extended with support for multi-level quotes, MS
+#     Outlook quoe headers, forwarded message headers, Mailman
+#     footers, .signatures, etc
+#   Mon, 25 Jun 2001 16:58:03 -0700 
+#     John Beck did various clean ups, polishing etc
+#   Mon, 25 Jun 2001 17:52:15 -0700 
+#     Iain MacDonnell cleaned up and rewrote the cite handling, and 
+#     added the seperate quote function and exported the configs to
+#     exmh-defaults-colour
+#
+#     Iain MacDonnell re-worked the quote recognition part to
+#     recognise various "quote things", such as ">", ":", "}", "+>" 
+#     and "Iain>"
+#
+#     Joseph V Moss fixed above to work with older versions of tcl 
+#     that don't support "fancy" regexps
+#
+#     John Beck added support for colour definitions as config options
+#     rather than being hard-coded.
+#   Tue, 26 Jun 2001 19:32:22 -0400 
+#     Anthony DeStefano added documentation
+#  
+
+# To configure/customuise, add the following resources to
+# ~/.exmh/exmh-defaults-colour, edited as per your colour
+# preferences.  The following colours are intended for a black
+# background.
+#
+# --<cut>--
+#
+# ! Colours to use for quotes of your text if emabled below.
+# *b_attrib_me: -foreground magenta
+# *b_quote_me:  -foreground purple
+#
+# ! Colours for the quote prefixes for different levels of quote
+# *b_attrib1:   -foreground palegreen
+# *b_attrib2:   -foreground lawngreen
+# *b_attrib3:   -foreground limegreen
+# *b_attrib4:   -foreground seagreen3
+# *b_attrib5:   -foreground seagreen4
+#
+# ! Colours for the quoted text for different levesl of quote
+# *b_quote1:    -foreground khaki
+# *b_quote2:    -foreground tan
+# *b_quote3:    -foreground darksalmon
+# *b_quote4:    -foreground goldenrod
+# *b_quote5:    -foreground gold
+# 
+# ! Colour of .signature blocks
+# *b_signature: -foreground gold
+# 
+# ! Colour of Mailman list footers.
+# *b_listsig:   -foreground cornflowerblue
+#
+# ! Colour of MS Outlook quoted header field names
+# *b_msheader1: -foreground lightslateblue
+#
+# ! Colour of MS Outlook quoted header filed contents
+# *b_msheader2: -foreground seagreen2
+#
+# ! Unified diff colours
+# *b_udiffold:  -foreground red
+# *b_udiffnew:  -foreground blue
+#
+# ! Sun bug report colours
+# *b_bugrpttok: -foreground yellow
+
+# This hook is called on a range of text that is a message body.
+
+proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
+    global mime
+
+    if {!$mime(highlightText)} {
+	return
+    }
+    $t tag remove attrib $start $end
+    $t tag remove quote  $start $end
+#    $t tag remove body   $start $end
+
+
+    set in_signature 0
+    set in_msheader 0
+    set in_listsig 0
+    set in_udiff 0
+    set in_bugrpt 0
+
+    set endx [$t index end]
+    for {set idx [expr int($start)]} {$idx <= $endx} {incr idx} {
+	set txt [$t get $idx.0 $idx.end]
+	
+	if {$txt == ""} {
+	    set in_listsig 0
+	    set in_msheader 0
+	    set in_signature 0
+	    set in_udiff 0
+	} 
+
+	if {[regexp {^------+$} $txt] || [regexp {^______+$} $txt]} {
+	    set in_listsig 1
+	    set in_msheader 0
+	    set in_signature 0
+	    set in_udiff 0
+	} 
+
+	if {[regexp {^--* *Original Message *--*$} $txt] 
+	    || [regexp {^[-]+ *Forwarded Message *$} $txt]
+	    || [regexp {^[-]+ *End of Forwarded Message *$} $txt]} {
+	    set in_listsig 0
+	    set in_msheader 1
+	    set in_signature 0
+	    set in_udiff 0
+	}
+
+	if {[regexp {^-- ?$} $txt]} {
+	    set in_listsig 0
+	    set in_msheader 0
+	    set in_signature 1
+	    set in_udiff 0
+	} 
+
+	if {[regexp {^@@.*@@$} $txt]} {
+	    set in_listsig 0
+	    set in_msheader 0
+	    set in_signature 0
+	    set in_udiff 1
+	} 
+
+	if {$in_udiff == 1} {
+	    if {[regexp {^-} $txt d line]} {
+		$t tag add udiffold $idx.0 $idx.end
+	    } elseif {[regexp {^\+} $txt d line]} {
+		$t tag add udiffnew $idx.0 $idx.end
+	    } else {
+#		$t tag add body $idx.0 $idx.end
+	    }
+	    continue
+	}
+
+	if {$in_msheader == 1 } {
+            if {[regexp {^([^:]*:)} $txt d header]} {
+		$t tag add msheader1 $idx.0 $idx.[expr [string length $header] - 1]
+		$t tag add msheader2 $idx.[expr [string length $header] - 1] $idx.end
+	    } else {
+		$t tag add msheader2 $idx.0 $idx.end
+	    }
+	    continue
+	} 
+
+# Enable this block if you can recognise quotes of your (written by
+# you) text.  This will then attempt to coloruise that text using
+# the attrib_me and quote_me colour pair.
+
+# Note: You'll have to edit the regexp lines to fit/match your
+# quotes.
+
+#	if {[regexp {^(\+>)} $txt d quote] 
+#	    || [regexp {^(John>)} $txt d quote] 
+#	    || [regexp {^(JBeck>)} $txt d quote]} {
+#	    $t tag add attrib_me $idx.0 $idx.[expr [string length $quote] - 1]
+#	    $t tag add quote_me  $idx.[expr [string length $quote] - 1] $idx.end
+#	    continue
+#        }
+
+	lassign {qt_cnt qt_str} [MsgHighlightQuoteLevel $txt]
+	if {$qt_cnt >= 5} {
+	    set qt_cnt 5
+	}
+
+        if {$qt_cnt > 0} {
+            $t tag add attrib$qt_cnt $idx.0 $idx.[string length $qt_str]
+            $t tag add quote$qt_cnt $idx.[string length $qt_str] $idx.end
+        }
+
+	if {$in_listsig == 1} {
+	    $t tag add listsig $idx.0 $idx.end
+	    continue
+	}
+	
+	if {$in_signature == 1} {
+	    $t tag add signature $idx.0 $idx.end
+	    continue
+	}
+
+#	$t tag add body $idx.0 $idx.end
+    }
+}
+
+# The bug reporting highlighting is done on the whole message
+# because it must scan headers
+
+proc Hook_MsgShow_BugReport {msg mimeHdr} {
+   global exwin mime
+    if {!$mime(highlightText)} {
+	return
+    }
+   $exwin(mtext) configure -state normal
+   MsgShow_BeautifyBugrpt $exwin(mtext)
+   $exwin(mtext) configure -state disabled
+}
+proc MsgShow_BeautifyBugrpt {t {start 1.0} {end end}} {
+
+    set in_header 1
+    set in_bugrpt 0
+
+    set endx [$t index end]
+    for {set idx [expr int($start)]} {$idx <= $endx} {incr idx} {
+	set txt [$t get $idx.0 $idx.end]
+	
+	if {$txt == "" || [regexp {^------+$} $txt] || [regexp {^______+$} $txt]} {
+	    # End of headers
+	    return
+	} 
+
+	if {[regexp {^Subject: BugId [0-9].* Has been Updated .*$} $txt] ||\
+	    [regexp {^Subject: BugId [0-9].* Priority value ch.*$} $txt] ||\
+	    [regexp {^Subject: BugId [0-9].* New .* Created, .*$}  $txt] ||\
+	    [regexp {^Subject: BugId [0-9].* Responsible .*er$}    $txt]} {
+	    set in_bugrpt 1
+	}
+	if {$in_bugrpt == 1} {
+	    if {[regexp {^ Synopsis:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.end
+	    } elseif {[regexp {^ Description:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.end
+	    } elseif {[regexp {^ Justification:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.end
+	    } elseif {[regexp {^ Work around:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.end
+	    } elseif {[regexp {^ Suggested fix:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.end
+	    } elseif {[regexp {^	Evaluation:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.end
+	    } elseif {[regexp {^ Interest list:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.15
+	    } elseif {[regexp {^ Comments:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.end
+	    } elseif {[regexp {^ See also:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.10
+	    } elseif {[regexp {^ Public Summary:} $txt d line]} {
+		$t tag add bugrpttok $idx.1 $idx.end
+	    }
+	}
+    }
+}
+
+proc MsgHighlightQuoteLevel { str } {
+    # <token> such as in SGML
+    if {[regexp {([^<]*)<(.+)>([^>]*)} $str d pre addr post]} {
+	return [MsgHighlightQuoteLevel $pre]
+    }
+    # a->b such as C pointer deference
+    if {[regexp {([a-zA-Z0-9_]+)->([a-zA-Z0-9_]+)} $str d pre post]} {
+	return [MsgHighlightQuoteLevel $pre]
+    }
+
+    set qbits "\[ \t]*(\}|:|>|\\+>|\[A-Za-z0-9_-]+>)"
+    set best 0; set mexp ""; set bestmatch $str
+
+    foreach {i} {1 2 3 4 5} {
+        append mexp $qbits
+        if {[regexp -- "^($mexp)" $str d substr]} {
+            set best $i 
+            set bestmatch $substr 
+        }
+    }
+    return [list $best $bestmatch]
 }

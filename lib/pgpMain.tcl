@@ -19,6 +19,41 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.22  2001/07/09 16:45:33  welch
+# Jumbo commit - I think I forgot to commit a few things from the
+# aborted 2.4 release as well.  The main thing is the addition of
+# message highlighting.
+#
+# Makefile:
+# exmh.README:
+# exmh.CHANGES:
+# lib/html/exmh.README.html:
+# lib/html/index.html:
+# lib/html/software.html:
+# version.sed:
+# exmh.install: Changing version number to 2.5
+# exmh-bg.MASTER:
+# exmh.MASTER: Fixed initialization of exmh(userLibrary)
+# inc.expect.MASTER:  Fixed !# line so it gets installed right
+# lib/app-defaults-color: Added resources for message highlighting
+# based on the jcl-beautify code.
+# lib/autorefile.tcl: Contributed code by John Carroll
+# lib/fdispColor.tcl:
+# lib/fdisp.tcl: Added use of c_unseenBg and c_movedFg color resources
+# for further refinement of unseen and moved messages.
+# lib/inc.tcl: Cleanup of Inc_Expect
+# lib/mailcap.tcl: Fixed bug in mailcap parsing code that didn't quote
+# & in rules, leading to message corruption in SaveAttachments code.
+# lib/mh.tcl: minor tweak to variable unset
+# lib/mime.tcl: Added highlightText option and calls to MsgTextHighlight.
+# *  lib/msgShow.tcl: Added MsgTextHighlight and the jcl-beautify code,
+# with minor changes to separate the bug reporting header highlighting
+# into a different hook.  There is now a "message show" hook that
+# operates on the whole message, a "message highlight" hook that
+# only operates on the text regions of a message.
+# lib/pgpMain.tcl: Added call to MsgTextHighlight.
+# lib/pop.tcl: Fixed Pop_Dialog so it works right with multiple hosts.
+#
 # Revision 1.21  2000/06/16 18:16:26  valdis
 # Various PGP fixes...
 #
@@ -1423,7 +1458,10 @@ proc Pgp_DisplayMsg { v tkw part pgpresultvar } {
 	MimeInsertSeparator $tkw $part 6
 	MimeWithDisplayHiding $tkw $part {
 	    Mime_WithTextFile fileIO $tkw $part {
+		set start [$tkw index insert]
 		$tkw insert insert [read $fileIO]
+		set end [$tkw index insert]
+		MsgTextHighlight $tkw $start $end
 	    }
 	}
     }

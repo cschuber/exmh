@@ -1,4 +1,4 @@
-#!/usr/bin/expect --
+#!expect -f
 #
 # Script to run inc and provide a password.
 #

@@ -74,13 +74,13 @@ proc Fdisp_LabelConfigure { canvas } {
 	# Let current text be overridden by unseen & target feedback
 	$canvas itemconfigure curtext -fill $fdisp(c_current)
 
-	$canvas itemconfigure unsntext -fill $fdisp(c_bg)
+	$canvas itemconfigure unsntext -fill $fdisp(c_unseenBg)
 	$canvas itemconfigure unsnbox -fill $fdisp(c_unseen)
 	$canvas itemconfigure unsnbox -outline $fdisp(c_unseen) -width 2
 	$canvas itemconfigure unsnbitmap -foreground $fdisp(c_unseen) \
 					-background $fdisp(c_bg)
 
-	$canvas itemconfigure tartext -fill $fdisp(c_fg)
+	$canvas itemconfigure tartext -fill $fdisp(c_movedFg)
 	$canvas itemconfigure tarbox -fill $fdisp(c_moved)
 	$canvas itemconfigure tarbitmap -foreground $fdisp(c_moved) \
 					-background $fdisp(c_bg)

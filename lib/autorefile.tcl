@@ -35,7 +35,7 @@ proc FolderAutoParse {adrline} {
     # extract a username from a 'Return-path', 'From', or 'To' line.
     # the following also handles 'some cruft <real.address> more cruft'
     # turn 'From: a!B!C%d@e (some name)' into just 'a!b!c%d@e (some name)' :
-    regsub -nocase {^To:[ 	]*|^From:[ 	]*|^Return-path:[ 	]*} \
+    regsub -nocase {^(From|Return-Path|To|Cc|List-id):[ 	]*} \
 	[string tolower $adrline] {} adrline0
     # turn 'a!b!c%d@e' (some name) into just 'a!b!c%d@e' :
     regsub -all "\\(.*\\)" $adrline0 {} adrline1
@@ -53,18 +53,36 @@ proc Folder_AutoRefile {} {
     # find a header line with a username (that isn't our own username).
 
     Exmh_Status "Auto-refiling $msg(id)..."
+
+    set target [FolderAutoParse [FolderAutoFind ^List-id:] ]
+    if [FolderAutoMove $target] {return}
     set target [FolderAutoParse [FolderAutoFind ^Return-path:] ]
-    if [expr [string match $env(USER) $target]||[string match $target {}]] {
-	set target [FolderAutoParse [FolderAutoFind ^From:] ]
+    if [FolderAutoMove $target] {return}
+    set target [FolderAutoParse [FolderAutoFind ^From:] ]
+    if [FolderAutoMove $target] {return}
+    set target [FolderAutoParse [FolderAutoFind ^To:] ]
+    if [FolderAutoMove $target] {return}
+    set target [FolderAutoParse [FolderAutoFind ^Cc:] ]
+    if [FolderAutoMove $target] {return}
+
+    Exmh_Status "No target folder found for $msg(id)..."
+}
+
+proc FolderAutoMove {f} {
+    global exmh mhProfile
+
+    if [string match $f {}] {return 0}
+    set f zoo/$f
+    if {[file exists $mhProfile(path)/$f] &&
+        [file type $mhProfile(path)/$f] == "link" &&
+	[regsub {^../} [file readlink $mhProfile(path)/$f] {} nf]} {
+	set f $nf
     }
-    if [expr [string match $env(USER) $target]||[string match $target {}]] {
-	set target [FolderAutoParse [FolderAutoFind ^To:] ]
-    }
-    if [Folder_Target $target] {
+    if ![file isdirectory $mhProfile(path)/$f] {return 0}
+    if [Folder_Target $f] {
 	Msg_Move
-    } else {
-	if [Folder_Target zoo/$target] {Msg_Move}
     }
+    return 1
 }
 
 proc Folder_AutoTrash {m f} {

@@ -140,7 +140,7 @@ proc Inc_PresortMultidrop {} {
     Inc_All 0
 
     # Now do the Inc Presort on MyIncTmp and update scan listings
-    Inc_Presort
+    Inc_Presort 0
 }
 
 proc Inc_Inbox {} {
@@ -176,8 +176,16 @@ proc Inc_Expect {cmd} {
     # Drop the leading "exec", and splice in the -host argument
 
     set cmd [lrange $cmd 1 end]
-    set cmd [concat [list exec inc.expect] $cmd [list -host $inc(pophost) << $pop(password)]]
-    Exmh_Debug [concat [list exec inc.expect] $cmd [list -host $inc(pophost)]]
+    set cmd [concat [list exec inc.expect] $cmd]
+    if {[lsearch -exact $cmd -host] < 0} {
+	lappend cmd -host $inc(pophost)
+    }
+    if {[lsearch -exact $cmd <<] < 0} {
+	lappend cmd << $pop(password)
+    }
+    regsub <<.* $cmd {} clean
+    Exmh_Debug $clean
+    
     return $cmd
 }
 
@@ -327,20 +335,24 @@ proc Inc_All {{updateScan 1}} {
         set fields [ scan $exdrops($record) "%s %s %s" folder dropname popname]
         Exmh_Status "dropbox... $dropname" red
 	if {[string first / $dropname] < 0} {
+
 	    # Not a pathname, but a POP hostname
+
+	    global pop
+
 	    set host [lindex $dropname 0]
+	    Pop_GetPassword $host
 	    Exmh_Status "$popname @ $host"
 	    if {$popname != ""} {
                 set user $popname
 		set cmd [list exec inc +$folder -host $host \
-			-user $user -truncate -width $ftoc(scanWidth)]
+			-user $user -truncate -width $ftoc(scanWidth) \
+			<< $pop(password)]
 	    } else {
 		set cmd [list exec inc +$folder -host $host \
-			-truncate -width $ftoc(scanWidth)]
+			-truncate -width $ftoc(scanWidth) << $pop(password)]
 	    }
-	    # There used to be code here to call
-	    # Pop_GetPassword and Inc_Expect, but it doesn't work
-	    # Instead, assume .netrc file has passwords for all POP hosts.
+	    set cmd [Inc_Expect $cmd]
 	} else {
 	    if { [file exists $dropname] && [file size $dropname] } {
 		set cmd [list exec inc +$folder -file $dropname \

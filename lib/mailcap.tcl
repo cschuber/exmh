@@ -205,6 +205,8 @@ proc mailcap_load {} {
 # problematic effects at the shell level.
 proc mailcap_quote_param {string} {
   regsub -all "\'" [string trim $string " \t"] "\'\"\'\"\'" buffer;
+  # These are also used in regsubs, so protect against specials there, esp &
+  regsub -all {[][&*+?()]} $buffer {\\&} buffer
   return "\'$buffer\'";
 }
 

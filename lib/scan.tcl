@@ -334,7 +334,7 @@ proc Scan_AllFolders { {force 0} } {
 	    puts $out "catch \{send $myname \{Exmh_Status \"scan +$f\"\}\}"
 	    puts $out "catch {
 		set out \[open $mhProfile(path)/$f/.xmhcache w $mhProfile(msg-protect)\]
-		exec $mhProfile(scan-proc) +$f -width $ftoc(scanWidth) >@\$out
+		exec $mhProfile(scan-proc) +$f -width $ftoc(scanWidth) -noheader >@\$out
 		close \$out
 	    }"
 	}

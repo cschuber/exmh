@@ -150,6 +150,9 @@ network.  The command will be invoked with the site name as
 the only argument, possibly with the -n flag, which depends on
 your choice of the FTP access method.  If you use the expect
 script, you'll have to tweak that by hand."}
+	{mime(highlightText) highlightText ON {Highlight Message Quotes}
+"If enabled, this colorizes in-lined replies in messages, signatures,
+and other features of otherwise ordinary text messages."}
 	{mime(showRichCmnds) showRichCmnds OFF {Show RichText Commands}
 "If enabled, this allows the display of unknown richtext commands at
 the bottom of the richtext display.  If disabled, unknown richtext
@@ -852,8 +855,11 @@ proc Mime_ShowDefault {tkw part} {
 		Exmh_Status "Cannot open body $mimeHdr($part,copiousOut): $fileIO"
 		return 1
 	    }
+	    set start [$tkw index insert]
 	    $tkw insert insert [read $fileIO]
 	    MimeClose $fileIO
+	    set end [$tkw index insert]
+	    MsgTextHighlight $tkw $start $end
 	}
     } else {
 	$tkw insert insert "This is [Mime_TypeDescr $part]\n"
@@ -968,8 +974,11 @@ proc Mime_ShowText {tkw part} {
                 }
 		Pgp_ShowMessage $tkw $part
 	    } else {
+		set textStart [$tkw index insert]
 		$tkw insert insert "$firstLine\n"
 		$tkw insert insert [read $fileIO]
+		set textEnd [$tkw index insert]
+		MsgTextHighlight $tkw $textStart $textEnd
 	    }
 	}
     }
@@ -2137,6 +2146,7 @@ proc MimeParseSingle {tkw part fileIO } {
 	    }  else {
 		set tag {}
 	    }
+	    set start [$tkw index end]
 	    $tkw insert end $firstLine\n $tag
 	    set size [expr $msg(maxsize) / 2]
 	    while {1} {
@@ -2150,6 +2160,8 @@ proc MimeParseSingle {tkw part fileIO } {
 		    break
 		}
 	    }
+	    set end [$tkw index end]
+	    MsgTextHighlight $tkw $start $end
 	    return 0
 	} else {
 	    # Copy message body to a temp file.
@@ -2531,6 +2543,7 @@ proc MimeRaiseTag {w tag {overTag {}}} {
     if {[string length $overTag] == 0} {
 	$w tag raise $tag
     } elseif [regexp "${tag}.*${overTag}" [$w tag names]] {
+Exmh_Debug "RaiseTag $tag $overTag"
 	$w tag raise $tag $overTag
     }
 }

@@ -73,8 +73,12 @@ proc Pop_Dialog {host} {
     }
     set pop(done) 0
     vwait pop(done)
-    if {$pop(done)} {
-    }
+
+    # Destroy this out because it is specific to a host, and they
+    # might have multiple hosts.
+
+    destroy $t
+
     set pop(password) $pop($host,password)
 }
 

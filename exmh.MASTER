@@ -60,7 +60,7 @@ if ![file exists $exmh(library)/tclIndex] {
 # but then files migrated into ~/.exmh so
 # a lib subdirectory there is cleaner
 
-foreach exmh(userLibrary) {~/.exmh/lib ~/.tk/exmh} {
+foreach exmh(userLibrary) [list [glob ~]/.exmh/lib [glob ~]/.tk/exmh] {
     if {[file exists [file join $exmh(userLibrary) tclIndex]]} {
 	auto_path_update $exmh(userLibrary)	;# library for new modules
 	break

@@ -95,12 +95,14 @@ table of contents\" window (if set to \"FTOC\") or the \"message\" window
     Preferences_Resource fdisp(navbutton)	fl_navbutton 2
     Preferences_Resource fdisp(tarbutton)	fl_tarbutton 3
 
-    Preferences_Resource fdisp(c_current)	c_current red
-    Preferences_Resource fdisp(c_unseen)	c_unseen  blue
-    Preferences_Resource fdisp(c_moved)		c_moved   yellow
-    Preferences_Resource fdisp(c_popup)		c_popup   wheat
     Preferences_Resource fdisp(c_fg)		c_foreground black
     Preferences_Resource fdisp(c_bg)		c_background white
+    Preferences_Resource fdisp(c_current)	c_current red
+    Preferences_Resource fdisp(c_unseen)	c_unseen  blue
+    Preferences_Resource fdisp(c_unseenBg)	c_unseenBg  $fdisp(c_bg)
+    Preferences_Resource fdisp(c_moved)		c_moved   yellow
+    Preferences_Resource fdisp(c_movedFg)	c_movedFg   $fdisp(c_fg)
+    Preferences_Resource fdisp(c_popup)		c_popup   wheat
 
     trace variable fdisp(font) w FdispFixupFont
     set fdisp(lastFont) $fdisp(font)

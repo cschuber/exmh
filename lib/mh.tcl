@@ -312,9 +312,12 @@ proc Mh_AnnoEnviron { draftID } {
 }
 proc Mh_AnnoCleanup { draftID } {
     global exmh env
+    
     foreach key {mhannoforw mhannorepl mhannodist mhannotate mhdist
 		 mhaltmsg mhfolder mhmessages mhinplace folder action} {
-	catch {unset exmh($draftID,$key)}
+	if {[info exist exmh($draftID,$key)]} {
+	    unset exmh($draftID,$key)	;# Faster than catch-unset
+	}
 	if {[regexp ^mh $key]} {
 	    catch {unset env($key)}
 	}

@@ -1,4 +1,34 @@
 HISTORY
+cvs repository 07/09/2001 Brent Welch <welch@panasas.com>
+    Makefile:
+    exmh.README:
+    exmh.CHANGES:
+    lib/html/exmh.README.html:
+    lib/html/index.html:
+    lib/html/software.html:
+    version.sed:
+    exmh.install: Changing version number to 2.5
+    exmh-bg.MASTER:
+    exmh.MASTER: Fixed initialization of exmh(userLibrary)
+    inc.expect.MASTER:  Fixed !# line so it gets installed right
+    lib/app-defaults-color: Added resources for message highlighting
+    based on the jcl-beautify code.
+    lib/autorefile.tcl: Contributed code by John Carroll
+    lib/fdispColor.tcl:
+    lib/fdisp.tcl: Added use of c_unseenBg and c_movedFg color resources
+    for further refinement of unseen and moved messages.
+    lib/inc.tcl: Cleanup of Inc_Expect
+    lib/mailcap.tcl: Fixed bug in mailcap parsing code that didn't quote
+    & in rules, leading to message corruption in SaveAttachments code.
+    lib/mh.tcl: minor tweak to variable unset
+    lib/mime.tcl: Added highlightText option and calls to MsgTextHighlight.
+ *  lib/msgShow.tcl: Added MsgTextHighlight and the jcl-beautify code,
+    with minor changes to separate the bug reporting header highlighting
+    into a different hook.  There is now a "message show" hook that
+    operates on the whole message, a "message highlight" hook that
+    only operates on the text regions of a message.
+    lib/pgpMain.tcl: Added call to MsgTextHighlight.
+    lib/pop.tcl: Fixed Pop_Dialog so it works right with multiple hosts.
 
 cvs repository 05/31/2001 kchrist
     lib/scan.tcl: Allow arguments in scan-proc configuration.
@@ -27,9 +57,8 @@ cvs repository 05/15/2001 Brent Welch <welch@panasas.com>
     exmh.install: Changing version number to 2.4
     version.csh:
     version.sed: Scripts to help with version changes.
-    exmh-bg.MASTER:
-    exmh.MASTER: Fixed initialization of exmh(userLibrary)
-    lib/inc.tcl: Cleanup of Inc_Expect
+
+    (I don't think I ever committed things at this point - hence 2.5)
 
 cvs repository 05/14/2001 kchrist
     Fixed a bug in which a corrupt context would prevent exmh from

@@ -48,7 +48,7 @@ proc auto_path_update { path } {
 auto_path_update $exmh(library)
 
 # Support per-user directory containing .tcl files.
-foreach exmh(userLibrary) {~/.exmh/lib ~/.tk/exmh} {
+foreach exmh(userLibrary) [list [glob ~]/.exmh/lib [glob ~]/.tk/exmh] {
     if {[file exists [file join $exmh(userLibrary) tclIndex]]} {
 	auto_path_update $exmh(userLibrary)	;# library for new modules
 	break
@@ -86,21 +86,6 @@ if [catch {tk colormodel .}] {
 }
 
 Preferences_Init ~/.exmh/exmh-defaults $exmh(library)/app-defaults
-
-# Add this preference to initialize exmh(userLibrary) and exmh(logEnabled)
-Preferences_Add "Hacking Support" \
-"These items support the extension of Exmh by User code." {
-        {exmh(userLibrary)      userLibrary ~/.tk/exmh  {User library directory}
-"You can override modules of the exmh implementation
-by putting your versions into a private library directory.
-Remember to update the tclIndex file with auto_mkindex
-after you add things to that directory."}
- }
-
-# Support per-user customization
-if [info exists exmh(userLibrary)] {
-    auto_path_update $exmh(userLibrary)
-}
 
 if [catch {User_Init} err] {
     catch {puts stderr "User_Init: $err"}

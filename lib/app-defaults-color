@@ -115,3 +115,45 @@
 *c_messageFg: 	black
 *c_applicationFg: black
 *c_videoFg: 	black
+
+! These are for the jcl-beautify Message Highlighting feature
+
+! Colours to use for quotes of your text.
+! (Requires custom hacking to identify your own citations)
+*b_attrib_me: -foreground magenta
+*b_quote_me:  -foreground purple
+
+! Colours for the quote prefixes for different levels of quote
+! Dark to lighter green
+*b_attrib1:   -foreground #446044
+*b_attrib2:   -foreground #448044
+*b_attrib3:   -foreground #44a044
+*b_attrib4:   -foreground #44c044
+*b_attrib5:   -foreground #44e044
+
+! Colours for the quoted text for different levesl of quote
+! Dark to lighter purple
+*b_quote1:    -foreground #ee0060
+*b_quote2:    -foreground #ee0080
+*b_quote3:    -foreground #ee00a0
+*b_quote4:    -foreground #ee00c0
+*b_quote5:    -foreground #ee00e0
+
+! Colour of .signature blocks
+*b_signature: -foreground #ee00e0
+
+! Colour of Mailman list footers.
+*b_listsig:   -foreground cornflowerblue
+
+! Colour of MS Outlook quoted header field names
+*b_msheader1: -foreground lightslateblue
+
+! Colour of MS Outlook quoted header field contents
+*b_msheader2: -foreground #ee00e0
+
+! Unified diff colours
+*b_udiffold:  -foreground red
+*b_udiffnew:  -foreground blue
+
+! Sun bug report colours - this appears in headers
+*b_bugrpttok: -foreground mediumseagreen
