@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 06/07/2002 welch@panasas.com
+    lib/mime.tcl - Move the modification of application/octet-stream
+    MIME types up a bit to be before the decision is made to display
+    the type (patch from Diego Zamboni)
+
 cvs repository 06/06/2002 welch@panasas.com
     lib/ftoc.tcl - Fix to Ftoc_ClearMsgCache for unset vs. array unset buglet.
 

@@ -522,6 +522,17 @@ proc MimeSetPartVars {descVar displayedPartVar tkw part partTag} {
 	    return;	# fastpath
 	}
     }
+    if {[string compare $mimeHdr($part,type) "application/octet-stream"] \
+     == 0} {
+	if [string length [set type [Mime_Magic \
+	 [Mime_GetUnencodedFile $part]]]] {
+	    set mimeHdr($part,hdr,content-description) $type
+	    regsub octet-stream $mimeHdr($part,hdr,content-type) \
+	     $type mimeHdr($part,hdr,content-type)
+	    set mimeHdr($part,type) $type
+	}
+    }
+
     MimeSetDisplayFlag $part
     global mimeContentId
     upvar $displayedPartVar displayedPart
@@ -541,17 +552,6 @@ proc MimeSetPartVars {descVar displayedPartVar tkw part partTag} {
 	} elseif [info exists mimeHdr($part,file)] {
 	    set mimeContentId($mimeHdr($part,hdr,content-id)) \
 		$mimeHdr($part,file)
-	}
-    }
-
-    if {[string compare $mimeHdr($part,type) "application/octet-stream"] \
-     == 0} {
-	if [string length [set type [Mime_Magic \
-	 [Mime_GetUnencodedFile $part]]]] {
-	    set mimeHdr($part,hdr,content-description) $type
-	    regsub application/octet-stream $mimeHdr($part,hdr,content-type) \
-	     $type mimeHdr($part,hdr,content-type)
-	    set mimeHdr($part,type) $type
 	}
     }
 
