@@ -1,17 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
-PATH=/usr/local/nmh/lib:$PATH
+PATH=/usr/lib/nmh:$PATH
 export PATH
 
 lockfile $HOME/Mail/$1/.lock
-# Only mark message unseen if the message is not from me.
-# For this to work, .mh_profile must *not* specify an unseen-sequence.
-if [ "$SENDER" = "$USER@$HOST" ]; then
-    echo "me"
-    rcvstore +$1
-else
-    echo "notme"
-    rcvstore +$1 -sequence unseen
-fi
+echo $@
+rcvstore +"$@"
 rm -f $HOME/Mail/$1/.lock
-

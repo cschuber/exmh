@@ -10,9 +10,6 @@ Under qmail, it's more likely than under sendmail that more than one
 email message will arrive at the same time.  This adds file locking to
 exmh.
 
-It also, only flags the message as unseen if I'm not the author of the
-message.
-
 What You'll Need
 ----------------
 I use it with qmail.  I haven't thought about how to make it work with
@@ -26,13 +23,14 @@ lockedrcvstore.
 lockedrcvstore provides the '+', so you'll need to remove that from
 your rcvstore call.
 
-Note that the conditional flagging only works if .mh_profile
-does *not* specify an unseen-sequence.
-
 For example, .qmail-important might look something like this:
 
 |lockedrcvstore ImportantStuff
 
+any additional arguments are also passed, so you can flag a sequence
+like this:
+
+|lockedrcvstore ImportantStuff -sequence urgent
 
 Author
 ------
