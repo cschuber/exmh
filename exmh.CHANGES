@@ -1,4 +1,21 @@
 HISTORY
+2.0.3 3/22/1999 (Been way to long!)
+    sound(bell) not enabled if sound is not enabled
+    glimpse(init) set properly
+    Made Folder_TargetClear argument optional.
+    Fixed bug where text/html display was broken by some other message types.
+    Fixed typo's caught by TclPro Checker
+    Added crude POP support - still depends on .netrc file.
+    Added TraceInfo hook.
+    Removed -d flag from metamail call.
+    Fixed MDNReportDialog
+    Added space between Abort and Save&Quit button
+    Added Quote... menu to Sedit
+    Added "Format Mail" menu to Sedit
+    Fixed source hook implementation.
+    Fixed "killer regexp pattern" in URI scanning.
+
+
 2.0.2 2/23/98	Brent joins Scriptics http://www.scriptics.com/
     Exmh mailing lists move to @redhat.com
     Brent's life-long email contact is <welch@acm.org>
