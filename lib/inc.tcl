@@ -50,6 +50,9 @@ it's just sort of a heart-beat feature..."}
 	{inc(xnsgetmail) xnsGetMail OFF	  {Run xnsgetmail -k}
 "Run xnsgetmail -k before inc in order to fetch your
 XNS mail messages into your UNIX spool file."}
+	{inc(pophost) popHost {}	  {Mail host for POP3 protocol}
+"If this is set, inc will try to use the POP3 protocol to
+fetch your mail from a mail server."}
     }
 }
 proc Inc_Startup {} {
@@ -95,6 +98,10 @@ proc IncInner {} {
     if $inc(xnsgetmail) {
 	Xns_GetMail
     }
+    if {[string length $inc(pophost)]} {
+	# See if we know the password for this host
+	Pop_GetPassword $inc(pophost)
+    }
     case $inc(style) {
 	{default inbox}	{ busy Inc_Inbox }
 	presort		{ busy Inc_Presort }
@@ -121,15 +128,19 @@ proc Inc_PresortMultidrop {} {
 
 proc Inc_Inbox {} {
     # Inc from the spool file to the inbox folder
-    global exmh mhProfile ftoc
+    global exmh mhProfile ftoc pop
     if [info exists mhProfile(inbox)] {
 	set inbox [string trimleft $mhProfile(inbox) +]
     } else {
 	set inbox inbox
     }
     Exmh_Status "Inc ..."
-    if [catch {exec inc +$inbox -truncate -nochangecur -width $ftoc(scanWidth)} incout] {
-	Exmh_Debug Inc_Inbox +${inbox}: $incout
+    set cmd [list exec inc +$inbox -truncate -nochangecur -width $ftoc(scanWidth)]
+    if {[info exist pop(password)]} {
+	lappend cmd << $pop(password)
+    }
+    if [catch $cmd incout] {
+	Exmh_Debug Inc_Inbox $cmd: $incout
 	set incout {}
     }
     BgRPC Inc_InboxFinish $inbox $incout Flist_Done
@@ -161,13 +172,17 @@ proc Inc_InboxFinish { f incout {hook {}} } {
 
 proc Inc_Presort {{doinc 1}} {
     # Transfer from the mail spool file directly into folders
-    global exmh mhProfile env inc
+    global exmh mhProfile env inc pop
     # Use inc to copy stuff into a temp directory
     if ![file isdirectory $mhProfile(path)/MyIncTmp] {
 	exec mkdir $mhProfile(path)/MyIncTmp
     }
     if {$doinc} {
-	if {[catch {exec inc +MyIncTmp -silent} err]} {
+	set cmd [list exec inc +MyIncTmp -silent]
+	if {[info exist pop(password)]} {
+	    lappend cmd << $pop(password)
+	}
+	if {[catch $cmd err]} {
 	    # Some versions of inc exit non-zero when they should not.
 	    Exmh_Debug Inc_Presort +MyIncTmp: $err
 	}
@@ -242,7 +257,7 @@ proc Inc_PresortFinish {} {
 # This also works with POP hosts.
 
 proc Inc_All {{updateScan 1}} {
-    global exdrops exmh ftoc
+    global exdrops exmh ftoc pop
 
     Exmh_Status "Checking dropboxes..." red
     MhSetMailDrops	;# Update, if needed
@@ -262,6 +277,10 @@ proc Inc_All {{updateScan 1}} {
 	    } else {
 		set cmd [list exec inc +$folder -host $host \
 			-truncate -width $ftoc(scanWidth)]
+	    }
+	    Pop_GetPassword $host
+	    if {[info exist pop($host,password)]} {
+		lappend cmd << $pop($host,password)
 	    }
 	} else {
 	    if { [file exists $dropname] && [file size $dropname] } {
