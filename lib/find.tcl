@@ -21,7 +21,7 @@ proc Find_FTOC {} {
     Find_Setup
 }
 proc Find_Setup {} {
-    global find
+    global find findSettings
 
     Find_Reset
     if [Exwin_Toplevel .find "Exmh Find Tool" Find] {
@@ -41,9 +41,10 @@ proc Find_Setup {} {
 	set find(entry) [Widget_Entry $f entry {right fill expand}]
 	Bindings_Search $find(entry)
 
-	if ![info exists find(choice)] {
-	    set find(choice) FTOC
-	}
+	if {![info exists find(choice)] || $find(choice) == ""} {
+            set find(choice) $findSettings(defaultLoc)
+        }
+
 	trace variable find(choice) w FindTraceChoice
 	FindTraceChoice
 	if ![info exists find(all)] {

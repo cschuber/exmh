@@ -80,6 +80,11 @@ target folder.
 
 select only - Selects the folder at the mouse cursor as 
 the target folder." }
+{findSettings(defaultLoc) findSettingsDefaultLoc {CHOICE FTOC Msg}
+"Default search location"
+"Determines whether, initially, a search takes place in the \"folder
+table of contents\" window (if set to \"FTOC\") or the \"message\" window
+(if set to \"Msg\")."}
     }
     # The remaining parameters can be overridden by hand in the user resources
 
