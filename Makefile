@@ -18,6 +18,7 @@ srctar: version htmltar
 	echo ./exmh-\*.tar.gz >> Tar.exclude
 	echo ./exmh-\*.src.rpm >> Tar.exclude
 	echo ./exmh-\*.noarch.rpm >> Tar.exclude
+	echo ./rpmroot >> Tar.exclude
 	rm -rf /tmp/exmh-$(VERSION)
 	mkdir /tmp/exmh-$(VERSION)
 	tar cvfX - Tar.exclude . | (cd /tmp/exmh-$(VERSION) ; tar xf -)
@@ -33,15 +34,17 @@ clean:
 	rm -f ./exmh-*.noarch.rpm
 	rm -f ./exmh-*.src.rpm
 	rm -f ./lib/html/exmh.CHANGES.txt
+	rm -rf ./rpmroot/
 
 rpm:	srctar
-	cp exmh-$(VERSION).tar.gz /usr/src/redhat/SOURCES/
-	sed 's/VERSION/$(VERSION)/g' < misc/RPM/exmh-conf.patch > /usr/src/redhat/SOURCES/exmh-$(VERSION)-conf.patch
-	cp misc/RPM/exmh.wmconfig /usr/src/redhat/SOURCES/
-	sed 's/EXMHVERSION/$(VERSION)/g' < misc/RPM/exmh.spec > /usr/src/redhat/SPECS/exmh.spec
-	(cd /usr/src/redhat/SPECS/ ; rpm -ba exmh.spec)
-	cp /usr/src/redhat/RPMS/noarch/exmh-$(VERSION)-1.noarch.rpm .
-	cp /usr/src/redhat/SRPMS/exmh-$(VERSION)-1.src.rpm .
+	mkdir -p rpmroot/{SOURCES,SPECS,BUILDROOT,RPMS/noarch,SRPMS,BUILD}
+	cp exmh-$(VERSION).tar.gz rpmroot/SOURCES/
+	sed 's/VERSION/$(VERSION)/g' < misc/RPM/exmh-conf.patch > rpmroot/SOURCES/exmh-$(VERSION)-conf.patch
+	cp misc/RPM/exmh.wmconfig rpmroot/SOURCES/
+	sed 's/EXMHVERSION/$(VERSION)/g' < misc/RPM/exmh.spec > rpmroot/SPECS/exmh.spec
+	rpm -ba --define "_topdir `pwd`/rpmroot" --buildroot=`pwd`/rpmroot/BUILDROOT rpmroot/SPECS/exmh.spec
+	cp rpmroot/RPMS/noarch/exmh-$(VERSION)-1.noarch.rpm .
+	cp rpmroot/SRPMS/exmh-$(VERSION)-1.src.rpm .
 
 userrpm:	srctar
 	mkdir /tmp/exmhredhat/
