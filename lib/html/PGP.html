@@ -46,7 +46,7 @@ PGP.
 
 <h4>Supported PGP program versions</h4>
 
-<p>Currently exmh has support for PGP version 2.6 and 5.0 and GnuPG.
+<p>Currently exmh has support for PGP versions 2.6, 5.0, 6.5, and GnuPG.
 
 <p>You can use all versions separately or simultaneous from within exmh.
 You need not have all versions installed to use exmh PGP support.
@@ -59,6 +59,10 @@ summary, one way to disable it, is to put it into a location that is not
 in PATH and edit the symlinks pgps, pgpe, pgpv to point to this new location.
 PGP 2.6 and 5.0 can peacefully coexist on the system this way and be used both
 from within exmh.
+
+<p>Currently, the PGP 6.5 support wants the 'pgp' binary to be
+called 'pgp6' (rather than the default 'pgp').  PGP 6.5 can co-exist
+with both 2.6 and 5.0 if this is done.
 
 <h2><a HREF="index.html">Main Help Index</a></h2>
 
