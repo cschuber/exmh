@@ -514,7 +514,7 @@ proc Ftoc_FindMsg { msgid {line {}} } {
 	set nextLine [expr int($minLine+1+($msgid-$minMsg)*($maxLine-$minLine-2)/($maxMsg-$minMsg))]
 	set nextMsg [Ftoc_MsgNumber $nextLine]
 	if {$nextMsg == $msgid} {
-	    return $nextMsg
+	    return $nextLine
 	} elseif {$nextMsg > $msgid} {
 	    set maxLine $nextLine
 	    set maxMsg $nextMsg
