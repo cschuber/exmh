@@ -141,6 +141,8 @@ proc MsgChange {msgid {show show} {line {}} } {
 	# Allow null msgid from Msg_ShowWhat, which supplies line instead
 	if {$msgid < 0}  return
     } else {
+        # line null too, try using first in folder
+        if {[string length $line] == 0} { set line 1 }
 	set msgid [Ftoc_MsgNumber [Ftoc_FindMsg $msgid $line]]
     }
     Ftoc_ClearCurrent

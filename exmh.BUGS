@@ -313,7 +313,7 @@ Version: unknown
 Priority: ?
 Scope: ?
 Complexity: ?
-Status: haldevore investigating
+Status: CLOSED, hold pending feedback otherwas
 
 If the drafts folder is being viewed and there are no messages in it
 compose messes up by trying to "use" a non-existent draft.
