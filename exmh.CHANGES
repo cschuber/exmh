@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 07/18/2002 cwg-exmh@deepeddy.com
+    scan.tcl - Don't clear the "+" from cur.
+
 cvs repository 07/15/2002 valdis.kletnieks@vt.edu
     pgpExec.tcl - multiple fixes.  Added a second call to CheckSuccess to
         both Exec_Encrypt and Exec_EncryptSign (and a 'file delete' to clean

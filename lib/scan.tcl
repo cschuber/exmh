@@ -93,14 +93,6 @@ proc ScanFolder {folder adjustDisplay} {
 	Ftoc_Update [Widget_TextEnd $exwin(ftext)] $folder
     }
     set ftoc(displayValid) 1
-
-    set curMsg [Mh_Cur $folder]
-    if {$curMsg != {}} {
-	set line [Ftoc_FindMsg $curMsg]
-	if {$line != {}} {
-	    Ftoc_RescanLine $line
-	}
-    }
     if {$adjustDisplay} {
 	Ftoc_Yview end
     }
