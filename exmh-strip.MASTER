@@ -1,4 +1,4 @@
-#!/usr10/home/welch/TclPro1.4/linux-ix86/bin/protclsh83.bin
+#!wish
 #
 # Utility to strip out attachments from MIME messages.
 # They are replaced with references to the external files.
