@@ -33,7 +33,7 @@ while (<FOLDERS>) {
 	    print "refile $msgid -src +$folder -nolink +$folder/old/$subdir\n";
 	    system "$MHPATH/refile $msgid -src '+$folder' -nolink '+$folder/old/$subdir'";
 	}
-	$exmhdisplayfile = "$ENV{'HOME'}/.exmhdisplay";
+	$exmhdisplayfile = "$ENV{'HOME'}/.exmh/.display";
 	if (-f $exmhdisplayfile) {
 	    $exmhdisplay = `cat $exmhdisplayfile`;
 	    chomp $exmhdisplay;

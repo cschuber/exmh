@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 6/9/1999
+    Changed $HOME/.exmhdisplay to $HOME/.exmh/.display in misc scripts
+
 cvs repository 6/8/1999
     added an auto-copy of old config files to new, with a nice dialog box
 	- slipcon

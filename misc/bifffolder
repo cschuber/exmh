@@ -3,7 +3,7 @@
 # If exmh is running, make it do an flist.
 #
 FOLDER=$1
-FILE=$HOME/.exmhdisplay
+FILE=$HOME/.exmh/.display
 if [ -f $FILE ]; then
     DISPLAY=`cat $FILE`
     if [ "$DISPLAY" != "" ]; then

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-displayfile=$HOME/.exmhdisplay
+displayfile=$HOME/.exmh/.display
 if [ -e $displayfile ] ; then
     display=`cat $displayfile`
     if [ "$display" != "" ]; then
