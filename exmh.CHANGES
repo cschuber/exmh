@@ -1,6 +1,12 @@
 HISTORY
 
 cvs repository 04/18/2000
+    lib/seditExtras.tcl
+    Add better support for composing RFC2017 URL external-references 
+    Still need to add better support for displaying them
+    - vkletnieks
+
+cvs repository 04/18/2000
     lib/app-defaults, lib/scan.tcl, lib/seditBind.tcl
     Handle embedded blanks better 
     - vkletnieks, patch by Jacob Morzinski <jmorzins@MIT.EDU>

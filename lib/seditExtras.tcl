@@ -419,38 +419,74 @@ proc SeditInsertFileDialog { draft t } {
     }
 }
 # Thanks to Anders Klemets, klemets@it.kth.se, for the message/external feature.
+# Valdis Kletnieks, 12/15/1999 - re-write for sane support of RFC2017 URL
+# references - ask for type *first*, and handle the cases differently.
+
 proc SeditInsertExternalDialog { draft t } {
     global sedit env
-    set name [FSBox "(Optionally) Select file name"]
-    set options [SeditExternalDialog $t $name]
+
+    catch {destroy $t.format}
+    set f [frame $t.format -bd 2 -relief ridge]
+    message $f.msg -text "Access type?" -aspect 1000
+    pack $f.msg -side top -fill both
+    set b1 [frame $f.but1 -bd 10 -relief flat]
+    set b3 [frame $f.but3 -bd 10 -relief flat]
+    pack $b1 $b3 -side top
+
+    button $b3.plain -text "Cancel" -command [list SeditFormatNewPart $t $f -1]
+    button $b3.newpart -text "OK" -command [list SeditFormatNewPart $t $f 1]
+    pack $b3.plain $b3.newpart -side left -padx 3
+
+    radiobutton $b1.local -text "Local file" -variable sedit($t,extaccesstype) -value LOCAL-FILE
+    radiobutton $b1.anon -text "Anonymous FTP" -variable sedit($t,extaccesstype) -value ANON-FTP
+    radiobutton $b1.url -text "URL" -variable sedit($t,extaccesstype) -value URL
+    pack $b1.local $b1.anon $b1.url -side left -padx 3
+
+    $b1.local select
+
+    set sedit($t,encoding) {}
+    set sedit($t,compress) {}
+    set sedit($t,newpart) 0
+    set sedit($t,extaccesstype) local
+
+    Widget_PlaceDialog $t $f
+    tkwait window $f
+
+    if {$sedit($t,extaccesstype) == "URL"} {
+	set name {}
+	set options [SeditExternalUrlDialog $t $name]
+    } else {
+        set name [FSBox "(Optionally) Select file name"]
+        set options [SeditExternalFileDialog $t $name]
+        }
     set tmpfname [Mime_TempFile extern]
     if [catch {open $tmpfname w} fp] {
-	SeditMsg $t $fp
-	return
+        SeditMsg $t $fp
+        return
     }
     puts $fp "Content-Type: $sedit($t,exttype)"
     # Construct content-id
     regsub -all " |:" [exec date] _ date
     puts $fp [format "Content-ID: <%s_%s@%s>\n" $env(USER) $date \
-					[exec uname -n]]
+					[exec hostname]]
     close $fp
     eval {SeditInsertFile $draft $t $tmpfname} $options
-    Sedit_PgpFormat [SeditId $draft]
+    Sedit_FixPgpFormat [SeditId $draft]
     File_Delete $tmpfname
 }
-proc SeditExternalDialog { t name } {
+proc SeditExternalFileDialog { t name } {
     global sedit
     catch {destroy $t.format}
     set f [frame $t.format -bd 2 -relief ridge]
 
-    message $f.msg1 -text "Insert external file" -aspect 1000
+    message $f.msg1 -text "Insert external reference to file" -aspect 1000
     pack $f.msg1 -side top -fill both
 
     Widget_BeginEntries 15 30 [list SeditFormatNewPart $t $f 1]
     set sedit($t,desc) [file tail $name]
     Widget_LabeledEntry $f.e0 Description: sedit($t,desc)
 
-    catch {exec uname -n} sedit($t,extsite)
+    catch {exec hostname} sedit($t,extsite)
     Widget_LabeledEntry $f.e1 Site: sedit($t,extsite)
 
     set sedit($t,extdirectory) [file dirname $name]
@@ -459,7 +495,7 @@ proc SeditExternalDialog { t name } {
     set sedit($t,extname) [file tail $name]
     Widget_LabeledEntry $f.e3 "File name" sedit($t,extname)
     Widget_BindEntryCmd $f.e3.entry <Return> \
-	[list SeditTweakContentType sedit($t,extname) sedit($t,exttype) $name]
+	[list SeditTweakContentType sedit($t,extname) sedit($t,exttype) $sedit($t,extname)]
 
     SeditTweakContentType sedit($t,extname) sedit($t,exttype) $name
     Widget_LabeledEntry $f.e4 "Content-Type:" sedit($t,exttype)
@@ -468,28 +504,13 @@ proc SeditExternalDialog { t name } {
     Widget_LabeledEntry $f.e5 "Transfer mode:" sedit($t,trans-mode)
 
     Widget_EndEntries
-
-    message $f.msg -text "Access type?" -aspect 1000
-    pack $f.msg -side top -fill both
-    set b1 [frame $f.but1 -bd 10 -relief flat]
     set b3 [frame $f.but3 -bd 10 -relief flat]
-    pack $b1 $b3 -side top
-
-    set sedit($t,encoding) {}
-    set sedit($t,compress) {}
-    set sedit($t,newpart) 0
-    set sedit($t,extaccesstype) local
 
     button $b3.plain -text "Cancel" -command [list SeditFormatNewPart $t $f -1]
     button $b3.newpart -text "OK" -command [list SeditFormatNewPart $t $f 1]
     pack $b3.plain $b3.newpart -side left -padx 3
 
-    radiobutton $b1.local -text "Local file" -variable sedit($t,extaccesstype) -value LOCAL-FILE
-    radiobutton $b1.anon -text "Anonymous FTP" -variable sedit($t,extaccesstype) -value ANON-FTP
-    pack $b1.local $b1.anon -side left -padx 3
-
-    $b1.local select
-
+    pack $b3 -side top
     Widget_PlaceDialog $t $f
     tkwait window $f
 
@@ -504,10 +525,45 @@ proc SeditExternalDialog { t name } {
 
     return [list $sedit($t,newpart) $sedit($t,encoding) $sedit($t,type) $sedit($t,desc)]
 }
+proc SeditExternalUrlDialog { t name } {
+    global sedit
+    catch {destroy $t.format}
+    set f [frame $t.format -bd 2 -relief ridge]
+
+    message $f.msg1 -text "Insert external reference to URL" -aspect 1000
+    pack $f.msg1 -side top -fill both
+
+    Widget_BeginEntries 15 30 [list SeditFormatNewPart $t $f 1]
+    set sedit($t,desc) {}
+    Widget_LabeledEntry $f.e0 Description: sedit($t,desc)
+    set sedit($t,url) {}
+    Widget_LabeledEntry $f.e1 URL: sedit($t,url)
+    Widget_BindEntryCmd $f.e1.entry <Return> \
+	[list SeditTweakContentType sedit($t,url) sedit($t,exttype) $sedit($t,url)]
+    set sedit($t,exttype) "text/html"
+    Widget_LabeledEntry $f.e2 "Content-Type:" sedit($t,exttype)
+
+    Widget_EndEntries
+
+    set b3 [frame $f.but3 -bd 10 -relief flat]
+    button $b3.plain -text "Cancel" -command [list SeditFormatNewPart $t $f -1]
+    button $b3.newpart -text "OK" -command [list SeditFormatNewPart $t $f 1]
+    pack $b3.plain $b3.newpart -side left -padx 3
+
+    pack $b3 -side top
+    Widget_PlaceDialog $t $f
+    tkwait window $f
+
+    set sedit($t,name) [file tail $sedit($t,url)];
+    set sedit($t,type) "message/external-body;\n\tURL=\"$sedit($t,url)\";\n\taccess-type=URL"
+
+    return [list $sedit($t,newpart) $sedit($t,encoding) $sedit($t,type) $sedit($t,desc)]
+}
 proc SeditTweakContentType { nameVar contentVar filenameOrig } {
     global sedit
     upvar #0 $nameVar name
     upvar #0 $contentVar content
+    if {[ string length $filenameOrig ] == 0 } { set filenameOrig $name }
     if [catch {SeditGuessContentType $filenameOrig} content] {
 	Exmh_Status $content
 	set content $sedit(defaultType)
