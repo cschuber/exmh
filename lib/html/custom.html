@@ -912,12 +912,14 @@ and also some exmh specific sequences.
   <dd>The priority of sequences for display.  Sequences which are not
   in this list will not be displayed.  If a message is in two
   different sequences, the latter sequence will be applied on top of
-  the former seqeunce.  Default is: mrange drange range moved deleted
+  the former seqeunce.  To add your own sequences, simply redefine
+  this resource and add a sequence_yoursequence resource.  Default is:
+  mrange drange range moved deleted.
   selected unseen current.
   <dt>sequence_current
   <dd>"current" is not really an (n)mh sequence.  This describes how the
   current message is displayed.  Default is: -foreground {violet red}
-  -background white. 
+  -background white.
   <dt>sequence_unseen
   <dd>This is the sequence for unseen messages.  Default is:
   -foreground blue.
@@ -928,7 +930,7 @@ and also some exmh specific sequences.
   <dt>sequence_deleted
   <dd>This is the sequence for deleted messages.  This is not an (n)mh
   sequence, but is instead merely a marking of messages which are to
-  be deleted.  Default is: -overstrike 1
+  be deleted.  Default is: -overstrike 1.
   <dt>sequence_selected
   <dd>This is the seqeunce for selected messages.  This is not an (n)mh
   sequence, but is instead merely a marking of messages which are to
