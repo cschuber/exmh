@@ -96,9 +96,6 @@ proc ScanFolder {F adjustDisplay} {
     if {$adjustDisplay} {
 	Ftoc_Yview end
     }
-    if {$update} {
-	Flist_ForgetUnseen $F
-    }
     Ftoc_ShowSequences $F
     return
 }
