@@ -12,7 +12,6 @@
 
 proc Exwin_Init {} {
     global exwin
-    Preferences_Resource exwin(mtextLines) mtextLines 25
     Preferences_Add "Windows & Scrolling" \
 "Window placement and scroll-related preferences are set here.
 Contrained scrolling keeps the last line of text in a window stuck
@@ -78,10 +77,19 @@ windows."}
 "Display Folder Table of Contents (FTOC) in a separate window.
 (You can still only display a single folder at a time.)"}
     {exwin(toplevelMsg) toplevelMsg OFF {Use separate Msg window}
-"Display mail messages in a separate window."}
+"Display mail messages in a separate window.
+This setting only takes effect after restarting exmh."}
+    {exwin(mtextLines) mtextLines 25 {Lines in message display}
+"The height (in lines) of the message display. 
+Only applies to the separate message display window."}
+    {exwin(mtextWidth) mtextWidth 80 {Width of message display}
+"The width (in characters) of the message display.
+Only applies to the separate message display window."}
     }
     set exwin(ftextLinesSave) $exwin(ftextLines)
     trace variable exwin(ftextLines) w ExwinFixupFtextLines
+    trace variable exwin(mtextLines) w ExwinFixupMtext
+    trace variable exwin(mtextWidth) w ExwinFixupMtext
 
     if {$exwin(wheelEnabled)} {
 	mscroll TScroll 5
@@ -115,6 +123,12 @@ proc ExwinFixupFtextLines { args } {
     }
 }
 
+proc ExwinFixupMtext { args } {
+    global exwin
+    Exmh_Debug ExwinMixupFtext $exwin(mtextLines) $exwin(mtextWidth)
+    $exwin(mtext) configure -height $exwin(mtextLines) -width $exwin(mtextWidth)
+}
+
 # Main window layout.
 # This has grown complicated because of the exwin(toplevelMsg) and exwin(toplevelFtoc)
 # options that put some windows in or out of the main window.  Consider
@@ -146,7 +160,9 @@ proc Exwin_Layout {} {
 
     # The folder buttons and Ftoc display are put in here
     if {$exwin(toplevelFtoc)} {
-        set exwin(ftocframe) [Widget_Toplevel .ftocframe "Folder ToC"]
+        set exwin(ftocframe) .ftocframe
+        Exwin_Toplevel $exwin(ftocframe) "Folder ToC" Ftoc no_dismiss_button]
+        wm protocol $exwin(ftocframe) WM_DELETE_WINDOW {Exwin_Dismiss $exwin(ftocframe)}
     } else {
         set pack_opts [expr {$exwin(toplevelMsg) ? "$expand" : "$fixed"}]
         set exwin(ftocframe) [Widget_Frame . ftocframe Ftoc $pack_opts]
@@ -176,7 +192,9 @@ proc Exwin_Layout {} {
     # Create a frame for Message stuff.
     # The message buttons and display are put in here.
     if {$exwin(toplevelMsg)} {
-        set exwin(msgframe) [Widget_Toplevel .msgframe "Message Display"]
+        set exwin(msgframe) .msgframe
+        Exwin_Toplevel $exwin(msgframe) "Message Display" Msg no_dismiss_button
+        wm protocol $exwin(msgframe) WM_DELETE_WINDOW {Exwin_Dismiss $exwin(msgframe)}
     } else {
         set exwin(msgframe) [Widget_Frame . msgframe Msg $expand]
     }
@@ -212,11 +230,24 @@ proc Exwin_Layout {} {
 
     # Message display
     set exwin(mtext) [Widget_Text [Widget_Frame .msgframe msg Msg $expand] \
-				$exwin(mtextLines)]
+				$exwin(mtextLines) -width $exwin(mtextWidth)]
     Msg_Setup $exwin(mtext)
     Bindings_Main $exwin(mtext)
-
-    focus $exwin(mtext)
+    if {$exwin(toplevelMsg) || $exwin(toplevelFtoc)} {
+      Bindings_Main $exwin(ftext)
+      focus $exwin(ftext)
+    } else {
+      focus $exwin(mtext)
+    }
+}
+proc Exwin_SeeToplevelMsg {} {
+    global exwin
+    if {$exwin(toplevelMsg)} {
+      # Ensure this is displayed
+      # This'll raise errors if the user managed to destroy the window
+      wm deiconify $exwin(msgframe)
+      raise $exwin(msgframe)
+    }
 }
 
 proc ExwinFtocMsgBoundary {frame} {
@@ -552,13 +583,16 @@ proc Exwin_CheckPoint { } {
 	set npath [string trimleft $path .]
 	if [catch {wm state $path} state] {
 	    # No widget - retrieve from old values, if possible
+            # except for the hundreds of sedit and pref panes
 	    set geo {}
-	    foreach item $oldstuff {
+            if {![regexp {^\.(sedit|pref|edit).} $path]} {
+              foreach item $oldstuff {
 		if [regexp ^\\*$npath\\.position: $item] {
 		    set geo [lindex $item 1]
 		    break
 		}
-	    }
+              }
+            }
 	} else {
 	    case $state {
 		"normal" {set geo [wm geometry $path]}

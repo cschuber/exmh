@@ -1,4 +1,13 @@
 HISTORY
+cvs repository 1/7/2005 welch@panasas.com
+  lib/exwin.tcl: fixed up lingering focus and position issues
+    with the detached message and ftoc windows.  I also trimmed
+    out all the sedit and pref windows from the saved window
+    positions in the case that the window is "stale".
+  lib/msgShow.tcl: added call to Exwin_SeeToplevelMsg in case
+    the user has withdrawn the message display
+  exmh.install: changed 2.7.2 date to 1/7/2005
+
 cvs repository 1/6/2005 welch@panasas.com
   lib/seqwin.tcl: Fixed a buglet that caused the incorrect
     display (missing the first folder) in the sequences window

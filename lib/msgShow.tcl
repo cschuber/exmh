@@ -92,6 +92,7 @@ proc MsgShow { msgid } {
     # Display the current message in a text widget
     global msg exwin exmh mhProfile mimeHdr mime
 
+    Exwin_SeeToplevelMsg
     if {$msg(dpy) == $msgid} {
 	return
     }
