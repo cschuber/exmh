@@ -308,7 +308,7 @@ proc FdispBindPopupLabel { can id ftype f } {
     }
     $canvas bind $id <Shift-$fdisp(tarbutton)> 	[list Folder_TargetCopy $f]
     $canvas bind $id <Control-$fdisp(tarbutton)> \
-		    [list Folder_TargetClear $f]
+		    [list Folder_TargetClear]
 }
 proc FdispPopupResetView { can } {
     global fdisp

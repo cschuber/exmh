@@ -1,6 +1,8 @@
 HISTORY
 
 cvs repository 4/23/1999
+    Remove unused argument from Folder_TargetClear proc 
+        -steve rader via haldevore
     Make background process run User_Layout()
         -Christer Borang via haldevore
     Add code to allow user to choose precedence of multipart/alternative

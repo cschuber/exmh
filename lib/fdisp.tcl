@@ -575,7 +575,7 @@ proc FdispBindLabel { can id ftype f } {
     $canvas bind $id <Shift-$fdisp(tarbutton)> \
 		    [list Folder_TargetCopy $f]
     $canvas bind $id <Control-$fdisp(tarbutton)> \
-		    [list Folder_TargetClear $f]
+		    [list Folder_TargetClear]
 
 
     if {[string compare $ftype goParent] == 0} {
