@@ -1023,7 +1023,7 @@ proc Pgp_ShowMessage { tkw part } {
 		    set action signbinary
 		    set mimeHdr($part,param,x-action) signbinary
 		}		    
-	    } elsif {"$action" == "pgp-signed"} {
+	    } elseif {"$action" == "pgp-signed"} {
 		# Mutt propagates yet another x-action type
 		set action signclear
 		set mimeHdr($part,param,x-action) signclear

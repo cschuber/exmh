@@ -1,5 +1,8 @@
 HISTORY
 cvs repository 04/21/2003 valdis.kletnieks@vt.edu
+  pgpMain.tcl - I can't type, fix elsif to elseif
+
+cvs repository 04/21/2003 valdis.kletnieks@vt.edu
   patch from Kevin Oberman <oberman@es.net>
     lib/pgpMain.tcl - add tweak to support Mutt-generated pgp-sign messages
 
