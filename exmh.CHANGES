@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 06/07/2000  Scott Lipcon <slipcon@acm.jhu.edu>
+    misc/RPM/: added and fixed 2.1.2 RPM generation
+    lib/sound.tcl: added ~ glob to sound file paths (untested)
+    Forgot to update exmh.CHANGES, sorry :)
+
 cvs repository 05/30/2000  Bruce A. Mah <bmah@cisco.com>
     lib/seditMime.tcl: Fix a bug introduced in last commit to this
     file; when creating a multipart message, don't assume where the
