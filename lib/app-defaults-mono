@@ -1,0 +1,24 @@
+!
+! Monochrome is black text on white background by default
+!
+*Foreground: black
+*Background: white
+*Scrollbar.foreground: white
+*Scrollbar.activeForeground: black
+!
+! These are needed because the Canvas does not support a foreground resource.
+! c_background is just there for consistency(?).  The drawback is
+! that if you make c_background different than Background,
+! you'll also want to define *Canvas.background to match c_background ...
+! 
+*c_foreground: black
+*c_background: white
+
+# Canvas's don't directly support foreground, but this resource
+# is grabbed explicitly in exwin.tcl
+*Face*Canvas.foreground:		black
+*Face*Canvas.background:		white
+
+! Link color for HTML links
+*Text.c_link:	black
+

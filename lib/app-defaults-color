@@ -1,0 +1,117 @@
+!
+! app-defaults-color
+!
+! Definitions for color displays.
+!
+! Grey color set that matches Tk 4.0
+! If you liked the slightly lighter colors from before, use
+! #efefef instead of #d9d9d9 for backgrounds
+! #dfdfdf instead of #c3c3c3 for scrollbar troughs
+! white instead of #ececec for active background
+! black instead of #b03060 for the selector
+! #7f7f7f instead of #a3a3a3 for disabled foreground
+!
+*activeBackground:			#ececec
+*activeForeground:			black
+! selector changed to selectColor in Tk4.0
+*selector:				#b03060
+*selectColor:				#b03060
+*background:				#d9d9d9
+*highlightBackground:			#d9d9d9
+*foreground:				black
+*selectBackground:			#c3c3c3
+*Scale.sliderForeground:		#c3c3c3
+*Scrollbar.foreground:			#c3c3c3
+*Scrollbar.troughColor:			#c3c3c3
+*Scrollbar.activeForeground:		#ececec
+*disabledForeground:			#a3a3a3
+
+*Entry.background:			white
+*Entry.foreground:			black
+*mid.right.top.msg.background:		#d9d9d9
+*Sedit.Entry.background:		#d9d9d9
+
+! This resource sets all labels (e.g., in dialogs)
+*Label.foreground:			blue
+! Labels on main display have always been blue
+*Main*Label.foreground:			blue
+*Fops*Label.foreground:			blue
+*Mid*Label.foreground:			blue
+
+*Face*Label.background:			white
+*Face*Label.foreground:			black
+*Face.default.background:		#d9d9d9
+*Face.default.foreground:		blue
+
+! Colors for the feedback on color displays.
+! (Black and white feedback is hardwired. It isn't clear that
+!  there is much room to fiddle in a general way.)
+!	c_current	Foreground of current message
+!	c_currentBg	Background of current message (optional)
+!	c_unseen	Foreground of unseen messages
+!	c_unseenBg	Background of unseen messages
+!	c_moved		Background of moved messages, bg of target folder label
+!	c_movedFg	Foreground of moved messages
+!	c_deleted	Background of deleted messages
+!	c_deletedFg	Foreground of deleted messages
+!	c_foreground	Normal forground
+!	c_background	Label background
+!	c_selectedBg	FTOC text foerground for selected ranges
+!	c_selectedBg	FTOC text background for selected ranges
+!			You can tweak ftoc background with Ftoc.t.background
+!			You can tweak fdisp background with
+!				Fdisp*can.background
+!			 	Fdisp*cache.background
+!	c_popup		Background of fdisp popups.
+!	c_label		Foreground for Version, Folder, and MessageID
+
+*c_current: 	violet red
+*c_currentBg:	white
+*c_unseen: 	blue
+*c_unseenBg:
+*c_moved: 	yellow
+*c_movedFg:
+*c_deleted:	#c3c3c3
+*c_deletedFg:
+*c_foreground: 	black
+*c_background: 	white
+*c_selectedFg:	black
+*c_selectedBg:	#ececec
+*c_popup: 	#c3c3c3
+*c_label:	blue
+!
+! Status message colors
+!
+*c_st_normal:	blue
+*c_st_error:	purple
+*c_st_warn:	red
+*c_st_background: medium sea green
+
+! Highlight color for URI links
+! Background and foreground
+*c_uri:		thistle
+*c_uriFg:	black
+! Active state when mouse is over the link
+*c_uriAbg:	white
+*c_uriAfg:	black
+
+! Link color for HTML links
+*Text.c_link:	blue
+
+! Colors for the Sedit MIME editor.
+! Enable with "Colorize multiparts"
+*c_enrichedBg:	pink
+*c_textBg: 	snow
+*c_audioBg: 	gold
+*c_imageBg: 	powderblue
+*c_messageBg: 	seashell
+*c_applicationBg: honeydew
+*c_videoBg: 	lavenderblush
+
+*c_enrichedFg:	black
+*c_textFg: 	black
+*c_audioFg: 	black
+*c_imageFg: 	black
+*c_messageFg: 	black
+*c_applicationFg: black
+*c_videoFg: 	black

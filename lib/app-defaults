@@ -1,0 +1,1124 @@
+!
+! Application defaults for Exmh
+!
+! The best place to put your personal defaults for exmh is
+! in the beginning of your ~/.exmh-defaults.  You'll note that
+! the tail of that file is written by the Preferences dialog.
+! If you put anything into ~/.Xresources, then you'll need to
+! use "exmh" as the prefix for the resource name (not *).
+!
+! The reason *resourceName is used here is because multiple
+! instances of exmh have different names (exmh, exmh #2, etc),
+! plus there is the background process named exmh-bg that shares resources.
+! HOWEVER, never put *geometry into a TK resource specifciation
+! because that will attempt to set the geometry of *every* widget!
+!	Use exmh.geometry instead.
+!
+! Class				Description
+! -----				-----------
+! Main				Top row of buttons and title label
+! Fdisp				Folder label display
+! Fdisp.Frame.Canvas		    and its canvas.
+! Fops				Folder operation buttons and folder label
+! Ftoc				Folder table of contents display
+! Mid				Frame around Face, Msgid, Status, Mops
+! Mid.Face			Bitmap display
+! Mid.Right.Status.label	Message label
+! Mid.Right.Status.msg 		Status line
+! Mid.Right.Mops		Message buttons
+! Msg				Message display
+!
+! toplevel windows.
+!
+! Fltop				Detached toplevel folder label display
+! Fltop.Canvas			    and its canvas.
+! Clip				Detached message display
+! Sedit				Simple editor top-levels
+! Help				Help window
+! Key				Color key window
+! Pref				Preferences dialogs
+! Log				Error/debug log
+! Error				Error popups
+! Pick				Pick dialog
+! WhatNow			WhatNow? dialog
+! Find				Find dialog
+! NewFolder			Create folder dialog
+! DeleteFolder			Delete folder dialog
+! Alias				The aliases browser
+! FileSelect			The file selection dialog
+! Html				The built-in HTML viewer
+! Dialog 			General popups
+
+! Fonts
+
+*font: fixed
+
+!*Ftoc*Text.font: 6x10
+!*Msg*Text.font: fixed
+!*Sedit*Text.font: fixed
+
+! Tk widgets:
+
+*Entry.relief:		sunken
+*Entry.borderWidth:	2
+*Label.relief:		flat
+*Label.borderWidth:	0
+*Button.relief:		raised
+*Menubutton.relief:	raised
+*Checkbutton.relief:	raised
+*Radiobutton.relief:	raised
+
+! For the old, cramped 3.6 appearance
+! Buttons have an extra 2 pixels added in comparision with
+! all other types of butons, hence the 1 and the 2 here
+*padX:		2
+*padY:		2
+*Button.padX:	1
+*Button.padY:	1
+*Button.highlightThickness: 0
+*Checkbutton.highlightThickness: 0
+*Radiobutton.highlightThickness: 0
+*Menubutton.highlightThickness: 0
+
+*Menubutton.takeFocus: 0
+
+! Cursors
+*Text.cursor:			xterm
+*Ftoc*Text.cursor:		hand2
+*Dialog*cursor:			top_left_arrow
+*Status*cursor:			top_left_arrow
+*Status.boundary.cursor:	double_arrow
+*Main.quit.cursor:		gumby
+*Entry.cursor:			xterm
+
+! special configuration resources for widgets used in unusual ways:
+
+! exmh status field is an entry being used as a label:
+*statusConfig:		-relief flat -borderwidth 0
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+*LabeledEntry.borderWidth:		2
+*LabeledEntry.relief:			flat
+*LabeledEntry*Label.borderWidth:	0
+*LabeledEntry*Label.relief:		flat
+*LabeledEntry*Label.anchor:		e
+*LabeledEntry*Entry.borderWidth:	2
+*LabeledEntry*Entry.relief:		sunken
+
+*Pick*LabeledEntry*Label.width:		20
+*Pick.borderWidth:			2
+*Pick.relief:				ridge
+
+*Glimpse*Text.cursor:			hand2
+*Glimpse*Text.wrap:			word
+
+! This selects a new preference display
+*helpInOneWindow:			1
+
+*Preference.borderWidth:		2
+*Preference.relief:			flat
+*Preference*Label.borderWidth:		2
+*Preference*Label.relief:		flat
+*Preference*Label.anchor:		e
+*Preference*Entry.borderWidth:		2
+*Preference*Entry.relief:		sunken
+*Preference*Checkbutton.relief:		flat
+*Preference*Radiobutton.relief:		flat
+
+*Text.wrap:				word
+*Ftoc.Text.wrap:			none
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! To avoid a resizing bug in TK, do not specify geometry resources
+! for the toplevel windows.  Instead, use "position", which
+! exmh groks.  The bug is that you cannot specify a geometry like
+! +10-40 for a toplevel frame (frame creation barfs), and if you
+! specify a width and height, it has to be in pixels (because the
+! gridded text subwindow isn't created yet) and you don't have
+! any clue as to the right size.  If you guess wrong, the window
+! will jump from your wrong size to the correct size that has room
+! to pack all its subwindows.  Alternatively, go ahead and pick a
+! pixel size for the toplevel, but do not specify a geometry for
+! the text subwindow.
+
+exmh.geometry:
+*position:
+exmh.iconposition:
+exmh.iconic:		0
+*Fltop.iconposition:
+*Fltop.iconic:		0
+*Fltop*Canvas.width:	500
+*Fltop*Canvas.height:	100
+*Sedit*Text.height:	24
+*Sedit*Text.width:	80
+*Clip*Text.height:	48
+*Clip*Text.width:	80
+*Help*Text.height:	30
+*Help*Text.width:	80
+*Log*Text.width:	80
+*Log*Text.height:	20
+*Alias*alias.listbox.geometry:	20x10
+*Alias*addr.listbox.geometry:	30x10
+*FileSelect*Listbox.geometry:	32x16
+*Alias*alias.listbox.width:	20
+*Alias*addr.listbox.width:	30
+*Alias*Listbox.height:		10
+*FileSelect*Listbox.width: 	32
+*FileSelect*Listbox.height: 	16
+*Glimpse*Text.height:	20
+*Glimpse*Text.width:	80
+
+! Icon bitmaps
+*iconUpBitmap:         flagup.bitmap
+*iconDownBitmap:       flagdown.bitmap
+*iconSpoolBitmap:      flagup.bitmap
+*iconUpLabel:          $flist(newMsgs) Unseen
+*iconDownLabel:        exmh
+*iconSpoolLabel:       $exmh(numUnInced) Spooled
+
+! Top-level resources that don't correspond to a TK widget
+
+! Scrollbar location - left or right
+*scrollbarSide:		right
+
+! Resources that tweak the folder label display
+!	fl_toplevel - put the flist display in a detached, toplevel window
+!	fl_font - label font in the flist display canvas
+!	fl_curbutton - which button selects the current folder
+!	fl_navbutton - which button navigates to subfolders
+!	fl_tarbutton - which button selects a folder as the target for moves
+!	fl_xgap	  - gap between labels, X direction
+!	fl_ygap	  - gap between labels, Y direction
+
+*fl_toplevel: 0
+*fl_font: fixed
+*fl_tarbutton: 3
+*fl_navbutton: 2
+*fl_curbutton: 1
+*fl_xgap: 8
+*fl_ygap: 8
+
+!
+! Resources that create the Main buttons
+! ubuttonlist is meant to be overridden by users to add buttons
+!
+*Main.buttonlist:	quit pref
+*Main.ubuttonlist:
+*Main.menulist:		addr bind help
+*Main.umenulist:
+
+*Main.quit.text:	Quit
+*Main.quit.command:	Exmh_Done
+*Main.pref.text:	Preferences
+*Main.pref.command:	Preferences_Dialog
+
+*Main.addr.text:	Address...
+*Main.addr.m.entrylist: alias addr
+*Main.addr.m.l_alias: MH Aliases
+*Main.addr.m.c_alias: Aliases_Pref
+*Main.addr.m.l_addr: Address Book
+*Main.addr.m.c_addr: Addr_Browse
+
+*Main.bind.text:	Bindings...
+*Main.bind.m.entrylist: command sedit compose
+*Main.bind.m.l_command: Commands
+*Main.bind.m.c_command: Bind_Pref
+*Main.bind.m.l_sedit:	Simple Edit
+*Main.bind.m.c_sedit:	Sedit_Pref
+*Main.bind.m.l_compose:	Compose Key
+*Main.bind.m.c_compose:	Sedit_ComposeUI
+
+*Main.help.text:	Help...
+*Main.help.m.entrylist:	help colorkey html faq sep list bug reg pgp
+*Main.help.m.l_colorkey:	Color Legend
+*Main.help.m.c_colorkey:	Help_KeyDisplay
+*Main.help.m.l_help:	Quick Intro
+*Main.help.m.c_help:	Help
+*Main.help.m.l_faq:	Frequently Asked Questions
+*Main.help.m.c_faq:	Help exmh-faq
+*Main.help.m.l_html:	HTML Docs
+*Main.help.m.c_html:	Html_Window file:\$exmh(library)/html/index.html
+*Main.help.m.t_sep:	separator
+*Main.help.m.l_bug:	Submit Bug Report
+*Main.help.m.c_bug:	Report_Bug
+*Main.help.m.l_reg:	Register as an EXMH User
+*Main.help.m.c_reg:	Report_Registration
+*Main.help.m.l_list:	Exmh Mailing Lists...
+*Main.help.m.m_list:	list
+*Main.help.m.t_list:	cascade
+*Main.help.m.l_pgp:	Pgp Setup
+*Main.help.m.c_pgp:	Pgp_Help
+
+*Main.help.m.list.entrylist: about adduser deluser adddig deldig addann delann addwork delwork
+
+*Main.help.m.list.l_about: About the exmh mailing lists
+*Main.help.m.list.c_about: Help Lists {About the exmh mailing lists}
+*Main.help.m.list.l_adduser: Subscribe to exmh-users
+*Main.help.m.list.c_adduser: Report_Subscribe exmh-users subscribe
+*Main.help.m.list.l_deluser: Unsubscribe from exmh-users
+*Main.help.m.list.c_deluser: Report_Subscribe exmh-users unsubscribe
+*Main.help.m.list.l_adddig: Subscribe to exmh-users digest
+*Main.help.m.list.c_adddig: Report_Subscribe exmh-users-digest subscribe
+*Main.help.m.list.l_deldig: Unsubscribe from exmh-users digest
+*Main.help.m.list.c_deldig: Report_Subscribe exmh-users-digest unsubscribe
+*Main.help.m.list.l_addann: Subscribe to exmh-announce
+*Main.help.m.list.c_addann: Report_Subscribe exmh-announce subscribe
+*Main.help.m.list.l_delann: Unsubscribe from exmh-announce
+*Main.help.m.list.c_delann: Report_Subscribe exmh-announce unsubscribe
+*Main.help.m.list.l_addwork: Subscribe to exmh-workers
+*Main.help.m.list.c_addwork: Report_Subscribe exmh-workers subscribe
+*Main.help.m.list.l_delwork: Unsubscribe from exmh-workers
+*Main.help.m.list.c_delwork: Report_Subscribe exmh-workers unsubscribe
+
+!
+! Resources that create the Folder ops buttons and menu
+! NOTICE: In 1.4 and higher, the entrylist etc. are attached to the
+! menu widget pathname, not the menu button.  NOTICE.
+!
+*Fops.menulist:		more search
+*Fops.umenulist:
+
+*Fops.more.text: 	More...
+*Fops.more.m.entrylist: rescan project pack sort thread find delete catchup scanall scanall2 purge purgeall import audit mhprof
+*Fops.more.m.uentrylist:
+
+*Fops.more.m.l_rescan: 	Rescan folder
+*Fops.more.m.c_rescan:	busy Scan_FolderForce ; Msg_ShowSomething
+*Fops.more.m.l_project: List only selected messages
+*Fops.more.m.c_project:	Ftoc_NewFtoc
+*Fops.more.m.l_pack:	Pack folder
+*Fops.more.m.c_pack:	busy Folder_Pack ; Msg_ShowSomething
+*Fops.more.m.l_sort:	Sort folder...
+*Fops.more.m.t_sort:	cascade
+*Fops.more.m.m_sort:	sort
+*Fops.more.m.sort.entrylist:	date subject from
+*Fops.more.m.sort.l_date:	By Date
+*Fops.more.m.sort.c_date:	busy Folder_Sort -datefield date; Msg_ShowSomething
+*Fops.more.m.sort.l_subject:	By Subject
+*Fops.more.m.sort.c_subject:	busy Folder_Sort -textfield subject -limit 0 ; Msg_ShowSomething
+*Fops.more.m.sort.l_from:	By Sender
+*Fops.more.m.sort.c_from:	busy Folder_Sort -textfield from ; Msg_ShowSomething
+*Fops.more.m.l_thread:	Thread
+*Fops.more.m.c_thread:	busy Thread_DisplayAll 20 +->
+*Fops.more.m.l_find:	Find all folders
+*Fops.more.m.c_find:	busy Flist_Refresh
+*Fops.more.m.l_delete:	Delete folder
+*Fops.more.m.c_delete:	Folder_Delete
+*Fops.more.m.l_catchup:	Catch-up Unseen
+*Fops.more.m.c_catchup:	Pick_MarkSeen
+*Fops.more.m.l_scanall:	Update scan caches
+*Fops.more.m.c_scanall:	Scan_AllFolders
+*Fops.more.m.l_scanall2:	Update all scan caches
+*Fops.more.m.c_scanall2:	Scan_AllFolders 1
+*Fops.more.m.l_purge:	Purge folder
+*Fops.more.m.c_purge:	Folder_PurgeBg
+*Fops.more.m.l_purgeall:	Purge all folders
+*Fops.more.m.c_purgeall:	Folder_PurgeAllBg
+*Fops.more.m.l_import:	Import mailbox folders
+*Fops.more.m.c_import:	Import_Dialog
+*Fops.more.m.t_audit:	cascade
+*Fops.more.m.l_audit:	Audit
+*Fops.more.m.m_audit:	audit
+*Fops.more.m.l_mhprof:	Re-read MH Profile
+*Fops.more.m.c_mhprof:	MhParseProfile
+
+*Fops.more.m.audit.entrylist:	stat view
+*Fops.more.m.audit.l_stat:	Summary Statistics
+*Fops.more.m.audit.c_stat:	Audit_Stats
+*Fops.more.m.audit.l_view:	View Log
+*Fops.more.m.audit.c_view:	Audit_View
+
+
+*Fops.search.text: 	Search...
+*Fops.search.m.entrylist: help msg fast pick glimpse thread
+*Fops.search.m.uentrylist:
+
+*Fops.search.m.l_help: Search Help
+*Fops.search.m.c_help: Help Search
+*Fops.search.m.l_msg: Current message
+*Fops.search.m.c_msg: Find_Msg
+*Fops.search.m.l_fast: Folder table of contents
+*Fops.search.m.c_fast: Find_FTOC
+*Fops.search.m.l_pick: All messages in current folder (pick)
+*Fops.search.m.c_pick:	Pick
+*Fops.search.m.l_glimpse: All messages in all folders (glimpse)
+*Fops.search.m.c_glimpse: Glimpse_Startup
+*Fops.search.m.l_thread: Display related messages
+*Fops.search.m.c_thread: Thread_Display
+
+
+*Fops.buttonlist:	commit inc flist new
+*Fops.ubuttonlist:
+
+*Fops.commit.text:	Commit
+*Fops.commit.command:	Folder_Commit
+*Fops.inc.text:		Inc
+*Fops.inc.command:	Inc
+*Fops.flist.text:	Flist
+*Fops.flist.command:	busy Flist_FindUnseen 1 ; Inc_PresortFinish
+*Fops.new.text:		New
+*Fops.new.command:	Folder_New
+
+!
+! Resources that create the Message ops buttons and menus
+!
+*Mops.menulist:		more reply
+*Mops.umenulist:
+
+*Mops.reply.text: 	Reply...
+*Mops.reply.m.entrylist: reply replyall
+*Mops.reply.m.uentrylist: sep help
+
+*Mops.reply.m.l_reply: 	Reply to sender <Key-r>
+*Mops.reply.m.c_reply:		Msg_Reply -nocc to -nocc cc
+*Mops.reply.m.l_replyall: 	Reply all <Key-R>
+*Mops.reply.m.c_replyall:	Msg_Reply -cc to -cc cc
+
+*Mops.reply.m.t_sep:	separator
+*Mops.reply.m.l_help:	Defining more...
+*Mops.reply.m.c_help:	Msg_ReplyHelp
+
+*Mops.more.text: 	More...
+*Mops.more.m.entrylist: 	print unmark clip xunseen burst distrib save use edit uudecode postscript apply1 apply2 munseen pgpencrypt pgp uriscan uriopen partial ref post grabaddr
+*Mops.more.m.uentrylist:
+
+*Mops.more.m.l_print: 	Print
+*Mops.more.m.c_print:	Print
+*Mops.more.m.l_unmark: 	Unmark (Undo)
+*Mops.more.m.c_unmark:	Ftoc_Unmark
+*Mops.more.m.l_clip: 	Clip
+*Mops.more.m.c_clip:	Msg_Clip
+*Mops.more.m.l_xunseen: First Unseen
+*Mops.more.m.c_xunseen:	Msg_ShowUnseen
+*Mops.more.m.l_burst: 	Burst Digest
+*Mops.more.m.c_burst:	Msg_BurstDigest
+*Mops.more.m.l_distrib: 	Redistribute
+*Mops.more.m.c_distrib:	Msg_Dist Mh_DistSetup
+*Mops.more.m.l_save: 	Save to file
+*Mops.more.m.c_save:	Msg_Save
+*Mops.more.m.l_use: 	Use message as draft
+!
+! The \$ is required because menu commands are eval'ed when the menu
+! is defined (for sedit), but in this case we want to re-eval it
+! each time the entry is selected.
+!
+*Mops.more.m.c_use:	Msg_Compose +\$exmh(folder) \$msg(id)
+*Mops.more.m.l_edit: 	Edit message
+*Mops.more.m.c_edit:	Msg_Edit
+*Mops.more.m.l_uudecode: 	uudecode message
+*Mops.more.m.c_uudecode:	Msg_UUdecode
+*Mops.more.m.l_postscript: 	Print postscript content
+*Mops.more.m.c_postscript:	Print_Postscript
+*Mops.more.m.l_apply1: 	Apply command to message
+*Mops.more.m.c_apply1:	Message_Apply
+*Mops.more.m.l_apply2: 	Apply command to body
+*Mops.more.m.c_apply2:	Message_Apply body
+*Mops.more.m.l_munseen: Mark Unseen
+*Mops.more.m.c_munseen:	Msg_MarkUnseen
+*Mops.more.m.l_pgpencrypt: PGP Encrypt
+*Mops.more.m.c_pgpencrypt: Pgp_ExmhEncrypt
+*Mops.more.m.l_pgp:	old PGP...
+*Mops.more.m.t_pgp:	cascade
+*Mops.more.m.m_pgp:	pgp
+*Mops.more.m.l_uriscan: Scan for URLs
+*Mops.more.m.c_uriscan: URI_ScanMsg
+*Mops.more.m.l_uriopen: View selected URL
+*Mops.more.m.c_uriopen: URI_OpenSelection
+*Mops.more.m.l_partial: Concatenate partial messages
+*Mops.more.m.c_partial: Partial_Concatenate
+*Mops.more.m.l_ref: Automatic Refile
+*Mops.more.m.c_ref: Folder_AutoRefile
+*Mops.more.m.l_post: Post this message to a Newsgroup
+*Mops.more.m.c_post: Post
+*Mops.more.m.l_grabaddr: Save "From" address
+*Mops.more.m.c_grabaddr: Address_Save
+
+*Mops.more.m.pgp.entrylist: decrypt pgpview pgpextract 
+*Mops.more.m.pgp.l_decrypt: PGP Decrypt
+*Mops.more.m.pgp.c_decrypt:	Pgp_Decrypt
+*Mops.more.m.pgp.l_pgpview: PGP View
+*Mops.more.m.pgp.c_pgpview:	Pgp_View
+*Mops.more.m.pgp.l_pgpextract: PGP Extract keys
+*Mops.more.m.pgp.c_pgpextract: PgpExec_ExtractKeys \"\$mhProfile(path)/\$exmh(folder)/\$msg(id)\"
+
+*Mops.buttonlist:	link move delete next prev comp forward
+*Mops.ubuttonlist:
+
+*Mops.link.text: 	Link
+*Mops.link.command:	Msg_Move Ftoc_CopyMark advance?
+*Mops.move.text: 	Move
+*Mops.move.command:	Msg_Move Ftoc_MoveMark
+*Mops.delete.text: 	Delete
+*Mops.delete.command:	Msg_Remove
+*Mops.next.text: 	Next
+*Mops.next.command:	Ftoc_Next show
+*Mops.prev.text: 	Prev
+*Mops.prev.command:	Ftoc_Prev show
+*Mops.comp.text: 	Comp
+*Mops.comp.command:	Msg_Compose
+*Mops.forward.text: 	Forward
+*Mops.forward.command:	Msg_Forward
+
+! The group assignments associate buttons with three states:
+!	current: there is a current message
+!	  range: there is a range of messages selected
+!	nodraft: we are *not* in the drafts folder
+!
+! In addition, to support a special case, there is
+!	   comp: a group with a single item, the Send (or comp) button.
+
+*Mops.groups:		current range nodraft comp pgp
+
+*Mops.g_current:	link move delete reply forward
+*Mops.gm_current:	Print {Unmark (Undo)} Clip Redistribute {Burst Digest} {Save to file} {Use message as draft} {Edit message} {uudecode message} {Print postscript content} {Apply command to body} {Apply command to message} {Mark Unseen} {PGP Encrypt} {old PGP...} {Highlight URI} {Scan for URLs} {View selected URL} {Post this message to a Newsgroup} {Automatic Refile} {Concatenate partial messages} {Save "From" address}
+*Mops.ug_current:
+*Mops.ugm_current:
+
+*Mops.g_range:		link move delete forward
+*Mops.gm_range:		Print {Unmark (Undo)} {Mark Unseen} {Concatenate partial messages}
+*Mops.ug_range:
+*Mops.ugm_range:
+
+*Mops.g_nodraft:	reply forward
+*Mops.gm_nodraft:	Redistribute
+*Mops.ug_nodraft:
+*Mops.ugm_nodraft:
+
+*Mops.g_comp:		comp
+
+!
+! MIME message type handlers
+! mimeTypes lists the known mime types
+! mimeUTypes is meant to be overridden by users with additional types
+! mime_type/subtype maps to the TCL procedure to handle the type
+!
+*mimeTypes: text/plain text/richtext text/enriched multipart \
+	multipart/digest multipart/parallel multipart/alternative \
+	application/octet-stream message/external-body message/rfc822 \
+	text/rfc822-headers message/sample message/news\
+	image application/pgp text/pgp multipart/x-tioga text/x-html text/html \
+	application/x-shell-script \
+	audio/basic audio/x-sunaudio application/x-suncalendar \
+	message/delivery-status \
+	application/x-pgp-message \
+	application/fv-infohaus \
+	multipart/signed multipart/encrypted \
+	multipart/report \
+	application/x-url \
+	application/msword application/pdf \
+	application/postscript \
+	application/x-frame application/x-framemaker \
+	application/x-interleaf application/msword \
+	application/x-lotus application/x-lotus-123 \
+	application/x-wordmarc application/x-wordperfect
+*mimeUTypes:
+!
+*mime_text/plain:		Mime_ShowText
+*mime_text/rfc822-headers:	Mime_ShowText
+*mime_text/richtext:		Mime_ShowRichText
+*mime_text/enriched:		Mime_ShowRichText
+*mime_text/x-html:		Uri_ShowPart
+*mime_text/html:		Uri_ShowPart
+*mime_multipart:		Mime_ShowMultipart
+*mime_multipart/digest:		Mime_ShowMultipartDigest
+*mime_multipart/parallel:	Mime_ShowMultipartParallel
+*mime_multipart/alternative:	Mime_ShowMultipartAlternative
+*mime_multipart/x-tioga:	Tioga_ShowMsg
+*mime_multipart/encrypted:		MimeShowMultipartEncrypted
+*mime_multipart/signed:			MimeShowMultipartSigned
+*mime_multipart/report:			Mime_ShowMultipartReport
+*mime_application/x-shell-script:	Mime_ShowShellScript
+*mime_audio/basic:			Mime_ShowAudio
+*mime_audio/x-sunaudio:			Mime_ShowAudio
+*mime_application/x-suncalendar:	Mime_ShowSunCalendar
+*mime_application/octet-stream:	Mime_ShowApplicationOctet
+*mime_message/external-body:	Mime_ShowMessageExternal
+*mime_message/rfc822:		Mime_ShowRfc822
+*mime_message/sample:		Mime_ShowRfc822
+*mime_message/news:		Mime_ShowRfc822
+*mime_message/delivery-status:		Mime_ShowText
+*mime_application/pgp:			Pgp_ShowMessage
+*mime_application/x-pgp-message:	Pgp_ShowMessage
+*mime_text/pgp:				Pgp_ShowMessage
+*mime_image:			Mime_ShowImage
+*mime_application/fv-infohaus:	Mime_ShowText
+*mime_application/x-url:	Mime_ShowUri
+*mime_application/msword:		Mime_ShowXApp
+*mime_application/pdf:			Mime_ShowXApp
+*mime_application/postscript:		Mime_ShowXApp
+*mime_application/x-frame:		Mime_ShowXApp
+*mime_application/x-framemaker:		Mime_ShowXApp
+*mime_application/x-interleaf:		Mime_ShowXApp
+*mime_application/x-lotus:		Mime_ShowXApp
+*mime_application/x-lotus-123:		Mime_ShowXApp
+*mime_application/x-wordmarc:		Mime_ShowXApp
+*mime_application/x-wordperfect:	Mime_ShowXApp
+
+!
+!  Built-in file to content-type mappings -
+!
+*magic_English text:			text/plain
+*magic_ascii text:			text/plain
+*magic_lLotus worksheet:		application/x-lotus-123
+*magic_lMS Word document:		application/msword
+*magic_lAdobe PDF file:			application/pdf
+*magic_lFrame Maker document:		application/x-frame
+*magic_lGIF file, v87:			image/gif
+*magic_lGIF file, v89:			image/gif
+*magic_lInterleaf ASCII document:	application/x-interleaf
+*magic_lInterleaf fast-saved document:	application/x-interleaf
+*magic_lJPEG file:			image/jpeg
+*magic_lJPG file:			image/jpeg
+*magic_lPostScript document:		application/postscript
+*magic_lWordPerfect document:		application/x-wordperfect
+*magic_lWordMarc document:		application/x-wordmarc
+
+!
+!
+! Signature message type handlers
+! sigProts lists the known signature protocols
+! sigUProts is meant to be overridden by users with additional types
+! sig_type/subtype maps to the TCL procedure to handle the type
+!
+*sigProts:		application/pgp-signature
+*sigUProts:
+!
+*sig_application/pgp-signature:	MimeShowMultipartSignedPgp
+!
+! Encryption message type handlers
+! cryptProts lists the known encryption protocols
+! cryptUProts is meant to be overridden by users with additional types
+! crypt_type/subtype maps to the TCL procedure to handle the type
+!
+*cryptProts:		application/pgp-encrypted
+*cryptUProts:
+!
+*crypt_application/pgp-encrypted:	MimeShowMultipartEncryptedPgp
+
+! Quoting options
+! quoteAdd or quoteUAdd list the MIME types to add
+! quoteOmit or quoteUOmit list the types to be omitted regardless
+! of what quote(U)Add says.  See the help under Quoting in the
+! Preference menu for more detailed help
+*quoteAdd: message/rfc822 text text/* multipart/* application/pgp
+*quoteOmit:
+*quote_message/rfc822:	Quote_Message
+*quote_multipart/signed:	Quote_MultipartSigned
+*quote_multipart/encrypted:	Quote_MultipartEncrypted
+*quote_application/pgp:		Quote_AppPgp
+*quote_multipart/default:	Quote_MultipartDefault
+!
+! Mime fonts
+! mimeCharsets lists the known mime charsets
+! mimeUCharsets is meant to be overridden by users with additional
+! fonts available
+! mime_charset maps to a font which uses the charset.
+!
+*mimeCharsets: us-ascii iso-8859-1 iso-8859-8 iso-2022-jp koi8-r iso-8859-2
+!
+*mimeUCharsets:
+
+!
+! For each defined character set, we need to know the registry and
+! encoding used to find the fonts.
+! US-ASCII is a subset of all the ISO-8859 character sets, so we can
+! wildcard the encoding for it.  ISO-8859-1 and ISO-8859-8 ship with
+! X11r5, so they're defined here.  Any addtional charsets which exist at
+! your site should be defined here.
+*mime_us-ascii_registry:	iso8859
+*mime_us-ascii_encoding:	*
+*mime_iso-8859-1_registry:	iso8859
+*mime_iso-8859-1_encoding:	1
+*mime_iso-8859-8_registry:	iso8859
+*mime_iso-8859-8_encoding:	8
+!
+! modified by k.furukawa, jan.1995.  for multipart message problem
+! We should specify a 8bit font for iso-2022-jp here, since it
+! corresponds to -font option.  For a 16bit font or -kanjifont option, 
+! japanized Tk treats it independently.  (You may specify 16bit font
+! in the file exmh like "option add *Text.KanjiFont kanji24".)
+!
+*mime_iso-2022-jp_registry:   iso8859
+*mime_iso-2022-jp_encoding:   1
+
+! koi8-r is used for cyrillic fonts
+*mime_koi8-r_registry: koi8
+*mime_koi8-r_encoding: r
+*mime_koi8-r_plain_families: fixed courier
+*mime_koi8-r_fixed_families: fixed courier
+*mime_koi8-r_proportional_families: times helvetica
+*mime_koi8-r_title_families: times helvetica
+
+*mime_iso-8859-2_registry: iso8859
+*mime_iso-8859-2_encoding: 2
+
+! For each charset, we have four differerent possible ways that the
+! characters may be displayed.  "plain" is how they are displayed in
+! an ordinary (text/plain) message; "fixed" is how fixed face
+! characters are displayed in enriched text; "proportional" is how
+! proportional face characters are displayed in enriched text; and
+! "title" is how part headers are displayed.
+!
+! The list which follows are families which provide this style for
+! this character set in order of preference.  If none of the familes
+! are found for a particular characterset/display style,  a wildcard
+! is used for the family.
+! These may be overridden by users.
+*mime_us-ascii_plain_families:	fixed clean lucidatypewriter courier terminal
+*mime_us-ascii_fixed_families:	lucidatypewriter fixed clean courier terminal
+*mime_us-ascii_proportional_families:	times "new century schoolbook" \
+					lucidabright charter lucida helvetica
+*mime_us-ascii_title_families:	times "new century schoolbook" \
+				lucidabright charter lucida helvetica
+*mime_iso-8859-1_plain_families:	lucidatypewriter fixed courier terminal
+*mime_iso-8859-1_fixed_families:	lucidatypewriter fixed courier terminal
+*mime_iso-8859-1_proportional_families:	times "new century schoolbook" \
+					lucidabright charter lucida helvetica
+*mime_iso-8859-1_title_families:	times "new century schoolbook" \
+				lucidabright charter lucida helvetica
+*mime_iso-8859-8_plain_families:	fixed
+*mime_iso-8859-8_fixed_families:	fixed
+*mime_iso-8859-8_proportional_families:
+*mime_iso-8859-8_title_families:
+
+*mime_iso-2022-jp_plain_families:     fixed
+*mime_iso-2022-jp_fixed_families:     fixed
+*mime_iso-2022-jp_proportional_families:
+*mime_iso-2022-jp_title_families:
+
+!
+! Mime External message access methods
+*mimeExtMethods:	local-file anon-ftp
+*mimeUExtMethods:
+!
+*mime_local-file:	MimeLocalFileTransfer
+*mime_anon-ftp:		MimeFTPTransfer
+
+! image filters
+! imageFilters lists the image subtypes we have filters for
+! imageUFilters is meant to be overriden by users with additional
+! filters
+! image_subtype maps to the filter which will handle this subtype
+!
+*imageFilters: x-macpict
+*imageUFilters:
+!
+*image_x-macpict: picttoppm -noheader
+!
+!
+! Richtext commands
+*richCommands:		bold italic fixed smaller bigger underline \
+			indent verbatim param excerpt center nl lt \
+			color x-color
+*richUCommands:
+
+*rich_bold:		Rich_FontChange
+*richVar_bold:		boldDepth
+*rich_italic:		Rich_FontChange
+*richVar_italic:	italicDepth
+*rich_fixed:		Rich_FontChange
+*richVar_fixed:		fixedDepth
+
+*rich_smaller:		Rich_FontChange
+*richVar_smaller:	size
+! point size taken from mimeFontSize
+!*richInit_size:		120
+*richInc_smaller:	-20
+*richVar_bigger:	size
+*rich_bigger:		Rich_FontChange
+*richInc_bigger:	20
+
+*rich_underline:	Rich_UnderlineChange
+*richVar_underline:	underDepth
+
+*richVar_indent:	indent
+*richInc_indent:	4
+
+*richVar_verbatim:	verbatim
+
+*richVar_param:		paramDepth
+
+*rich_excerpt:		Rich_ExcerptChange
+*richVar_excerpt:	excerptDepth
+
+*richVar_center:	center
+
+! These are here for richtext compatibility
+*rich_nl:		Rich_NewLine
+*rich_lt:		Rich_LessThan
+
+! Extensions
+*richVar_color:		colorDepth
+*rich_color:		Rich_Color
+*richVar_x-color:	colorDepth
+*rich_x-color:		Rich_Color
+
+! Built-in editor (sedit) buttons and menus
+
+! The following buttons and menus are special and always exist
+! in a standard arrangement.  You can override their commands and labels.
+! The variables $draft, $t, and $f are expanded when the button
+! or menu is defined.  If you want variables to be substitued when the
+! operation is invoked, escape the $ as in \$foo
+
+*Sedit.Menubar.builtin: 	quit send sign
+*Sedit.Menubar.quit.text: 	Dismiss
+*Sedit.Menubar.quit.command:	SeditQuit $draft $t
+*Sedit.Menubar.send.text:	Send
+*Sedit.Menubar.send.padX:	15
+*Sedit.Menubar.send.command:	SeditSend $draft $t
+!
+! The sign button turns into a menu with one entry for
+! each file that matches the glob pattern ~/.signature*
+!
+*Sedit.Menubar.sign.text:	Sign
+*Sedit.Menubar.sign.command:	SeditSign $draft $t
+!
+! buttons is standard buttons
+! ubuttons is for extra user-specific buttons
+*Sedit.Menubar.buttonlist:	help repl abort save
+*Sedit.Menubar.ubuttonlist:
+*Sedit.Menubar.help.text:	Help
+*Sedit.Menubar.help.command:	SeditHelp
+*Sedit.Menubar.abort.text:	Abort
+*Sedit.Menubar.abort.command:	SeditAbort $draft $t
+*Sedit.Menubar.save.text: 	Save&Quit
+*Sedit.Menubar.save.command: 	SeditSave $draft $t SeditNuke
+
+! The repl button is well-known.  It is disabled except when replying.
+*Sedit.Menubar.repl.text:	Quote
+*Sedit.Menubar.repl.command:	SeditInsertFile $draft $t $quote(filename)
+!
+! menus is for standard menus
+! umenus is for extra user-specific menus
+!*Sedit.Menubar.menulist:	text mime more pgp
+*Sedit.Menubar.menulist:	text more pgp
+*Sedit.Menubar.umenulist:
+
+*Sedit.Menubar.text.text:	Text...
+*Sedit.Menubar.text.m.entrylist: plain fixed bold italic underline smaller bigger
+*Sedit.Menubar.text.m.l_plain:	Plain
+*Sedit.Menubar.text.m.c_plain:	SeditMimeEnriched x-plain
+*Sedit.Menubar.text.m.l_fixed:	Fixed
+*Sedit.Menubar.text.m.c_fixed:	SeditMimeEnriched fixed
+*Sedit.Menubar.text.m.l_bold:	Bold
+*Sedit.Menubar.text.m.c_bold:	SeditMimeEnriched bold
+*Sedit.Menubar.text.m.l_italic:	Italic
+*Sedit.Menubar.text.m.c_italic:	SeditMimeEnriched italic
+*Sedit.Menubar.text.m.l_underline:	Underline
+*Sedit.Menubar.text.m.c_underline:	SeditMimeEnriched underline
+*Sedit.Menubar.text.m.l_smaller:	Smaller
+*Sedit.Menubar.text.m.c_smaller:	SeditMimeEnriched smaller
+*Sedit.Menubar.text.m.l_bigger:	Bigger
+*Sedit.Menubar.text.m.c_bigger:	SeditMimeEnriched bigger
+
+*Sedit.Menubar.more.text:	More...
+*Sedit.Menubar.more.m.entrylist: keep format receipt cite attach addr whom spell find  save preview alt
+*Sedit.Menubar.more.m.l_keep: Keep on send
+*Sedit.Menubar.more.m.t_keep: check
+*Sedit.Menubar.more.m.v_keep: sedit($t,keep)
+
+*Sedit.Menubar.more.m.l_format: Format mail
+*Sedit.Menubar.more.m.t_format: cascade
+*Sedit.Menubar.more.m.m_format: format
+*Sedit.Menubar.more.m.format.entrylist: none soft hard mhn mhn2 quote
+*Sedit.Menubar.more.m.format.l_none: No Line Breaking
+*Sedit.Menubar.more.m.format.t_none: radio
+*Sedit.Menubar.more.m.format.v_none: sedit($t,format)
+*Sedit.Menubar.more.m.format.x_none: Never
+*Sedit.Menubar.more.m.format.l_soft: Line Break at Send
+*Sedit.Menubar.more.m.format.t_soft: radio
+*Sedit.Menubar.more.m.format.v_soft: sedit($t,format)
+*Sedit.Menubar.more.m.format.x_soft: OnSend
+*Sedit.Menubar.more.m.format.l_hard: Line Break When Typing
+*Sedit.Menubar.more.m.format.t_hard: radio
+*Sedit.Menubar.more.m.format.v_hard: sedit($t,format)
+*Sedit.Menubar.more.m.format.x_hard: OnType
+*Sedit.Menubar.more.m.format.l_mhn: Attempt mhn
+*Sedit.Menubar.more.m.format.t_mhn: check
+*Sedit.Menubar.more.m.format.v_mhn: sedit($t,mhn)
+*Sedit.Menubar.more.m.format.l_mhn2: Run mhn now
+*Sedit.Menubar.more.m.format.c_mhn2: SeditMHN $draft $t
+*Sedit.Menubar.more.m.format.l_quote: Quote Printable
+*Sedit.Menubar.more.m.format.t_quote: check
+*Sedit.Menubar.more.m.format.v_quote: sedit($t,quote)
+
+*Sedit.Menubar.more.m.l_receipt: Ask for Receipt
+*Sedit.Menubar.more.m.c_receipt: MDNAskReceipt $draft $t
+*Sedit.Menubar.more.m.l_cite: Cite Selection
+*Sedit.Menubar.more.m.c_cite: SeditCiteSelection $draft $t
+*Sedit.Menubar.more.m.l_addr: 	Addresses
+*Sedit.Menubar.more.m.c_addr: 	Addr_Browse
+
+*Sedit.Menubar.more.m.l_attach: Attachment
+*Sedit.Menubar.more.m.t_attach: cascade
+*Sedit.Menubar.more.m.m_attach: attach
+*Sedit.Menubar.more.m.attach.entrylist: part insert external keys
+*Sedit.Menubar.more.m.attach.l_part: Attach File...
+*Sedit.Menubar.more.m.attach.c_part: SeditInsertFileDialog $draft $t
+*Sedit.Menubar.more.m.attach.l_insert: Insert File...
+*Sedit.Menubar.more.m.attach.c_insert: SeditInsertFileDirect $draft $t
+*Sedit.Menubar.more.m.attach.l_external: Attach Reference...
+*Sedit.Menubar.more.m.attach.c_external: SeditInsertExternalDialog $draft $t
+*Sedit.Menubar.more.m.attach.l_keys:   Attach PGP Keys...
+*Sedit.Menubar.more.m.attach.c_keys:   Pgp_InsertKeys $draft $t
+*Sedit.Menubar.more.m.l_whom:	Whom
+*Sedit.Menubar.more.m.c_whom:	SeditWhom $draft $f $t
+*Sedit.Menubar.more.m.l_save: Save Buffer
+*Sedit.Menubar.more.m.c_save: SeditSave $draft $t
+*Sedit.Menubar.more.m.l_spell: Spell...
+*Sedit.Menubar.more.m.c_spell: SeditSpell $draft $f $t
+*Sedit.Menubar.more.m.l_find: Find SEL
+*Sedit.Menubar.more.m.c_find: Sedit_Find $draft $t
+*Sedit.Menubar.more.m.l_preview: Mime Preview
+*Sedit.Menubar.more.m.c_preview: SeditClip $draft $t
+*Sedit.Menubar.more.m.l_alt: Alternate Editor
+*Sedit.Menubar.more.m.c_alt: SeditAlternate $draft $t
+
+*Sedit.Menubar.pgp.text:	PGP...
+*Sedit.Menubar.pgp.m.entrylist: none pmsign pmencsn pmenc appsign appsnbin appencsn appenc sign encsign encrypt signkey clear
+*Sedit.Menubar.pgp.m.l_none:	No PGP action
+*Sedit.Menubar.pgp.m.c_none:	Pgp_SeditEncrypt none $draft $t
+*Sedit.Menubar.pgp.m.l_pmsign:	PGP/MIME sign clear
+*Sedit.Menubar.pgp.m.c_pmsign:	Pgp_SeditEncrypt PGP/MIME-signclear $draft $t
+*Sedit.Menubar.pgp.m.l_pmencsn:	PGP/MIME encrypt and sign
+*Sedit.Menubar.pgp.m.c_pmencsn:	Pgp_SeditEncrypt PGP/MIME-encryptsign $draft $t
+*Sedit.Menubar.pgp.m.l_pmenc:	PGP/MIME encrypt only
+*Sedit.Menubar.pgp.m.c_pmenc:	Pgp_SeditEncrypt PGP/MIME-encrypt $draft $t
+*Sedit.Menubar.pgp.m.l_appsign:	application/pgp sign clear
+*Sedit.Menubar.pgp.m.c_appsign:	Pgp_SeditEncrypt application/pgp-signclear $draft $t
+*Sedit.Menubar.pgp.m.l_appsnbin:	application/pgp sign binary
+*Sedit.Menubar.pgp.m.c_appsnbin:	Pgp_SeditEncrypt application/pgp-signbinary $draft $t
+*Sedit.Menubar.pgp.m.l_appencsn:	application/pgp encrypt and sign
+*Sedit.Menubar.pgp.m.c_appencsn:	Pgp_SeditEncrypt application/pgp-encryptsign $draft $t
+*Sedit.Menubar.pgp.m.l_appenc:	application/pgp encrypt only
+*Sedit.Menubar.pgp.m.c_appenc:	Pgp_SeditEncrypt application/pgp-encrypt $draft $t
+*Sedit.Menubar.pgp.m.l_sign:	PGP sign clear
+*Sedit.Menubar.pgp.m.c_sign:	Pgp_SeditEncrypt PGP-signclear $draft $t
+*Sedit.Menubar.pgp.m.l_encsign:	PGP encrypt and sign
+*Sedit.Menubar.pgp.m.c_encsign:	Pgp_SeditEncrypt PGP-encryptsign $draft $t
+*Sedit.Menubar.pgp.m.l_encrypt:	PGP encrypt only
+*Sedit.Menubar.pgp.m.c_encrypt:	Pgp_SeditEncrypt PGP-encrypt $draft $t
+*Sedit.Menubar.pgp.m.l_signkey:	Change Default Key
+*Sedit.Menubar.pgp.m.c_signkey:	Pgp_SetMyName
+*Sedit.Menubar.pgp.m.l_clear:	Clear Cached Password
+*Sedit.Menubar.pgp.m.c_clear:	Pgp_ClearPassword
+
+! This stuff is just a skeleton.  The functions don't do much yet
+*Sedit.Menubar.mime.text:	Mime...
+*Sedit.Menubar.mime.m.entrylist: type format delete
+
+*Sedit.Menubar.mime.m.l_format: Format
+*Sedit.Menubar.mime.m.t_format: cascade
+*Sedit.Menubar.mime.m.m_format: format
+
+*Sedit.Menubar.mime.m.format.entrylist: marks tags
+
+*Sedit.Menubar.mime.m.format.l_marks: Show Marks
+*Sedit.Menubar.mime.m.format.c_marks: SeditMimeShowMarks $t
+*Sedit.Menubar.mime.m.format.l_tags: Show Tags
+*Sedit.Menubar.mime.m.format.c_tags: SeditMimeShowTags $t
+
+! The following menu is special because it gets dynamically updated
+! as parts are added to the message.
+*Sedit.Menubar.mime.m.l_delete: Delete Part
+*Sedit.Menubar.mime.m.t_delete: cascade
+*Sedit.Menubar.mime.m.m_delete: delete
+
+*Sedit.Menubar.mime.m.delete.entrylist: body
+
+*Sedit.Menubar.mime.m.delete.l_body: Delete Body
+*Sedit.Menubar.mime.m.delete.c_body: SeditPartDelete Body
+
+
+*Sedit.Menubar.mime.m.l_type: Type
+*Sedit.Menubar.mime.m.t_type: cascade
+*Sedit.Menubar.mime.m.m_type: type
+
+*Sedit.Menubar.mime.m.type.entrylist: text multi audio image message application video
+*Sedit.Menubar.mime.m.type.l_text: Text
+*Sedit.Menubar.mime.m.type.t_text: cascade
+*Sedit.Menubar.mime.m.type.m_text: text
+*Sedit.Menubar.mime.m.type.text.entrylist: plain enriched
+*Sedit.Menubar.mime.m.type.text.l_plain: Plain
+*Sedit.Menubar.mime.m.type.text.c_plain: SeditMimeType text/plain
+*Sedit.Menubar.mime.m.type.text.l_enriched: Enriched
+*Sedit.Menubar.mime.m.type.text.c_enriched: SeditMimeType text/enriched
+
+*Sedit.Menubar.mime.m.type.l_multi: Multipart
+*Sedit.Menubar.mime.m.type.t_multi: cascade
+*Sedit.Menubar.mime.m.type.m_multi: multi
+*Sedit.Menubar.mime.m.type.multi.entrylist: mixed alternative parallel digest
+*Sedit.Menubar.mime.m.type.multi.l_mixed: Mixed
+*Sedit.Menubar.mime.m.type.multi.c_mixed: SeditMimeType multipart/mixed
+*Sedit.Menubar.mime.m.type.multi.l_alternative: Alternative
+*Sedit.Menubar.mime.m.type.multi.c_alternative: SeditMimeType multipart/alternative
+*Sedit.Menubar.mime.m.type.multi.l_parallel: Parallel
+*Sedit.Menubar.mime.m.type.multi.c_parallel: SeditMimeType multipart/parallel
+*Sedit.Menubar.mime.m.type.multi.l_digest: Digest
+*Sedit.Menubar.mime.m.type.multi.c_digest: SeditMimeType multipart/digest
+
+
+*Sedit.Menubar.mime.m.type.l_audio: Audio
+*Sedit.Menubar.mime.m.type.t_audio: cascade
+*Sedit.Menubar.mime.m.type.m_audio: audio
+*Sedit.Menubar.mime.m.type.audio.entrylist: basic
+*Sedit.Menubar.mime.m.type.audio.l_basic: Basic
+*Sedit.Menubar.mime.m.type.audio.c_basic: SeditMimeType audio/basic
+
+*Sedit.Menubar.mime.m.type.l_image: Image
+*Sedit.Menubar.mime.m.type.t_image: cascade
+*Sedit.Menubar.mime.m.type.m_image: image
+*Sedit.Menubar.mime.m.type.image.entrylist: basic
+*Sedit.Menubar.mime.m.type.image.l_basic: Basic
+*Sedit.Menubar.mime.m.type.image.c_basic: SeditMimeType image/basic
+
+*Sedit.Menubar.mime.m.type.l_message: Message
+*Sedit.Menubar.mime.m.type.t_message: cascade
+*Sedit.Menubar.mime.m.type.m_message: message
+*Sedit.Menubar.mime.m.type.message.entrylist: external digest
+*Sedit.Menubar.mime.m.type.message.l_external: External Body
+*Sedit.Menubar.mime.m.type.message.c_external: SeditMimeType message/external
+*Sedit.Menubar.mime.m.type.message.l_digest: Digest
+*Sedit.Menubar.mime.m.type.message.c_digest: SeditMimeType message/digest
+
+*Sedit.Menubar.mime.m.type.l_application: Application
+*Sedit.Menubar.mime.m.type.t_application: cascade
+*Sedit.Menubar.mime.m.type.m_application: app
+*Sedit.Menubar.mime.m.type.app.entrylist: postscript
+*Sedit.Menubar.mime.m.type.app.l_postscript: Postscript
+*Sedit.Menubar.mime.m.type.app.c_postscript: SeditMimeType application/postscript
+
+*Sedit.Menubar.mime.m.type.l_video: Video
+*Sedit.Menubar.mime.m.type.t_video: cascade
+*Sedit.Menubar.mime.m.type.m_video: video
+*Sedit.Menubar.mime.m.type.video.entrylist: basic
+*Sedit.Menubar.mime.m.type.video.l_basic: Basic
+*Sedit.Menubar.mime.m.type.video.c_basic: SeditMimeType video/basic
+
+!
+! Html buttons and menus
+!
+*Html.Menubar.buttonlist: 
+*Html.Menubar.ubuttonlist:
+*Html.Menubar.menulist: more
+*Html.Menubar.umenulist:
+*Html.Menubar.more.text: More...
+*Html.Menubar.more.m.entrylist: stop back forw
+*Html.Menubar.more.m.l_stop: Stop
+*Html.Menubar.more.m.c_stop: Http_stop
+*Html.Menubar.more.m.l_back: Back
+*Html.Menubar.more.m.c_back: Html_Back
+*Html.Menubar.more.m.l_forw: Forward
+*Html.Menubar.more.m.c_forw: Html_Forward
+
+!
+! WhatNowDialog buttons and menus
+!
+*WhatNow.buttonlist: abort dismiss reedit send
+*WhatNow.ubuttonlist:
+*WhatNow.menulist: more
+*WhatNow.umenulist:
+
+*WhatNow.abort.text:	Kill
+*WhatNow.abort.command:	EditDialogDone abort $id
+*WhatNow.dismiss.text:	Dismiss
+*WhatNow.dismiss.command: EditDialogDone dismiss $id
+*WhatNow.reedit.text:	Re-edit
+! I cannot remember why nohide is useful here, bw 3/15/95
+!*WhatNow.reedit.command: EditDialogDone reedit $id nohide
+*WhatNow.reedit.command: EditDialogDone reedit $id
+*WhatNow.send.text:	Send
+*WhatNow.send.command: EditDialogDone send $id
+
+*WhatNow.more.text: More...
+*WhatNow.more.m.entrylist: whom mhn spell sedit encrypt alt
+*WhatNow.more.m.l_whom:	Whom
+*WhatNow.more.m.c_whom:	EditDialogDone whom $id nohide
+*WhatNow.more.m.l_mhn:	MHN
+*WhatNow.more.m.c_mhn:	EditDialogDone mhn $id nohide
+*WhatNow.more.m.l_spell:	Spell
+*WhatNow.more.m.c_spell:	EditDialogDone spell $id nohide
+*WhatNow.more.m.l_sedit:	Sedit
+*WhatNow.more.m.c_sedit:	EditDialogDone sedit $id
+*WhatNow.more.m.l_alt:		Alternate Editor
+*WhatNow.more.m.c_alt:		EditDialogDone alternate $id
+
+*WhatNow.more.m.t_encrypt:	cascade
+*WhatNow.more.m.m_encrypt:	encrypt
+*WhatNow.more.m.l_encrypt:	PGP...
+*WhatNow.more.m.encrypt.entrylist:	none pmsign pmencsn pmenc appsign appsnbin appencsn appenc signkey
+*WhatNow.more.m.encrypt.l_none:		No PGP action
+*WhatNow.more.m.encrypt.c_none:		Pgp_EncryptWhatNow none $id
+*WhatNow.more.m.encrypt.l_pmsign:	PGP/MIME sign clear
+*WhatNow.more.m.encrypt.c_pmsign:	Pgp_EncryptWhatNow PGP/MIME-signclear $id
+*WhatNow.more.m.encrypt.l_pmencsn:	PGP/MIME encrypt and sign
+*WhatNow.more.m.encrypt.c_pmencsn:	Pgp_EncryptWhatNow PGP/MIME-encryptsign $id
+*WhatNow.more.m.encrypt.l_pmenc:	PGP/MIME encrypt only
+*WhatNow.more.m.encrypt.c_pmenc:	Pgp_EncryptWhatNow PGP/MIME-encrypt $id
+*WhatNow.more.m.encrypt.l_appsign:	application/pgp sign clear
+*WhatNow.more.m.encrypt.c_appsign:	Pgp_EncryptWhatNow application/pgp-signclear $id
+*WhatNow.more.m.encrypt.l_appsnbin:	application/pgp sign binary
+*WhatNow.more.m.encrypt.c_appsnbin:	Pgp_EncryptWhatNow application/pgp-signbinary $id
+*WhatNow.more.m.encrypt.l_appencsn:	application/pgp encrypt and sign
+*WhatNow.more.m.encrypt.c_appencsn:	Pgp_EncryptWhatNow application/pgp-encryptsign $id
+*WhatNow.more.m.encrypt.l_appenc:	application/pgp encrypt only
+*WhatNow.more.m.encrypt.c_appenc:	Pgp_EncryptWhatNow application/pgp-encrypt $id
+*WhatNow.more.m.encrypt.l_signkey:	Change Default Key
+*WhatNow.more.m.encrypt.c_signkey:	Pgp_SetMyName
+
+! Sedit bindings
+*sedit_typeKillsSel: 1
+*sedit_scrollButton: Middle
+
+*sedit_editprocs: selpaste selcopy seldelete backspace openline deleol delbol \
+	delwordforw delwordback delchar transpose transemacs transword \
+	composechar bof eof linestart lineend up1line down1line \
+	backword forwword backchar forwchar up1page down1page \
+	addrexpand format \
+	selclear selstart selforw selback selend \
+	abortMsg quoteMsg
+
+*sedit_key_selpaste:	 <Control-y> <Key-F18>
+
+*sedit_key_seldelete:	 <Control-w> <Key-Delete> <Key-F20>
+*sedit_key_selcopy:	 <Key-F16>
+*sedit_key_backspace:	 <Control-h> <Key-BackSpace>
+*sedit_key_openline:	 <Control-o>
+*sedit_key_deleol:	 <Control-k>
+*sedit_key_delbol:	 <Control-x><Key-Delete>
+*sedit_key_delwordforw:	 <Meta-d>
+*sedit_key_delwordback:	 <Meta-h>
+*sedit_key_delchar:	 <Control-d>
+*sedit_key_transpose:	 <Control-t>
+*sedit_key_transemacs:
+*sedit_key_transword:	 <Meta-t>
+
+*sedit_key_composechar:	 <Multi_key>
+
+*sedit_key_bof:		<Meta-less>
+*sedit_key_eof:		<Meta-greater>
+*sedit_key_linestart:	 <Control-a>
+*sedit_key_lineend:	 <Control-e>
+*sedit_key_up1line:	 <Control-p> <Key-Up>
+*sedit_key_down1line:	 <Control-n> <Key-Down>
+*sedit_key_backword:	 <Meta-b>
+*sedit_key_forwword:	 <Meta-f>
+*sedit_key_backchar:	 <Control-b> <Key-Left>
+*sedit_key_forwchar:	 <Control-f> <Key-Right>
+*sedit_key_up1page:	 <Meta-v>
+*sedit_key_down1page:	 <Control-v>
+
+*sedit_key_addrexpand:	 <Control-Tab>
+*sedit_key_format:	 <Meta-q>
+
+*sedit_key_selclear:	<Control-backslash>
+*sedit_key_selstart:	<Control-space> <Select> <Meta-bracketleft>
+*sedit_key_selforw:	<Shift-Right> <Shift-Down>
+*sedit_key_selback:	<Shift-Left> <Shift-Up>
+*sedit_key_selextend:	<Shift-Select> <Control-Shift-space> <Meta-bracketright>
+
+*sedit_key_abortMsg:	<Control-x><Control-k>
+*sedit_key_quoteMsg:	<Control-c><Control-y>
+! EOF
