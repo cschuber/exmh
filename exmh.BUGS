@@ -102,3 +102,13 @@ does the wrong thing; it sends the message to
 
 This would be a low priority bug, but with the support of RFC2369, it
 becomes an issue, so I'm marking it as Medium priority.
+
+
+Number: 9
+Version: 2.0.3
+Priority: Low
+Scope: Narrow
+Complexity: ?
+
+A URL of the form "http://host.dom" without a trailing slash doesn't
+work.
