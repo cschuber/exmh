@@ -1,5 +1,9 @@
 HISTORY
 
+cvs respository 09/13/2000 Hal DeVore <haldevore@earthling.net>
+    lib/html.tcl Fixed preferences item spelling mismatch
+    problem and solution pointed out by Ben Escoto
+
 cvs respository 09/07/2000 Hal DeVore <haldevore@earthling.net>
     lib/addr.tcl Fixed problem with some address book preferences
     getting clobbered.
