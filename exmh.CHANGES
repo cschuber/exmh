@@ -1,6 +1,11 @@
 HISTORY
 
-cvs repository 06/278/2000 Hal DeVore <haldevore@earthling.net>
+cvs repository 06/28/2000 Hal DeVore <haldevore@earthling.net>
+    lib/mh.tcl: added -noheader to "exec scan" in Mh_Forw_MungeSubj
+    to prevent breakage when user .mh_profile specifies "scan: header",
+    problem found by David Chin
+
+cvs repository 06/28/2000 Hal DeVore <haldevore@earthling.net>
     lib/folder.tcl: Got rid of a hardcoded path to ~/Mail
 
 cvs repository 06/27/2000 Bruce A. Mah <bmah@cisco.com>

@@ -161,7 +161,7 @@ proc Mh_ReplyAllSetup { folder msg } {
 proc Mh_Forw_MungeSubj { folder msgs } {
     global mhProfile
     set draftID [Mh_Cur $mhProfile(draft-folder)]
-    if ![catch {eval exec scan +$folder -format "%{subject}" $msgs} subj] {
+    if ![catch {eval exec scan +$folder -noheader -format "%{subject}" $msgs} subj] {
 	# just take the first line of $subj (in case of >1 messages)
 	set subj [lindex [split $subj "\n"] 0]
 	# strip off leading and trailing "fw:", "(fwd)", "<fwd>" and whitespace
