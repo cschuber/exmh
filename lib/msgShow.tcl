@@ -184,3 +184,72 @@ proc MsgParseFrom { fromline {setaddr setaddr} } {
     return $token
 }
 
+proc Hook_MsgShowListHeaders {msgPath headervar} {
+    upvar $headervar header
+
+    global exwin
+    
+    # From rfc2369:
+  
+    # The contents of the list header fields mostly consist of angle-
+    # bracket ('<', '>') enclosed URLs, with internal whitespace being
+    # ignored. MTAs MUST NOT insert whitespace within the brackets, but
+    # client applications should treat any whitespace, that might be
+    # inserted by poorly behaved MTAs, as characters to ignore.
+    #
+    # A list of multiple, alternate, URLs MAY be specified by a comma-
+    # separated list of angle-bracket enclosed URLs. The URLs have order of
+    # preference from left to right. The client application should use the
+    # left most protocol that it supports, or knows how to access by a
+    # separate application. 
+    #
+    # [...]
+    #
+    # To allow for future extension, client applications MUST follow the
+    # following guidelines for handling the contents of the header fields
+    # described in this document:
+    #
+    # 1) Except where noted for specific fields, if the content of the
+    #    field (following any leading whitespace, including comments)
+    #    begins with any character other than the opening angle bracket
+    #    '<', the field SHOULD be ignored.
+    #
+    # 2) Any characters following an angle bracket enclosed URL SHOULD be
+    #    ignored, unless a comma is the first non-whitespace/comment
+    #    character after the closing angle bracket.
+    #
+    # 3) If a sub-item (comma-separated item) within the field is not an
+    #    angle-bracket enclosed URL, the remainder of the field (the
+    #    current, and all subsequent, sub-items) SHOULD be ignored.
+
+    # Loop through the list- headers
+    set menuitems {}
+    foreach index [array names header 0=1,hdr,list-*] {
+	# Get the suffix portion of the header name
+	regsub {^.*,list-} $index {} name
+	# Remove comments
+	regsub -all {\([^()]*\)} $header($index) {} h
+	# Remove whitespace
+	regsub -all " " $h {} h
+	# Loop through the fields
+	foreach f [split $h ,] {
+	    # Stricture #1
+	    if {[string index $f 0] == "<"} {
+		# Stricture #2
+		regexp "<(.*)>" $f match url
+		lappend menuitems $name $url
+	    } else {
+		# Stricture #3
+		break
+	    }
+	}
+    }
+    if {$menuitems == {}} {
+	destroy $exwin(mopButtons).list
+    } else {
+	set menu [Widget_AddMenuB $exwin(mopButtons) list "List..." {right padx 1}]
+	foreach {name url} $menuitems {
+	    Widget_AddMenuItem $menu $name [list URI_StartViewer $url]
+	}
+    }
+}

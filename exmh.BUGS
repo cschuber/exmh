@@ -83,3 +83,22 @@ Complexity: ?
 
 The "use message as draft" does not highlight the body (not obeying
 the "colorize multipart" preference?).
+
+
+Number: 8
+Version: 2.0.3
+Priority: Medium
+Scope: Narrow
+Complexity: ?
+
+if a "mailto:" url contains a subject line, it doesn't get put in the
+right place.  For example, 
+
+	mailto:info-mac@starnine.com?subject=unsubscribe
+
+does the wrong thing; it sends the message to
+'info-mac@starnine.com?subject=unsubscribe' in stead of sending it to
+'info-mac@starnine.com' with a subject line of 'unsubscribe'.
+
+This would be a low priority bug, but with the support of RFC2369, it
+becomes an issue, so I'm marking it as Medium priority.
