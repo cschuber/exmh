@@ -90,10 +90,11 @@ cp -ar misc/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc
 cp %SOURCE2 $RPM_BUILD_ROOT/etc/X11/applnk/Internet/
 install -m644 $RPM_SOURCE_DIR/exmh.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/exmh
 
+find $RPM_BUILD_ROOT/usr/lib/exmh-%{version} -type f| grep -v $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc |sed -e "s|$RPM_BUILD_ROOT||" > filelist
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f filelist
 %defattr(-,root,root)
 %doc COPYRIGHT exmh.BUGS exmh.CHANGES exmh.TODO exmh.README lib/html/
 %config /etc/X11/wmconfig/exmh 
@@ -102,7 +103,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/exmh-bg
 %{_bindir}/exmh-async
 %{_bindir}/ftp.expect
-%{_libdir}/exmh-%{version}
+#%{_libdir}/exmh-%{version}
 %{_mandir}/man1/exmh.1*
 
 %files misc
