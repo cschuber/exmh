@@ -45,17 +45,6 @@ I discovered it a while after I wrote the code.  It probably isn't
 hard, but I haven't looked at that code in 5 years or more.
 
 
-Number: 4
-Version: 2.0.3
-Priority: Low
-Scope: Narrow
-Complexity: Low
-
-Old bug in the "message clip" and possibly other windows.  You must
-get the focus on the scrollbar in order to scroll with the cursor
-keys.  Brent's book discusses how to properly deal with this.
-
-
 Number: 5
 Version: 2.0.3
 Priority: Medium

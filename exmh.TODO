@@ -351,6 +351,21 @@ expansion comes up with multiple hits.  In particular, the return key
 should "do the right thing".
 
 
+
+Number: 40
+Version: 2.0.3
+Priority: Low
+Scope: Narrow
+Complexity: Low
+
+In the "message clip" and possibly other windows you must get the
+focus on the scrollbar in order to scroll with the cursor keys.
+Brent's book discusses how to properly deal with this.
+
+
+
+
+
 $Id$
 
 # Emacs stuff
