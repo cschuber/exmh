@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Bayesian spam filters</title>
+<meta http-equiv="Pragma" content="no-cache"></meta>
+<meta http-equiv="Expire" content="Mon, 04 Dec 1999 21:29:02 GMT"></meta>
+<link rel=stylesheet href="/stylesheet.css"
+ type="text/css"></link>
+</head>
+<body bgcolor="#ffffff" >
+<h2><a href="28">Bayesian spam filters</a></h2>
+<p><p><b>Introduction</b></p><p>Bayesian spam filters offer a more elegant (in my opinion) alternative to network-level and regular expression filters. The seminal article on the subject is Paul Graham's &quot;A Plan for Spam&quot; (2002) [<a href="http://www.paulgraham.com/spam.html">1</a>], although there are earlier descriptions of the method (Pantel and Lin, 1998; Sahami, et al., 1998). Essentially, the program evaluates each mail as a bag of tokens--words, numbers, (parts of each in some methods) and parts of the header are all individual tokens--and maintains a database with the probability that each token is in a spam mailfile or a non-spam (ham) mailfile. Once the database is primed with a significant number of mails, the filter can make a pretty good guess as to whether an email shown is spam or ham. Improvements have been made to the original algorithm (which may or may not really be Bayesian, but that's another story) by Graham [<a href="http://www.paulgraham.com/better.html">2</a>] and Robinson [<a href="http://radio.weblogs.com/0101454/stories/2002/09/16/spamDetection.html">3</a>].</p><p><b>Applications</b></p><p>I myself use bogofilter (which offers different algorithms and seems to be the most active of the projects), so most of the rest of this guide will talk first about using bogofilter, and then try to mention the other applications or the general case. The first step, of course, is to download and install one of the Bayesian spam filters available:</p><ul><li>Bogofilter <a href="http://bogofilter.sourceforge.net/">http://bogofilter.sourceforge.net/</a>
+<li>SpamOracle <a href="http://cristal.inria.fr/~xleroy/software.html">http://cristal.inria.fr/~xleroy/software.html</a>
+<li>SpamBayes <a href="http://spambayes.sourceforge.net/">http://spambayes.sourceforge.net/</a>
+<li>Bayespam <a href="http://www.garyarnold.com/projects.php">http://www.garyarnold.com/projects.php</a>
+<li>SpamAssassin <a href="http://www.spamassassin.org/">http://www.spamassassin.org/</a></ul><p><b>Filtering on delivery</b></p><p>The usefulness of the system comes from having it filter spam mailfiles to a spam folder on delivery, which is checked once in a while for false positives (hams in the spam folder). Just as on the spamassassin wiki entry, I have bogofilter called after lists and before the catch-all with the following entry:</p><pre> :0HB:
+ * ? bogofilter -u
+ | rcvstore +bogus</pre><p>If you get spam regularly on any lists, you'll probably want to put it before those mailfiles get filtered out, obviously.</p><p>Bogofilter can also be called as a pass-through filter as</p><pre> :0fw
+ | bogofilter -u -e -p
+ # some more recipes
+ :0:
+ * ^X-Bogosity: Yes, tests=bogofilter
+ | rcvstore +bogus</pre><p>This is more similar to the way SpamAssassin works and would simplify integrating the two. This is also the way SpamOracle is called. There is more information and examples in the relevant man pages.</p><p><b>Integration with Exmh</b></p><p>If you have your filtering program called so that it adds the mailfile's tokens to the database when it evaluates the mail, you need to tell it when it gets one wrong. I've written a hook to exmh to simplify this task for users of bogofilter and SpamOracle. SpamBayes doesn't add the tokens; it is run nightly on the respective folders.</p><p><i>Files</i></p><p>The routines are in the file named mybogo.tcl and is (might be?) in the misc/ directory. This file needs to be placed in your <a href="54">exmh personal library</a> directory. If you haven't already you also must copy the user.tcl file from the EXMH scripts directory and add the call to Bogo_Init to the User_Init procedure at the top of that file. Mine looks like:</p><pre> proc User_Init {} {
+     # The main routine calls User_Init early on, after only
+     # Mh_Init, Preferences_Init, and ExmhLogInit (for Exmh_Debug)
+
+     Bogo_Init
+     if {0} {
+         # Arrange to have some folders labels displayed as icons, not text
+         global folderInfo
+         set folderInfo(bitmap,exmh) @/tilde/welch/bitmaps/exmh
+     }
+     return
+ }</pre><p>Once the files are in place, start the tcl command interpreter (prompt$ wish) and type 'auto_mkindex . *.tcl' to update the index for your user directory.</p><p><i>Preferences</i></p><p>The next time you start EXMH, there will be a new preferences section for Bayesian Spam Filters. You can select bogofilter, SpamOracle, or some other software. If you're using some other program, put the invocation (with flags) in the correct boxes. The program will be invoked as exec &quot;$bogo(spamprog) &lt; $mail(path)&quot; so it needs to accept the message on stdin. As far as I can tell they all do.</p><p>If you're using bogofilter, you need to select whether or not the messages are mismarked, because then bogofilter will delete the tokens from the database to which the mailfile was mismarked and add the tokens to the correct one. SpamOracle doesn't have this feature, it just adds the tokens to the correct database. If you're calling bogofilter like above (with the -u flag), you want this flag on.</p><p>The last set of preferences tells EXMH what to do with the message after you've marked it. I redirect spam messages to my spam folder and redirect ham messages to the inbox, but you can opt to do nothing, or delete it. This should probably be taken out of the preferences and put in the function call.</p><p><i>Invoking</i></p><p>I have the routine set to be invoked from either a pull-down menu or from the keyboard. For the menu, add the following to your .exmh/exmh-defaults:</p><pre> ! Add this entry to your Mops.* resources if they already exist!
+ *Mops.umenulist:                bogo
+ *Mops.ug_current:               bogo
+ *Mops.ug_range:                 bogo
+ *Mops.ug_nodraft:               bogo
+
+ *Mops.bogo.text:                Spam...
+ *Mops.bogo.m.entrylist:         yes no
+ *Mops.bogo.m.l_yes:             Mismarked Spam &lt;Key-S&gt;
+ *Mops.bogo.m.c_yes:             MyBogoFilter spam
+ *Mops.bogo.m.l_no:              Mismarked Ham &lt;Key-H&gt;
+ *Mops.bogo.m.c_no:              MyBogoFilter ham</pre><p>To add the corresponding key bindings, select Bindings...-&gt;Commands from the top menu, and type 'MyBogoFilter spam' in the Command field and &lt;Key-S&gt; in the Key field. Check to make sure Key-S isn't already bound; it is not by default. Either delete that key binding (by clearing the field) or choose another key for MyBogoFilter spam. Do the same thing for MyBogoFilter ham.</p><p>I think that's it! You should be up, running, and hopefully spam-free!</p><p><b>System-Wide Setup</b></p><p>All of the above are for a personal implementation of bogofilter, or possibly a system-wide one where the user has write permission on the bogofilter database files. For a system-wide setup, we'll presume that bogofilter is called as a pass-through filter from the /etc/procmailrc as user bogo. Then, users can filter mailfiles based on the X-Bogosity: header field from their own .procmailrc files. For reporting mis-marked mailfiles, the system adminstrator should write a script that takes incoming mail for user bogo and runs the program accordingly. Users then need to bounce the mismarked mail to the bogo user. More on this later.</p><p>Question, comments? Email Pat Carr at pmc1 -at- cornell.edu or edit this.</p></p><hr noshade /><i>Updated on 29 May 2003, 00:08 GMT &#160; - &#160; Edit <a href="30@">Bayesian spam filters</a><br /></i><font size="-1"><a href="2">Search</a> - <a href="4">Recent Changes</a> - <a href="28">Reference</a> - <a href="7">Index</a> - Go to <a href="0">Beedub's Wiki</a> - <a href="3">Help</a></font>
+</body>
+</html>
