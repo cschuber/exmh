@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 05/11/2004 cwg-exmh@deepeddy.com
+  mime.tcl - Don't display part inline by default if its 
+  disposition is "attachment".
+
 cvs repository 09/29/2003 cwg-exmh@deepeddy.com
   quote.tcl - In Quote_MultipartDefault, bulletproof against undefined
   numParts defaulting to zero.

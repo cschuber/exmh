@@ -640,7 +640,7 @@ proc MimeSetDisplayFlag {part} {
 	}
 	if {[info exists mimeHdr($part,hdr,content-disposition)]} {
 	    set disp [split $mimeHdr($part,hdr,content-disposition) \;]
-	    if [regexp {ancillary} [lindex $disp 0]] {
+	    if [regexp {ancillary|attachment} [lindex $disp 0]] {
 		set mimeHdr($part,display) 0
 		return
 	    }
