@@ -31,7 +31,7 @@ proc Flag_Init {} {
     # that positions icons that can depend on the iconsize.
     Preferences_Resource flag(iconup) iconUpBitmap flagup.bitmap
     Preferences_Resource flag(icondown) iconDownBitmap flagdown.bitmap
-    Preferences_Resource flag(iconspool) iconSpoolBitmap flagup.bitmap
+    Preferences_Resource flag(iconspool) iconSpoolBitmap flagspool.bitmap
     Preferences_Resource flag(labelup) iconUpLabel {$flist(newMsgs) Unseen}
     Preferences_Resource flag(labeldown) iconDownLabel exmh
     Preferences_Resource flag(labelspool) iconSpoolLabel {$exmh(numUnInced) Spooled}
@@ -74,8 +74,11 @@ proc Flag_NewMail { {folder {}} } {
 # This is called after viewing a message
 proc Flag_MsgSeen { {folder {}} } {
     global flist
-    FlagInner spool icondown \
-	[expr { ($flist(newMsgs) > 0) ? "labelup" : "labeldown" }]
+    if {$flist(newMsgs) > 0} {
+	FlagInner spool iconspool labelup
+    } else {
+	FlagInner down icondown labeldown
+    }
 }
 proc Flag_NoUnseen {} {
     FlagInner down icondown labeldown
