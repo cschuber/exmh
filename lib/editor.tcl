@@ -153,6 +153,8 @@ proc EditDialog {draftID} {
 proc EditAddPassPhrasePane {id w} {
     global pgp
     if {$pgp(enabled) && $pgp(seditpgp)} {
+
+	# seditpgp main area
 	Pgp_SetSeditPgpName $pgp($pgp(version,$id),myname,$id) $id
 	set pgp(fullName,$id) $pgp($pgp(version,$id),fullName)
 
@@ -160,7 +162,16 @@ proc EditAddPassPhrasePane {id w} {
 	    pack [frame $w.pgp] -side bottom -fill x -ipady 2
 	}
 	if {![winfo exists $w.pgp.l1]} {
-	    pack [label $w.pgp.l1 -text "Passphrase: "] \
+	    pack [label $w.pgp.l1 -text "Passphrase for "] \
+		    -side left
+	}
+	if {![winfo exists $w.pgp.b]} {
+	    pack [button $w.pgp.b -textvariable pgp(sedit_label,$id) \
+		    -command "Pgp_SetMyName \$pgp(version,$id) $id"] \
+		    -side left -ipady 2
+	}
+	if {![winfo exists $w.pgp.l2]} {
+	    pack [label $w.pgp.l2 -text ": "] \
 		    -side left
 	}
 	if {![winfo exists $w.pgp.e]} {
@@ -168,27 +179,20 @@ proc EditAddPassPhrasePane {id w} {
 	    pack [entry $w.pgp.e -textvariable pgp(cur,pass,$id) -show *] \
 		    -side left -expand yes -fill x -ipady 2
 	}
-	if {![winfo exists $w.pgp.b]} {
-	    pack [button $w.pgp.b -text "Change key" \
-		    -command "Pgp_SetMyName \$pgp(version,$id) $id"] -side right -ipady 2
-	}
-	if {![winfo exists $w.pgp2]} {
-	    pack [frame $w.pgp2] -side bottom -fill x
-	}
-	if {![winfo exists $w.pgp2.l1]} {
-	    pack [label $w.pgp2.l1 -textvariable pgp(fullName,$id)] -side left
-	}
-	if {![winfo exists $w.pgp2.l2]} {
-	    pack [label $w.pgp2.l2 -text " key: "] -side left
-	}
-	if {![winfo exists $w.pgp2.l3]} {
-	    pack [label $w.pgp2.l3 -textvariable pgp(sedit_label,$id)] -side left
-	}
 
+	# Add extras if requested
+	if {$pgp(seditpgpextras)} {
+	    if {![winfo exists $w.pgp2]} {
+		pack [frame $w.pgp2] -side bottom -fill x
+	    }
+	    if {![winfo exists $w.pgp2.l1]} {
+		pack [label $w.pgp2.l1 -textvariable pgp(sedit_label2,$id)] -side left
+	    }
+	}
     }
 }
 proc EditShowDialog {id text} {
-    global exwin editor
+    global exwin editor pgp
     # Create the buttons and arrange them from left to right in the RH
     # frame. Embed the left button in an additional sunken frame to indicate
     # that it is the default button.
@@ -199,10 +203,12 @@ proc EditShowDialog {id text} {
 	$d config -relief raised -borderwidth 2
 
 	# PGP version-setting moved out from seditpgp code
-	if {![info exists pgp($pgp(version,$id),myname,$id)]} {
-	    set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
+	if {$pgp(enabled)} {
+	    if {![info exists pgp($pgp(version,$id),myname,$id)]} {
+		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
+	    }
+	    EditAddPassPhrasePane $id $d
 	}
-	EditAddPassPhrasePane $id $d
 
 	foreach but [Widget_GetButDef $d] {
 	    Widget_AddButDef $d $but {right}
