@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.18  1999/08/04 22:43:39  cwg
+# Got passphrase timeout to work yet again
+#
 # Revision 1.17  1999/08/04 19:50:44  cwg
 # Fixed problems with not providing a password under pgp2
 #
@@ -321,7 +324,7 @@ proc Pgp_Misc_GetHeader { in } {
 
 #
 proc Misc_PostProcess { srcfile } {
-    global mhProfile pgp pgpPass
+    global mhProfile pgp
 
     set id [SeditId $srcfile]
 
@@ -339,9 +342,9 @@ proc Misc_PostProcess { srcfile } {
 	    set v $pgp(version,$id)
 	    set keyid [lindex $pgp($v,myname) 0]
 	    # If there's a passphrase from sedit and it's non-empty, use it
-	    if {[info exists pgpPass(cur)] && ([string length $pgpPass(cur)] > 0) && [info exists pgp($v,myname)]} {
+	    if {[info exists pgp($v,pass,cur)] && ([string length $pgp($v,pass,cur)] > 0) && [info exists pgp($v,myname)]} {
 		Pgp_SetPassTimeout $v cur
-		set pgp($v,pass,$keyid) $pgpPass(cur)
+		set pgp($v,pass,$keyid) $pgp($v,pass,cur)
 	    } else {
 		set pgp($v,pass,$keyid) ""
 	    }

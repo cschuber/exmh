@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.7  1999/08/04 22:43:39  cwg
+# Got passphrase timeout to work yet again
+#
 # Revision 1.6  1999/08/04 16:30:17  cwg
 # Don't prompt for a passphrase when we shouldn't.
 #
@@ -550,7 +553,7 @@ proc Pgp_Exec_DecryptExpect { v infile outfile msgvar } {
     upvar $msgvar msg
 
     # First update exmh-bg arrays.  I hope that pgp, getpass,
-    # pgpPass, and exwin will be enough.  For exwin seems we have
+    # and exwin will be enough.  For exwin seems we have
     # to temporarily change the mtext error to avoid an error when
     # the password window is closed and focus is returned to .msg.t
 
@@ -645,28 +648,32 @@ proc Pgp_GetPass { v key } {
 }
 
 proc Pgp_SetPassTimeout {v keyid} {
-    global pgp pgpPass
+    global pgp
 
     if [info exists pgp(timeout,$keyid)] {
 	Exmh_Debug "Cancelling previous timeout for $keyid"
 	after cancel $pgp(timeout,$keyid)
 	unset pgp(timeout,$keyid)
     }
-    Exmh_Debug "Setting timeout for $keyid in $pgp($v,passtimeout) minutes"
+    Exmh_Debug "Setting timeout for $keyid ($v) in $pgp($v,passtimeout) minutes"
     set pgp(timeout,$keyid) \
 	    [after [expr $pgp($v,passtimeout) * 60 * 1000] \
-	           [list Pgp_ClearPassword $keyid]]
+	           [list Pgp_ClearPassword $v $keyid]]
 }
 
 # wipe password away
 proc Pgp_ClearPassword { v {keyid {}} } {
+    global pgp
+
     if {[string length $keyid] == 0} {
         foreach index [array names pgp $v,pass*] {
-            unset pgp($index)
+	    Exmh_Debug "Clearing pgp($index)"
+            set pgp($index) {}
         }
         set pgp($v,pass,) {}
     } else {
-        catch {unset pgp($v,pass,$keyid)}
+	catch {Exmh_Debug "Clearing only pgp($v,pass,$keyid)"}
+        catch {set pgp($v,pass,$keyid) {}}
     }
 }
 

@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.6  1999/08/04 22:43:39  cwg
+# Got passphrase timeout to work yet again
+#
 # Revision 1.5  1999/08/04 00:21:57  iko
 # Fix multiple Mime-Version: with pgp signed messages
 #
@@ -415,12 +418,12 @@ proc Pgp_ChoosePrivateKey { v text } {
 }
 
 proc Pgp_SetMyName { v } {
-   global pgp pgpPass
+   global pgp
 
-# first, save old pgpPass if set
-   if {[info exists pgpPass(cur)] && [info exists pgp($v,myname)]} {
+# first, save old pgp passphrase if set
+   if {[info exists pgp($v,pass,cur)] && [info exists pgp($v,myname)]} {
       set keyid [lindex $pgp($v,myname) 0]
-      set pgp($v,pass,$keyid) $pgpPass(cur)
+      set pgp($v,pass,$keyid) $pgp($v,pass,cur)
    }
 
    set newname [Pgp_ChoosePrivateKey $v \
@@ -432,7 +435,7 @@ proc Pgp_SetMyName { v } {
        set keyalg [lindex $pgp($v,myname) 1]
        set keyname [lindex $pgp($v,myname) 4]
        if [info exists pgp($v,pass,$keyid)] {
-	   set pgpPass(cur) $pgp($v,pass,$keyid)
+	   set pgp($v,pass,cur) $pgp($v,pass,$keyid)
        }
        set pgp(sedit_label) "$keyid $keyalg $keyname"
    }

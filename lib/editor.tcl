@@ -151,7 +151,7 @@ proc EditDialog {draftID} {
     Edit_Dialog $draftID
 }
 proc EditAddPassPhrasePane {id w} {
-    global pgp pgpPass
+    global pgp
     if {$pgp(enabled) && $pgp(seditpgp)} {
 	set keyid [lindex $pgp($pgp(version,$id),myname) 0]
 	set keyalg [lindex $pgp($pgp(version,$id),myname) 1]
@@ -174,7 +174,8 @@ proc EditAddPassPhrasePane {id w} {
 		    -side left
 	}
 	if {![winfo exists $w.pgp.e]} {
-	    pack [entry $w.pgp.e -textvariable pgpPass(cur) -show *] \
+	    set v $pgp(version,$id)
+	    pack [entry $w.pgp.e -textvariable pgp($v,pass,cur) -show *] \
 		    -side left -expand yes -fill x -ipady 2
 	}
     }
