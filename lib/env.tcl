@@ -68,10 +68,13 @@ proc Env_Tmp {} {
 
     # Doing this every time we use the temp file directory ensures
     # no-one steals it without the user knowing it.
+    # We only chmod the directory if it doesn't exist to avoid
+    # the case where exmh is run under the root account and
+    # chmods /tmp, /var/tmp, or /usr/tmp
 
     if {[catch {
-	file mkdir $exmh(tmpdir)
-	if {$exmh(tmpdir) != "/tmp"} {
+	if {![file exists $exmh(tmpdir)]} {
+	    file mkdir $exmh(tmpdir)
 	    file attributes $exmh(tmpdir) -permissions 0700
 	}
     } err]} {

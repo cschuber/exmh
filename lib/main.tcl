@@ -40,14 +40,12 @@ proc Exmh {} {
 
     TopTenPreferences
 
-    # Add this preference to initialize exmh(userLibrary) and exmh(logEnabled)
+    # Add this preference to initialize and exmh(logEnabled)
     Preferences_Add "Hacking Support" \
-"These items support the extension of Exmh by User code." {
-	{exmh(userLibrary)	userLibrary ~/.tk/exmh	{User library directory}
-"You can override modules of the exmh implementation
-by putting your versions into a private library directory.
-Remember to update the tclIndex file with auto_mkindex
-after you add things to that directory."}
+"These items support the extension of Exmh by User code.
+The default location for this code is either
+~/.tk/exmh or ~/.exmh/lib.  Put your .tcl files there
+and create a tclIndex file for them." {
 	{exmh(sourceHook)	sourceHook OFF	{Enable source hook}
 "The source hook lets you keep a set of patches in your exmh user library.
 These files are sourced right after the associated file from the main
@@ -69,11 +67,7 @@ is displayed to debug the flist module."}
     ExmhArgv		;# snarf up command-line arguments
     ExmhResources	;# and some resources we need soon
 
-    # Support per-user customization
-    if [info exists exmh(userLibrary)] {
-	auto_path_update $exmh(userLibrary)	;# library for new modules
-	SourceHook_Init				;# patches for old modules
-    }
+    SourceHook_Init				;# patches for old modules
 
     Exec_Init		;# Wrapper around exec
     Mh_Preferences
@@ -125,7 +119,8 @@ is displayed to debug the flist module."}
     wm protocol . WM_SAVE_YOURSELF [list Exmh_Done 0]
     Exwin_Layout
     if [catch {User_Layout} err] {
-	puts stderr "User_Layout: $err"
+	global errorInfo
+	puts stderr "Error in User_Layout:\n $errorInfo"
     }
     Exmh_Status $exmh(version)
     if {! $exmh(iconic)} {

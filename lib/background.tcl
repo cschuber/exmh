@@ -62,10 +62,11 @@ NNTP support for more information"} \
 
     set exmh(timeSinceBgNews) -1
 
+if {0} {
     if [catch {User_Layout} err] {
         puts stderr "User_Layout: $err"
     }
-
+}
     set background(lastMsgChk) {}
     set exmh(sendErrors) 0
     if {$exmh(sendHack)} {

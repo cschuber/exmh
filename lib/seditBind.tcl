@@ -11,6 +11,13 @@
 # makes no warranty about the software, its performance or its conformity to
 # any specification.
 
+# Because we override Entry and Text bindings, make sure we load those first
+# By auto-loading these procedures we also fault in the global Text and
+# Entry bindings done by the Tk library code.
+
+auto_load tkEntryButton1
+auto_load tkTextButton1
+
 proc Sedit_BindInit {} {
     global sedit exmh
 

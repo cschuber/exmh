@@ -59,7 +59,7 @@ than this number of days."} \
     # Backwards compatibility.  Nuke when 1.6alpha and 1.5.3 are dead.
     #
     set async [option get . sendAsync {}]
-    if [string length $async] {
+    if {[string length $async]} {
 	set mhProfile(sendType) [expr {$async ? "async" : "wait"}]
     }
 }
@@ -82,9 +82,9 @@ proc MhBackup {} {
 proc MhExec { args } {
     global mhProfile
     Audit $args
-    if [catch {eval exec $args} result] {
+    if {[catch {eval exec $args} result]} {
 	global errorInfo
-	if [regexp {exmhcontext is poorly formatted} $result] {
+	if {[regexp {exmhcontext is poorly formatted} $result]} {
 	    Exmh_Status "Resetting .exmhcontext" error
 	    exec cat /dev/null > $mhProfile(path)/.exmhcontext
 	    return [eval exec $args]
@@ -105,7 +105,7 @@ proc MhExec { args } {
 proc Mh_CompSetup {} {
     global exmh mhProfile msg
     set indrafts [expr \
-	[string compare $exmh(folder) $mhProfile(draft-folder)] == 0]
+	{[string compare $exmh(folder) $mhProfile(draft-folder)] == 0}]
     if {$indrafts && ([string length $msg(id)] != 0)} {
 	Exmh_Status "comp -use $msg(id)"
 	Mh_SetCur $mhProfile(draft-folder) $msg(id)
@@ -161,7 +161,7 @@ proc Mh_ReplyAllSetup { folder msg } {
 proc Mh_Forw_MungeSubj { folder msgs } {
     global mhProfile
     set draftID [Mh_Cur $mhProfile(draft-folder)]
-    if ![catch {eval exec scan +$folder -noheader -format "%{subject}" $msgs} subj] {
+    if {![catch {eval exec scan +$folder -noheader -format "%{subject}" $msgs} subj]} {
 	# just take the first line of $subj (in case of >1 messages)
 	set subj [lindex [split $subj "\n"] 0]
 	# strip off leading and trailing "fw:", "(fwd)", "<fwd>" and whitespace
@@ -179,16 +179,16 @@ proc Mh_Forw_MungeSubj { folder msgs } {
 	    set fd [open $mhProfile(path)/$mhProfile(draft-folder)/$draftID r]
 	    set msgtxt [read $fd]
 	    close $fd
-	    if [regexp -indices "\n(--+)?(\n|\$)" $msgtxt posn] {
+	    if {[regexp -indices "\n(--+)?(\n|\$)" $msgtxt posn]} {
 		set cpos [lindex $posn 0]
-		set hdrtxt [string range $msgtxt 0 [expr $cpos-1]]
+		set hdrtxt [string range $msgtxt 0 [expr {$cpos-1}]]
 		set bodytxt [string range $msgtxt $cpos end]
 	    } else {
 		set hdrtxt $msgtxt
 		set bodytxt {}
 	    }
 	    unset msgtxt
-	    if [regexp "^|\n\[Ss\]ubject:" $hdrtxt] {
+	    if {[regexp "^|\n\[Ss\]ubject:" $hdrtxt]} {
 		regsub "(^|\n)(\[Ss\]ubject:)\[ 	\]*(\n|\$)" $hdrtxt "\\1\\2 $subj\\3" nhdrtxt
 	    } else {
 		set nhdrtxt "$hdrtxt\nSubject: $subj"
@@ -227,7 +227,7 @@ proc Mh_DistSetup { folder msg } {
     }
     MhAnnoSetup $folder $msg dist
 }
-proc MhAnnoSetup { folder msg key {args {}} } {
+proc MhAnnoSetup { folder msg key args } {
     global mhProfile exmh
     set draftID [Mh_Cur $mhProfile(draft-folder)]
     set exmh($draftID,mhaltmsg) $mhProfile(path)/$folder/$msg
@@ -253,13 +253,13 @@ proc MhAnnoSetup { folder msg key {args {}} } {
 }
 proc Mh_AnnoEnviron { draftID } {
     global exmh env
-    if ![info exists exmh($draftID,mhaltmsg)] {
+    if {![info exists exmh($draftID,mhaltmsg)]} {
 	return 0
     }
     set env(mhaltmsg) $exmh($draftID,mhaltmsg)
     set env(mhfolder) $exmh($draftID,mhfolder)
     set env(mhmessages) $exmh($draftID,mhmessages)
-    if [info exists exmh($draftID,mhinplace)] {
+    if {[info exists exmh($draftID,mhinplace)]} {
       set env(mhinplace) 1
     }
     if {$exmh($draftID,action) == "dist"} {
@@ -269,12 +269,12 @@ proc Mh_AnnoEnviron { draftID } {
 	set env(mhannotate) "Resent"
 	return [info exists exmh($draftID,mhannodist)]
     }
-    if [info exists exmh($draftID,mhannorepl)] {
+    if {[info exists exmh($draftID,mhannorepl)]} {
 	set env(mhannorepl) 1
 	set env(mhannotate) "Replied"
 	return $exmh($draftID,mhannorepl)
     }
-    if [info exists exmh($draftID,mhannoforw)] {
+    if {[info exists exmh($draftID,mhannoforw)]} {
 	set env(mhannoforw) 1
 	set env(mhannotate) "Forwarded"
 	return $exmh($draftID,mhannoforw)
@@ -286,18 +286,18 @@ proc Mh_AnnoCleanup { draftID } {
     foreach key {mhannoforw mhannorepl mhannodist mhannotate mhdist
 		 mhaltmsg mhfolder mhmessages mhinplace folder} {
 	catch {unset exmh($draftID,$key)}
-	if [regexp ^mh $key] {
+	if {[regexp ^mh $key]} {
 	    catch {unset env($key)}
 	}
     }
 }
 
 proc Mh_Folder { f } {
-    if [catch {MhExec folder +$f < /dev/null} info] {
+    if {[catch {MhExec folder +$f < /dev/null} info]} {
 	Exmh_Debug $info
 	return {}
     } else {
-	if [regexp {\+[^0-9]+ ([0-9]+) [^(]*\(([^)]+)\)} $info x total range] {
+	if {[regexp {\+[^0-9]+ ([0-9]+) [^(]*\(([^)]+)\)} $info x total range]} {
 	    regsub -all { } $range {} range
 	    return "$f+ $total msgs ($range)"
 	} else {
@@ -313,7 +313,7 @@ proc Mh_SetContext { key value } {
     set in [open $mhProfile(context) r]
     if {[catch {open $mhProfile(context).new w} out] == 0} {
 	while {[gets $in line] >= 0} {
-	    if [regexp -nocase "^$key: (.*)$" $line match oldvalue] {
+	    if {[regexp -nocase "^$key: (.*)$" $line match oldvalue]} {
 		puts $out "$key: $value"
 	    } else {
 		if {$line != {}} {
@@ -354,7 +354,7 @@ proc Mh_MsgCount { spool } {
 }
 proc Mh_CurSafe { folder } {
     MhExec folder +$folder -push < /dev/null
-    if [catch {MhExec pick +$folder -list cur} cur] {
+    if {[catch {MhExec pick +$folder -list cur} cur]} {
 	set cur {}
     }
     MhExec folder -pop < /dev/null
@@ -366,23 +366,23 @@ proc Mh_Unseen { folder } {
 }
 proc Mh_MarkSeen { folder ids } {
     global mhProfile
-    if [catch {
+    if {[catch {
 	foreach seq [split $mhProfile(unseen-sequence)] {
 	    Mh_SequenceUpdate $folder del $seq $ids
 #	    eval {MhExec mark +$folder -seq $seq -delete} $ids
 	}
-    } err] {
+    } err]} {
 	Exmh_Debug Mh_MarkSeen $err
     }
 }
 proc Mh_MarkUnseen { folder ids } {
     global mhProfile
-    if [catch {
+    if {[catch {
 	foreach seq [split $mhProfile(unseen-sequence)] {
 	    Mh_SequenceUpdate $folder add $seq $ids
 #	    eval {MhExec mark +$folder -seq $seq} $ids
 	}
-    } err] {
+    } err]} {
 	Exmh_Debug Mh_MarkUnseen $err
     }
 }
@@ -400,7 +400,7 @@ proc Mh_SetCur { f msgid } {
 }
 proc Mh_Cur { f } {
     global mhPriv
-    if [catch {MhCur $f} cur] {
+    if {[catch {MhCur $f} cur]} {
 	set cur [Mh_CurSafe $f]
     }
     set mhPriv(cur,$f) $cur
@@ -413,7 +413,7 @@ proc MhCur { f } {
 	return {}
     }
     set cur [Mh_Sequence $f cur]
-    if [file exists $mhProfile(path)/$f/$cur] {
+    if {[file exists $mhProfile(path)/$f/$cur]} {
 	return $cur
     } else {
 	return {}
@@ -427,7 +427,7 @@ proc Mh_Sequence { f seq } {
 	set old [read $in]
 	close $in
 	foreach line [split $old \n] {
-	    if [regexp "^$seq: (.*)" $line x msgs] {
+	    if {[regexp "^$seq: (.*)" $line x msgs]} {
 		return [MhSeqExpand $msgs]
 	    }
 	}
@@ -441,7 +441,7 @@ proc Mh_Sequence { f seq } {
 	    # Turn off all special characters in folder name (e.g., c++)
 	    # Thanks to John Farrell
 	    regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
-	    if [regexp "$pattern: (.*)" $line x msgs] {
+	    if {[regexp "$pattern: (.*)" $line x msgs]} {
 		return [MhSeqExpand $msgs]
 	    }
 	}
@@ -477,7 +477,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} } {
 	close $in
 	set hit 0
 	foreach line [split $old \n] {
-	    if [regexp $seq: $line] {
+	    if {[regexp ^$seq: $line]} {
 		switch -- $how {
 		    clear { # Do nothing }
 		    add {
@@ -485,7 +485,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} } {
 		    }
 		    del {
 			set tmp [MhSeq del $line $msgs]
-			if [regexp {[0-9]$ *} $tmp] {
+			if {[regexp {[0-9]$ *} $tmp]} {
 			    append new $tmp\n
 			}
 		    }
@@ -500,7 +500,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} } {
 	}
 	if {! $hit} {
 	    # sequence not found
-	    if [regexp {(add|replace)} $how] {
+	    if {[regexp {(add|replace)} $how]} {
 		append new "$seq: $msgs\n"
 	    } else {
 		return
@@ -510,9 +510,9 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} } {
 	    Exmh_Debug New sequences: $mhProfile(path)/$f/$mhProfile(mh-sequences)
 	    Exmh_Debug $new
 	    puts -nonewline $out $new
-	    if [catch {
+	    if {[catch {
 		close $out
-	    } err] {
+	    } err]} {
 		Exmh_Status "Cannot close $mhProfile(path)/$f/$mhProfile(mh-sequences).new: $err"
 	    } else {
 		Mh_Rename $mhProfile(path)/$f/$mhProfile(mh-sequences).new \
@@ -526,7 +526,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} } {
 	if {[catch {open $mhProfile(context).new w} out] == 0} {
 	    set hit 0
 	    while {[gets $in line] >= 0} {
-		if [string match atr-$seq-$mhProfile(path)/$f:* $line] {
+		if {[string match atr-$seq-$mhProfile(path)/$f:* $line]} {
 		    switch -- $how {
 			clear { # Do nothing }
 			add {
@@ -547,7 +547,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} } {
 		}
 	    }
 	    if {! $hit} {
-		if [regexp {(add|replace)} $how] {
+		if {[regexp {(add|replace)} $how]} {
 		    puts $out "atr-$seq-$mhProfile(path)/$f: $msgs"
 		}
 	    }
@@ -561,7 +561,7 @@ proc Mh_SequenceUpdate { f how seq {msgs {}} } {
 }
 
 proc MhSeq { how line msgs } {
-    if ![regexp {(.*: )(.*)} $line x prefix oldmsgs] {
+    if {![regexp {(.*: )(.*)} $line x prefix oldmsgs]} {
 	Exmh_Debug MhSeq $how regexp failed $line
 	return
     }
@@ -627,7 +627,7 @@ proc MhSeqMake { msgs } {
 
 proc Mh_Path { folder msg } {
     global mhProfile
-    if [regexp {^[0-9]+$} $msg] {
+    if {[regexp {^[0-9]+$} $msg]} {
 	return $mhProfile(path)/$folder/$msg
     } else {
 	return [MhExec mhpath +$folder $msg]
@@ -693,7 +693,7 @@ proc Mh_Send { msg } {
 }
 proc Mh_Whom { msg } {
     global mhProfile
-    if ![regexp {^[0-9]+$} $msg] {
+    if {![regexp {^[0-9]+$} $msg]} {
 	MhExec whom $msg
     } else {
 	MhExec whom -draftf +$mhProfile(draft-folder) -draftm $msg
@@ -701,25 +701,25 @@ proc Mh_Whom { msg } {
 }
 
 proc Mh_Sort { f args } {
-    if [catch {eval {MhExec sortm +$f} $args} err] {
+    if {[catch {eval {MhExec sortm +$f} $args} err]} {
 	Exmh_Status $err error
     }
 }
 proc Mh_Pack { f } {
-    if [catch {MhExec folder +$f -pack} err] {
+    if {[catch {MhExec folder +$f -pack} err]} {
 	Exmh_Status $err error
     }
 }
 
 proc MhParseProfile {} {
     global mhProfile env
-    if [info exists env(MH)] {
+    if {[info exists env(MH)]} {
 	set mhProfile(profile) $env(MH)
     } else {
 	set mhProfile(profile) $env(HOME)/.mh_profile
     }
-    if [catch {open $mhProfile(profile) "r"} input] {
-	if [info exists mhProfile(FAIL)] {
+    if {[catch {open $mhProfile(profile) "r"} input]} {
+	if {[info exists mhProfile(FAIL)]} {
 	    puts stderr "Cannot open $mhProfile(profile): $input"
 	    exit 1
 	} else {
@@ -740,8 +740,8 @@ proc MhParseProfile {} {
 	    set mhProfile($key) $value
 	}
     }
-    if ![info exists mhProfile(path)] {
-	if [info exists mhProfile(FAIL)] {
+    if {![info exists mhProfile(path)]} {
+	if {[info exists mhProfile(FAIL)]} {
 	    puts stderr "No Path entry in your [file tail $mhProfile(profile)] file."
 	    puts stderr "Run the \"inc\" command to get your"
 	    puts stderr "MH environment initialized right."
@@ -757,51 +757,51 @@ proc MhParseProfile {} {
 	if {[string index $mhProfile(path) 0] != "/"} {
 	    set mhProfile(path) [glob ~]/$mhProfile(path)
 	}
-	if ![file isdirectory $mhProfile(path)] {
+	if {![file isdirectory $mhProfile(path)]} {
 	    MhSetupNewUserInner
 	}
     }
-    if [info exists env(MHCONTEXT)] {
+    if {[info exists env(MHCONTEXT)]} {
 	set mhProfile(context) $env(MHCONTEXT)
     }
-    if ![info exists mhProfile(context)] {
+    if {![info exists mhProfile(context)]} {
 	set mhProfile(context) context
     }
     set mhProfile(context) [Mh_Pathname $mhProfile(context)]
-    if ![file exists $mhProfile(context)] {
+    if {![file exists $mhProfile(context)]} {
 	close [open $mhProfile(context) w]
     }
 
-    if ![info exists mhProfile(mh-sequences)] {
+    if {![info exists mhProfile(mh-sequences)]} {
 	set mhProfile(mh-sequences) .mh_sequences
     }
     if {$mhProfile(mh-sequences) == {}} {
 	set mhProfile(mh-sequences) .mh_sequences
     }
-    if ![info exists mhProfile(editor)] {
-	if [info exists env(EDITOR)] {
+    if {![info exists mhProfile(editor)]} {
+	if {[info exists env(EDITOR)]} {
 	    set mhProfile(editor) $env(EDITOR)
 	} else {
 	    set mhProfile(editor) sedit
 	}
     }
-    if ![info exists mhProfile(draft-folder)] {
+    if {![info exists mhProfile(draft-folder)]} {
 	MhSetupDraftFolder
     } else {
 	set mhProfile(draft-folder) [string trim $mhProfile(draft-folder) +]
-	if ![file isdirectory $mhProfile(path)/$mhProfile(draft-folder)] {
+	if {![file isdirectory $mhProfile(path)/$mhProfile(draft-folder)]} {
 	    Exmh_Status "Creating drafts folder"
-	    if [catch {exec mkdir $mhProfile(path)/$mhProfile(draft-folder)} msg] {
+	    if {[catch {exec mkdir $mhProfile(path)/$mhProfile(draft-folder)} msg]} {
 		catch {
 		    puts stderr "Cannot create drafts folder $mhProfile(path)/$mhProfile(draft-folder)"
 		}
 	    }
 	}
     }
-    if ![info exists mhProfile(unseen-sequence)] {
+    if {![info exists mhProfile(unseen-sequence)]} {
 	MhSetupUnseenSequence
     }
-    if ![info exists mhProfile(header-suppress)] {
+    if {![info exists mhProfile(header-suppress)]} {
 	set mhProfile(header-suppress) {.*}
     } else {
 	set suppress {}
@@ -810,7 +810,7 @@ proc MhParseProfile {} {
 	}
 	set mhProfile(header-suppress) $suppress
     }
-    if ![info exists mhProfile(header-display)] {
+    if {![info exists mhProfile(header-display)]} {
 	set mhProfile(header-display) {subject from date to cc newsgroups}
     } else {
 	set display {}
@@ -819,20 +819,20 @@ proc MhParseProfile {} {
 	}
 	set mhProfile(header-display) $display
     }
-    if ![info exists mhProfile(folder-order)] {
+    if {![info exists mhProfile(folder-order)]} {
 	set mhProfile(folder-order) {inbox *}
     }
-    if ![info exists mhProfile(folder-unseen)] {
+    if {![info exists mhProfile(folder-unseen)]} {
 	set mhProfile(folder-unseen) {*}
     }
-    if ![info exists mhProfile(folder-ignore)] {
+    if {![info exists mhProfile(folder-ignore)]} {
 	set mhProfile(folder-ignore) {.* */.* */*/.* */*/*/.*}
     }
     foreach key {dist forw repl} {
 	global exmh
 	set exmh(anno,$key) 0
 	set exmh(inplace,$key) 0
-	if [info exists mhProfile($key)] {
+	if {[info exists mhProfile($key)]} {
 	    if {[lsearch $mhProfile($key) -annotate] >= 0} {
 		set exmh(anno,$key) 1
 		Exmh_Debug "MH anno $key"
@@ -843,10 +843,10 @@ proc MhParseProfile {} {
 	    }
 	}
     }
-    if ![info exists mhProfile(sendproc)] {
+    if {![info exists mhProfile(sendproc)]} {
 	set mhProfile(sendproc) send
     }
-    if ![info exists mhProfile(msg-protect)] {
+    if {![info exists mhProfile(msg-protect)]} {
 	set mhProfile(msg-protect) 0644
     }
 }
@@ -880,7 +880,7 @@ proc MhSetupNewUserInner {} {
     global mhProfile exmh
     set exmh(newuser) 1
     catch {exec mkdir [glob ~]/Mail}
-    if ![file exists $mhProfile(profile)] {
+    if {![file exists $mhProfile(profile)]} {
 	set out [open $mhProfile(profile) w]
 	puts $out "Path: Mail"
 	close $out
@@ -921,18 +921,18 @@ proc MhSetupDraftFolderInner {} {
     set mhProfile(draft-folder) $dirname
 
     set dir $mhProfile(path)/$mhProfile(draft-folder)
-    if ![file isdirectory $dir] {
-	if [catch {
+    if {![file isdirectory $dir]} {
+	if {[catch {
 	    exec mkdir $dir
 	    Exmh_Status "Created drafts folder \"+drafts\""
-	} err] {
+	} err]} {
 	    Exmh_Status "Cannot create a drafts folder! $err" error
 	    unset mhProfile(draft-folder)
 	    destroy .draft
 	    return
 	}
     }
-    if [catch {open $mhProfile(profile) a} out] {
+    if {[catch {open $mhProfile(profile) a} out]} {
 	Exmh_Status "Cannot open $mhProfile(profile): $out" error
 	unset mhProfile(draft-folder)
 	destroy .draft
@@ -948,7 +948,7 @@ proc MhSetupUnseenSequence {} {
     global mhProfile
     set mhProfile(unseen-sequence) unseen
 
-    if [catch {open $mhProfile(profile) a} out] {
+    if {[catch {open $mhProfile(profile) a} out]} {
 	Exmh_Status "Cannot open $mhProfile(profile): $out" error
 	unset mhProfile(unseen-sequence)
 	exit
@@ -961,10 +961,10 @@ proc MhSetMailDrops {} {
     global exdrops env mhProfile exdropMtime
 
     global inc
-    if ![regexp multi $inc(style)] {
+    if {![regexp multi $inc(style)]} {
 	return
     }
-    if [file exists $env(HOME)/.exmhdrop] {
+    if {[file exists $env(HOME)/.exmhdrop]} {
 	catch {puts stderr ".exmhdrop should be named .xmhcheck"}
 	set name .exmhdrop
     } else {
@@ -973,7 +973,7 @@ proc MhSetMailDrops {} {
 
     if {[file exists $env(HOME)/$name]} then {
 	set mtime [file mtime $env(HOME)/$name]
-	if [info exists exdropMtime] {
+	if {[info exists exdropMtime]} {
 	    if {$mtime <= $exdropMtime} {
 		return
 	    }
@@ -1001,7 +1001,7 @@ proc MhSetMailDrops {} {
 		    set d "$env(HOME)/$d"
 		}
 		set folderDirectory "$mhProfile(path)/$f"
-		if ![file isdirectory $folderDirectory] {
+		if {![file isdirectory $folderDirectory]} {
 		    Exmh_Status "No directory for folder $f ($name)"
 		    continue
 		}
@@ -1022,7 +1022,7 @@ proc MhSetMailDrops {} {
 proc Mhn_DeleteOrig { msg } {
     global mhProfile
     set path $mhProfile(path)/$mhProfile(draft-folder)/$mhProfile(delprefix)$msg
-    if [file exists $path.orig] {
+    if {[file exists $path.orig]} {
 	Exmh_Debug Mhn_DeleteOrig deleting $path.orig
 	File_Delete $path.orig
     }
@@ -1031,7 +1031,7 @@ proc Mhn_DeleteOrig { msg } {
 proc Mhn_RenameOrig { msg } {
     global mhProfile
     set path $mhProfile(path)/$mhProfile(draft-folder)/$mhProfile(delprefix)$msg
-    if [file exists $path.orig] {
+    if {[file exists $path.orig]} {
 	Exmh_Debug Edit_Done moving $path.orig to $path
 	catch {Mh_Rename $path.orig $path}
     }
@@ -1039,12 +1039,12 @@ proc Mhn_RenameOrig { msg } {
 # Map from a pathname in the MH profile to an absolute pathname.
 proc Mh_Pathname { profile } {
     global mhProfile
-    if [string match /* $profile] {
+    if {[string match /* $profile]} {
 	return $profile
     }
-    if [regexp {^~/(.*)} $profile match relative] {
+    if {[regexp {^~/(.*)} $profile match relative]} {
 	return [glob ~]/$relative
-    } elseif [regexp {^~([^/]+)/(.*)} $profile match user relative] {
+    } elseif {[regexp {^~([^/]+)/(.*)} $profile match user relative]} {
 	return [glob ~$user]/$relative
     }
     return $mhProfile(path)/$profile
@@ -1063,12 +1063,12 @@ proc Mh_Rename { old new } {
 # find a *comp* file going up from the current folder
 proc Mh_FindFile { filename } {
     global mhProfile exmh
-    if [file exists [file join $mhProfile(path) $exmh(folder) $filename]] {
+    if {[file exists [file join $mhProfile(path) $exmh(folder) $filename]]} {
         return $exmh(folder)
     }
     set path $exmh(folder)
     while {[string compare [set path [file dirname $path]] "."] != 0} {
-        if [file exists [file join $mhProfile(path) $path $filename]] {
+        if {[file exists [file join $mhProfile(path) $path $filename]]} {
             return $path
         }
     }

@@ -61,9 +61,10 @@ proc Pop_Dialog {host} {
 	Widget_LabeledEntry $t.pass Password pop($host,password)
 	$t.pass.entry config -show *
 	# Focus on password as the common case, unless we don't know login
-	focus $t.pass.entry
 	if {[string length $pop($host,login)] == 0} {
 	    focus $t.user.entry
+	} else {
+	    focus $t.pass.entry
 	}
 	Widget_AddBut $but ok "OK" {PopOK} {left padx 1 filly}
 	bind $t <Destroy> {set pop(done) 0}

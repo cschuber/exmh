@@ -1,4 +1,21 @@
 HISTORY
+cvs repository 05/10/2001 Brent Welch <welch@panasas.com>
+    exmh.MASTER:
+    exmh-bg.MASTER: Removed auto_reset from auto_path_update and
+	add exmh(userLibrary) to auto_path very early.
+	footbag
+    inc.expect.MASTER: Code cleanup and fix to ensure that the
+	password is not echoed in the scan listing.
+    lib/addr.tcl: Adopted patch for LDAP searching
+    lib/background.tcl: Removed extra call to User_Layout from Background_Init
+    lib/env.tcl: We only chmod exmh(tmpdir) if it does not already exist
+	to avoid setting permissions on /tmp, /usr/tmp, etc.
+    lib/extrasInit.tcl: Added utf-8 to possible set of text charsets
+	This is used when setting the initial type in sedit.
+    lib/main.tcl: Removed the exmh(userLibrary) preference setting.
+	This is hardwired (the code is in exmh.MASTER) to be either
+	~/.exmh/lib (a new, preferred value) or
+
 cvs repository 04/20/2001 Ovidiu Predescu <ovidiu@cup.hp.com>
     lib/uri.tcl (URI_StartViewer): Invoke Msg_CompTo instead of
     Sedit_Mailto to correctly support external editors.

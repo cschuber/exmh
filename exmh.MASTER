@@ -38,7 +38,11 @@ proc auto_path_update { path } {
 	} else {
 	    lappend auto_path $path
 	}
-	catch {auto_reset} ;# Needed for function override
+	# Used to have an "auto_reset" here, but that has the bad
+	# side effect of causing Tk's entry.tcl and text.tcl files
+	# to reload and redefine top-level Entry and Text bindings
+	# that we change in seditBind.tcl.
+	# catch {auto_reset} ;# Needed for function override
     }
 }
 
@@ -48,6 +52,23 @@ if ![file exists $exmh(library)/tclIndex] {
     if [file exists ./lib/tclIndex] {
 	puts stderr "Warning, using local script library, ./lib"
 	set exmh(library) ./lib
+    }
+}
+
+# Support per-user directory containing .tcl files.
+# This was originally the ~/.tk/exmh directory,
+# but then files migrated into ~/.exmh so
+# a lib subdirectory there is cleaner
+
+foreach d {~/.exmh/lib ~/.tk/exmh} {
+    set d [glob -nocomplain $d]
+    if  {[string length $d] == 0} {
+	continue
+    }
+    if {[file exists [file join $d tclIndex]]} {
+	set exmh(userLibrary) $d
+	auto_path_update $exmh(userLibrary)	;# library for new modules
+	break
     }
 }
 

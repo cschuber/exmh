@@ -467,7 +467,7 @@ by coloring different type parts with different background colors."}
 "If enabled, this option adds character set information to
 text content types, and promotes all messages to at least
 MIME content-type text/plain."}
-    {sedit(charset) seditCharset {CHOICE iso-8859-1 iso-8859-2 iso-8859-8 koi8-r} {8-bit character set}
+    {sedit(charset) seditCharset {CHOICE iso-8859-1 iso-8859-2 iso-8859-8 koi8-r utf-8} {8-bit character set}
 "If you have enabled support for ISO character sets and enter
 text that has the 8-th bit set, then
 this is the character set used for text content types"}

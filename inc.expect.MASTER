@@ -1,29 +1,77 @@
-#!expect
+#!/usr/bin/expect --
 #
 # Script to run inc and provide a password.
 #
+# When there is mail to incorporate, echo back only the message headers
+# for the FTOC.  Otherwise, send back all text, for debug logging
 
-log_user 1
 set timeout 60
 gets stdin password
-eval spawn $argv
+
+# turn off echo so that password doesn't get echoed by tty driver
+set stty_init -echo
+eval spawn -noecho $argv
+log_user 0
+
+# When .netrc exists, inc doesn't prompt for a password.  After getting
+# a password one way or another, inc prints one of
+#    Incorporating new mail into inbox...\r\n\r\n
+#    inc: no mail to incorporate
+#
+# For the case of mail available, we want to drain the informational
+# line "Incorporating new mail" here, so it doesn't get sent back
+# as output and get stuck in the FTOC window, and proceed to the while
+# loop, below.
+#
+# If there's no mail, the informational message sent back, with exit 1,
+# so the message gets put into the debug log.
+#
+
 expect {
     -re "Password (.*):" {
-	exp_send $password\n
+        exp_send -- $password\n
+	lappend incout $expect_out(buffer) $password\n
+
+	expect {
+	    -re ".* new mail .*\n" {}
+	    eof {
+		send_user $expect_out(buffer)
+		exit 1
+	    }
+	    timeout { send_user "timeout"; exit 1 }
+	}
     }
+
+    -re ".* new mail .*\n" {}
+
     eof {
-	send_user "DONE (No password prompt)\n"
-	exit 0
+        send_user $expect_out(buffer)
+	exit 1
     }
+
+    timeout { send_user "timeout"; exit 1 }
 }
+
+# drain any empty line
+# echo back msg header for FTOC
+# if exit status of inc is non-zero (e.g., 1 for no mail), 
+# echo back all accumulated text 
+
 while {1} {
-expect {
-    -re ".*\n" {
-	send_user $expect_out(buffer)
-    }
-    eof {
-	send_user DONE\n
-	exit 0
+    expect {
+	-re "^\[ \r\n]+$" {}
+        -re ".*\n" {
+	    send_user $expect_out(buffer)
+        }
+
+        eof {
+	    if { [lindex [wait] 3] == 0 } {
+		exit 0
+	    } else {
+		send_user $incout
+		exit 1
+	    }
+        }
     }
 }
-}
+

@@ -710,13 +710,11 @@ proc LDAP_Lookup {n} {
     #
     # ...
     set result {}
-    foreach i $ldap_results {
-        if [regexp -nocase {^mail=([^,]*)$} $i dummy email] {
+    foreach i [split $ldap_results \n ] {
+        if [regexp -nocase {^mail[=:] *([^,]*)$} $i dummy email] {
             lappend result "[LDAP_Entry_FormatForMail $email $name]"
-        } elseif [regexp -nocase "^cn=(.*)$" $i dummy tmp] {
+        } elseif [regexp -nocase {^cn[=:] *(.*)$} $i dummy tmp] {
             set name $tmp
-        } else {
-            append name " $i"
         }
     }
     
