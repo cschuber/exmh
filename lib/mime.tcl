@@ -549,7 +549,7 @@ proc MimeSetPartVars {descVar displayedPartVar tkw part partTag} {
 	if [string length [set type [Mime_Magic \
 	 [Mime_GetUnencodedFile $part]]]] {
 	    set mimeHdr($part,hdr,content-description) $type
-	    regsub octet-stream $mimeHdr($part,hdr,content-type) \
+	    regsub application/octet-stream $mimeHdr($part,hdr,content-type) \
 	     $type mimeHdr($part,hdr,content-type)
 	    set mimeHdr($part,type) $type
 	}
@@ -839,7 +839,8 @@ proc Mime_ShowDefault {tkw part} {
 		       "Invoke menu with right button."
 	Mime_ShowMultipart $tkw $part
     } elseif {![catch {set viewer [MimeGetRule $part "" atrib]}] && 
-	[info exists atrib(copiousoutput)]} {
+	[info exists atrib(copiousoutput)] &&
+	![info exists atrib(needsterminal)]} {
 	if ![info exists mimeHdr($part,copiousOut)] {
 	    set newFile [Mime_TempFile $part]
 	    if [catch {exec sh -c $viewer > $newFile} err] {
