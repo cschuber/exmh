@@ -1,0 +1,59 @@
+<Html>
+<Head>
+<Title>Binding Help</Title>
+<!-- Author: bwelch -->
+</Head>
+<Body>
+
+
+
+<h1 align=center>Binding Dialog</h1>
+<p>
+Use the binding dialog to change the keybindings for command accelerators.
+A binding ties an event to a Tcl command. 
+
+<h2>Event Syntax</h2>
+<ul>
+<li>Any sequence like &lt;Meta-x&gt; also results in a binding for
+&lt;Escape&gt;&lt;x&gt; 
+<li>Case is significant in the keywords Control, Meta, Shift, Key,
+Back<strong>S</strong>pace, etc. 
+<li>Multiple keystrokes can be bound to the same command. Separate
+them with a space, e.g.: &lt;BackSpace&gt; &lt;Prior&gt; 
+</ul>
+<h2>Changing a Binding</h2>
+<ul>
+<li>Edit the keystrokes for the existing commands in each entry widget.
+<li>Press &lt;Return&gt; in the entry and the change takes effect right
+away. Or, click the Save button, which makes the dialog go away, too.
+<br>
+
+
+</ul>
+<h2>Defining a New Accellerator</h2>
+<p>
+The Define button and the entries at the top are used for new commands.
+For example, to make &lt;Control-z&gt; close the window, enter 
+<br>
+
+Command: <code>wm iconify . </code> 
+<br>
+
+Key: <code>&lt;Control-z&gt; </code> 
+<br>
+
+and then press the Define button. 
+
+<h2>Deleting a Binding</h2>
+<p>
+Delete bindings by clearing the associated entry and pressing Return.
+
+<p>
+Your settings are saved in ~/.exmhbindings 
+
+<h2><a HREF="index.html">Main Help Index</a></h2>
+
+
+</Body>
+</Html>
+
