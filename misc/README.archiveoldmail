@@ -21,7 +21,7 @@ be changed.  The naming of the subfolders is done using a -format
 argument to 'dp'.  This can be changed easily.
 
 The script uses refile, so it has the same characteristics as that
-script in prompting you to create new directories if called
+program in prompting you to create new directories if called
 interactively, but not if stdin is not a tty.
 
 I call it from a cronjob which runs at the start of each month.
@@ -33,7 +33,7 @@ not be updated.
 
 Suggestions
 -----------
-You may also want to add this line to your .mh_defaults:
+You may also want to add this line to your .mh_profile:
 
 Folder-Unseen: !*/old* *
 
