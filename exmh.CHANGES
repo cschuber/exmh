@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 1/19/2005 cwg-exmh@deepeddy.com
+  lib/ftoc.tcl: Really fixed bindings for exwin(ftext).
+
 cvs repository 1/18/2005 cwg-exmh@deepeddy.com
   lib/exwin.tcl: Fixed bindings for exwin(ftext).
 

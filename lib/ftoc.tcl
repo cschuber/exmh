@@ -103,7 +103,7 @@ proc Ftoc_Bindings { w } {
 
     # The TScroll binding to too general.
     # We'll do our own scroll bindings here.
-    bindtags $w [list $w]
+    bindtags $w [list $w Command]
 
     # Button-1 starts selection range
     bind $w <Button-1> {
