@@ -20,6 +20,27 @@ proc SeqWinSetSelection {seq {which -1}} {
     }
 }
 
+proc SeqWin_Init {} {
+    global seqwin
+    SeqWinToggle
+    if {[winfo exists .sequences]} {
+      # Temporarily withdraw this until we build up unseen state
+      wm withdraw .sequences
+      set seqwin(startuphidden) 1
+      after 1000 {
+          set seqwin(startuphidden) 0
+          SeqWinDeiconify
+      }
+    }
+}
+proc SeqWinDeiconify {} {
+    global seqwin
+    if {!$seqwin(startuphidden)} {
+        wm deiconify .sequences
+        raise .sequences
+    }
+}
+
 proc SeqWinToggle {args} {
     global seqwin flist
 
@@ -118,11 +139,11 @@ proc SeqWinHideSeqPane {seq} {
 	    if $seqwin(hidewhenempty) {
 		catch {wm withdraw .sequences}
 		return
-	    } elseif (!$seqwin(icon)) {
-		catch {wm deiconify .sequences}
+	    } elseif {!$seqwin(icon)} {
+                SeqWinShow
 	    }
 	} else {
-	    catch {wm deiconify .sequences}
+            SeqWinShow
 	}
     }
 }
@@ -182,8 +203,7 @@ proc SeqWinAdd {seq folder num} {
     set index [llength $seqwin(folders,$seq)]
     if {$index == 0} {
 	if $seqwin(hidewhenempty) {
-	    catch {wm deiconify .sequences}
-	    raise .sequences
+            SeqWinDeiconify
 	}
 	.sequences.pane$seq.lb delete 0 end
     } elseif {$index < $seqwin(curlines,$seq)} {
@@ -378,7 +398,7 @@ proc SeqWinToggleIcon {args} {
 	    wm iconwindow . .sequences
 	} elseif $already {
 	    wm iconwindow . {}
-	    catch {wm deiconify .sequences}
+            SeqWinDeiconify
 	}
     }
 }

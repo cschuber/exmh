@@ -164,9 +164,7 @@ Compose:       Starts a mail composition"
     trace variable seqwin(alwaysshow) w SeqWinFixShowList
     trace variable seqwin(orientation) w SeqWinFixOrientation
 
-    if {$seqwin(on)} {
-      SeqWinToggle
-    }
+    SeqWin_Init
 }
 proc Seq_Trace {array elem op} {
     global flist seqwin
