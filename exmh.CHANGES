@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 04/08/2003 haldevore@acm.org
+  patch from Chris  Garrigues <cwg-exmh@DeepEddy.Com>
+    thread.tcl Fix to prevent threading from erasing unseen sequence
+
 cvs repository 04/04/2003 welch@panasas.com
   sequences.tcl - removed Exmh_Debug from Seq_Trace
   fcache.tcl - removed Exmh_Debug

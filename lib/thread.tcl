@@ -251,8 +251,9 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
         Exmh_Status "folder incorrectly threaded. line number mismatch" warn
     }
 
-    Seq_Forget $folder $mhProfile(unseen-sequence)
-    Ftoc_ShowSequence $mhProfile(unseen-sequence)
+#    Seq_Forget $folder $mhProfile(unseen-sequence)
+#    Ftoc_ShowSequence $mhProfile(unseen-sequence)
+    Ftoc_ShowSequences
 
     if {$curmsg != {}} {
         set msg(id) $curmsg
