@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 3/31/1999
+    New interface for PGP composition -cwg
+    Dates display localtime in parentheses -cwg
+    Better support for WindowMaker -cwg
+    support for the X-image-url: header -ovidiu@cup.hp.com via cwg
+    middle button on unseenwin configurable to do an inc 
+	-khearn@legato.com via cwg
+	
 2.0.3 3/22/1999 (Been way to long!)
     sound(bell) not enabled if sound is not enabled
     glimpse(init) set properly
