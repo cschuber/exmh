@@ -2905,7 +2905,7 @@ proc Mime_SaveAttachments {{dir {}}} {
     global msg mime install
 
     if {$dir == ""} {
-      set dir [glob $mime(saveDir)]
+      set dir $mime(saveDir)
     }
     file mkdir $dir
     exec $install(dir,bin)/exmh-strip $msg(path) $dir
