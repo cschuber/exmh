@@ -217,11 +217,30 @@ so you can dig into the code if you want to.
 
   <dt><a name="faces">Faces</a>
   <dd>The use of the facesaver database and the decompression of
-      X-Face components can be controlled. (faces.tcl) 
+      X-Face and X-Image-URL components can be controlled. (faces.tcl) 
 
-  <dt><a name="pgp">PGP interface</a>
-  <dd>You choose whether <i>exmh</i> can remember your pass phrase or
-      if all PGP programs are run under an xterm instead. (pgp.tcl) 
+  <dt><a name="pgp">General PGP Interface</a>
+  <dd><i>exmh</i> has support for a number of different versions of
+      the Pretty Good Privacy email security program.  This dialog 
+      allows you to set parameters that apply to all supported
+      versions of PGP.  For example, you can choose whether
+      <i>exmh</i> can remember your pass phrase or
+      if all PGP programs are run under an xterm instead.  There are
+      preferences dialogs for each supported version of PGP; they may
+      or may not appear in your installed version depending on which
+      versions of PGP are detected when <i>exmh</i> is run. (pgpMain.tcl) 
+
+  <dt><a name="pgp2">PGP 2.6 Interface</a>
+  <dd>Preferences that apply to PGP 2.6. (pgpPgp2.tcl)
+
+  <dt><a name="pgp5">PGP 5.0 Interface</a>
+  <dd>Preferences that apply to PGP 5.0. (pgpPgp5.tcl)
+
+  <dt><a name="pgp6">PGP 6.5 Interface</a>
+  <dd>Preferences that apply to PGP 6.5. (pgpPgp6.tcl)
+
+  <dt><a name="gpg">GnuPG Interface</a>
+  <dd>Preferences that apply to GPG (the GNU Privacy Guard). (pgpGpg.tcl)
 
   <dt><a name="glimpse">Glimpse</a>
   <dd>Settings for the Glimpse full-text indexing
@@ -1424,17 +1443,27 @@ short explanation of what the Tcl procedures in it are for.
 The remainder of the files are kept in the script library. 
 <dl>
 
+  <dt>addr.tcl
+  <dd>A mail address book that can automatically memorize
+      addresses of received mail.
+
   <dt>aliases.tcl 
   <dd>A browser for the MH aliases file. 
 
   <dt>audit.tcl 
   <dd>Maintain an audit log of mail handling operations. 
 
+  <dt>autorefile.tcl
+  <dd>Automatically refiles messages into folders.
+
   <dt>background.tcl 
   <dd>The background processing module. This can run in a separate
       process or as part of the main process. The BgRPC routine is
       used to invoke a background operation, and it works in either
       case. 
+
+  <dt>base64.tcl
+  <dd>Base64 encoding utility routines.
 
   <dt>bindings.tcl 
   <dd>This has the default bindings and the implementation of the
@@ -1450,6 +1479,10 @@ The remainder of the files are kept in the script library.
   <dt>cutbuffer.tcl 
   <dd>A stub for the C cutbuffer extension. 
 
+  <dt>crypt.tcl
+  <dd>Generalized support for multipart/signed and multipart/encrypted
+      messages in exmh.
+
   <dt>dragNdrop.tcl 
   <dd>Drag-and-drop for exmh. 
 
@@ -1461,6 +1494,10 @@ The remainder of the files are kept in the script library.
 
   <dt>error.tcl 
   <dd>The error handler. 
+
+  <dt>exec.tcl
+  <dd>A wrapper around the Tcl exec command that caches the locations
+      of executables in the user's search path.
 
   <dt>extrasInit.tcl 
   <dd>This has Init routines for optional modules. The idea is to
@@ -1503,6 +1540,9 @@ The remainder of the files are kept in the script library.
   <dt>folderNew.tcl 
   <dd>The folder create and delete dialogs. 
 
+  <dt>fontsel.tcl
+  <dd>The font selection dialog.
+
   <dt>ftoc.tcl 
   <dd>The scan listing (folder table-of-contents). 
 
@@ -1512,17 +1552,31 @@ The remainder of the files are kept in the script library.
   <dt>ftocFind.tcl 
   <dd>The search routines over the scan listing. 
 
+  <dt>ftp_get.tcl
+  <dd>Procedures to retrieve files via FTP.
+
   <dt>getnews.tcl 
   <dd>Code to retrieve news via NNTP.
 
+  <dt>glimpse.tcl
+  <dd>Support code for use with the Glimpse indexing and searching
+      utility.
+
   <dt>help.tcl 
   <dd>Some very simple help text and a color key. 
+
+  <dt>html.tcl
+  <dd>Exmh HTML browser.  The other html_*.tcl files implement various
+      portions of the functionality of the HTML browser.
 
   <dt>import.tcl 
   <dd>Routines to import folders from UCB mail. 
 
   <dt>inc.tcl 
   <dd>Several ways to incorporate mail. 
+
+  <dt>ispell.tcl
+  <dd>Tcl interactive spell checker, using the ispell utility.
 
   <dt>labels.tcl 
   <dd>There are three labels in the display - can you see them? 
@@ -1539,6 +1593,9 @@ The remainder of the files are kept in the script library.
   <dt>mime.tcl 
   <dd>The mime display code. 
 
+  <dt>mimeSun.tcl
+  <dd>Support to turn X-sun-attachments into MIME format.
+
   <dt>mosaic.tcl 
   <dd>Code to request Mosaic to display an HTML page. 
 
@@ -1553,8 +1610,8 @@ The remainder of the files are kept in the script library.
   <dt>partial.tcl 
   <dd>Code to concatenate the parts of a message/partial MIME message.
 
-  <dt>pgp.tcl 
-  <dd>An interface to the Pretty Good Privacy system. 
+  <dt>pgpBase.tcl 
+  <dd>Initialization for PGP support.
 
   <dt>pgpEWN.tcl 
   <dd>This implements the PGP function in the external editor What Now
@@ -1563,14 +1620,44 @@ The remainder of the files are kept in the script library.
   <dt>pgpExec.tcl 
   <dd>This executes the PGP program to get things done. 
 
+  <dt>pgpGpg.tcl
+  <dd>Support code for the Gnu Privacy Guard.
+
+  <dt>pgpMain.tcl 
+  <dd>An interface to the Pretty Good Privacy system. 
+
   <dt>pgpMatch.tcl 
   <dd>This looks for keys in your keyring. 
 
   <dt>pgpMisc.tcl 
   <dd>This has the main post-processing hook for messages. 
 
+  <dt>pgpOld.tcl 
+  <dd>Somewhat-obsolescent PGP support routines.
+
+  <dt>pgpPgp2.tcl
+  <dd>Support code for Pretty Good Privacy 2.6.
+
+  <dt>pgpPgp5.tcl
+  <dd>Support code for Pretty Good Privacy 5.0.
+
+  <dt>pgpPgp6.tcl
+  <dd>Support code for Pretty Good Privacy 6.5.
+
+  <dt>pgpShared.tcl
+  <dd>Initialization for PGP support.
+
+  <dt>pgpWWW.tcl
+  <dd>Support for querying keyservers for public keys via HTTP and HKP.
+
   <dt>pick.tcl 
   <dd>An interface to the MH <i>pick</i> program. 
+
+  <dt>pop.tcl
+  <dd>POP3 support for exmh.
+
+  <dt>post.tcl
+  <dd>News posting client for exmh.
 
   <dt>preferences.tcl 
   <dd>The preferences user interface. 
@@ -1580,6 +1667,12 @@ The remainder of the files are kept in the script library.
 
   <dt>ps.tcl 
   <dd>Code to rummage through the process table. OS-specific. 
+
+  <dt>quote.tcl
+  <dd>Quoting support for exmh.
+
+  <dt>receipt.tcl
+  <dd>Handling of message dispotion notifications (MDNs).
 
   <dt>report.tcl 
   <dd>This implements the Bug Report and Register New User forms. 
@@ -1620,6 +1713,9 @@ The remainder of the files are kept in the script library.
   <dt>sound.tcl 
   <dd>Sound effects. 
 
+  <dt>source.tcl
+  <dd>A patching facility for exmh.
+
   <dt>text.tcl 
   <dd>Some text tagging routines. 
 
@@ -1632,11 +1728,23 @@ The remainder of the files are kept in the script library.
   <dt>thread.tcl 
   <dd>This displays the messages related to the current subject. 
 
+  <dt>tioga.tcl
+  <dd>Support for viewing multipart/x-tioga messages.
+
+  <dt>unseenwin.tcl
+  <dd>Support for a small window listing folders with unseen messages.
+
   <dt>uri.tcl 
   <dd>The code that scans messages for URLs. 
 
+  <dt>urlFace.tcl
+  <dd>Retrieve an image from a URL and use it as a face.
+
   <dt>user.tcl 
   <dd>Stubs for User_Init and User_Layout. 
+
+  <dt>utils.tcl
+  <dd>Miscellaneous support routines.
 
   <dt>widgetMenu.tcl 
   <dd>Support for the popup menus used in MIME messages. 
