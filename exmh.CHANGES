@@ -1,5 +1,14 @@
 HISTORY
 
+cvs repository 03/03/2001 Brent Welch <brent.welch@interwoven.com>
+    lib/inc.tcl: Eliminated the use of the expect wrapper around
+    inc for the "presort-multidrop" and "multidrop" cases.  This
+    interferes with folks that have set up their .netrc file to
+    have passwords.
+    lib/fdispPopup.tcl:  Eliminated noisey Exmh_Debug command
+    lib/html/exmh-faq.html: Added #24 about scan .mh_profile entries
+    that can cause problems.
+
 cvs repository 01/19/2001 Brent Welch <brent.welch@interwoven.com>
     lib/main.tcl: fixed test for MH version.
 

@@ -335,9 +335,13 @@ proc Inc_All {{updateScan 1}} {
 		set cmd [list exec inc +$folder -host $host \
 			-truncate -width $ftoc(scanWidth)]
 	    }
-	    Pop_GetPassword $host
-	    if {[info exist pop($host,password)]} {
-		set cmd [Inc_Expect $cmd]
+	    if {0} {
+		# This doesn't work for folks that have set up their
+		# .netrc file to have passwords for all their POP hosts.
+		Pop_GetPassword $host
+		if {[info exist pop($host,password)]} {
+		    set cmd [Inc_Expect $cmd]
+		}
 	    }
 	} else {
 	    if { [file exists $dropname] && [file size $dropname] } {

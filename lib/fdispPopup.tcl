@@ -38,7 +38,7 @@ proc FdispDisplayPopdown {folder pop {bx -1} {by -1}} {
     }
     set tag T_$folder
 
-    Exmh_Debug FdispDisplayPopdown $folder $pop top=$fdisp(poptop) $tag
+    #Exmh_Debug FdispDisplayPopdown $folder $pop top=$fdisp(poptop) $tag
     if {($pop == "down") && ($fdisp(poptop) != -1)} {
 	if {$fdisp(popdown,0) == $tag} {
 	    # Clicking on a folder with popup already displayed.

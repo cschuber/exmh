@@ -162,6 +162,9 @@
   <dd><a HREF="#23">How can I stop my own address from appearing on 
       the cc list when I reply to messages?</a>
 
+  <dt>24
+  <dd><a HREF="#24">How do I fix errors from the scan program?</a>
+
 </dl>
 <hr>
 <dl COMPACT>
@@ -1007,6 +1010,32 @@ alternate-mailboxes: your_addr@your_domain, your_addr2@your_domain2, ...
 <p>
 See the mh-profile manpage for more details.
 </ol>
+
+<h3><a NAME="24">24. How do I fix errors from the scan command.</a></h3>
+<p>
+Errors from scan are most likely caused by conflicting entries in
+your .mh_profile for "scan" or "scanproc".  Here is a summary of
+what you can and cannot do:
+<ul>
+<li>
+In .mh_profile, do not put any arguments to scan in a "scanproc" line, e.g.,
+<pre>
+scanproc: scan -myfavorite scan arguments
+</pre>
+This will break because exmh thinks the whole thing is the name of
+a program.  (This is to handle white-space in file names.)
+<li>
+Instead, use the "scan" entry in your .mh_profile for arguments:
+<pre>
+scan: -myfavorite arguments
+</pre>
+<li>
+Finally, do not use "-form filename" in your "scan" .mh_profile because
+in some cases exmh adds a "-use" flag that conflicts with -form.
+There is no particularly good reason to use "-form" in your default
+scan arguments.  Instead, just rely on the default "components" file
+that scan will use in ~/Mail/components
+</ul>
 
 <a HREF="index.html"><img SRC="left-arrow.gif" ALT="" WIDTH=36 HEIGHT=23>Back
 to the exmh index</a> 
