@@ -17,6 +17,8 @@ cvs repository 01/15/2001 Brent Welch <brent.welch@interwoven.com>
     buttons.  You'll need to set up your exmh-defaults to get these.
     See the lib/bitmaps/exmh-defaults file for an example.
     install.tcl: added call to Env_Init
+    lib/env.tcl: Fixed it so that it doesn't chmod /tmp if that's
+    what TMPDIR is set to.
 
 cvs repository 01/12/2001 Brent Welch <brent.welch@interwoven.com>
     lib/env.tcl - fix for symlink attack.  Exmh now chooses /tmp/<username>

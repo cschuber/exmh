@@ -65,7 +65,9 @@ proc Env_Tmp {} {
 
     if {[catch {
 	file mkdir $env(TMPDIR)
-	file attributes $env(TMPDIR) -permissions 0700
+	if {$env(TMPDIR) != "/tmp"} {
+	    file attributes $env(TMPDIR) -permissions 0700
+	}
     } err]} {
 	puts $err
 	catch {puts stderr "WARNING: exmh using unsafe /tmp directory"}
