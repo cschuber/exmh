@@ -65,6 +65,13 @@ proc Mime_Init {} {
 	}
     }
 
+    # Make a try to load Img extention, ignore failures
+    if [ catch { set img_version [package require Img] } ] {
+	Exmh_Debug Unable to load Img
+    } else {
+	 Exmh_Debug Loaded Img version $img_version
+    }
+
     set imageFilters [concat [option get . imageFilters {}] \
 			      [option get . imageUFilters {}]]
     foreach imageFilter $imageFilters {
