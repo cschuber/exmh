@@ -124,6 +124,13 @@ proc Addr_Init {} {
             "LDAP Search Root"
             "The root under which to conduct LDAP searches."
         }
+	{
+	    addr_db(ldap_encoding)
+	    addressdbLDAPEncoding
+	    {utf-8}
+	    "LDAP Encoding"
+	    "The character encoding used by the LDAP server."
+	}
         {
             addr_db(filter_regexp)
             addressdbFilterRegexp
@@ -679,13 +686,19 @@ proc LDAP_Lookup {n} {
     Exmh_Status "Querying $addr_db(ldap_server) from $addr_db(ldap_searchbase) with $n..."
 
     set query "(|(cn=*$n*)(mail=*$n*)(sn=*$n*)(givenname=*$n*))"
-    if [catch {set ldap_results [exec ldapsearch -h [string trim $addr_db(ldap_server)] \
+    if {[catch {set query "[encoding convertto $addr_db(ldap_encoding) "$query"]"} err]} {
+	Exmh_Debug "LDAP_Lookup encoding convertto: $err"
+    }
+    if [catch {set ldap_results [exec ldapsearch -B -h [string trim $addr_db(ldap_server)] \
                                                  -b $addr_db(ldap_searchbase) \
                                                  "$query" cn mail]} err] {
         Exmh_Status "Error executing ldapsearch: $err"
         return {}
     }
 
+    if {[catch {set ldap_results [encoding convertfrom utf-8 "$ldap_results"]} err]} {
+	Exmh_Debug "LDAP_Lookup encoding convertfrom: $err"
+    }
     # The return from ldapsearch will be something like this:
     #
     # cn=Lastname, Firstname

@@ -1,4 +1,6 @@
 HISTORY
+cvs repository 12/6/1999
+    Added character encoding support to LDAP lookup -iko
 
 cvs repository 12/2/1999
     Applied Burkhardt patch for specifying POP host with -host flag
