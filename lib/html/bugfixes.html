@@ -10,12 +10,15 @@
   <li>Fixed MIME formatting in Receipt-Notification message
   <li>Fixed encoding of whitespace in header lines
   <li>Restored 'Invoke menu with right button' message on large messages
-  <li>Unseen sequence is no longer trashed after a sort or pack
-  <li>Fixed ordering of MIME type guessing; It used to be mailcap,
-      mime.types, magic, now it is mime.types, mailcap, magic 
-  <li>Fixed mailcap file extension parsing to ignore entries with
-      nametemplate=%s
-  <li>Fixed problem in X-Image-URL with ~ in pathnames
+  <li>Unseen sequence is no longer trashed after a <code>sort</code>
+      or <code>pack</code> 
+  <li>Fixed ordering of MIME type guessing; It used to be
+      <code>mailcap</code>, <code>mime.types</code>, magic, now it is
+      <code>mime.types</code>, <code>mailcap</code>, magic 
+  <li>Fixed <code>mailcap</code> file extension parsing to ignore
+      entries with <code>nametemplate=%s</code>
+  <li>Fixed problem in <code>X-Image-URL</code> with <code>~</code> in
+      pathnames 
   <li>Fixed bug in alias editor
   <li>Fixed address-book lookup/expansion to create a new "To:", "cc:"
       or whatever line so wrapping isn't a problem 
@@ -27,19 +30,22 @@
   <li>Fixed small bug in searching body of message
   <li>Fixed bug with compose in empty drafts folder
   <li>Fixed a minor bug in the regular expression for URLs, so
-      <mailto:foo> loses the trailing '>' as it should
-  <li>Fixed handling of extra parameters on mailto: URLs
-  <li>Don't display message parts if 1) it's a text/*vcard; or 2) it's
-      got a "Content-Disposition: Ancillary" header
-  <li>Fixed error in regexps in ftoc.tcl where digits followed by a "+"
-      would confuse the marking of current message 
+      <code>&lt;mailto:foo&gt;</code> loses the trailing '&gt;' as it
+      should 
+  <li>Fixed handling of extra parameters on <code>mailto:</code> URLs
+  <li>Don't display message parts if 1) it's a
+      <code>text/*vcard</code>; or 2) it's got a
+      <code>Content-Disposition: Ancillary</code> header 
+  <li>Fixed error in regexps in <code>ftoc.tcl</code> where digits
+      followed by a "<code>+</code>" would confuse the marking of
+      current message 
   <li>Fixed Help...>Color Legend crash
   <li>Made menubuttons and regular buttons the same size when using
       tkstep 
   <li>Fixed the actions for Rescan, Pack, and the various Sorts not to
-      call Msg_ShowSomething afterwards.  This had the unintended
-      side-effect of, if no current message was set, setting the current
-      message to the first unseen message
+      call <code>Msg_ShowSomething</code> afterwards.  This had the
+      unintended side-effect of, if no current message was set,
+      setting the current message to the first unseen message
   <li>Closing html window during install before the page is fully
       rendered no longer crashes 
   <li>If there's a PGP error while processing the message, show the
@@ -47,12 +53,16 @@
   <li>Eliminated extra newline in editnow window
   <li>Sped up startup time by not pre-caching nicknames for all the
       folders 
-  <li>Sedit was not inserting Mime-version header when it should have
+  <li>Sedit was not inserting <code>Mime-version</code> header when it
+      should have 
   <li>Allow ispell preferences to work before sedit has been opened
   <li>Fixed problems with annotation settings
-  <li>References to exmh(background) should have been to exmh(bgPeriod)
-      in BackgroundFixup
-  <li>Fixed <a HREF="file.html#location"> in HTML browser
+  <li>References to <code>exmh(background)</code> should have been to
+      <code>exmh(bgPeriod)</code> in <code>BackgroundFixup</code>
+  <li>Fixed <code>&lt;a HREF="file.html#location"&gt;</code> in HTML
+      browser 
+  <li>Prompt the user before executing the command portion of a button
+      tag which is either non-local or in <code>/tmp</code>
 </ul>
 </body>
 </html>

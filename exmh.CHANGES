@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repostitory 08/05/1999
+    Prompt before executing buttons on html pages which are either
+	non-local or in /tmp. -cwg
+
 cvs repository 08/04/1999
     Fixed problems with not providing a password under pgp2 -cwg
     Renamed the *.n.html pages and rephrased links to them -cwg

@@ -198,7 +198,6 @@ proc Html_Stop {win} {
 }
 proc HtmlHit {win x y} {
     upvar #0 HM$win var
-    global uri
     lassign {href name} [UrlGetLink $win $x $y]
     UrlResolve $var(S_url) href
     URI_StartViewer $href

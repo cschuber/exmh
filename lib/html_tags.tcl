@@ -143,17 +143,65 @@ if {[info commands HMtag_/tr] == ""} {
     }
 }
 
+proc HMtag_Verify {t param} {
+    global htmlverify
+
+    Exmh_Debug HMtag_Verify $t $param
+    if [catch {frame $t.verify -bd 4 -relief ridge -class Dialog} f] {
+	# dialog already up
+	SeditAbortConfirm $t.abort $t abort
+	return
+    }
+    Widget_Message $f msg -justify center -text "Are you sure you want to execute\n\n$param\n\n?"
+    pack $f.msg -padx 10 -pady 10
+    frame $f.but -bd 10 -relief flat
+    pack $f.but -expand true -fill both
+    Widget_AddBut $f.but yes "Yes" [list HMtag_VerifyConfirm $f yes] {left filly}
+    Widget_AddBut $f.but no "No" [list HMtag_VerifyConfirm $f No] {right filly}
+    Widget_PlaceDialog $t $f
+    focus $f.but
+    tkwait window $f
+
+    if {$htmlverify == "yes"} {
+	Exmh_Debug Evaluating $param
+	eval $param
+    }
+}
+
+proc HMtag_VerifyConfirm {f yes} {
+    global htmlverify
+    set htmlverify $yes
+    destroy $f
+}
+
+proc HMtag_Wrapped {win param} {
+    Exmh_Debug HMtag_Wrapped $win $param
+
+    upvar #0 HM$win var
+    set url $var(S_url)
+    Exmh_Debug URL=$url
+    if {![regexp -nocase {^file:} $url] || [regexp -nocase {^file:/tmp} $url]} {
+	set index [lsearch -exact $param -command]
+	if {$index != -1} {
+	    incr index
+	    set param [lreplace $param $index $index [list HMtag_Verify $win [lindex $param $index]]]
+	}
+    }
+    Exmh_Debug HMtag_Wrapped returning $param
+    return $param
+}
+
 proc HMtag_button {win param textVar} {
     upvar #0 HM$win var
     upvar $textVar text
-    set b [eval {button $win.button$var(tags) -text $text} $param]
+    set b [eval {button $win.button$var(tags) -text $text} [HMtag_Wrapped $win $param]]
     Win_Install $win $b
     set text {}
 }
 proc HMtag_checkbutton {win param textVar} {
     upvar #0 HM$win var
     upvar $textVar text
-    set b [eval {checkbutton $win.button$var(tags) -text $text} $param]
+    set b [eval {checkbutton $win.button$var(tags) -text $text} [HMtag_Wrapped $win $param]]
     Win_Install $win $b
     set text {}
 }
