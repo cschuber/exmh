@@ -30,16 +30,6 @@ many "exmh hackers" already but with a look at Jerry Peek's section on
 
 
 
-Number: 4
-Priority: Med
-Scope: Narrow
-Complexity: Low
-
-Allow a user-preference setting for what mouse button 3 on a folder
-does, allow "link", "copy", "move", or "only select".
-
-
-
 Number: 5
 Priority: Med
 Scope: Narrow

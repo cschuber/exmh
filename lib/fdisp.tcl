@@ -49,16 +49,37 @@ folders in one vertical column."}
 used to display subfolders." }
 	{fdisp(popdownAction) fdispPopdownAction {CHOICE navbutton enter redisplay} {Popdown action}
 "This determines how the popdown display is triggered:
-navbutton - press navigation (middle) button to get the popdown.
+navbutton - press navigation button to get the popdown.
+
 enter - move the mouse over the button to get the popdown.
+
 redisplay - do not use popdowns at all.  Instead, navbutton
-(middle) causes the whole folder display to change.
-The navigation button is settable via an Xresource." }
+causes the whole folder display to change.
+
+The navigation button is settable via a X resource fl_navbutton." }
 	{fdisp(popdownRemove) fdispPopdownRemove {CHOICE leave navbutton} {Remove popdown on...}
 "This determines what causes a popdown display to be removed:
-navbutton - press navigation (middle) button on another label.
-leave - leave the area of the popdown.  This actually has to
-be implemented by triggering on <Enter> to other labels." }
+navbutton - press navigation button on another label.
+
+leave - leave the area of the popdown.  This actually is
+implemented by triggering on <Enter> to other labels.
+
+The navigation button is settable via a X resource fl_navbutton." }
+{fdisp(tarbuttonAction) fdispTarbuttonAction {CHOICE {select+move} {select+copy} {select only}} {Action when Target button clicked...}
+"This determines what action is taken when the \"target\"
+mouse button is clicked.  The target button is usually mouse
+button 3 but can be changed by setting X resource fl_tarbutton.
+
+select+move - Selects the folder at the mouse cursor as 
+the target folder and moves the current message to the
+target folder.
+
+select+copy - Selects the folder at the mouse cursor as 
+the target folder and copies the current message to the
+target folder.
+
+select only - Selects the folder at the mouse cursor as 
+the target folder." }
     }
     # The remaining parameters can be overridden by hand in the user resources
 
@@ -538,8 +559,19 @@ proc FdispBindLabel { can id ftype f } {
     set canvas $fdisp($can)
 
     $canvas bind $id <$fdisp(curbutton)> [list Folder_Change $f]
-    $canvas bind $id <$fdisp(tarbutton)> \
-		    [list Folder_TargetMove $f]
+    if {$fdisp(tarbuttonAction) == "select+move"} {
+        $canvas bind $id <$fdisp(tarbutton)> \
+                [list Folder_TargetMove $f]
+    } elseif {$fdisp(tarbuttonAction) == "select+copy"} {
+        $canvas bind $id <$fdisp(tarbutton)> \
+                [list Folder_TargetCopy $f]
+    } elseif {$fdisp(tarbuttonAction) == "select only"} {
+        $canvas bind $id <$fdisp(tarbutton)> \
+                [list Folder_Target $f]
+    } else {
+        $canvas bind $id <$fdisp(tarbutton)> \
+                [list Folder_TargetMove $f]
+    }
     $canvas bind $id <Shift-$fdisp(tarbutton)> \
 		    [list Folder_TargetCopy $f]
     $canvas bind $id <Control-$fdisp(tarbutton)> \

@@ -292,7 +292,20 @@ proc FdispBindPopupLabel { can id ftype f } {
 	}
     }
     $canvas bind $id <$fdisp(curbutton)> [list Folder_Change $f]
-    $canvas bind $id <$fdisp(tarbutton)> [list Folder_TargetMove $f]
+
+    if {$fdisp(tarbuttonAction) == "select+move"} {
+        $canvas bind $id <$fdisp(tarbutton)> \
+                [list Folder_TargetMove $f]
+    } elseif {$fdisp(tarbuttonAction) == "select+copy"} {
+        $canvas bind $id <Shift-$fdisp(tarbutton)> \
+                [list Folder_TargetCopy $f]
+    } elseif {$fdisp(tarbuttonAction) == "select only"} {
+        $canvas bind $id <$fdisp(tarbutton)> \
+                [list Folder_Target $f]
+    } else {
+        $canvas bind $id <$fdisp(tarbutton)> \
+                [list Folder_TargetMove $f]
+    }
     $canvas bind $id <Shift-$fdisp(tarbutton)> 	[list Folder_TargetCopy $f]
     $canvas bind $id <Control-$fdisp(tarbutton)> \
 		    [list Folder_TargetClear $f]
