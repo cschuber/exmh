@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 07/12/2001 cwg-exmh@deepeddy.com
+    scan.tcl - In yesterday's patch, we only wanted to do that if we
+	were changing folders.  If we aren't, we still want to do it
+	the old way.
+
 cvs repository 07/11/2001 cwg-exmh@deepeddy.com
     scan.tcl - in ScanFolder, we don't know what the last message is
 	yet, so we need to use Widget_Text_End instead.  Also,

@@ -47,9 +47,13 @@ proc ScanFolder {F adjustDisplay} {
     if {$update} {
 	# Add new messages to cached information
 	# Scan last message (again) plus any new messages
-	set id [Ftoc_MsgNumber [Ftoc_FindMsg {} [Widget_TextEnd $exwin(ftext)]]]
+	if {$sameF} {
+	    set id [Ftoc_MsgNumber [Ftoc_FindMsg {} last]]
+	} else {
+	    set id [Ftoc_MsgNumber [Ftoc_FindMsg {} [Widget_TextEnd $exwin(ftext)]]]
+	}
 	if [catch {
-	    Exmh_Debug Scanning new messages
+	    Exmh_Debug Scanning new messages $id-last
 	    set input [open "|$mhProfile(scan-proc) [list +$F] \
 		    $id-last -width $ftoc(scanWidth)"]
 	    set check [gets $input]
