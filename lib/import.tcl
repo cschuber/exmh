@@ -26,8 +26,8 @@ proc Import_Dialog {} {
 	Widget_BindEntryCmd $_import(win,entry) <Return> [list ImportWhat $w]
 
 	set f [Widget_Frame $w but Rim {top fill expand} -bd 10]
-	Widget_AddBut $f cancel "Cancel" "destroy $w" {left fill}
-	set _import(win,okbut) [Widget_AddBut $f ok "OK" [list ImportWhat $w] {right fill}]
+	Widget_AddBut $f cancel "Cancel" "destroy $w" {left filly}
+	set _import(win,okbut) [Widget_AddBut $f ok "OK" [list ImportWhat $w] {right filly}]
     }
     catch {destroy .import.folders}
     $_import(win,msg) config -text \
@@ -82,7 +82,7 @@ setting in your ~/.mh_profile file to a new directory."
 		    break
 		}
 		set folders [lreplace $folders 0 0]
-		set b [Widget_CheckBut $f j$j $next _importlist($next) {right expand fill}]
+		set b [Widget_CheckBut $f j$j $next _importlist($next) {right expand filly}]
 		$b config -onvalue $dir/$next -offvalue {} -width $maxl -anchor w
 		set _importlist($next) $dir/$next
 	    }

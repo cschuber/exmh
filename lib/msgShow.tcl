@@ -249,7 +249,7 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 	if [winfo exists $exwin(mopButtons).list] {
 	    set menu $exwin(mopButtons).list.m
 	} else {
-	    set menu [Widget_AddMenuB $exwin(mopButtons) list "List..." {right padx 1}]
+	    set menu [Widget_AddMenuB $exwin(mopButtons) list "List..." {right padx 1 filly}]
 	}
 	$exwin(mopButtons).list.m delete 1 99
 	foreach {name url} $menuitems {

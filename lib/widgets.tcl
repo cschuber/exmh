@@ -95,7 +95,7 @@ proc Widget_SplitFrameV {f c1 c2} {
     return [list $f.top $f.bot]
 }
 
-proc Widget_AddButDef {par but {where {right padx 1 fill}} } {
+proc Widget_AddButDef {par but {where {right padx 1 filly}} } {
     # Create a Packed button.  Return the button pathname
     set cmd2 [list button $par.$but -highlightthickness 1]
     if [catch $cmd2 t] {
@@ -109,7 +109,7 @@ proc Widget_ReEvalCmd { but } {
     uplevel "$but config -command \[subst \[$but cget -command]]"
 }
 
-proc Widget_AddBut {par but txt cmd {where {right padx 1 fill}} } {
+proc Widget_AddBut {par but txt cmd {where {right padx 1 filly}} } {
     # Create a Packed button.  Return the button pathname
     set cmd2 [list button $par.$but -text $txt -command $cmd -highlightthickness 1]
     if [catch $cmd2 t] {
@@ -142,7 +142,7 @@ proc Widget_RadioBut {par but txt var {where {right padx 1}} args} {
     return $par.$but
 }
 
-proc Widget_AddMenuBDef {par b {where {left fill}} } {
+proc Widget_AddMenuBDef {par b {where {left filly}} } {
     # Create a button and a menu to go with it.  Return the menu pathname
     set cmd [list menubutton $par.$b -menu $par.$b.m -highlightthickness 1]
     if [catch $cmd t] {
@@ -155,7 +155,7 @@ proc Widget_AddMenuBDef {par b {where {left fill}} } {
     pack append $par $par.$b $where
     return $par.$b.m
 }
-proc Widget_AddMenuB {par b {label {}} {where {left fill}} } {
+proc Widget_AddMenuB {par b {label {}} {where {left filly}} } {
     # Create a button and a menu to go with it.  Return the menu pathname
     set cmd [list menubutton $par.$b -menu $par.$b.m -text $label -highlightthickness 1]
     if [catch $cmd t] {

@@ -81,7 +81,7 @@ proc HtmlWindow {t} {
 	    Widget_AddButDef $url $b
 	}
 	foreach M [Widget_GetMenuBDef $url] {
-	    set menu [Widget_AddMenuBDef $url $M {right padx 1}]
+	    set menu [Widget_AddMenuBDef $url $M {right padx 1 filly}]
 	    ButtonMenuInner $menu
 	}
 	global window

@@ -18,12 +18,12 @@ proc Pick {} {
 	.pick.but.quit configure -command {Exwin_Dismiss .pick nosize}
 	Widget_AddBut $f clear "Clear" { PickClear }
 	Widget_AddBut $f mark "Mark Seen" {PickMarkSeen}
-	Widget_AddBut $f pick "Pick" {Pick_It} {left padx 1 fill}
-	Widget_CheckBut $f add "Add to Sel" pick(addtosel) {left padx 1 fill}
-	Widget_AddBut $f project "New FTOC" Ftoc_NewFtoc {left padx 1 fill}
+	Widget_AddBut $f pick "Pick" {Pick_It} {left padx 1 filly}
+	Widget_CheckBut $f add "Add to Sel" pick(addtosel) {left padx 1 filly}
+	Widget_AddBut $f project "New FTOC" Ftoc_NewFtoc {left padx 1 filly}
 
 	PickSetup
-        Widget_AddBut .pick or "-Or-" PickOr {bottom pady 5 fill}
+        Widget_AddBut .pick or "-Or-" PickOr {bottom pady 5 filly}
     }
 }
 proc PickClear {} {

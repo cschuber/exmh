@@ -309,7 +309,7 @@ proc URI_ScanMsg { {w {}} {limit end} } {
 	frame $g -bd 4 -relief raised
 	set f [frame $g.pad -bd 20]
 	set msg [Widget_Message $f msg -text "$lnum Lines to scan" -aspect 1000]
-	Widget_AddBut $f stop STOP {set uri(stop) 1}  {top padx 2 pady 2}
+	Widget_AddBut $f stop STOP {set uri(stop) 1}  {top padx 2 pady 2 filly}
 	bind $f.stop <Any-Key> {set uri(stop) 1 ; Exmh_Status Stop warn}
 	bind $g <Destroy> {set uri(stop) 1 ; Exmh_Status Stop warn}
 	pack $f

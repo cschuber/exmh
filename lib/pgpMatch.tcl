@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.6  1999/05/04 16:23:37  cwg
+# Should have used filly, not fill in the last patch.
+#
 # Revision 1.5  1999/05/04 16:08:48  cwg
 # A bunch of places that override the change that I just made in widgets.tcl
 #
@@ -295,11 +298,11 @@ proc Pgp_KeyBox { label keyring keylist } {
 	Widget_Entry $w.key sel {bottom fillx pady 10}
 
 	Widget_AddBut $w.but ok OK \
-		[list keybox.ok.cmd $w ] {left padx 1 fill}
+		[list keybox.ok.cmd $w ] {left padx 1 filly}
 	Widget_AddBut $w.but cancel Cancel \
-		[list keybox.cancel.cmd $w ] {right padx 1 fill}
+		[list keybox.cancel.cmd $w ] {right padx 1 filly}
 	Widget_AddBut $w.but list List \
-		[list keybox.list.cmd $w $keyring] {right padx 1 fill}
+		[list keybox.list.cmd $w $keyring] {right padx 1 filly}
 
 	Widget_Frame $w.key sframe
 

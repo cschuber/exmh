@@ -706,7 +706,7 @@ proc AddrShowDialog {w list} {
     pack $f.lb -expand true -fill both
     frame $f.but -bd 10 -relief flat
     pack $f.but -expand true -fill both
-    Widget_AddBut $f.but ok "Done" [list AddrShowDialogDone $f $l] {left fill}
+    Widget_AddBut $f.but ok "Done" [list AddrShowDialogDone $f $l] {left filly}
     Widget_PlaceDialog $w $f
     tkwait window $f
     if [info exists addr_db(expansion)] {
@@ -750,7 +750,7 @@ proc Addr_Browse { {state normal} } {
         $f.quit configure -takefocus {} -command {Exwin_Dismiss .addr_br}
 
         # Create the "Selected..." menu (initially disabled)
-        set menu_sel [Widget_AddMenuB $f selmenu "Selected..." {right padx 1} ]
+        set menu_sel [Widget_AddMenuB $f selmenu "Selected..." {right padx 1 filly} ]
         $f.selmenu configure -takefocus {} -state disabled
         set addr_db(selmenu) $f.selmenu
         Widget_AddMenuItem $menu_sel  "Mail To"           \
@@ -765,7 +765,7 @@ proc Addr_Browse { {state normal} } {
                 { Addr_Browse_Selected ViewLastMsg }
 
         # Create the "Database..." menu
-        set menu_db [Widget_AddMenuB $f dbmenu "Database..." {right padx 1} ]
+        set menu_db [Widget_AddMenuB $f dbmenu "Database..." {right padx 1 filly} ]
         $f.dbmenu configure -takefocus {}
         Widget_AddMenuItem $menu_db   "Save"   \
                 { Addr_SaveFile 1 } <Meta-s>

@@ -110,7 +110,7 @@ proc Sedit_Start { draft } {
 		$b.sign config -command $cmd
 	    }
 	} else {
-	    set menu [Widget_AddMenuBDef $b sign {right padx 1}]
+	    set menu [Widget_AddMenuBDef $b sign {right padx 1 filly}]
 	    set cmd [option get $b.sign command {}]
 	    set txt [option get $b.sign text {}]
 	    if ![string match *... $txt] {
@@ -141,9 +141,9 @@ proc Sedit_Start { draft } {
 	}
 	foreach but [Widget_GetButDef $b] {
 	    if {[regexp (abort|save) $but]} {
-		Widget_AddButDef $b $but {left padx 5 fill}
+		Widget_AddButDef $b $but {left padx 5 filly}
 	    } else {
-		Widget_AddButDef $b $but {right padx 1 fill}
+		Widget_AddButDef $b $but {right padx 1 filly}
 	    }
 	    Widget_ReEvalCmd $b.$but	;# expand variables now
 	}
@@ -151,7 +151,7 @@ proc Sedit_Start { draft } {
 	foreach M [Widget_GetMenuBDef .sedit$id.but] {
 	    global pgp
 	    if {$pgp(enabled) || ($M != "pgp")} {
-		set menu [Widget_AddMenuBDef .sedit$id.but $M {right padx 1}]
+		set menu [Widget_AddMenuBDef .sedit$id.but $M {right padx 1 filly}]
 		#
 		# Here is another way to set context for the menu commands.
 		# Jam the draft and text widget name into a global that
@@ -339,9 +339,9 @@ You might prefer Save&Quit."
     frame $f.but -bd 10 -relief flat
     pack $f.but -expand true -fill both
     set sedit($t,abort) nop
-    Widget_AddBut $f.but ok "Abort\n(Return)" [list SeditAbortConfirm $f $t abort] left
-    Widget_AddBut $f.but save "Save&Quit\n(Ctrl-s)" [list SeditAbortConfirm $f $t save] left
-    Widget_AddBut $f.but nop "Do Nothing\n(Ctrl-c)" [list SeditAbortConfirm $f $t nop] right
+    Widget_AddBut $f.but ok "Abort\n(Return)" [list SeditAbortConfirm $f $t abort] {left filly}
+    Widget_AddBut $f.but save "Save&Quit\n(Ctrl-s)" [list SeditAbortConfirm $f $t save] {left filly}
+    Widget_AddBut $f.but nop "Do Nothing\n(Ctrl-c)" [list SeditAbortConfirm $f $t nop] {right filly}
     bind $f.but <Return>    "$f.but.ok   flash ; $f.but.ok   invoke"
     bind $f.but <Control-c> "$f.but.nop  flash ; $f.but.nop  invoke"
     bind $f.but <Control-s> "$f.but.save flash ; $f.but.save invoke"

@@ -550,7 +550,7 @@ proc MimeSizeDialog {t size} {
     set f [frame $g.pad -bd 20]
     set msg [Widget_Message $f msg -text \
 	"Very Large Message: $size bytes" -width 200]
-    Widget_AddBut $f stop STOP {set mime(stop) 1} {top padx 2 pady 2 fill}
+    Widget_AddBut $f stop STOP {set mime(stop) 1} {top padx 2 pady 2 filly}
     bind $f.stop <Any-Key> {set mime(stop) 1; Exmh_Status Stop warn}
     pack $f
     Widget_PlaceDialog $t $g
@@ -1466,7 +1466,7 @@ proc Mime_ShowMultipart {tkw part} {
 	    frame $g -bd 4 -relief raised
 	    set f [frame $g.pad -bd 20]
 	    set msg [Widget_Message $f msg -text "$numParts Parts" -width 200]
-	    Widget_AddBut $f stop STOP {set mime(stop) 1} {top padx 2 pady 2 fill}
+	    Widget_AddBut $f stop STOP {set mime(stop) 1} {top padx 2 pady 2 filly}
 	    bind $f.stop <Any-Key> {set mime(stop) 1; Exmh_Status Stop warn}
 	    pack $f
 	    Widget_PlaceDialog $exwin(mtext) $g

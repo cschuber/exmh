@@ -194,7 +194,7 @@ proc EditShowDialog {id text} {
 	catch {pack $d.send -ipady 5 -ipadx 5 -padx 5}
 
 	foreach M [Widget_GetMenuBDef $d] {
-	    set menu [Widget_AddMenuBDef $d $M {right padx 1}]
+	    set menu [Widget_AddMenuBDef $d $M {right padx 1 filly}]
 	    ButtonMenuInner $menu	;# This also expands variables
 	}
 
