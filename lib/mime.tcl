@@ -135,7 +135,7 @@ warning about a large message and STOP button."}
 	{FTP access method}
 "Sometimes the automatic FTP transfer fails because of
 problems logging into the remote host.	This option lets
-you try a few different approachs to find the one that
+you try a few different approaches to find the one that
 works for you:
 expect - use the ftp.expect script to download the file.
 ftp - use ftp and feed user and password to it via a pipe.
@@ -184,7 +184,7 @@ The full header is: Content-Disposition: attachment; filename=\"...\"."}
 "This controls whether or not attachement filename
 will be translated into a suitable DOS 8.3 representation."}
 	{mime(mdnTo) dispositionNotificationTo {} {Disposition Notification To}
-"The address where you want MDN receipts to end up.  This normally your
+"The address where you want MDN receipts to end up.  This is normally your
 own email address."}
 	{mime(mdnSend) dispositionNotificationSend
          {CHOICE never deny {ask user} auto/ask auto/ignore } 
@@ -312,12 +312,17 @@ proc MimeHeader {part contentType encoding} {
     if {[string compare $type "text"] == 0} {
 	set type text/plain
     }
+    # Paranoia time - sanitize these just in case...
+    # Yes, we're ignoring the rfc2045 sec 5.1 definition of 'tspecials'
     set mimeHdr($part,hdr,content-type) $contentType
+    regsub -all {[^-/[:print:]]} $type {} type
     set mimeHdr($part,type) $type
+    regsub -all {[^-[:print:]]} $encoding {} encoding
     set mimeHdr($part,encoding) $encoding
     set mimeHdr($part,params) {}
     foreach sub [lrange $params 1 end] {
 	if [regexp {([^=]+)=(.+)} $sub match key val] {
+	    regsub -all {[^-/[:print:]]} $key {} key
 	    set key [string trim [string tolower $key]]
 	    set val [string trim $val]
 	    # Allow single as well as double quotes
@@ -336,9 +341,8 @@ proc MimeHeader {part contentType encoding} {
 	set mimeHdr($part,param,charset) \
 		[string tolower $mimeHdr($part,hdr,x-sun-charset)]
     }
-    # infer the name from the filename:
-    if {[info exists mimeHdr($part,param,filename)] &&
-      ![info exists mimeHdr($part,param,name)]} {
+    # infer the name from the filename= in preference to a name=
+    if {[info exists mimeHdr($part,param,filename)]} {
       set mimeHdr($part,param,name) $mimeHdr($part,param,filename)
     }
     return $type
@@ -617,11 +621,20 @@ proc MimeClose { fileIO } {
 proc MimeSetDisplayFlag {part} {
     global mime mimeHdr msg uri
 
-    # Flag to determine if we display the part or not.	We display it
+    # Flag to determine if we display the part or not. We don't display it
+    # if we've been told not to (yes, we check this first, as RFC2183, sec 2.9
+    # says it's legal even on a multipart). Otherwise, we display it
     # if it's a multipart (other than multipart/parallel).  We display 
     # it if it's an image (unless we aren't supposed to do that.  Otherwise,
-    # we display it unless we've been told not to or it's too darn big.
+    # we display it unless it's too darn big.
     if {[info exists mimeHdr($part,file)]} {
+	if {[info exists mimeHdr($part,hdr,content-disposition)]} {
+	    set disp [split $mimeHdr($part,hdr,content-disposition) \;]
+	    if [regexp {ancillary|attachment} [lindex $disp 0]] {
+		set mimeHdr($part,display) 0
+		return
+	    }
+	}
 	if [regexp {^multipart} $mimeHdr($part,type)] {
 	    set mimeHdr($part,display) \
 		[expr ![regexp {parallel$} $mimeHdr($part,type)]]
@@ -637,13 +650,6 @@ proc MimeSetDisplayFlag {part} {
 	    set mimeHdr($part,display) 0
 	    Exmh_Debug "vcard: not displaying"
 	    return
-	}
-	if {[info exists mimeHdr($part,hdr,content-disposition)]} {
-	    set disp [split $mimeHdr($part,hdr,content-disposition) \;]
-	    if [regexp {ancillary|attachment} [lindex $disp 0]] {
-		set mimeHdr($part,display) 0
-		return
-	    }
 	}
 	if ![info exists mimeHdr($part,display)] {
 	    set mimeHdr($part,display) \

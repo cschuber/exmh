@@ -1,4 +1,21 @@
 HISTORY
+cvs repository 07/18/2004 valdis.kletnieks@vt.edu
+  lib/fileselect.tcl - Be more anal-retentive in what default names we
+  will accept. Alphanumeric, period, hyphen, underscore only.  Also, we
+  trim off leading dots, just in case the user isn't paying attention...
+
+cvs repository 07/18/2004 valdis.kletnieks@vt.edu
+  lib/mime.tcl - Same mail as below fix triggered another buglet - we
+  should *always* prefer a rfc2183 Content-Disposition: filename= over
+  a name= off the Content-Type: header.  The code as written was dependent
+  on what order we saw the MIME headers (blech!).  While there, I also
+  added a few filtering regsub calls...
+
+cvs repository 07/18/2004 valdis.kletnieks@vt.edu
+  lib/mime.tcl - fix MimeSetDisplayFlag to properly implement
+  rfc2183 Content-Disposition: precidence. Bug found when I got a
+  image/jpeg with a 'C-Disposition: attachment' and it displayed anyhow.
+
 cvs repository 07/02/2004 valdis.kletnieks@vt.edu
   lib/exwin.tcl - first cut at separable ftoc and msg panes
 
