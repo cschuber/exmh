@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.6  1999/08/04 16:30:17  cwg
+# Don't prompt for a passphrase when we shouldn't.
+#
 # Revision 1.5  1999/08/03 04:05:54  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -100,10 +103,17 @@ proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
             Exmh_Debug "<PGP Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output"
 	    return [Pgp_Exec_Batch $v $exectype $arglist output]
 	} else {
-            Exmh_Debug "<Pgp_Exec> Pgp_GetPass $v $privatekey"
-	    set p [Pgp_GetPass $v $privatekey]
-
+	    Exmh_Debug v=$v
+	    set keyid [lindex $pgp($v,myname) 0]
+	    Exmh_Debug keyid=$keyid
+	    if {!$pgp(seditpgp)} {
+		Exmh_Debug "<Pgp_Exec> Pgp_GetPass $v $privatekey"
+		set p [Pgp_GetPass $v $privatekey]
+	    } else {
+		set p $pgp($v,pass,$keyid)
+	    }
 	    #Exmh_Debug "<Pgp_Exec> got passwd >$p<"
+
 	    if {[string length $p] == 0} {
 		return 0
 	    }

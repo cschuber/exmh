@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.16  1999/08/04 16:30:18  cwg
+# Don't prompt for a passphrase when we shouldn't.
+#
 # Revision 1.15  1999/08/03 21:18:16  bmah
 # Fix a bug that caused signing without a password to silently fail
 # (instead of generate an error message).
@@ -340,15 +343,17 @@ proc Misc_PostProcess { srcfile } {
 	    }
 	    set keyid [lindex $pgp($v,myname) 0]
 	    Exmh_Debug keyid=$keyid
-	    # if non-seditpgp or we don't have a passphrase for current key 
-	    if {!$pgp(seditpgp) || (![info exists pgp($v,pass,$keyid)]) || ([string length $pgp($v,pass,$keyid)] == 0)} {
+	    # if non-seditpgp
+	    if {!$pgp(seditpgp)} {
 		set pgp($v,pass,$keyid) [Pgp_GetPass $v $pgp($pgp(version,$id),myname)]
 	    } 
 	    Pgp_SetPassTimeout $pgp(version,$id) $keyid
 # Danger Wil Robinson!
 	    #Exmh_Debug pass=>$pgp($v,pass,$keyid)<
-	    Pgp_Process $pgp(version,$id) $curfile $dstfile
-	    set curfile $dstfile
+	    if {([info exists pgp($v,pass,$keyid)]) && ([string length $pgp($v,pass,$keyid)] != 0)} {
+		    Pgp_Process $pgp(version,$id) $curfile $dstfile
+		    set curfile $dstfile
+	    }
 	}
     }
 
