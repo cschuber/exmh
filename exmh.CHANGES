@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 12/13/2000 Brent Welch <brent.welch@interwoven.com>
+    lib/html/sedit.html - Added explanation from John Klassa about
+    the Filter mechanism in Sedit.
+    lib/folder.tcl - applied a fix for auto-packing folders from
+    Chris Keane (I think it was Chris)  The bug lead to incorrect
+    scan listings when you used auto-pack.
 
 cvs respository 12/11/2000 Hal DeVore <haldevore@acm.org>
     lib/sedit.tcl - removed duplicate SeditSetHeader proc

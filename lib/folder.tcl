@@ -245,7 +245,7 @@ proc Folder_CommitType { type } {
 	busy Ftoc_Commit Mh_Rmm Mh_Refile Mh_Copy
 	if $ftoc(autoPack) {
 	    Background_Wait	;# Let folder ops complete
-	    BgAction Pack Mh_Pack $exmh(folder)	;# Before packing
+	    Folder_Pack		;# Before packing
 	}
     } else {
 	Folder_Commit

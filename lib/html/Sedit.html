@@ -119,6 +119,17 @@ results into the editor buffer.
   <p>
   Alternate Editor - switch to using your alternate editor. 
 </ul>
+<p>
+Filter - 
+The Unix filter mechanism provides an entry widget where you
+	can specify an arbitrary Unix command line.  Once specified,
+	selecting a region of text and hitting "Filter" has the effect
+	of sending the selected text through the filter, and replacing
+	it with whatever the filter produced.  An "Undo" mechanism is
+	provided in the event that the filter does not have the desired
+	effect.  Moreover, each unique filter you execute is stored in a
+	history mechanism, accessible via the "History" menu adjacent to
+	the text entry field.
 
 <h2><a HREF="index.html">Main Help Index</a></h2>
 
