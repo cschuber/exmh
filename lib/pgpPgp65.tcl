@@ -1,6 +1,9 @@
 # pgpPgp65.tcl
 
 # $Log$
+# Revision 1.5  2000/09/21 14:57:50  valdis
+# Broken regexp - fixed so PGP 6.5 support can find RSA keys again
+#
 # Revision 1.4  2000/06/15 17:03:11  valdis
 # Add X-Mailer: change, fix PGP Comment: line...
 #
@@ -102,9 +105,9 @@ set pgp(pgp6,pat_dropKeys) \
 set pgp(pgp6,pat_splitKeys) \n
 # Patterns that match out interesting keys
 set pgp(pgp6,pat_keySec) \
-                {^.*(RSA|DSS|DH) +[0-9]+/+[0-9]+ +0x([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$}
+                {^.*(RSA|DSS|DH) +[0-9]+/*[0-9]+ +0x([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$}
 set pgp(pgp6,pat_keyPub) \
-                {^.*(RSA|DSS|DH) +[0-9]+/+[0-9]+ +0x([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$}
+                {^.*(RSA|DSS|DH) +[0-9]+/*[0-9]+ +0x([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$}
 set pgp(pgp6,pat_uid) \
                 {^ +(.+)$}
 # TclCmd to match out userid and keyid
