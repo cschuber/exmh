@@ -1,5 +1,7 @@
 HISTORY
 
+exmh-2.1.0 Released, 9/17/1999
+
 cvs repository 09/17/1999
     Fixed RPM build, and added spanish support to the RPM,  thanks to 
     Francisco Monserrat <francisco.monserrat@rediris.es>
