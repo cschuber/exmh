@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 02/09/2003 welch@panasas.com
+    main.tcl - added microsecond granularity time stamps to log messages
+    msg.tcl - added Msg_ShowCurrent compatibility routine
+
 cvs repository 02/07/2003 cwg-exmh@deepeddy.com
     folder.tcl, ftoc,tcl, scan.tcl - Call Ftoc_ShowSequences in
 	Ftoc_Update on the new messages.  Cal Ftoc_ShowSequences in

@@ -61,6 +61,9 @@ proc Msg_Show { {seq cur} {show show} } {
     }
     return 0
 }
+proc Msg_ShowCurrent {} {
+    Msg_Show cur
+}
 proc Msg_ClearCurrent { } {
     global msg exmh
     set msg(id) {}		;# Clear current message

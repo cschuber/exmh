@@ -247,6 +247,7 @@ proc Fcache_Folder { folder } {
     set ix [lsearch $fcache(LRU) $folder]
     if {$ix < 0} {
 	Exmh_Debug Fcache_Folder $folder
+#	Exmh_Debug [Call_TraceString]
 	if {$fcache(folders) == {}} {
 	    set fcache(folders) $folder
 	    set fcache(LRU) $folder

@@ -388,6 +388,22 @@ proc ExmhLog { stuff } {
 	catch {
 #	    $exmh(log) insert end " [bw_delta] "
 	    $exmh(log) insert end [clock format [clock seconds] -format "%H:%M:%S "]
+            global tcl_version
+            if {$tcl_version >= 8.3} {
+                set sec [clock seconds]
+                set now [clock clicks -milliseconds]
+                if {[info exist exmh(logLastClicks)]} {
+                    set delta [expr {$now - $exmh(logLastClicks)}]
+                    set delta_sec [expr {$sec - $exmh(logLastSeconds)}]
+                    if {$delta < 0} {
+                        incr delta_sec -1
+                        set delta [expr 1000000 - $delta]
+                    }
+                    $exmh(log) insert end "([format %d.%.06d $delta_sec $delta]) "
+                }
+                set exmh(logLastClicks) $now
+                set exmh(logLastSeconds) $sec
+            }
 	    $exmh(log) insert end $stuff
 	    $exmh(log) insert end \n
 	    if {$exmh(logYview)} {

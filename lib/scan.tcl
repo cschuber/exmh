@@ -60,6 +60,7 @@ proc ScanFolder {folder adjustDisplay} {
 		set check [gets $input]
 		set new [read $input]
 		close $input
+		Exmh_Debug Scan complete
 	    } err] {
 		# The last message no longer exists
 		Exmh_Debug No last msg $msgid: $err
