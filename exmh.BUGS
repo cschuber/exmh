@@ -329,3 +329,28 @@ Status:
 
 If the PGP sedit field is enabled, a new sedit window puts focus in
 the wrong place.
+
+Number: 19
+Version: 2.0.2
+Priority: Low
+Scope: Narrow
+Complexity: Probably easy
+Status:
+
+In Ispell, when you change default language selections there is often an
+uncaught error from a pipe close.
+
+error flushing "file9": broken pipe
+    while executing
+"flush $ispellVars(spell_buffer)"
+    (procedure "Ispell_Init" line 52)
+    invoked from within
+"Ispell_Init"
+    invoked from within
+".sedit1.f.t.m.sub invoke active"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel #0 [list $w invoke active]"
+    (procedure "tkMenuInvoke" line 29)
+    invoked from within
+"tkMenuInvoke .sedit1.f.t.m.sub 1"
