@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# If exmh is running, make it do an flist.
+#
+FOLDER=$1
+FILE=$HOME/.exmhdisplay
+if [ -f $FILE ]; then
+    DISPLAY=`cat $FILE`
+    if [ "$DISPLAY" != "" ]; then
+	echo "exmh is running"
+	/usr/local/bin/wish -f -display $DISPLAY <<EOF
+catch { send exmh { Flist_UnseenUpdate $FOLDER } } err
+exit 0
+EOF
+    fi
+fi

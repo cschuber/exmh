@@ -1,0 +1,40 @@
+			README.lockedrcvstore
+		   Put file locking around rcvstore
+
+
+Purpose of Hack
+---------------
+This isn't truly an exmh hack, but it's more of an MH/nmh hack.
+
+Under qmail, it's more likely than under sendmail that more than one
+email message will arrive at the same time.  This adds file locking to
+exmh.
+
+It also, only flags the message as unseen if I'm not the author of the
+message.
+
+What You'll Need
+----------------
+I use it with qmail.  I haven't thought about how to make it work with
+sendmail.
+
+Instructions
+------------
+Instead of calling rcvstore in your .qmail files, simply call
+lockedrcvstore. 
+
+lockedrcvstore provides the '+', so you'll need to remove that from
+your rcvstore call.
+
+Note that the conditional flagging as read only works if .mh_profile
+does *not* specify an unseen-sequence.
+
+
+For example, .qmail-important might look something like this:
+
+|lockedrcvstore ImportantStuff
+
+
+Author
+------
+Chris Garrigues <cwg-exmh@DeepEddy.Com>

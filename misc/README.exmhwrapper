@@ -1,0 +1,29 @@
+			  README.exmhwrapper
+ Wrapper to keep from leaving stray exmh's running on other displays
+
+
+Purpose of Hack
+---------------
+I run exmh on various different displays.  This gracefully kills any other
+instances of exmh I may have running before starting exmh.
+
+What You'll Need
+----------------
+Nothing in particular
+
+Instructions
+------------
+Make sure exmh is in your path and call this script instead of exmh
+when you want to run it.  That's all.
+
+Limitations
+-----------
+As written, this will not work reasonably in an NFS environment
+because the display may not be properly identified and even if it
+were, you probably would not have permission to access it.  A solution
+could be worked out with rsh/ssh, but I'll leave that as a further
+exercise for someone who needs it.
+
+Author
+------
+Chris Garrigues <cwg-exmh@DeepEddy.Com>

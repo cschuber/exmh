@@ -1,0 +1,29 @@
+			   README.bifffolder
+	      Script to cause exmh to recognise that new
+			  mail has arrived.
+
+
+Purpose of Hack
+---------------
+When new mail arrives, look to see if there's a running instance of
+exmh and if there is, tell it to rescan a mailbox
+
+What You'll Need
+----------------
+I use it with qmail.  I haven't thought about how to make it work with
+sendmail.  Also, requires that the exmhwrapper be in use.
+
+Instructions
+------------
+Add an additional line to any .qmail file right after the rcvstore
+which pipes the message to this script.  The script takes a single
+argument which is the name of the folder which the mail was delivered
+to.  For example, .qmail-important might look something like this:
+
+|lockedrcvstore ImportantStuff
+|bifffolder ImportantStuff
+
+
+Author
+------
+Chris Garrigues <cwg-exmh@DeepEddy.Com>

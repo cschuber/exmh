@@ -1,0 +1,15 @@
+#!/bin/sh
+
+displayfile=$HOME/.exmhdisplay
+if [ -e $displayfile ] ; then
+    display=`cat $displayfile`
+    if [ "$display" != "" ]; then
+	/usr/local/bin/wish -f -display $display <<EOF
+catch { send exmh { Exmh_Done 1 } } err
+exit 0
+EOF
+    fi
+fi
+echo $DISPLAY > $displayfile
+exmh
+exit 0
