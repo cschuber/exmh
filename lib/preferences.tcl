@@ -80,8 +80,9 @@ old files by hand.
 proc PreferencesCopyDone { movedFiles } {
     Widget_Toplevel .filesmoved "Files Copied"
     Widget_Message .filesmoved msg -aspect 1000 -text "
-The following files have been moved and renamed.  Once you have 
-verified that Exmh is working properly, you can delete these files.
+The following files have been copied, and the copies have been renamed.  
+Once you have verified that Exmh is working properly, you can delete 
+these files.
 
 $movedFiles
 "
