@@ -341,6 +341,15 @@ If a user tries to PGP sign a multipart message with the plain format,
 intercept the attempt and use a different format.
 
 
+Number: 39
+Priority: Low
+Scope: Narrow
+Complexity: Low
+
+Work over key bindings in the selection list presented when address
+expansion comes up with multiple hits.  In particular, the return key
+should "do the right thing".
+
 
 $Id$
 
