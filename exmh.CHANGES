@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 11/08/2000 Brent Welch <brent.welch@interwoven.com>
+    lib/inc.tcl - Added the option to use an expect script that
+    wraps the "inc" program and deals with the password prompt.
+    inc.expect.MASTER - the expect script
+
 cvs repository 10/25/2000 Anders Eriksson <aer-list@mailandnews.com>
     lib/mime.tcl - Headers are now displayed in the order expressed
     in mhProfile(header-display)

@@ -55,6 +55,9 @@ XNS mail messages into your UNIX spool file."}
 all unread MH message on startup. On or off have the obvious effects;
 default performs a FList if you're using multidrop or if you don't have
 inc on startup on."}
+	{inc(popexpect) popExpect OFF	  {Use Expect to prompt for passwords}
+"If this is set, an expect script will be used to give passwords
+to the inc program when you fetch from a remote mail server."}
 	{inc(pophost) popHost {}	  {Mail host for POP3 protocol}
 "If this is set, inc will try to use the POP3 protocol to
 fetch your mail from a mail server."}
@@ -153,7 +156,8 @@ proc Inc_Inbox {} {
     Exmh_Status "Inc ..."
     set cmd [list exec inc +$inbox -truncate -nochangecur -width $ftoc(scanWidth)]
     if {[info exist pop(password)]} {
-	lappend cmd -host $inc(pophost) << $pop(password)
+	# INC HACK - wrap expect in an expect script
+	set cmd [Inc_Expect $cmd]
     }
 
     # Return value from 'inc' is 1 when there are no messages....
@@ -167,6 +171,14 @@ proc Inc_Inbox {} {
 
     BgRPC Inc_InboxFinish $inbox $incout Flist_Done
 }
+proc Inc_Expect {cmd} {
+    global exmh pop
+    set cmd [lrange $cmd 1 end]	;# drop leading "exec"
+    set cmd [concat [list exec inc.expect] $cmd [list << $pop(password)]]
+    Exmh_Debug $cmd
+    return $cmd
+}
+
 proc Inc_InboxFinish { f incout {hook {}} } {
     global exmh
     set msgids {}
@@ -202,7 +214,7 @@ proc Inc_Presort {{doinc 1}} {
     if {$doinc} {
 	set cmd [list exec inc +MyIncTmp -silent]
 	if {[info exist pop(password)]} {
-	    lappend cmd << $pop(password)
+	    set cmd [Inc_Expect $cmd]
 	}
 	if {[catch $cmd err]} {
 	    # Some versions of inc exit non-zero when they should not.
@@ -327,7 +339,7 @@ proc Inc_All {{updateScan 1}} {
 	    }
 	    Pop_GetPassword $host
 	    if {[info exist pop($host,password)]} {
-		lappend cmd << $pop($host,password)
+		set cmd [Inc_Expect $cmd]
 	    }
 	} else {
 	    if { [file exists $dropname] && [file size $dropname] } {
