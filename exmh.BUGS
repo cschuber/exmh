@@ -296,7 +296,7 @@ Version: 2.1.0 (4/14/1999)
 Priority: Low
 Scope: Narrow
 Complexity: Unknown
-Status:
+Status: Probably fixed 6/18/1999, missed reference to .exmh-defaults
 
 If you change the background processing period, background processing
 may stop working until you restart exmh.

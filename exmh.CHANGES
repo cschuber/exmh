@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 6/18/1999
+    Fix missed reference to .exmh-defaults in exmh-bg.MASTER
+        -Kevin Christian via haldevore
+
 cvs repository 6/15/1999
     References to exmh(background) should have been to exmh(bgPeriod)
 	in BackgroundFixup. -cwg
