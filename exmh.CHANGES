@@ -1,5 +1,9 @@
 HISTORY
 cvs repository 07/12/2002 cwg-exmh@deepeddy.com
+    flist.tcl - Remove call to Flist_ResetUnseen in Flist_UnseenUpdate
+	so that the unseen window won't get shuffled all the time.
+
+cvs repository 07/12/2002 cwg-exmh@deepeddy.com
     scan.tcl - Back out the removal of Ftoc_Reset from 7/3/2002 as
 	well as yesterday's attempt to fix some of the problems caused
 	by that bad idea. 

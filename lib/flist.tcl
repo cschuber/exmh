@@ -298,6 +298,7 @@ proc FlistSeq { folder sequence } {
 
 proc Flist_ForgetUnseen {folder} {
     global flist
+    Exmh_Debug Flist_ForgetUnseen $folder
     set flist(newseq,$folder) {}
     if {[info exists flist(new,$folder)]} {
 	set flist(newMsgs) [expr $flist(newMsgs) - $flist(new,$folder)]
@@ -403,7 +404,7 @@ proc Flist_Done {} {
 
 proc Flist_UnseenUpdate { folder } {
     global exmh flist
-    Flist_ResetUnseen $folder
+    Exmh_Debug Flist_UnseenUpdate $folder
     Flist_UnseenMsgs $folder
     if {[string compare $folder $exmh(folder)] == 0} {
 	Scan_FolderUpdate $folder
@@ -415,8 +416,11 @@ proc Flist_UnseenUpdate { folder } {
     # This wiggles the flag and sorts flist(unvisited)
     Flist_Done
 }
+
+# Don't call gratitiously because it confuses the exmhunseen window.
 proc Flist_ResetUnseen { folder } {
     global flist
+    Exmh_Debug Flist_ResetUnseen $folder
     if [Flist_NumUnseen $folder] {
 	incr flist(newMsgs) -$flist(new,$folder)
 	set flist(newseq,$folder) {}
