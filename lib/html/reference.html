@@ -251,13 +251,18 @@ Search... and More...
       <button -command Folder_PurgeBg>Purge folder</button>
       operation. 
 
-  <dt>Sequences...
+  <dt><A NAME=sequences>Sequences...</A>
   <dd>This is a menu of defined sequences that selected messages can
-      be added to or removed from.  By default, the only defined
-      sequences are 'unseen' (for messages which have not yet been
-      seen), and 'urgent'.  To add to this menu, see the
+      be added to or removed from.  If all the selected messages are
+      already in the named sequence then clicking on an item in this menu
+      causes the selected messages to be removed from the named
+      sequence.  Otherwise the selected messages are added to the
+      named sequence.
+      <p><p>By default, the only defined sequences are 'unseen' (for
+      messages which have not yet been seen), and 'urgent'.  To add to
+      this menu, see the
       <A HREF="custom.html#sequences">documentation on the sequences
-      resources</A>. 
+      resources</A>.
   <dt>Search...
   <dd>This is a menu of different search methods. The first two
       operations use a simple Find dialog. The Pick and Glimpse

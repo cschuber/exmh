@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 03/20/2003 haldevore@acm.org
+    html/reference.html - Expand description of Sequences... menu
+
 cvs repository 03/18/2003 haldevore@acm.org
     msgShow.tcl - change MsgShowListHeaders to keep all protocols
     and include the protocol in the menu item.  This should be made
