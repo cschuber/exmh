@@ -48,9 +48,9 @@ rpm:	srctar
 	cp misc/RPM/exmh.desktop rpmroot/SOURCES/
 	sed 's/EXMHVERSION/$(VERSION)/g' < misc/RPM/exmh.spec > rpmroot/SPECS/exmh.spec
 	rpmbuild -ba --define "_topdir `pwd`/rpmroot" --buildroot `pwd`/rpmroot/BUILDROOT rpmroot/SPECS/exmh.spec
-	cp rpmroot/RPMS/noarch/exmh-$(VERSION)-1.noarch.rpm .
-	cp rpmroot/RPMS/noarch/exmh-misc-$(VERSION)-1.noarch.rpm .
-	cp rpmroot/SRPMS/exmh-$(VERSION)-1.src.rpm .
+	cp rpmroot/RPMS/noarch/exmh-$(VERSION)-?.noarch.rpm .
+	cp rpmroot/RPMS/noarch/exmh-misc-$(VERSION)-?.noarch.rpm .
+	cp rpmroot/SRPMS/exmh-$(VERSION)-?.src.rpm .
 
 snaprpm:
 	make rpm VERSION=$(VERSION)_$(SNAPDATE)
