@@ -520,9 +520,9 @@ public keys.
 There is considerable documentation that comes with PGP itself.
 This set of preferences controls the general behavior of all the
 PGP modules." {
-    {pgp(seditpgp) pgpSeditPgp OFF {Sedit PGP password}
-"Turning this on provides you with a PGP password field in the sedit
-window so that you will not be prompted with the password prompt.  
+    {pgp(seditpgp) pgpSeditPgp OFF {Sedit PGP passphrase}
+"Turning this on provides you with a PGP passphrase field in the sedit
+window so that you will not be prompted with the passphrase prompt.  
 Changing this value will require that you exit and re-enter exmh if 
 you've already composed email." }
     {pgp(sign) pgpSign ON {Sign outgoing messages}
@@ -540,9 +540,9 @@ non-PGP mail readers." }
     Plain:  No MIME headers at all
     App:    Use the now deprecated application/pgp standard.
 This can be changed on the fly from the sedit window" }
-    {pgp(version) pgpVersion {CHOICE pgp pgp5 gpg} {Version of PGP to use}
+    {pgp(version) pgpVersion {CHOICE pgp2 pgp5 gpg} {Version of PGP for new messages}
 "There are multiple versions of the PGP program.
-    PGP:    Pretty Good Privacy, Version 2
+    PGP2:   Pretty Good Privacy, Version 2
     PGP5:   Pretty Good Privacy, Version 5
     GPG:    GNU Privacy Guard
 This can be changed on the fly from the sedit window" }

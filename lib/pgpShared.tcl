@@ -1,6 +1,11 @@
 # pgpShared.tcl
 
 # $Log$
+# Revision 1.3  1999/08/03 18:32:02  bmah
+# Cosmetic fixes:  PGP 2 is now specified explicitly in all prompts
+# (instead of old "PGP").  The term "passphrase" is now used
+# consistently.
+#
 # Revision 1.2  1999/08/03 04:05:56  bmah
 # Merge support for PGP2/PGP5/GPG from multipgp branch.
 #
@@ -60,27 +65,27 @@ if {[winfo depth .] > 4} {
 #######################
 # Standard Preferences
 #
-set pgp(pref,keeppass) { keeppass KeepPass ON {Keep <label> password}
-"Exmh tries to remember your <label> password between pgp
-invocations. But the password is then kept in a global
+set pgp(pref,keeppass) { keeppass KeepPass ON {Keep <label> passphrase}
+"Exmh tries to remember your <label> passphrase between pgp
+invocations. But the passphrase is then kept in a global
 variable, which is not safe, because of \"send\"'s power.
 If you turn this feature off, exmh will use xterm to run
-pgp so that it doesn't have to deal with the password at all." }
+pgp so that it doesn't have to deal with the passphrase at all." }
 #
 set pgp(pref,echopass) { echopass EchoPass  ON {Echo '*' when typing pass}
-"If you have pgpKeepPass on, Exmh will prompt for your <label> password.
+"If you have pgpKeepPass on, Exmh will prompt for your <label> passphrase.
 A * will be echoed for every character typed depending on this option." }
 #
-set pgp(pref,grabfocus) { grabfocus GrabFocus  ON {Password dialog grabs input focus}
-"When exmh prompts for the $label password it will globally grab input 
+set pgp(pref,grabfocus) { grabfocus GrabFocus  ON {Passphrase dialog grabs input focus}
+"When exmh prompts for the $label passphrase it will globally grab input 
 focus if this is on.  Some users like it because they don't need to
 select the popup dialog or because it lessens the risk they will type
-their password in the wrong window.  It annoys or does not work for
+their passphrase in the wrong window.  It annoys or does not work for
 other people." }
 #
 set pgp(pref,passtimeout) { passtimeout PassTimeout  60
-{Minutes to cache <label> password}
-"Exmh will clear its memory of the <label> password after
+{Minutes to cache <label> passphrase}
+"Exmh will clear its memory of the <label> passphrase after
 this time period, in minutes, has elapesed.  If you use
 different keys, they have their own timeout period." }
 #

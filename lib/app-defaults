@@ -442,9 +442,9 @@ exmh.iconic:		0
 *Mops.more.m.pgp.l_extract: Extract keys
 *Mops.more.m.pgp.c_extract: Pgp_Old_ExtractKeys \"\$mhProfile(path)/\$exmh(folder)/\$msg(id)\"
 
-*Mops.more.m.pgp.encrypt.entrylist: pgp pgp5 gpg
-*Mops.more.m.pgp.encrypt.l_pgp: PGP
-*Mops.more.m.pgp.encrypt.c_pgp: Pgp_ExmhEncrypt pgp
+*Mops.more.m.pgp.encrypt.entrylist: pgp2 pgp5 gpg
+*Mops.more.m.pgp.encrypt.l_pgp2: PGP2
+*Mops.more.m.pgp.encrypt.c_pgp2: Pgp_ExmhEncrypt pgp
 *Mops.more.m.pgp.encrypt.l_pgp5: PGP5
 *Mops.more.m.pgp.encrypt.c_pgp5: Pgp_ExmhEncrypt pgp5
 *Mops.more.m.pgp.encrypt.l_gpg: GPG
@@ -930,11 +930,11 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.l_pgpversion:	Version
 *Sedit.Menubar.pgp.m.t_pgpversion:	cascade
 *Sedit.Menubar.pgp.m.m_pgpversion:	version
-*Sedit.Menubar.pgp.m.version.entrylist:	pgp pgp5 gpg
-*Sedit.Menubar.pgp.m.version.l_pgp:	PGP
-*Sedit.Menubar.pgp.m.version.t_pgp:	radio
-*Sedit.Menubar.pgp.m.version.v_pgp:	pgp(version,$id)
-*Sedit.Menubar.pgp.m.version.x_pgp:	pgp
+*Sedit.Menubar.pgp.m.version.entrylist:	pgp2 pgp5 gpg
+*Sedit.Menubar.pgp.m.version.l_pgp2:	PGP2
+*Sedit.Menubar.pgp.m.version.t_pgp2:	radio
+*Sedit.Menubar.pgp.m.version.v_pgp2:	pgp(version,$id)
+*Sedit.Menubar.pgp.m.version.x_pgp2:	pgp
 *Sedit.Menubar.pgp.m.version.l_pgp5:	PGP5
 *Sedit.Menubar.pgp.m.version.t_pgp5:	radio
 *Sedit.Menubar.pgp.m.version.v_pgp5:	pgp(version,$id)
@@ -1130,11 +1130,11 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.l_pgpversion:	Version
 *WhatNow.more.m.encrypt.t_pgpversion:	cascade
 *WhatNow.more.m.encrypt.m_pgpversion:	version
-*WhatNow.more.m.encrypt.version.entrylist:	pgp pgp5 gpg
-*WhatNow.more.m.encrypt.version.l_pgp:	PGP
-*WhatNow.more.m.encrypt.version.t_pgp:	radio
-*WhatNow.more.m.encrypt.version.v_pgp:	pgp(version,$id)
-*WhatNow.more.m.encrypt.version.x_pgp:	pgp
+*WhatNow.more.m.encrypt.version.entrylist:	pgp2 pgp5 gpg
+*WhatNow.more.m.encrypt.version.l_pgp2:	PGP2
+*WhatNow.more.m.encrypt.version.t_pgp2:	radio
+*WhatNow.more.m.encrypt.version.v_pgp2:	pgp(version,$id)
+*WhatNow.more.m.encrypt.version.x_pgp2:	pgp
 *WhatNow.more.m.encrypt.version.l_pgp5:	PGP5
 *WhatNow.more.m.encrypt.version.t_pgp5:	radio
 *WhatNow.more.m.encrypt.version.v_pgp5:	pgp(version,$id)
