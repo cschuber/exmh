@@ -281,6 +281,20 @@ Complexity: Low
 Add a prompt before replacing the user's .mh_profile
 
 
+Number: 32
+Priority: Low
+Scope: Narrow
+Complexity: Low
+
+The html documentation says:
+
+    Future versions of <i>exmh</i> will cache the results of decompressing
+    the X-Face line in a personal faces database, but in the current
+    version it just writes the file to /tmp/FACES.[pid].
+
+Since it says this will happen, I think it belongs on the todo list.
+
+
 $Id$
 
 # Emacs stuff

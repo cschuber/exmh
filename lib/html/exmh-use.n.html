@@ -970,11 +970,11 @@ or slocal man page.
 <h3><a NAME="FACES" HREF="#CONTENTS">FACES</a></h3>
 <p>
 One of the more fun features of exmh is its ability to display the
-facesaver bitmap of the person that sent you mail. There are two sources
-of the bitmap images, either the facesaver database or inline X-Face
-mail header fields. These two sources can be used independently, but
-the main trick is getting <a HREF="exmh.n.html">exmh</a> configured
-properly to use them. 
+facesaver bitmap of the person that sent you mail. There are three
+sources of the images: the facesaver database, inline X-Face mail
+header fields or inline X-image-url mail header fields. These sources
+can be used independently, but the main trick is getting <a
+HREF="exmh.n.html">exmh</a> configured properly to use them.
 <p>
 <b>Facesaver Database</b>. The exmh installer asks for two pieces of
 facesaver-related information: the root directory of your faces installation
@@ -992,22 +992,24 @@ logos.tar.Z files, respecitively. The default values are:
 Faces Search Path    parc logos news facesaver
 </blockquote></pre>
 <p>
-If you are setting up your own database, you need to understand how
-it is organized. It is easiest to demonstrate by example. For myself,
-welch@parc.xerox.com, my facesaver image is found as com/xerox/parc/welch/face.xbm.
-<i>Exmh</i> will look for this file under each of the directories named
-by the faces search path. The complete pathname might be /usr/local/faces/parc/com/xerox/parc/welch/face.xbm.
-If a bitmap is not found, then the search algorithm trims off trailing
-components in an effort to find a more general bitmap, typically a
-company or organizational logo. At your site, for example, you might
-only have /usr/local/faces/logos/com/xerox/face.xbm, which contains
-the Xerox corporate logo. 
+If you are setting up your own database, you need to understand how it
+is organized. It is easiest to demonstrate by example. For myself,
+welch@parc.xerox.com, my facesaver image is found as
+com/xerox/parc/welch/face.xbm.  <i>Exmh</i> will look for this file
+under each of the directories named by the faces search path. The
+complete pathname might be
+/usr/local/faces/parc/com/xerox/parc/welch/face.xbm.  If a bitmap is
+not found, then the search algorithm trims off trailing components in
+an effort to find a more general bitmap, typically a company or
+organizational logo. At your site, for example, you might only have
+/usr/local/faces/logos/com/xerox/face.xbm, which contains the Xerox
+corporate logo.
 <p>
-If your <i>exmh</i> installation is not correct, or if you have a personal
-faces database that the <i>exmh</i> maintainer doesn't know about,
-then you can also override the install-time settings with the FACEPATH
-environment variable. This is a more traditional search path of colon-separated
-directory names. 
+If your <i>exmh</i> installation is not correct, or if you have a
+personal faces database that the <i>exmh</i> maintainer doesn't know
+about, then you can also override the install-time settings with the
+FACEPATH environment variable. This is a more traditional search path
+of colon-separated directory names.
 <p>
 <b>X-Face headers</b>. The X-Face header contains a compressed version
 of a facesaver bitmap, which is a 48x48x1 (monochrome) bitmap. The
@@ -1026,9 +1028,13 @@ faster version of this program (a C program instead of some scripts)
 is distributed with <i>exmh</i> in its misc directory. Future versions
 of <i>exmh</i> will cache the results of decompressing the X-Face line
 in a personal faces database, but in the current version it just writes
-the file to /tmp/FACES.[pid]. If you are inspired you could add a Hook_MsgDisplay
-to stash this file into a real facesaver database. The <a HREF="exmh-custom.n.html"><b>exmh-custom</b></a>
-man page describes hook procedures. 
+the file to /tmp/FACES.[pid]. If you are inspired you could add a
+Hook_MsgDisplay to stash this file into a real facesaver database. The
+<a HREF="exmh-custom.n.html"><b>exmh-custom</b></a> man page describes
+hook procedures. 
+<p>
+<b>X-image-url headers</b>.  The X-image-url header contains a URL
+refering to an image.  These should be icon-sized.
 
 <h3><a NAME="SEARCHING IN EXMH" HREF="#CONTENTS">SEARCHING IN EXMH</a></h3>
 There are several ways to search for things in exmh: 
