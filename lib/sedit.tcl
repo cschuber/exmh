@@ -71,8 +71,7 @@ proc Sedit_Start { draft } {
 
 	# PGP version-setting moved out from seditpgp code
  	if {$pgp(enabled)} {
- 	    if {[info exists pgp(version,$id)]
-		&& ![info exists pgp($pgp(version,$id),myname,$id)]} {
+ 	    if {![info exists pgp($pgp(version,$id),myname,$id)]} {
  		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
  	    }
  	    EditMaybeAddPhrasePane $id .sedit$id
@@ -227,11 +226,14 @@ proc Sedit_Start { draft } {
     set sedit($t,Acharset) {}	;# for iso-2022-jp - see SeditKinput_start
     set sedit(t) $t	;# ugly state hack
 
-    if {! [info exists exmh($id,action)]} {
-	# If someone cares to figure out how this happens, that would be nice.
-	# It might happen after a send error.
-	Exmh_Debug "Set action for $id"
-	set exmh($id,action) {}
+    if {0} {
+	# action was not being set for comp operations
+	if {! [info exists exmh($id,action)]} {
+	    # If someone cares to figure out how this happens, that would be nice.
+	    # It might happen after a send error.
+	    Exmh_Debug "Set action for $id"
+	    set exmh($id,action) {}
+	}
     }
     SeditMimeReset $t
     if [catch {open $draft r} in] {
@@ -241,7 +243,7 @@ proc Sedit_Start { draft } {
 	close $in
 	SeditPositionCursor $t
     }
-    SeditSetIsigHeaders $t
+    SeditSetIsigHeaders $t "$id,action"
     SeditMimeParse $t
     if {$sedit(iso)} {
 	SeditInitMimeType $draft $t
