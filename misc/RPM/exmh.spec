@@ -85,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc COPYRIGHT exmh.BUGS exmh.CHANGES exmh.TODO exmh.README
+%doc COPYRIGHT exmh.BUGS exmh.CHANGES exmh.TODO exmh.README lib/html/
 %config /etc/X11/wmconfig/exmh 
 %config /etc/X11/applnk/Internet/exmh.desktop
 %{_bindir}/exmh
