@@ -392,6 +392,15 @@ Complexity: ?
 If x-image-url fails to load and an x-face is present it should be used.
 
 
+Number: 44
+Priority: Low
+Scope: Narrow
+Complexity: Medium
+
+Provide the ability to reply, forward, etc, an attached message (from
+a digest or forwarded or wherever).
+
+
 $Id$
 
 # Emacs stuff
