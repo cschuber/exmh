@@ -1165,6 +1165,14 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
     set delmsgs {}
     set curid [file tail $msg(path)]
     set pairs [FtocMakeReversePairs [$exwin(ftext) tag ranges $tagname]]
+    set linenos {}
+    foreach range $pairs {
+	set c0 [lindex $range 0]
+	set ce [lindex $range 1]
+	scan $c0 "%d" lineno
+	lappend linenos $lineno
+    }
+    Seq_Del $exmh(folder) $mhProfile(unseen-sequence) [Ftoc_MsgNumbers $linenos]	;# in case deleted or moved w/out viewing
     foreach range $pairs {
 	set c0 [lindex $range 0]
 	set ce [lindex $range 1]
@@ -1206,7 +1214,6 @@ proc FtocCommit {tagname commitProc {copyCommitProc {}} } {
 	    lappend delmsgs $msgid
 	    set delline 1
 	}
-	Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $msgid	;# in case deleted or moved w/out viewing
 	if {$delline} {
 	    $exwin(ftext) delete $c0 "$ce + 1 chars"
 	    set ftoc(displayDirty) 1

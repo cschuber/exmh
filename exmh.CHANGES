@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 08/28/2003 cwg-exmh@deepeddy.com
+  ftoc.tcl - In FtocCommit, clear all unseen messages at the same time.
+
 cvs repository 06/11/2003 haldevore@acm.org
   Modified misc/mybogo.tcl to save and restore target
 
