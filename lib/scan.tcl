@@ -47,7 +47,7 @@ proc ScanFolder {F adjustDisplay} {
     if {$update} {
 	# Add new messages to cached information
 	# Scan last message (again) plus any new messages
-	set id [Ftoc_MsgNumber [Ftoc_FindMsg {} last]]
+	set id [Ftoc_MsgNumber [Ftoc_FindMsg {} [Widget_TextEnd $exwin(ftext)]]]
 	if [catch {
 	    Exmh_Debug Scanning new messages
 	    set input [open "|$mhProfile(scan-proc) [list +$F] \
@@ -90,6 +90,14 @@ proc ScanFolder {F adjustDisplay} {
 	Ftoc_Update [Widget_TextEnd $exwin(ftext)] $F
     }
     set ftoc(displayValid) 1
+
+    set curMsg [Mh_Cur $F]
+    if {$curMsg != {}} {
+	set line [Ftoc_FindMsg $curMsg]
+	if {$line != {}} {
+	    Ftoc_RescanLine $line
+	}
+    }
     if {$adjustDisplay} {
 	Ftoc_Yview end
     }
@@ -245,9 +253,7 @@ proc Scan_CacheValid {F} {
 }
 proc Scan_CacheUpdate {} {
     global exmh mhProfile exwin ftoc
-    Exmh_Debug Scan_CacheUpdate
     set folder $exmh(folder)
-    Exmh_Debug folder: $folder
     if {$folder == {}} {
 	return
     }

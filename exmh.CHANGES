@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 07/11/2001 cwg-exmh@deepeddy.com
+    scan.tcl - in ScanFolder, we don't know what the last message is
+	yet, so we need to use Widget_Text_End instead.  Also,
+	call Ftoc_RescanLine if need be.
+
 cvs repository 07/10/2001 cwg-exmh@deepeddy.com
     ftoc.tcl - In Ftoc_ClearCurrent, if ftoc(curLine) isn't set use
 	Mh_Cur to find where we're clearing.
