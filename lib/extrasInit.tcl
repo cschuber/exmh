@@ -498,7 +498,8 @@ proc Pgp_Init {} {
     # Set up exmh for a pgp version
     # if there is an appropriate keyring
     foreach v $pgp(supportedversions) {
-        if { [file exists [set pgp($v,pubring)]] } {
+        if { [file exists [set pgp($v,pubring)]] && 
+             [file isdirectory [set pgp($v,path)]]} {
             set pgp($v,enabled) 1
             set pgp(enabled) 1
             lappend setup $v
