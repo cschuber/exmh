@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.5  1999/04/06 05:38:39  cwg
+# Bug fix.
+#
 # Revision 1.4  1999/04/04 20:34:57  cwg
 # Removed dead code which only ran in pre tk-4.1 versions.
 #
@@ -286,8 +289,12 @@ proc Misc_PostProcess { srcfile } {
     close $in
 
     # call the pgp postprocesing if necessary
-    if {$pgp(enabled) && $pgp(seditpgp)} {
-	set keyid [lindex $pgp(myname) 0]
+    if {$pgp(enabled)} {
+	if {$pgp(seditpgp)} {
+	    set keyid [lindex $pgp(myname) 0]
+	} else {
+	    pgp_GetPass $pgp(myname)
+	}
 	Exmh_Debug keyid=$keyid
 	Exmh_Debug pass=>$pgpPass($keyid)<
 	if {($pgp(encrypt) || $pgp(sign)) && ([string length $pgpPass($keyid)] > 0)} {
