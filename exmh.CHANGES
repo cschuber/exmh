@@ -1,5 +1,7 @@
 HISTORY
 
+exmh-2.1.1 Released, 10/15/1999
+
 cvs repository 10/07/1999
     Changed documentation string for quote file name to indicate it
     is created relative to the exmh startup directory.

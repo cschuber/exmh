@@ -6,8 +6,9 @@ VERSION=2.1.1
 
 srctar: version htmltar
 	echo ./CVS > Tar.exclude
-	echo ./misc >> Tar.exclude
 	echo ./lib/CVS >> Tar.exclude
+	echo ./misc/CVS >> Tar.exclude
+	echo ./misc/RPM/CVS >> Tar.exclude
 	echo ./lib/html/CVS >> Tar.exclude
 	echo ./lib/html/Tar.exclude >> Tar.exclude
 	echo ./.exmhinstall >> Tar.exclude
