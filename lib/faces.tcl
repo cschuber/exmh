@@ -79,8 +79,14 @@ proc FaceAddPath {set dir} {
 }
 
 
-proc Face_Show { fromwho {xface {}} } {
-    global faces faceCache
+proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
+    global faces faceCache failedURLs
+
+    set xfaceAvail 0
+    set ximageurlAvail 0
+
+    set xfaceAvail 0
+    set ximageurlAvail 0
 
     Face_Delete
 
@@ -91,9 +97,46 @@ proc Face_Show { fromwho {xface {}} } {
 	if {$faces(rowEnabled) && $faces(defer)} {
 	    DeferWork faces(work) [list FaceXFace $xface [FaceAlloc]]
 	} elseif {[FaceXFace $xface] && !$faces(rowEnabled)} {
-	    return 1
+	    set xfaceAvail 1
 	}
     }
+
+    # Honor X-Image-URL even if X-Face was displayed or the faces are
+    # disabled
+    if {[string compare "" $ximageurl]} {
+	if {![info exists failedURLs]
+	    || ([info exists failedURLs]
+		&& [lsearch $failedURLs $ximageurl] == -1)} {
+ 	    if {$faces(rowEnabled) && $faces(defer)} {
+ 		DeferWork faces(work) \
+		    [list UrlDisplayFace $ximageurl [FaceAlloc]]
+ 	    } elseif {[UrlDisplayFace $ximageurl [FaceAlloc]]
+		      && !$faces(rowEnabled)} {
+		set ximageurlAvail 1
+	    }
+	}
+    }
+
+    # Honor X-Image-URL even if X-Face was displayed or the faces are
+    # disabled
+    if {[string compare "" $ximageurl]} {
+	if {![info exists failedURLs]
+	    || ([info exists failedURLs]
+		&& [lsearch $failedURLs $ximageurl] == -1)} {
+ 	    if {$faces(rowEnabled) && $faces(defer)} {
+ 		DeferWork faces(work) \
+		    [list UrlDisplayFace $ximageurl [FaceAlloc]]
+ 	    } elseif {[UrlDisplayFace $ximageurl [FaceAlloc]]
+		      && !$faces(rowEnabled)} {
+		set ximageurlAvail 1
+	    }
+	}
+    }
+
+    if {$xfaceAvail || $ximageurlAvail} {
+	return 1
+    }
+
     if {$faces(enabled!) || !$faces(enabled)} {
 	return 0
     }
@@ -305,7 +348,7 @@ proc FaceShowFile {facefile pane} {
 	set facefile $faces(base)$facefile
     }
     switch -- [file extension $facefile] {
-	.ppm - .pgm - .pbm - .gif {
+	.ppm - .pgm - .pbm - .gif - .xpm {
 	    if [catch {
 # Tputs image create: [time {
 		set image [image create photo -file $facefile -palette $faces(palette)]
@@ -319,15 +362,6 @@ proc FaceShowFile {facefile pane} {
 		    $pane config -image $image
 # }]
 		}
-	    } id] {
-		Exmh_Debug $id
-		return 0
-	    }
-	}
-	.xpm {
-	    if [catch {
-		set image [image create pixmap -file $facefile]
-		$pane config -image $image
 	    } id] {
 		Exmh_Debug $id
 		return 0
@@ -460,8 +494,6 @@ proc Face_FlushCache {} {
     catch {unset faceMap}
     catch {unset faceCache}
 }
-
-
 
 #
 # Defer work to an after handler [this code should be elsewhere]

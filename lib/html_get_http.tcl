@@ -104,7 +104,7 @@ proc HttpGet {url {command #} {progress #}} {
 			HttpLog fetching linked url ($data(link))
 			Http_get $data(link) $command
 		} else {
-			HttpLog appending ($command) to ($data(command)
+			HttpLog appending ($command) to ($data(command))
 			lappend data(command) $command
 		}
 	}
@@ -121,50 +121,39 @@ proc HttpGet {url {command #} {progress #}} {
 # when a fetch is complete.
 
 proc Http_poke {} {
-	global Http HttpHost
+    global Http HttpHost
+  
+    if {$Http(queue) == ""} {
+	return 0
+    }
 
-	if {$Http(queue) == ""} {
-		return 0
-	}
+    if {[llength $Http(pending)] >= $Http(max_pending)} {
+	after 2000 Http_poke
+	return 0
+    }
 
-	if {[llength $Http(pending)] >= $Http(max_pending)} {
-		after 2000 Http_poke
-		return 0
-	}
+    # find the item on the head of the Q
 
-	# find the item on the head of the Q
+    set url [lindex $Http(queue) 0]
+    set Http(queue) [lrange $Http(queue) 1 end]
+    lappend Http(pending) $url
 
-	set url [lindex $Http(queue) 0]
-	set Http(queue) [lrange $Http(queue) 1 end]
-	lappend Http(pending) $url
+    upvar #0 $url data
 
-	upvar #0 $url data
+    # go ask for the url, and wait for the data
 
-	# go ask for the url, and wait for the data
-
-	set data(state) connecting
-	set data(what) connect
-	set port {}
-	if ![regexp -nocase {http://([^/:]+)(:([0-9]+))?(.*)} $url x host y port srvurl] {
-	    HttpLog Invalid url $url
-	    Http_kill $url
-	    return
-	}
-	if {[string length $port] == 0} {
-	    set port 80
-	}
-if 0 {
-	# Old "fall-back" code that only works responsively on some systems
-	if [catch {HttpConnect $host $port $data(protocol) $srvurl} sock] {
-	    HttpLog $sock
-	    # Fall back to proxy
-	    if [catch {HttpConnect $Http(server) $Http(port) $data(protocol) $url} sock] {
-		HttpLog "$sock"
-		Http_kill $url
-		return
-	    }
-	}
-} else {
+    set data(state) connecting
+    set data(what) connect
+    set port {}
+    if ![regexp -nocase {(http|ftp)://([^/:]+)(:([0-9]+))?(.*)} $url x protocol host y port srvurl] {
+	HttpLog Invalid url $url
+	Http_kill $url
+	return
+    }
+    if {[string length $port] == 0} {
+	set port 80
+    }
+    if {$protocol == "http"} {
 	# Callback to determine if a proxy is necessary
 	lassign {proxy pport} [Http_Proxy $host]
 	if [catch {
@@ -178,37 +167,55 @@ if 0 {
 	    Http_kill $url
 	    return
 	}
-}
-	set data(socket) $sock
-	set data(mime) {}
-	set data(what) connected
-	if [catch {
-	    foreach type $Http(accept) {
-		    puts $sock "Accept: $type"
-	    }
-	    puts $sock "User-Agent: [HttpAgent]"
-	    puts $sock "Host: $host"
-	    if {$data(protocol) == "POST"} {
-		    HttpLog $data(query)
-		    puts $sock "Content-type: application/x-www-form-urlencoded"
-		    puts $sock "Content-length: [string length $data(query)]\n"
-		    puts $sock "$data(query)"
-		    puts $sock "\n"
-	    } else {
-		    puts $sock ""
-	    }
-	    flush $sock
-	    # Our translation is now lf because of our own output.   Reset it.
-	    fconfigure $sock -translation auto
-	    fileevent $sock r [list Http_event $url]
-	} err] {
-	    # Connect really failed.
+    } elseif {$protocol == "ftp"} {
+	if [catch {set sock [FtpConnect $host 21]} err] {
 	    HttpLog $err
 	    Http_kill $url
 	    return
 	}
-	catch {eval $data(progress) connecting 0 0}
-	return 1
+    }
+    set data(socket) $sock
+    set data(mime) {}
+    set data(what) connected
+    if {$protocol == "http"
+	&& [catch {
+  	    foreach type $Http(accept) {
+		puts $sock "Accept: $type"
+  	    }
+  	    puts $sock "User-Agent: [HttpAgent]"
+  	    puts $sock "Host: $host"
+  	    if {$data(protocol) == "POST"} {
+		HttpLog $data(query)
+		puts $sock "Content-type: application/x-www-form-urlencoded"
+		puts $sock "Content-length: [string length $data(query)]\n"
+		puts $sock "$data(query)"
+		puts $sock "\n"
+  	    } else {
+		puts $sock ""
+  	    }
+  	    flush $sock
+  	    # Our translation is now lf because of our own output.   Reset it.
+  	    fileevent $sock r [list Http_event $url]
+	    fconfigure $sock -translation auto
+	} err]} {
+	# Connect really failed.
+	HttpLog $err
+	Http_kill $url
+	return
+    } elseif {$protocol == "ftp"} {
+	global ftp
+
+	set ftp(cmdSock) $sock
+	if {![FtpSetConnectionInfo $url]} {
+	    HttpLog "invalid URL for FTP: $url"
+  	    Http_kill $url
+  	    return
+  	}
+	fileevent $sock r [list Ftp_event $url]
+    }
+
+    catch {eval $data(progress) connecting 0 0}
+    return 1
 }
 
 proc HttpConnect {server port cmd url} {
