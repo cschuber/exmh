@@ -153,7 +153,7 @@ proc Folder_Target {f} {
     }
     Fdisp_HighlightTarget $f
     set exmh(target) $f
-    Exmh_Status "$f is target for moves"
+    Exmh_Status "$f is target for moves and copies"
     return 1
 }
 proc Folder_TargetMove { f {moveProc Ftoc_MoveMark} } {
@@ -173,7 +173,7 @@ proc Folder_TargetClear {{f {}}} {
 
     Fdisp_HighlightTarget ""
     set exmh(target) ""
-    Exmh_Status "No target set for moves"
+    Exmh_Status "No target set for moves and copies"
 }
 
 

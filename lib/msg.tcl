@@ -452,10 +452,10 @@ proc Msg_RemoveById { msgid {rmProc Ftoc_Delete} } {
     }
 }
 proc Msg_Move { {moveProc Ftoc_MoveMark} {advance 1} {show show} } {
-    global exmh
+    global exmh fdisp
 
     if {$exmh(target) == ""} {
-	Exmh_Status "Right click on folder label to pick destination" purple
+	Exmh_Status "Must first click button $fdisp(tarbutton) on folder label to pick destination" purple
 	return
     }
     if { $exmh(target) != $exmh(folder)} then {
@@ -468,7 +468,7 @@ proc Msg_Move { {moveProc Ftoc_MoveMark} {advance 1} {show show} } {
 	    Ftoc_NextImplied $show
 	}
     } else {
-	Exmh_Status "Move requires target folder != current folder"
+	Exmh_Status "Move or copy requires target folder != current folder"
     }
 }
 proc Msg_MoveNoshow { {moveProc Ftoc_MoveMark} } {
