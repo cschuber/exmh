@@ -1,0 +1,16 @@
+#
+# expect script to see if xnsgetmail wants the user to XNS login, first.
+#
+
+set timeout 1000
+log_user 0
+spawn xnsgetmail -k
+log_user 1
+expect {
+    {Enter XNS username:} {
+	exit 1
+    }
+    eof {
+    }
+}
+exit 0
