@@ -175,11 +175,11 @@ proc HMtag_VerifyConfirm {f yes} {
 }
 
 proc HMtag_Wrapped {win param} {
-    Exmh_Debug HMtag_Wrapped $win $param
+    #Exmh_Debug HMtag_Wrapped $win $param
 
     upvar #0 HM$win var
     set url $var(S_url)
-    Exmh_Debug URL=$url
+    #Exmh_Debug URL=$url
     if {![regexp -nocase {^file:} $url] || [regexp -nocase "^file:[Env_Tmp]" $url]} {
 	set index [lsearch -exact $param -command]
 	if {$index != -1} {
@@ -187,7 +187,7 @@ proc HMtag_Wrapped {win param} {
 	    set param [lreplace $param $index $index [list HMtag_Verify $win [lindex $param $index]]]
 	}
     }
-    Exmh_Debug HMtag_Wrapped returning $param
+    #Exmh_Debug HMtag_Wrapped returning $param
     return $param
 }
 

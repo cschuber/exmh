@@ -42,10 +42,6 @@ proc SeditFixupEncoding { draft t quote } {
 	error "Cannot read draft to quote it"
     }
     global mime
-    if {[string length $mime(dir)] == 0} {
-	SeditMsg $t "Metamail required to quote/encode text"
-	error "Metamail required to quote/encode text"
-    }
     if [catch {open $draft.new w} out] {
 	close $in
 	SeditMsg $t $out
@@ -111,8 +107,7 @@ proc SeditFixupEncoding { draft t quote } {
 	} else {
 	    foreach b $boundaries {
 		if [regexp ^--$b\(--\)?\$ $line match alldone] {
-		    catch {close $encoder}
-		    catch {unset encoder}
+		    catch {unset do_qp}
 		    set type text
 		    if {[string compare $alldone --] == 0} {
 			# should pop boundary stack
@@ -134,25 +129,19 @@ proc SeditFixupEncoding { draft t quote } {
 		    puts $out "Content-Transfer-Encoding: quoted-printable"
 		    puts $out $savedLine
 		    flush $out
-		    if [catch {open "|$mime(encode) -q >@ $out" w} encoder] {
-			SeditMsg $t $encoder
-			close $in
-			close $out
-			error "Cannot run $mime(encode)"
-		    }
+                    set do_qp 1
 		} else {
 		    puts $out "Content-Transfer-Encoding: 8bit"
 		    puts $out $savedLine
 		}
 	    }
-	    if [info exists encoder] {
-		puts $encoder $line
+	    if [info exists do_qp] {
+		puts $out [mime::qp_encode $line]
 	    } else {
 		puts $out $line
 	    }
 	}
     }
-    catch {close $encoder}
     close $out
     close $in
     Mh_Rename $draft.new $draft

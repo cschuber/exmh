@@ -74,10 +74,11 @@ OFF, if you place a window and dismiss it, exmh will remember its
 placement and re-use it for the rest of the current session.
 Disabling this option always allows your window manager to place
 windows."}
-    {exwin(toplevelFtoc) toplevelFtoc ON {Use separate Ftoc window}
-"Description of separate Ftoc window here."}
-    {exwin(toplevelMsg) toplevelMsg ON {Use separate Msg window}
-"Description of separate Msg window here."}
+    {exwin(toplevelFtoc) toplevelFtoc OFF {Use separate Ftoc window}
+"Display Folder Table of Contents (FTOC) in a separate window.
+(You can still only display a single folder at a time.)"}
+    {exwin(toplevelMsg) toplevelMsg OFF {Use separate Msg window}
+"Display mail messages in a separate window."}
     }
     set exwin(ftextLinesSave) $exwin(ftextLines)
     trace variable exwin(ftextLines) w ExwinFixupFtextLines
@@ -138,20 +139,14 @@ proc Exwin_Layout {} {
     # Folders with unread messages
     Fdisp_Window [Widget_Frame . flist Fdisp $fixed]
 
-    if { $exwin(toplevelFtoc) || $exwin(toplevelMsg)} {
-        set flavor $expand
-#        set exwin(ftextLines) [expr $exwin(ftextLines) + $exwin(mtextLines)]
-    } else {
-        set flavor $fixed
-    }
-
     # The folder buttons and Ftoc display are put in here
     if {$exwin(toplevelFtoc)} {
         set exwin(ftocframe) [Widget_Toplevel .ftocframe "Folder ToC"]
     } else {
-        set exwin(ftocframe) [Widget_Frame . ftocframe Ftoc $flavor]
+        set exwin(ftocframe) [Widget_Frame . ftocframe Ftoc $fixed]
     }
-    pack propagate $exwin(ftocframe) 0
+    # Turning off pack propagation is almost never a good thing
+    # pack propagate $exwin(ftocframe) 0
 
     # Second row of buttons for folder ops and current folder label
     set exwin(fopButtons) [Widget_Frame .ftocframe fops Fops $fixed]
@@ -159,7 +154,7 @@ proc Exwin_Layout {} {
     Label_FolderSetup $exwin(fopButtons)
 
     # Folder display (Ftoc)
-    set exwin(ftext) [Widget_Text [Widget_Frame .ftocframe ftoc Ftoc $flavor] \
+    set exwin(ftext) [Widget_Text [Widget_Frame .ftocframe ftoc Ftoc $expand] \
 				$exwin(ftextLines)]
     Ftoc_Bindings $exwin(ftext)
     Ftoc_InitSequences $exwin(ftext)
@@ -175,7 +170,8 @@ proc Exwin_Layout {} {
     } else {
         set exwin(msgframe) [Widget_Frame . msgframe Msg $expand]
     }
-    pack propagate $exwin(msgframe) 0
+    # Turning off pack propagation is almost never a good thing
+    # pack propagate $exwin(msgframe) 0
 
     # Frame for faces, status, message buttons
     set mid [Widget_Frame .msgframe mid Mid $fixed]

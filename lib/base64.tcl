@@ -9,10 +9,26 @@ foreach char {A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \
 }
 
 proc Base64_Encode {string} {
-    global base64_en
+    Base64_EncodeInit state old length
+    set result [Base64_EncodeBlock $string state old length]
+    append result [Base64_EncodeTail state old length]
+    return $result
+}
+proc Base64_EncodeInit {stateVar oldVar lengthVar} {
     set result {}
+    upvar 1 $stateVar state
+    upvar 1 $oldVar old
+    upvar 1 $lengthVar length
     set state 0
     set length 0
+    if {[info exists old]} { unset old }
+}
+proc Base64_EncodeBlock {string stateVar oldVar lengthVar} {
+    global base64_en
+    upvar 1 $stateVar state
+    upvar 1 $oldVar old
+    upvar 1 $lengthVar length
+    set result {}
     foreach {c} [split $string {}] {
 	scan $c %c x
 	switch [incr state] {
@@ -29,11 +45,17 @@ proc Base64_Encode {string} {
 	    set length 0
 	}
     }
-    set x 0
+    return $result
+}
+proc Base64_EncodeTail {stateVar oldVar lengthVar} {
+    global base64_en
+    upvar 1 $stateVar state
+    upvar 1 $oldVar old
+    upvar 1 $lengthVar length
     switch $state {
 	0 { # OK }
 	1 { append result $base64_en([expr {(($old << 4) & 0x30)}])== }
-	2 { append result $base64_en([expr {(($old << 2) & 0x3C)}])=               }
+	2 { append result $base64_en([expr {(($old << 2) & 0x3C)}])=  }
     }
     return $result
 }
@@ -44,6 +66,9 @@ proc Base64_Decode {string} {
     set group 0
     set j 18
     foreach char [split $string {}] {
+	if {[string compare $char "\n"] == 0} {
+          continue
+        }
 	if [string compare $char "="] {
 	    set bits $base64($char)
 	    set group [expr {$group | ($bits << $j)}]

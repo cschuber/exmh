@@ -49,7 +49,7 @@ proc ldelete {varList value} {
 }
 
 # Match a value (v) against a list of patterns (l)
-proc patsearch {l v} {
+proc patlsearch {l v} {
     set i 0
     foreach e $l {
         if {[string match $e $v]} {

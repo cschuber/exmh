@@ -429,7 +429,6 @@ proc installSed { } {
 	set item $install(field,$v)
 	set var [installFieldVar $item]
 	installSetValue $var
-	global $var
 	puts $script [list set $var [installGetValue $var]] nonewline
 	puts $script \\
     }

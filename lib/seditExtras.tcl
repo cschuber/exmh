@@ -142,8 +142,11 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 		SeditMsg $t $in
 		return
 	    }
-	    if [regexp "\[\x80-\xff\]" [read $in]] {
+            while {![eof $in]} {
+              set buf [read $in 8192]
+              if {[regexp "\[\x80-\xff\]" $buf]} {
 		set sedit($t,8bit) 1
+              }
 	    }
 	    close $in
 	}
@@ -152,34 +155,43 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 	if ![regexp name= $type] {
 	    append type " ; name=\"$uuname\""
 	}
-	switch -- $encoding {
-	    base64 {   lappend cmd | $mime(encode) -b }
-	    quoted-printable {   lappend cmd | $mime(encode) -q }
-	    none {set encoding {}}
-	    x-uuencode {   lappend cmd | uuencode $uuname }
-	}
-	if {[string length $cmd] == 0} {
-	    set in [open $file]
-	} else {
-	    lappend cmd < $file
-	    Exmh_Status $cmd
-	    set in [open $cmd r]
-	}
+        set in [open $file]
 	if [$t compare insert <= hlimit] {
 	    $t mark set insert "hlimit +1c"
 	}
 	if {$file == $quote(filename)} {
+            # Special case for inserting '@', which is a symlink to a message
+            # Initially the encoding is text/plain, bug we auto-detect inserting QP
 	    set inheaders 1
 	    set quoted 0
+            set continuation 0
+            Exmh_Debug "SeditInsertFile insert quote file"
 	    while {[gets $in line] > -1} {
 		if {! $inheaders || !$quote(symlink)} {
-		    $t insert insert $sedit(pref,replPrefix)$line\n
+                    if {!$quoted} {
+                        $t insert insert $sedit(pref,replPrefix)$line\n
+                    } else {
+                        if {$continuation} {
+                            $t insert insert [mime::qp_decode $line]      ;# need leading space here?
+                        } else {
+                            $t insert insert $sedit(pref,replPrefix)[mime::qp_decode $line]
+                        }
+                        set continuation [regexp =$ $line]
+                    }
 		} else {
 		    # This simple hack doesn't work for multiparts.
+
+                    # XXX - I don't know how to get to this code block, because if
+                    # quote(symlink) is ON, then the whole Quote menu is disabled.
+                    # If quote(symlink) is OFF, then we use the code above, and then
+                    # the quoted state bit is never set. XXX
+
 		    if [regexp -nocase {^content-transfer-encoding:.*quoted-printable} $line] {
+                        Exmh_Debug "SeditInsertFile detects QP"
 			set quoted 1
 			set sedit($t,8bit) 1
 			if {$sedit($t,quote) < 0} {
+                            # Promote this part to quoted-printable
 			    set sedit($t,quote) 1
 			}
 		    }
@@ -188,21 +200,6 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 		    }
 		    if {[string length $line] == 0} {
 			set inheaders 0
-			if {$quoted} {
-			    set tfile [Mime_TempFile decode]
-			    if [catch {open $tfile w} out] {
-				$t insert insert "Error: $out"
-			    } else {
-				puts -nonewline $out [read $in]
-				close $out
-				close $in
-				if [catch {open "|$mime(encode) -q -u < $tfile"} in] {
-				    $t insert insert "Error: $in"
-				    focus $t
-				    return
-				}
-			    }
-			}
 		    }
 		}
 	    }
@@ -210,6 +207,7 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 	    if {$newpart} {
 		set ix [SeditMimeType $type]
 		if {[string length $ix] == 0} {
+                    close $in
 		    return
 		}
 		set mark fileinsert
@@ -237,6 +235,36 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
 	    } else {
 		set mark insert
 	    }
+
+            switch -- $encoding {
+                base64 {
+                    Base64_EncodeInit state old length
+                    while {![eof $in]} {
+                        $t insert $mark [Base64_EncodeBlock [read $in 4096] state old length]
+                    }
+                    $t insert $mark [Base64_EncodeTail state old length]
+                }
+                quoted-printable {
+                    set line_cnt 0  ;# Accumulate lines before calling the encoder
+                    set buffer ""
+                    while {[gets $in line] >= 0} {
+                        append buffer $line\n
+                        incr line_cnt
+                        if {$line_cnt > 1000} {
+                            $t insert $mark [::mime::qp_encode $buffer]
+                            set line_cnt 0
+                            set buffer ""
+                        }
+                    }
+                    $t insert $mark [::mime::qp_encode $buffer]
+                }
+                none {
+                  $t insert $mark [read $in]
+                }
+                x-uuencode {
+                  $t insert $mark "Error: x-uuencode attachments not supported\n"
+                }
+            }
 	    $t insert $mark [read $in]
 	}
 	catch {close $in}

@@ -1,5 +1,23 @@
 HISTORY
 cvs repository 07/26/2004 welch@panasas.com
+  exmh-strip.MASTER: removed use of mime(encode)
+  exmh.install: set version to 2.7.1
+  install.tcl: removed old unused global statement
+  lib/base64.tcl: chopped Base64_Encode into three parts,
+    Base64_EncodeInit, Base64_EncodeBlock, Base64_EncodeTail
+    so it can be used more flexibly as a replacement for mimencode
+    Changed Base64_Decode to tolerate and ignore newlines
+  lib/exwin.tcl: got the non-detached window case to work for me.
+  lib/main.tcl: changed the exmhDebug default to 0 because I was
+    getting massive console spew
+  lib/mime.tcl: removed use of mime(encode)
+  lib/seditExtras.tcl: removed use of mime(encode).  If you are a heavy
+    user of the Quote feature in Sedit, you should check this as there
+    is an auto-detect of quoted-printable in here that I support, but
+    cannot see how it is ever reached.
+  lib/seditQP.tcl: removed use of mime(encode)
+
+cvs repository 07/26/2004 welch@panasas.com
   lib/pick.tcl: Applied patch from Bruce Mah to search over
     sender or mailing-list headers
   lib/seqin.tcl: Applied patch from Axel Belinfante to be able

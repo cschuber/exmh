@@ -21,24 +21,13 @@ proc Mime_Init {} {
     # Make sure Metamail is on the path
     set hit 0
     foreach dir [split $env(PATH) :] {
-	if {[string compare $dir $mime(dir)] == 0} {
+	if {[string compare $dir $mime(dir)] == 0 && [string length $mime(dir)]} {
 	    set hit 1
 	    break
 	}
     }
     if {! $hit} {
 	set env(PATH) $mime(dir):$env(PATH)
-    }
-    set mime(encode) mimencode
-    foreach dir [split $env(PATH) :] {
-	if {[file executable $dir/mimencode]} {
-	    set mime(encode) mimencode
-	    break
-	}
-	if {[file executable $dir/mmencode]} {
-	    set mime(encode) mmencode
-	    break
-	}
     }
 
     set mime(init) 1
@@ -1443,18 +1432,33 @@ proc MimeDecode {fileName name encoding text} {
 		Exmh_Debug "cat > $name"
 		exec cat $fileName >@ $out
 	    }
+	    quoted-printable -
 	    base64 {
-		if $text {
-		    Exmh_Debug "$mime(encode) -u -b -p > $name"
-		    exec $mime(encode) -u -b -p $fileName >@ $out
-		} else {
-		    Exmh_Debug "$mime(encode) -u -b > $name"
-		    exec $mime(encode) -u -b $fileName >@ $out
-		}
-	    }
-	    quoted-printable {
-		Exmh_Debug "$mime(encode) -u -q > $name"
-		exec $mime(encode) -u -q $fileName >@ $out
+                # Replace use of mimencode with Tcl versions.
+                # Note, we used to specify the "-p" flag for text parts,
+                # but I believe that is to preserve platform-specific line-ending
+                # characters.  We ignore that and let the Tcl I/O system do that for us.
+                set in [open $fileName]
+                set line_cnt 0  ;# Accumulate lines before calling the decoder
+                set buffer ""
+                while {[gets $in line] >= 0} {
+                    append buffer $line\n
+                    incr line_cnt
+                    if {$line_cnt > 1000} {
+                        if {$encoding == "base64"} {
+                            puts -nonewline $out [Base64_Decode $buffer]
+                        } else {
+                            puts -nonewline $out [::mime::qp_decode $buffer]
+                        }
+                        set line_cnt 0
+                        set buffer ""
+                    }
+                }
+                if {$encoding == "base64"} {
+                    puts -nonewline $out [Base64_Decode $buffer]
+                } else {
+                    puts -nonewline $out [::mime::qp_decode $buffer]
+                }
 	    }
 	    .*uue.* {
 		Exmh_Debug "uudecode -p > $name"
