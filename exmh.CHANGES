@@ -1,4 +1,18 @@
 HISTORY
+cvs repository 04/20/2001 Ovidiu Predescu <ovidiu@cup.hp.com>
+    lib/uri.tcl (URI_StartViewer): Invoke Msg_CompTo instead of
+    Sedit_Mailto to correctly support external editors.
+
+    lib/sedit.tcl (Sedit_Start): Better check for PGP variables so we
+    don't get a runtime error if PGP is not fully enabled in a
+    particular installation.
+
+    lib/msg.tcl (Msg_CompTo): Accept a generic mailto: URI as
+    argument, instead of a simple email address. Modify the draft
+    according to this mailto: URI so that it has the right content
+    before being passed to the editor, which may be an external
+    editor.
+
 cvs repository 04/10/2001 Brent Welch <welch@panasas.com>
     exmh-strip.MASTER: extracted code from mime.tcl into a utility script
     that strips attachments from mail and replaces them with message/external-body
