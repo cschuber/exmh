@@ -37,30 +37,30 @@ Xt-like command line options are not supported because <i>exmh</i>
 is based on Tk, not Xt. 
 <dl>
 
-  <dt><b>-bgAction </b><i>action</i> 
+  <dt><code>-bgAction </code><i>action</i> 
   <dd>Override background processing setting. Valid actions are: off,
       count, msgchk, flist, and inc. 
 
-  <dt><b>-bgPeriod </b><i>minutes</i> 
+  <dt><code>-bgPeriod </code><i>minutes</i> 
   <dd>Override background period setting. 
 
-  <dt><b>-geometry </b><i>geometry</i> 
+  <dt><code>-geometry </code><i>geometry</i> 
   <dd>Initial geometry to use for the window. Exmh remembers the
       geometry when you change it interactively, so you do not really
       need to specify it each time on the command line. 
 
-  <dt><b>-iconposition </b><i>geometry</i> 
+  <dt><code>-iconposition </code><i>geometry</i> 
   <dd>Initial position to use for the icon in the form
       +<i>xoff</i>+<i>yoff</i>. You can use minus signs instead of +
       to position relative to the right and bottom of the screen. 
 
-  <dt><b>-iconic</b> 
+  <dt><code>-iconic</code> 
   <dd>Begin execution iconic. 
 
   <dt><strong>-nofaces</strong> 
   <dd>Do not use faces database during this run. 
 
-  <dt><b>-sedit</b> 
+  <dt><code>-sedit</code> 
   <dd>Override the editor command defined in Preferences and use the
       built-in editor (sedit) instead.  
 
@@ -238,14 +238,18 @@ Search... and More...
       causes pending delete and move operations to occur. This command
       is also bound to the keystroke &lt;Control-Return&gt;. Know that
       messages marked for deletion are removed by means of the MH
-      <b>rmm</b> command. In most systems, <b>rmm</b> will rename the
-      message to a name beginning with either a comma (,) or pound
-      sign (#). Unlike <b>xmh</b>, exmh requires that you commit
-      changes before changing folders and doing other operations that
-      modify the scan listing (e.g., Pack, Sort, Rescan). However, you
-      can set Auto Commit under the Scan Listing preferences to have
-      exmh automatically commit changes when needed. See also the
-      description of the "Purge Folder" operation. 
+      <code>rmm</code> command. In most systems, <code>rmm</code> will
+      rename the message to a name beginning with either a comma (,)
+      or pound sign (#). Unlike <code>xmh</code>, exmh requires that
+      you commit changes before changing folders and doing other
+      operations that modify the scan listing (e.g., 
+      <button -command FolderPack>Pack folder</button>, Sort, 
+      <button -command "busy Scan_FolderForce">Rescan
+      folder</button>). However, you can set Auto Commit under the
+      Scan Listing preferences to have exmh automatically commit
+      changes when needed. See also the description of the
+      <button -command Folder_PurgeBg>Purge folder</button>
+      operation. 
 
   <dt>Search...
   <dd>This is a menu of different search methods. The first two
@@ -272,29 +276,31 @@ Search... and More...
 
 	 <dt><button -command Pick>All messages in current folder
 	     (pick)</button> 
-	 <dd>This provides an interface to the MH <b>pick</b>
+	 <dd>This provides an interface to the MH <code>pick</code>
 	     command. Begin by choosing from the "pick attribute" menu
 	     in the dialog. These include headers like Subject, From,
 	     To, and Cc, as well as date criteria like Before, and
 	     After. You can search for a string in the body of
 	     messages with the "Search" field. You can enter a pattern
-	     for any of these, and <b>pick</b> selects messages that
-	     satisfy the logical AND of these pattern
+	     for any of these, and <code>pick</code> selects messages
+	     that satisfy the logical AND of these pattern
 	     specifications. Note that the Before and After patterns
-	     are date-specific, and <b>pick</b> understands many forms
-	     of date patterns. Read the MH man page on <b>pick</b> for
-	     the complete story. You can build up more complex logical
-	     search expressions by clicking the Or button.
+	     are date-specific, and <code>pick</code> understands many
+	     forms of date patterns. Read the MH man page on
+	     <code>pick</code> for the complete story. You can build
+	     up more complex logical search expressions by clicking
+	     the Or button. 
 
 	     <dl>	     
 	       <dt>Pick from Seq/msgs(s) 
-	       <dd>This entry lets you limit <b>pick</b> to a specific
-	           set of messages. In particular, you can specify a
-	           sequence name (e.g., "unseen"), and have pick find
-	           all messages with that sequence identifier. After
-	           the pick completes, a range of messages is selected
-	           that satisfies the search, and you can operate on
-	           these messages as described below. 
+	       <dd>This entry lets you limit <code>pick</code> to a
+	           specific set of messages. In particular, you can
+		   specify a sequence name (e.g., "unseen"), and have
+		   pick find all messages with that sequence
+		   identifier. After the pick completes, a range of
+		   messages is selected that satisfies the search, and
+		   you can operate on these messages as described
+		   below.
 
 	       <dt>Add to Sequence(s) 
 	       <dd>This entry lets you apply a sequence name to the
@@ -457,378 +463,481 @@ and menu entries are disabled if there is no current message. Disabled
 actions have their text grayed out. 
 <dl>
 
-<dt>Forward 
-<dd>Forward the current message(s). Also keystroke 'f'. 
+  <dt><button -command Msg_Forward>Forward</button>
+  <dd>Forward the current message(s). Also keystroke 'f'. 
 
-<dt>Send 
-<dd>Compose a mail message. Chose the editor to use via the Preferences
-dialog. Also keystroke 'c' (for "compose"). 
+  <dt><button -command Msg_Compose>Compose</button>
+  <dd>Compose a mail message. Chose the editor to use via the
+      <button -command Preferences_Dialog>Preferences</button>
+      dialog. Also keystroke 'c' (for "compose"). 
 
-<dt>Prev 
-<dd>Move to the previous message. Also keystroke 'p'. Keystroke 'P'
-changes the current message without displaying it. Use 's' to display
-such a message. 
+  <dt><button -command "Ftoc_Prev show">Prev</button>
+  <dd>Move to the previous message. Also keystroke 'p'. Keystroke 'P'
+      changes the current message without displaying it. Use 's' to
+      display such a message. 
 
-<dt>Next 
-<dd>Move to the next message. This will chain to the next folder with
-unread messages if you are at the end of the current folder. The "Next"
-folder is defined by the Folder-Order .mh_profile entry, and it is
-always the first folder in the order that has unseen messages. (This
-keeps you in the interesting folders and away from the dregs if you
-organize your Folder-Order properly.) Also keystroke 'n'. Keystroke
-'N' changes the current message without displaying it. Keystroke 'F'
-changes to the next folder with unseen messages. 
+  <dt><button -command "Ftoc_Next show">Next</button>
+  <dd>Move to the next message. This will chain to the next folder
+      with unread messages if you are at the end of the current
+      folder. The "Next" folder is defined by the Folder-Order
+      .mh_profile entry, and it is always the first folder in the
+      order that has unseen messages. (This keeps you in the
+      interesting folders and away from the dregs if you organize your
+      Folder-Order properly.) Also keystroke 'n'. Keystroke 'N'
+      changes the current message without displaying it. Keystroke 'F'
+      changes to the next folder with unseen messages.  
 
-<dt>Delete 
-<dd>Mark the current message(s) for deletion and go to the next message.
-Also keystroke 'd'. If you change your mind, select the message again
-and "Unmark" it via the entry under the message More... menu. 
+  <dt><button -command Msg_Remove>Delete</button>
+  <dd>Mark the current message(s) for deletion and go to the next
+      message. Also keystroke 'd'. If you change your mind, select the
+      message again and <button -command Ftoc_Unmark>Unmark
+      (Undo)</button> it via the entry under the message
+      More... menu. 
 
-<dt>Move 
-<dd>Mark the selected message(s) to be moved to the target folder and
-go to the next message. Also keystroke 'm'. Note that selecting a target
-folder also moves the current message(s). So, you use the Move button
-if the correct target folder is already selected. If you make a mistake
-and want to move the message to a different folder, just select it
-again and right click on the proper destination folder. If you don't
-want to move it at all, then "Unmark" the message. 
+  <dt><button -command "Msg_Move Ftoc_MoveMark">Move</button>
+  <dd>Mark the selected message(s) to be moved to the target folder
+      and go to the next message. Also keystroke 'm'. Note that
+      selecting a target folder also moves the current message(s). So,
+      you use the 
+      <button -command "Msg_Move Ftoc_MoveMark">Move</button> button
+      if the correct target folder is already selected. If you make a
+      mistake and want to move the message to a different folder, just
+      select it again and right click on the proper destination
+      folder. If you don't want to move it at all, then 
+      <button -command Ftoc_Unmark>Unmark (Undo)</button>" the message.
 
-<dt>Link 
-<dd>Similar to move, except that the message is linked into the other
-folder so that it appears in both places. While this appears like a
-copy, the same message is shared between the folders to save disk space.
+  <dt><button -command "Msg_Move Ftoc_CopyMark advance?">Link</button>
+  <dd>Similar to move, except that the message is linked into the
+      other folder so that it appears in both places. While this
+      appears like a copy, the same message is shared between the
+      folders to save disk space. 
 
-<dt>Reply... 
-<dd>This is a menu of reply options. By default there are two choices,
-but you can easily define more variations on reply. The default choices
-are: 
+  <dt>Reply... 
+  <dd>This is a menu of reply options. By default there are two
+      choices, but you can easily define more variations on reply. The
+      default choices are: 
 
-<dt>Reply to sender &lt;Key-r&gt; 
-<dd>Reply to the current message, only to the person that send the
-original. Also keystroke 'r'. 
+      <dl>
+        <dt><button -command "Msg_Reply -nocc to -nocc cc">Reply to
+	    sender &lt;Key-r&gt;</button> 
+	<dd>Reply to the current message, only to the person that send
+	    the original. Also keystroke 'r'. 
 
-<dt>Reply all &lt;Key-R&gt; 
-<dd>Reply to the current message, including on the cc line everyone
-that got the original message. (It invokes MH <b>repl</b> with: -cc
-cc -cc to). Also keystroke 'R'. 
+	<dt><button -command "Msg_Reply -cc to -cc cc">Reply all
+	    &lt;Key-R&gt;</button> 
+	<dd>Reply to the current message, including on the cc line
+	    everyone that got the original message. (It invokes MH
+	    <code>repl</code> with: <code>-cc cc -cc to</code>). Also
+	    keystroke 'R'.
 
-<dt>Reply help 
-<dd>This pops up a display that tells you how to program new reply
-buttons. You'll need to be familiar with the MH repl command and its
-filters. Check out the <b>repl</b> and <b>mh-format</b> manual pages.
+	<dt><button -command Msg_ReplyHelp>Defining more...</button>
+	<dd>This pops up a display that tells you how to program new
+	    reply buttons. You'll need to be familiar with the MH repl
+	    command and its filters. Check out the <code>repl</code>
+	    and <code>mh-format</code> manual pages.
+      </dl>
 
-<dt>More... 
-<dd>This is a menu of more message operations. 
+  <dt>More... 
+  <dd>This is a menu of more message operations. 
+      <dl>
+        <dt><button -command Print>Print</button>
+	<dd>Print the current message, or the selected set of
+	    messages. The print command is defined via the 
+	    <button -command Preferences_Dialog>Preferences</button>
+	    dialog. The whole message is printed, headers and all.
 
-<dt>Print 
-<dd>Print the current message, or the selected set of messages. The
-print command is defined via the Preferences dialog. The whole message
-is printed, headers and all. 
+	<dt><button -command Ftoc_Unmark>Unmark (Undo)</button>
+	<dd>Cancel a move or delete mark on the selected
+	    message(s). Also keystroke 'u'. 
 
-<dt>Unmark (Undo) 
-<dd>Cancel a move or delete mark on the selected message(s). Also keystroke
-'u'. 
+	<dt><button -command Msg_Clip>Clip</button>
+	<dd>Display a new toplevel window containing the current
+	    message. 
 
-<dt>Clip 
-<dd>Display a new toplevel window containing the current message. 
+	<dt><button -command Msg_ShowUnseen>First Unseen</button>
+	<dd>Display the first unseen message, if any. Also keystroke
+	    'U'. 
 
-<dt>First Unseen 
-<dd>Display the first unseen message, if any. Also keystroke 'U'. 
+	<dt><button -command Msg_BurstDigest>Burst Digest</button>
+	<dd>Use the MH <code>burst</code> command to split up a digest
+	    message into its individual messages. In addition, the new
+	    messages are added to the unseen sequence. You can control
+	    whether or not the original message is replaced with just
+	    the digest header by specifying burst options in your
+	    .mh_profile. (E.g., <code>burst: -inplace</code>). 
 
-<dt>Burst Digest 
-<dd>Use the MH <b>burst</b> command to split up a digest message into
-its individual messages. In addition, the new messages are added to
-the unseen sequence. You can control whether or not the original message
-is replaced with just the digest header by specifying burst options
-in your .mh_profile. (E.g., "burst: -inplace"). 
+	<dt><button -command "Msg_Dist Mh_DistSetup">Redistribute<button>
+	<dd>This uses the MH <code>dist</code> command to resend a
+	    message to a different recipient. Your editor is invoked
+	    with a small buffer containing only
+	    code>Resent-To:</code> and <code>Resent-Cc:</code> lines. 
 
-<dt>Redistribute 
-<dd>This uses the MH <b>dist</b> command to resend a message to a different
-recipient. Your editor is invoked with a small buffer containing only
-Resent-To: and Resent-Cc: lines. 
+	<dt><button -command Msg_Save>Save to file</button>
+	<dd>This simply copies the current message(s) to a file
+	    selected via the file selector dialog. 
 
-<dt>Save to file 
-<dd>This simply copies the current message(s) to a file selected via
-the file selector dialog. 
+	<dt><button -command "Msg_Compose _\$exmh(folder) \$msg(id)">Use
+	    message as draft</button> 
+	<dd>This copies the current message into the drafts folder and
+	    opens your editor on the message. 
 
-<dt>Use message as draft 
-<dd>This copies the current message into the drafts folder and opens
-your editor on the message. 
+	<dt><button -command "Msg_Edit">Edit message</button>
+	<dd>This opens your editor on the message so that you can
+	    annotate it. 
 
-<dt>Edit message 
-<dd>This opens your editor on the message so that you can annotate
-it. 
+	<dt><button -command Msg_UUdecode>uudecode message</button>
+	<dd>This simple runs uudecode with the current message as
+	    input. A file selection dialog lets you choose the name of
+	    the resulting file.
 
-<dt>uudecode message 
-<dd>This simple runs uudecode with the current message as input. A
-file selection dialog lets you choose the name of the resulting file.
+	<dt><button -command Print_Postscript>Print postscript content</button>
+	<dd>This is useful for non-MIME messages that contain a
+	    postscript file. The message body (everything from the
+	    initial %!PS onwards) is put into a temp file and then the
+	    <button -command Preferences_Dialog>Preferences</button>
+	    Postscript Print Command is used to print that file. 
 
-<dt>Print postscript content 
-<dd>This is useful for non-MIME messages that contain a postscript
-file. The message body (everything from the initial %!PS onwards) is
-put into a temp file and then the Preferences Postscript Print Command
-is used to print that file. 
+	<dt><button -command Message_Apply>Apply command to
+	    message</button> 
+	<dd>This runs a UNIX command over the current message (all of
+	    it). A dialog lets you set the command, with occurrences
+	    of $file replaced with the pathname of the message. The
+	    default value of the UNIX command is hiding under the
+	    Print <button -command Preferences_Dialog>Preferences</button> 
+	    entry.
 
-<dt>Apply command to message 
-<dd>This runs a UNIX command over the current message (all of it).
-A dialog lets you set the command, with occurrences of $file replaced
-with the pathname of the message. The default value of the UNIX command
-is hiding under the Print preferences entry. 
+	<dt><button -command "Message_Apply body">Apply command to
+	    body</button> 
+	<dd>This runs a UNIX command over a temporary file containing
+	    the body of the current message. 
 
-<dt>Apply command to body 
-<dd>This runs a UNIX command over a temporary file containing the body
-of the current message. 
+	<dt><button -command Msg_MarkUnseen>Mark Unseen</button>
+	<dd>This puts the current message(s) back into the unseen
+	    sequence. 
 
-<dt>Mark Unseen 
-<dd>This puts the current message(s) back into the unseen sequence.
+	<dt><button -command Pgp_ExmhEncrypt>PGP Encrypt</button>
+	<dd>Replace the current message with an encrypted version of
+	    it. 
 
-<dt>PGP Encrypt 
-<dd>Replace the current message with an encrypted version of it. 
+	<dt>old PGP... 
+	<dd>This is a menu of operations that apply to PGP messages
+	that are not wrapped up in a MIME format. Those are handled
+	automatically. This menu is used to tell exmh explicitly what
+	to do. You can <button -command Pgp_Decrypt>Decrypt</button>,
+	<button -command Pgp_View>View</button>, or
+	<button -command "PgpExec_ExtractKeys \"\$mhProfile(path)/\$exmh(folder)/\$msg(id)\"">Extract 
+	Keys</button>.
 
-<dt>old PGP... 
-<dd>This is a menu of operations that apply to PGP messages that are
-not wrapped up in a MIME format. Those are handled automatically. This
-menu is used to tell exmh explicitly what to do. You can Decrypt, View,
-or Extract Keys. 
+	<dt><button -command URI_ScanMsg>Scan for URLs</button>
+	<dd>Scan through the message body and look for URL and URN
+	    references. If any are found, they are highlighted and
+	    made into active text. Click on the text and your web
+	    browser will be started on that URI. You can set the
+	    command to use via the URI 
+	    <button -command Preferences_Dialog>Preferences</button>
+	    section. Also keystroke 'z'. 
 
-<dt>Scan for URLs 
-<dd>Scan through the message body and look for URL and URN references.
-If any are found, they are highlighted and made into active text. Click
-on the text and Mosaic will be started on that URI. You can set the
-command to use via the URI preferences section. Also keystroke 'z'.
+	<dt><button -command URI_OpenSelection>View selected URL</button>
+	<dd>If you have manually selected an embedded URL, then use
+	    this menu entry to get exmh to ask your web browser to
+	    display the selected URL. If the automatic scanning
+	    doesn't work perfectly, you can do a manual selection on
+	    top of an incorrect active text button.  NOTE:  This also
+	    works if the URL was selected outside of exmh!!
 
-<dt>View selected URL 
-<dd>If you have manually selected an embedded URL, then use this menu
-entry to get exmh to ask your web browser to display the selected URL.
-If the automatic scanning doesn't work perfectly, you can do a manual
-selection on top of an incorrect active text button. 
+	<dt><button -command Partial_Cnocatenate>Concatenate partial
+	    messages</button> 
+	<dd>If you get a message in parts, as a MIME type
+	    message/partial, then select all the messages that have
+	    the parts and invoke this operation. 
 
-<dt>Concatenate partial messages 
-<dd>If you get a message in parts, as a MIME type message/partial,
-then select all the messages that have the parts and invoke this operation.
+	<dt><button -command Folder_AutoRefile>Automatic Refile</button>
+	<dd>Choose a folder for the current message based on the from
+	    address. 
 
-<dt>Automatic Refile 
-<dd>Choose a folder for the current message based on the from address.
-
-<dt>Post this message to a Newsgroup 
-<dd>Post a copy of the current message to a newsgroup. You'll be prompted
-for what group. 
-
+	<dt><button -command Post>Post this message to a Newsgroup</button>
+	<dd>Post a copy of the current message to a newsgroup. You'll
+	    be prompted for what group. 
+     </dl>
 </dl>
+
 <h3><a NAME="SEDIT" HREF="#CONTENTS">SEDIT</a></h3>
-The built-in editor, <b>sedit</b>, has a dozen or so commonly used
-editing operations bound to keystrokes. These are Emacs-like, but you
-can change them from within the editor through the "Simple Edit" dialog
-available under the main "Bindings" menu. In addition, the editor has
-a number of buttons and menu entries used to manipulate your draft
-messages. 
-<dl>
-<dt>Abort 
-<dd>This deletes the draft message and removes the editor window. 
-<dt>Save&amp;Quit 
-<dd>This will save the message and quit the editor window. The idea
-is that you will come back to the draft via the drafts folder later.
-<dt>Help 
-<dd>This button brings up a window with a short explanation of the
-editor. 
-<dt>Quote 
-<dd>This is only active while you are replying to a message. When you
-are replying to a message, the file named "@" is a symbolic link to
-the message to which you are replying. When this file is inserted,
-it is formatted a bit, unlike the Insert File... operation. The mail
-headers are stripped off, quoted-printable text is decoded so you get
-8-bit characters in the edit buffer, and each line is prefixed with
-a short string to distinguish the inserted lines. You can set this
-prefix via an Xresource, replPrefix. The default prefix is "&gt; ".
-If you want to change this and still have trailing blanks, it turns
-out this works OK. The resource value seems to begin with the first
-non-blank character, but then extends all the way to the newline character.
-<dt>Sign 
-<dd>This appends your ~/.signature file to the draft. If this file
-is instead an executable script or program, it is executed in order
-to generate the signature. 
-<dt>Sign... 
-<dd>If you have multiple files that match the ~/.signature* pattern,
-the Sign button is replaced with a menu of possibilities. If you choose
-the autoSign Simple Editor Preference, then this menu is used to choose
-which signature file (or program) is used when automatically signing
-the message as it gets posted. 
-<dt>Send 
-<dd>When you are done with the message, click Send. This is also bound
-to the keystroke &lt;Control-c&gt;&lt;Control-c&gt;. 
-<dt>Text... 
-<dd>This menu is used to add bold, italic, underline, etc. to your
-messages. This results in a MIME message of type text/enriched. The
-formatting commands are supposed to be palatable to a non-MIME reader,
-but you may want to take this into consideration. If you disable the
-"Format mail" setting (described below), the looks are discarded before
-sending the message. 
-<br>
-
-
-<dt>More... 
-<dd>This menu contains a few entries for less common operations. They
-are: 
-<dt>Keep on send 
-<dd>This is a checkbox menu item that is off (un-highlighted) by default.
-If selected it prevents the editor window from disappearing after you
-send or abort a message. This is useful if you'd like to compose a
-few similar messages. (I also use it to debug the enriched text formatter.)
-<br>
-
-
-<dt>Format mail 
-<dd>This is a sub-menu of formatting options.  The first three options
-are mutually exclusive and determine when and how the text in your message
-is formatted to fit into standard length lines.  The choices are:
-<dt>No Line Breaking
-<dd>Don't do any formatting at anytime.
-<dt>Line Break at Send
-<dd>Post process the message after you hit the send button to break
-long lines.
-<dt>Line Break when Typing.
-<dd>At each  keystroke check to see if the current line is too long,
-wrapping it if necessary.  If you use this then you should know about
-the "format" command that reformats a paragraph.  By default, that
-is bound to &lt;Meta-q&gt; 
-<dt>Attempt mhn 
-<dd>If this is selected, your message is run through <b>mhn</b> in
-order to expand any # directives that format a MIME message. See also
-the "Run mhn now" menu entry below, and see the <b>mhn</b> man page
-for details. 
-<dt>Quote Printable 
-<dd>If this is selected, then any text MIME parts are run through the
-quoted-printable encoder to wrap up 8-bit characters in a 7-bit safe
-encoding. The Quoted Printable default preference setting under Simple
-Editor can be set to automatic, never, or always. In automatic mode,
-quoting is enabled when you enter a Compose key sequence to generate
-an 8-bit character. 
-<dt>Run mhn now. This processes the message assuming you have mhn directives,
-and then lets you edit the result.
-<br>
-
-
-<dt>Cite Selection 
-<dd>This formats and inserts the current selection. It is assumed to
-be in the currently displayed mail message, and the sender of that
-message is identified before the formatted text. Hint: this is the
-only useful way to include text from PGP encrypted messages and text/enriched
-messages. The formatting of text/enriched is lost, however. 
-<dt>Attachment
-<dd>This is a menu of attachment options.
-<dt>Attach File... 
-<dd>This brings up a dialog box that lets you attach a file using MIME.
-It tries to determine the type of the file based on <b>nametemplate</b>
-entries in the metamail mailcap description file. It presents a dialog
-that lets you override the type, add a Content-Description, and choose
-an encoding for the file. When you attach the first Part of a message
-you are asked whether or not to save the existing message body. If
-you save it, it becomes the text/plain first part of the multipart
-message.
-<dt>Insert File... 
-<dd>This simply inserts a file at the current insert point. 
-<dt>Attach Reference... 
-<dd>This sets up an Message/External-Body MIME message part. This is
-useful for sending around pointers to files available via FTP or on
-your local file system. 
-<dt>Attach PGP Keys... 
-<dd>Insert your PGP keys into the mail message. You can use the key
-selector to choose any key in your public keyring. Just type in a pattern
-that matches part of the key ID. Matching keys are displayed in the
-listbox. 
-<dt>Whom 
-<dd>This entry displays a small window with the network addresses of
-the recipients of the message. Clicking the button a second time makes
-the window go away. 
-<dt>Spell... 
-<dd>This runs either the UNIX spell or ispell command. Choose between
-these two options in the Simple Editor preferences. (Don't confuse
-that with the setting under Editor Support preferences.) If you use
-ispell then the draft is reloaded after ispell terminates. If you use
-spell then the output of spell is put into a second pane inside the
-editor window. That's all - nothing fancy. 
-<dt>Find SEL 
-<dd>This searches the draft for the current X selection. The intent
-is that you select misspelled words in the output of the spell command
-and use this menu entry to locate them in the draft. (The find and
-keybinding mechanisms were stressed by this addition - expect a cleanup
-someday. There is no reasonable way to define keystroke accelerators
-for the find and still be able to change them in the Bind dialog. -
-don't ask...). 
-<dt>Save Buffer 
-<dd>This saves the editor buffer into a file in your drafts folder.
-Most likely you really want the "Keep on Send" function instead of
-Save, because that function preserves the draft after you send it,
-while ordinarily (in spite of "Save") MH will rename the draft after
-you send it. 
-<dt>Mime Preview 
-<dd>This displays the message as it will appear when an exmh user receives
-it. A detached top-level window is used, as with message Clip. 
-<dt>Alternate Editor 
-<dd>Save the draft and invoke your alternate editor on the message.
-Define the alternate under the Editor Support preferences.. 
-<br>
-
-
-<dt><a NAME="crypt">Crypt...</a>
-<dd>This is a menu of options that use the Pretty Good Privacy package
-to to encryption and authentication. An explanation of pgp is beyond
-the scope of this manual. 
-<p>
-The options in the menu determine how your message will be encrypted
-or signed when the message is sent.
-<p>
-These values default to the values provided on the preferences PGP
-page and are reset for every new message.
-<p>
-There are currently three formats supported for signed or encrypted
-messages:
+The built-in editor, <code>sedit</code>, has a dozen or so commonly
+used editing operations bound to keystrokes. These are Emacs-like, but
+you can change them from within the editor through the "Simple Edit"
+dialog available under the main "Bindings" menu. In addition, the
+editor has a number of buttons and menu entries used to manipulate
+your draft messages. 
 
 <dl>
-<dt>Plain
-<dd>This uses no encapsulation whatsoever for the signed message.
-This format is compatible with older non-MIME compliant mail programs.
-<dt>Application/PGP
-<dd>This uses the now deprecated Application/PGP MIME type.  This type
-was deprecated because it turned out to be insufficiently flexible.
-<dt>Multipart/MIME
-<dd>This uses Multipart/signed MIME type with the signature part
-encoded as an application/pgp-signature.  This is compatible with
-other non-PGP digital signature schemes.  Many minimally compliant
-mail programs see your signature as an attachment. 
+
+  <dt>Abort 
+  <dd>This deletes the draft message and removes the editor window. 
+
+  <dt>Save&amp;Quit 
+  <dd>This will save the message and quit the editor window. The idea
+      is that you will come back to the draft via the drafts folder
+     later. 
+
+  <dt>Help 
+  <dd>This button brings up a window with a short explanation of the
+      editor. 
+
+  <dt>Quote 
+  <dd>This is only active while you are replying to a message. When
+      you are replying to a message, the file named "@" is a symbolic
+      link to the message to which you are replying. When this file is
+      inserted, it is formatted a bit, unlike the Insert
+      File... operation. The mail headers are stripped off,
+      quoted-printable text is decoded so you get 8-bit characters in
+      the edit buffer, and each line is prefixed with a short string
+      to distinguish the inserted lines. You can set this prefix via
+      an Xresource, replPrefix. The default prefix is "&gt; ". If you
+      want to change this and still have trailing blanks, it turns out
+      this works OK. The resource value seems to begin with the first
+      non-blank character, but then extends all the way to the newline
+      character. 
+
+  <dt>Sign 
+  <dd>This appends your ~/.signature file to the draft. If this file
+      is instead an executable script or program, it is executed in
+      order to generate the signature.
+
+  <dt>Sign... 
+  <dd>If you have multiple files that match the ~/.signature* pattern,
+      the Sign button is replaced with a menu of possibilities. If you
+      choose the autoSign Simple Editor Preference, then this menu is
+      used to choose which signature file (or program) is used when
+      automatically signing the message as it gets posted. 
+
+  <dt>Send 
+  <dd>When you are done with the message, click Send. This is also
+      bound to the keystroke &lt;Control-c&gt;&lt;Control-c&gt;. 
+
+  <dt>Text... 
+  <dd>This menu is used to add bold, italic, underline, etc. to your
+      messages. This results in a MIME message of type
+      text/enriched. The formatting commands are supposed to be
+      palatable to a non-MIME reader, but you may want to take this
+      into consideration. If you disable the "Format mail" setting
+      (described below), the looks are discarded before sending the
+      message. 
+
+  <dt>More... 
+  <dd>This menu contains a few entries for less common
+  operations. They are: 
+
+      <dl>
+         <dt>Keep on send 
+	 <dd>This is a checkbox menu item that is off (un-highlighted)
+	     by default. If selected it prevents the editor window
+	     from disappearing after you send or abort a message. This
+	     is useful if you'd like to compose a few similar
+	     messages. (I also use it to debug the enriched text
+	     formatter.) 
+
+	 <dt>Format mail 
+	 <dd>This is a sub-menu of formatting options.  The first
+	     three options are mutually exclusive and determine when
+	     and how the text in your message is formatted to fit into
+	     standard length lines.  The choices are: 
+	     <dl>
+	       <dt>No Line Breaking
+	       <dd>Don't do any formatting at anytime.
+
+	       <dt>Line Break at Send
+	       <dd>Post process the message after you hit the send
+	           button to break long lines.
+
+	       <dt>Line Break when Typing.
+	       <dd>At each keystroke check to see if the current line
+	           is too long, wrapping it if necessary.  If you use
+		   this then you should know about the "format"
+		   command that reformats a paragraph.  By default,
+		   that is bound to &lt;Meta-q&gt; 
+	     </dl>
+
+	 <dt>Attempt mhn 
+	 <dd>If this is selected, your message is run through
+	     <code>mhn</code> in order to expand any # directives that
+	     format a MIME message. See also the "Run mhn now" menu
+	     entry below, and see the <code>mhn</code> man page for
+	     details. 
+
+	 <dt>Quote Printable 
+	 <dd>If this is selected, then any text MIME parts are run
+	     through the quoted-printable encoder to wrap up 8-bit
+	     characters in a 7-bit safe encoding. The Quoted Printable
+	     default preference setting under Simple Editor can be set
+	     to automatic, never, or always. In automatic mode,
+	     quoting is enabled when you enter a Compose key sequence
+	     to generate an 8-bit character. 
+
+	 <dt>Run mhn now.
+	 <dd>This processes the message assuming you have mhn
+	     directives, and then lets you edit the result.
+
+	 <dt>Cite Selection 
+	 <dd>This formats and inserts the current selection. It is
+	     assumed to be in the currently displayed mail message,
+	     and the sender of that message is identified before the
+	     formatted text. Hint: this is the only useful way to
+	     include text from PGP encrypted messages and
+	     text/enriched messages. The formatting of text/enriched
+	     is lost, however.  
+
+	 <dt>Attachment
+	 <dd>This is a menu of attachment options.
+	     <dl>
+	       <dt>Attach File... 
+	       <dd>This brings up a dialog box that lets you attach a
+	           file using MIME. It tries to determine the type of
+		   the file based on <code>nametemplate</code> entries
+		   in the metamail mailcap description file. It
+		   presents a dialog that lets you override the type,
+		   add a Content-Description, and choose an encoding
+		   for the file. When you attach the first Part of a
+		   message you are asked whether or not to save the
+	           existing message body. If you save it, it becomes
+		   the text/plain first part of the multipart message.
+
+	       <dt>Insert File... 
+	       <dd>This simply inserts a file at the current insert
+	           point. 
+
+	       <dt>Attach Reference... 
+	       <dd>This sets up an Message/External-Body MIME message
+	           part. This is useful for sending around pointers to
+	           files available via FTP or on your local file system.  
+
+	       <dt>Attach PGP Keys... 
+	       <dd>Insert your PGP keys into the mail message. You can
+	           use the key selector to choose any key in your
+		   public keyring. Just type in a pattern that matches
+		   part of the key ID. Matching keys are displayed in
+		   the listbox.  
+	    </dl>
+
+	<dt>Whom 
+	<dd>This entry displays a small window with the network
+	    addresses of the recipients of the message. Clicking the
+	    button a second time makes the window go away.
+
+	<dt>Spell... 
+	<dd>This runs either the UNIX spell or ispell command. Choose
+	    between these two options in the Simple Editor
+	    <button -command Preferences_Dialog>Preferences</button>.
+	    (Don't confuse that with the setting under Editor Support
+	    <button -command Preferences_Dialog>Preferences</button>.)
+	    If you use ispell then the draft is reloaded after ispell
+	    terminates. If you use spell then the output of spell is
+	    put into a second pane inside the editor window. That's
+	    all - nothing fancy. 
+
+	<dt>Find SEL 
+	<dd>This searches the draft for the current X selection. The
+	    intent is that you select misspelled words in the output
+	    of the spell command and use this menu entry to locate
+	    them in the draft. (The find and keybinding mechanisms
+	    were stressed by this addition - expect a cleanup
+	    someday. There is no reasonable way to define keystroke
+	    accelerators for the find and still be able to change them
+	    in the Bind dialog. -don't ask...). 
+
+	<dt>Save Buffer 
+	<dd>This saves the editor buffer into a file in your drafts
+	    folder. Most likely you really want the "Keep on Send"
+	    function instead of Save, because that function preserves
+	    the draft after you send it, while ordinarily (in spite of
+	    "Save") MH will rename the draft after you send it. 
+
+	<dt>Mime Preview 
+	<dd>This displays the message as it will appear when an exmh
+	    user receives it. A detached top-level window is used, as
+	    with message Clip.  
+
+	<dt>Alternate Editor 
+	<dd>Save the draft and invoke your alternate editor on the
+	    message. Define the alternate under the Editor Support
+	    <button -command Preferences_Dialog>Preferences</button>.
+
+	<dt><a NAME="crypt">Crypt...</a>
+	<dd>This is a menu of options that use the Pretty Good Privacy
+	    package to to encryption and authentication. An
+	    explanation of pgp is beyond the scope of this manual.
+	    <p>
+	    The options in the menu determine how your message will be
+	    encrypted or signed when the message is sent.
+	    <p>
+	    These values default to the values provided on the 
+	    <button -command Preferences_Dialog>Preferences</button>
+	    PGP page and are reset for every new message.
+	    <p>
+	    There are currently three formats supported for signed or
+	    encrypted messages:
+	    <dl>
+	      <dt>Plain
+	      <dd>This uses no encapsulation whatsoever for the signed
+	          message. This format is compatible with older
+	          non-MIME compliant mail programs. 
+
+	      <dt>Application/PGP
+	      <dd>This uses the now deprecated Application/PGP MIME
+	          type.  This type was deprecated because it turned
+		  out to be insufficiently flexible. 
+
+	      <dt>Multipart/MIME
+	      <dd>This uses Multipart/signed MIME type with the
+	          signature part encoded as an
+		  application/pgp-signature.  This is compatible with
+		  other non-PGP digital signature schemes.  Many
+		  minimally compliant mail programs see your signature
+		  as an attachment.
+	    </dl>
+
+	    There are also four toggleable values which may be used in
+	    various combinations:
+
+	    <dl>
+
+	      <dt>Encrypt
+	      <dd>This causes the message to be encrypted so that only
+	          the intended recipient can read it.
+
+	      <dt>Sign
+	      <dd>This causes the message to be digitally signed so
+	          that the recipient can determine that you were
+	          really the author. 
+
+	      <dt>Mime
+	      <dd>This allows the encrypted or signed message to
+	          itself contain MIME subparts.  This flag cannot be
+	          specified with the "Plain" format.  In the future,
+	          it may be required for the other formats. 
+
+	      <dt>Clear Sign
+	      <dd>This causes a signed, but not encrypted message to
+	          be passed in clear text so even if a recipient
+	          doesn't have PGP available, they can still read the text.
+	    </dl>
+
+	    <p>
+	    If PGP is enabled, and "sedit PGP password" is selected in
+	    the 
+	    <button -command Preferences_Dialog>Preferences</button>,
+	    a field for entering a PGP password appears at the bottom
+	    of the SEDIT window.  If your password is provided in this
+	    field, then the values set in the Crypt... menu are
+	    invoked.  If no password is provided, then encryption is
+	    not used.  This makes it easy to go between using PGP and
+	    not using it for particular messages.
+	    <p> 
+	    If PGP is enabled and "sedit PGP password is <em>not</em>
+	    selected in the 
+	    <button -command Preferences_Dialog>Preferences</button>,
+	    a popup window appears after pressing the SEND button. 
+      </dl>
 </dl>
-
-There are also four toggleable values which may be used in various
-combinations:
-
-<dl>
-<dt>Encrypt
-<dd>This causes the message to be encrypted so that only the intended
-recipient can read it.
-<dt>Sign
-<dd>This causes the message to be digitally signed so that the
-recipient can determine that you were really the author.
-<dt>Mime
-<dd>This allows the encrypted or signed message to itself contain MIME
-subparts.  This flag cannot be specified with the "Plain" format.  In
-the future, it may be required for the other formats.
-<dt>Clear Sign
-<dd>This causes a signed, but not encrypted message to be passed in
-clear text so even if a recipient doesn't have PGP available, they can
-still read the text.
-</dl>
-
-</dl>
-
-<p>If PGP is enabled, and "sedit PGP password" is selected in the
-preferences, a field for entering a PGP password appears at
-the bottom of the SEDIT window.  If your password is provided in this
-field, then the values set in the Crypt... menu are invoked.  If no
-password is provided, then encryption is not used.  This makes it easy
-to go between using PGP and not using it for particular messages.
-<p>
-If PGP is enabled and "sedit PGP password is <em>not</em> selected in
-the preferences, a popup window appears after pressing the SEND button.
 
 <h3><a NAME="SEE ALSO" HREF="#CONTENTS">SEE ALSO</a></h3>
 <a HREF="exmh-use.n.html">exmh-use</a>, <a HREF="exmh.n.html">exmh</a>,

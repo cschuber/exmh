@@ -393,6 +393,26 @@ The PGP code needs to remember the settings for a particular
 draft between edits.
 
 ----------------------------------------------------------------------
+Number: 47
+Priority: Low
+Scope: Narrow (?)
+Complexity: High
+Status: 
+
+In the HTML docs, under "Find SEL", I found this:
+
+	<dd>This searches the draft for the current X selection. The
+	    intent is that you select misspelled words in the output
+	    of the spell command and use this menu entry to locate
+	    them in the draft. (The find and keybinding mechanisms
+	    were stressed by this addition - expect a cleanup
+	    someday. There is no reasonable way to define keystroke
+	    accelerators for the find and still be able to change them
+	    in the Bind dialog. -don't ask...). 
+
+so...that cleanup is now on the TODO.
+
+----------------------------------------------------------------------
 
 $Id$
 
