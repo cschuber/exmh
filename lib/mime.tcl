@@ -1057,6 +1057,9 @@ proc MimeShowFullHeaders {tkw part inlin} {
 	    set tag [Mime_PrintEncodedHeader $tkw [MimeLabel $part headers] \
 				    $mimeHdr($part,hdr,$hdr) \
 				    medium r plain $mime(fontSize)]
+	    if [regexp -nocase date $truehdr] {
+		MimeShowTime $tkw $mimeHdr($part,hdr,$hdr)
+	    }
 	    $tkw insert insert \n
 	    foreach key [list $truehdr default] {
 		if [info exists msg(tag,$key)] {
@@ -1070,6 +1073,30 @@ proc MimeShowFullHeaders {tkw part inlin} {
 	}
     }
 }
+
+# Show local time if message from another tz
+# e.g.
+#      Mon, 18 May 1998 11:58:39 GMT
+# is shown as
+#      Mon, 18 May 1998 11:58:39 GMT (13:58 MET DST)
+#
+
+proc MimeShowTime { tkw time } {
+    catch {
+	set msgtime   [clock scan $time]
+	set localtime [clock format $msgtime -format " %T"]
+	if { [string first $localtime $time] == -1 } {
+	    set format "%H:%M %Z"
+	    set day [clock format $msgtime -format %a]
+	    if { [string first $day $time] == -1 } {
+		set format "%a $format"
+	    }
+	    set msgtime [clock format $msgtime -format $format]
+	    $tkw insert insert " ($msgtime)"
+	}
+    }
+}
+
 proc MimeShowMinHeaders {tkw part inlin} {
     global mimeHdr mhProfile msg mime tk_version
     
@@ -1112,6 +1139,9 @@ proc MimeShowMinHeaders {tkw part inlin} {
 	set tag [Mime_PrintEncodedHeader $tkw [MimeLabel $part headers] \
 				$mimeHdr($part,hdr,$hdr) \
 				medium r plain $mime(fontSize)]
+	if [regexp -nocase date $truehdr] {
+	    MimeShowTime $tkw $mimeHdr($part,hdr,$hdr)
+	}
 	$tkw insert insert \n
 	foreach key [list $truehdr [expr {$show ? "default" : "hidden"}]] {
 	    if [info exists msg(tag,$key)] {
