@@ -17,7 +17,8 @@ proc Exec_Init {} {
 proc exec {args} {
     global ExecCache env
 
-    Exmh_Debug exec [join $args]
+# Caution:  Enabling the line below will cause PGP passphrases to be logged!
+#    Exmh_Debug exec [join $args]
 
     if {![regexp {^( 	)*([^<>	 ]+)(.*)$} $args all x cmd rest]} {
 	# auto-exec generates commands like:

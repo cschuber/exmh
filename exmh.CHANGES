@@ -3,6 +3,8 @@ HISTORY
 cvs repository 08/25/1999
     Fixed some problems with not timing out PGP subkeys (e.g. DSS keys
 	for PGP5/GPG).  --bmah.
+    Eliminate last vestige of PGP passphrases showing up in debugging
+	logs.  --George Ross <gdmr@dcs.ed.ac.uk> via bmah.
 
 cvs repository 08/24/1999
     Importing keys from email keyserver queries now works.  Attaching 
