@@ -1,6 +1,10 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.8  1999/09/30 03:51:07  kchrist
+# pgp($v,cmd_Beauty) was getting in the way of pgp($v,cmd_User) for
+# v=gpg so I had to rearrange things a bit.
+#
 # Revision 1.7  1999/09/27 23:18:45  kchrist
 # More PGP changes. Consolidated passphrase entry to sedit field or
 # pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
@@ -431,12 +435,9 @@ set pgp(gpg,pat_GoodSignature) {GOODSIG}
 set pgp(gpg,pat_Untrusted) {(TRUST_UNDEFINED|TRUST_NEVER)}
 set pgp(gpg,pat_BadSignature) {BADSIG}
 set pgp(gpg,pat_UnknownError) {ERROR}
-
-################
-# ShortenOutput
 # command that matches out the Originator
 set pgp(gpg,cmd_User) {
-    regexp {(GOODSIG|BADSIG) [^ ]* ([^ \n]*)} $pgpresult {} {} user
+    regexp {(GOODSIG|BADSIG) [^ ]* ([^\n]*)} $in {} {} user
 }
 
 ##################

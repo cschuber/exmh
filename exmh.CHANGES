@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 09/29/1999
+    Fixed a bug in the shorten output processing of GPG. -kchrist
+
 cvs repository 09/27/1999
     More PGP changes. Consolidated passphrase entry to sedit field or
     pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass) 

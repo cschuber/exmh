@@ -1,6 +1,10 @@
 # pgpPgp5.tcl
 
 # $Log$
+# Revision 1.5  1999/09/30 03:51:07  kchrist
+# pgp($v,cmd_Beauty) was getting in the way of pgp($v,cmd_User) for
+# v=gpg so I had to rearrange things a bit.
+#
 # Revision 1.4  1999/09/27 23:18:46  kchrist
 # More PGP changes. Consolidated passphrase entry to sedit field or
 # pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
@@ -204,11 +208,8 @@ set pgp(pgp5,pat_GoodSignature) {Good signature.*}
 set pgp(pgp5,pat_Untrusted) {WARNING:.*is not trusted.*}
 set pgp(pgp5,pat_BadSignature) {BAD signature.*}
 set pgp(pgp5,pat_UnknownError) {ERROR}
-
-################
-# ShortenOutput
 # command that matches out the Originator
-set pgp(pgp5,cmd_User) {regexp {by key[^"]*("[^"]*")} $pgpresult {} user}
+set pgp(pgp5,cmd_User) {regexp {by key[^"]*("[^"]*")} $in {} user}
 
 ##################
 # WWW_QueryHKPKey

@@ -19,6 +19,10 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.15  1999/09/30 03:51:07  kchrist
+# pgp($v,cmd_Beauty) was getting in the way of pgp($v,cmd_User) for
+# v=gpg so I had to rearrange things a bit.
+#
 # Revision 1.14  1999/09/27 23:18:45  kchrist
 # More PGP changes. Consolidated passphrase entry to sedit field or
 # pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
@@ -1394,6 +1398,9 @@ proc Pgp_InterpretOutput { v in outvar } {
     Exmh_Debug "<Pgp_InterpretOutput> PGP Output:\n$in"
     regexp {(.*)child process exited abnormally} $in {} in
     set in [string trim $in]
+    if {[string length $in] == 0} {
+	set in "PGP execution produced no messages."
+    }
 
     set pgpresult(ok) 1
 
@@ -1427,6 +1434,9 @@ proc Pgp_InterpretOutput { v in outvar } {
         set redin $in
     }
 
+    # get out user (for ShortenOutput) now since beautify erases needed info
+    eval [set pgp($v,cmd_User)]
+
     Exmh_Debug <TUNING>
     # An output tuning command
     # NOTE: pgpresult(msg) should also be set there
@@ -1451,16 +1461,13 @@ proc Pgp_InterpretOutput { v in outvar } {
 
     if [set pgp($v,shortmsgs)] {
 	set pgpresult(msg) [Pgp_ShortenOutput $v $pgpresult(msg) \
-				$pgpresult(summary)]
+				$pgpresult(summary) $user]
     }
 }
 
-proc Pgp_ShortenOutput { v pgpresult summary } {
-
+proc Pgp_ShortenOutput { v pgpresult summary user } {
     global pgp
 
-    # get out user
-    eval [set pgp($v,cmd_User)]
     catch {Exmh_Debug "<PGP ShortenOutput> $user"}
 
     switch $summary {
