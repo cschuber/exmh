@@ -1,5 +1,13 @@
 HISTORY
-cvs repository 04/19/2000
+cvs repository 05/08/2000  Brent Welch <welch@scriptics.com>
+
+    lib/app-defaults, lib/sedit.tcl: Restored the use of { } in the Sedit app-defaults
+    values so we can tolerate spaces in the drafts folder name.  Changed the uses of
+    "eval list" to "subst" in sedit.tcl so the bracing trick works in those cases.
+    lib/html.tcl, html_images.tcl: Added an option to disable image loading in HTML
+    lib/html/guide.html: fixed minor typos.
+
+cvs repository 04/19/2000  Brent Welch <welch@scriptics.com>
 
     lib/ftoc.tcl, lib/folder.tcl: Added Ftoc_LastFolder and Folder_Previous
     so you can go back to the folder you were just in.
