@@ -43,18 +43,22 @@ proc Env_Init {} {
     }
 
     # Make sure MH is on the path
+    # At install time, we may not yet know the mh_path,
+    # and are just setting up the TMPDIR
+
     global mh_path
-    set hit 0
-    foreach dir [split $env(PATH) :] {
-	if {[string compare $dir $mh_path] == 0} {
-	    set hit 1
-	    break
+    if {[info exist mh_path]} {
+	set hit 0
+	foreach dir [split $env(PATH) :] {
+	    if {[string compare $dir $mh_path] == 0} {
+		set hit 1
+		break
+	    }
+	}
+	if {! $hit} {
+	    set env(PATH) $mh_path:$env(PATH)
 	}
     }
-    if {! $hit} {
-	set env(PATH) $mh_path:$env(PATH)
-    }
-
 }
 
 proc Env_Tmp {} {

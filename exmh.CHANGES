@@ -1,5 +1,12 @@
 HISTORY
 
+Released exmh-2.3.1 1/19/2001 Brent Welch <welch@interwoven.com>
+
+cvs repository 01/19/2001 Brent Welch <brent.welch@interwoven.com>
+    lib/env.tcl: fixed installation error that was due to the
+    addition of Env_Init to the installer.  Only showed up when
+    you installed without the .exmhinstall cache.
+
 Released exmh-2.3 1/17/2001 Brent Welch <welch@interwoven.com>
 
 cvs repository 01/17/2001 Brent Welch <brent.welch@interwoven.com>
