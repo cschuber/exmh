@@ -218,7 +218,6 @@ proc SeqWinAdd {seq folder num} {
 	}
     }
     if $redisplay {
-	Exmh_Debug Redisplay
 	set i 0
 	foreach f $seqwin(folders,$seq) {
 	    SeqWinShow $seq $i 1 $f $flist(seqcount,$f,$seq)
@@ -271,7 +270,6 @@ proc SeqWinUpdate {seq folder num} {
 proc SeqWinRemove {seq index folder} {
     global seqwin flist
     
-    Exmh_Debug SeqWinRemove $seq $index $folder
     set seqwin(folders,$seq) [lreplace $seqwin(folders,$seq) $index $index]
     set newlines [llength $seqwin(folders,$seq)]
     .sequences.$seq.lb delete $index
@@ -334,7 +332,6 @@ proc SeqWinRemove {seq index folder} {
 	SeqWinEmptyMsg $seq
     } else {
 	if $redisplay {
-	    Exmh_Debug Redisplay
 	    set i 0
 	    foreach f $seqwin(folders,$seq) {
 		SeqWinShow $seq $i 1 $f $flist(seqcount,$f,$seq)
