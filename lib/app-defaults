@@ -886,7 +886,7 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.c_alt: SeditAlternate $draft $t
 
 *Sedit.Menubar.pgp.text:	Crypt...
-*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpencrypt pgpsign pgpmime pgpclearsign
+*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey
 *Sedit.Menubar.pgp.m.l_pgpencrypt:	Encrypt
 *Sedit.Menubar.pgp.m.t_pgpencrypt:	check
 *Sedit.Menubar.pgp.m.v_pgpencrypt:	pgp(encrypt,$id)
@@ -899,6 +899,8 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.l_pgpclearsign:	Clear Sign
 *Sedit.Menubar.pgp.m.t_pgpclearsign:	check
 *Sedit.Menubar.pgp.m.v_pgpclearsign:	pgp(clearsign,$id)
+*Sedit.Menubar.pgp.m.l_pgpchoosekey:	Choose Key
+*Sedit.Menubar.pgp.m.c_pgpchoosekey:	Pgp_SetMyName
 *Sedit.Menubar.pgp.m.l_pgpformat:	Format
 *Sedit.Menubar.pgp.m.t_pgpformat:	cascade
 *Sedit.Menubar.pgp.m.m_pgpformat:	format

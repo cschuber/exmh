@@ -70,11 +70,24 @@ proc Sedit_Start { draft } {
 
 	if {$pgp(enabled) && $pgp(seditpgp)} {
 	    set keyid [lindex $pgp(myname) 0]
-	    set label "PGP password:"
-	    Widget_BeginEntries [string length $label] 10 [list SeditSend $draft $t]
-	    Widget_LabeledEntry .sedit$id.pgp $label pgpPass($keyid) \
-		    -show *
-	    Widget_EndEntries
+	    set keyname [lindex $pgp(myname) 1]
+	    set pgp(sedit_label) "PGP passphrase for $keyname:"
+	    set w ".sedit$id"
+	    if {![winfo exists $w.pgp]} {
+		pack [frame $w.pgp] -side top -fill x -ipady 2
+	    }
+	    if {![winfo exists $w.pgp.l]} {
+		pack [label $w.pgp.l -textvariable pgp(sedit_label)] \
+		    -side left
+	    }
+	    if {![winfo exists $w.pgp.e]} {
+		pack [entry $w.pgp.e -textvariable pgpPass(cur) -show *] \
+		    -side left -expand yes -fill x -ipady 2
+	    }
+	    if {![winfo exists $w.pgp.b]} {
+		pack [button $w.pgp.b -text "Choose Alternate Key" \
+		    -command {Pgp_SetMyName}] -side left -ipady 2
+	    }
 	}
 
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]

@@ -2,6 +2,7 @@ HISTORY
 
 cvs repository 4/30/1999
     Removed stray call to Exwin_ToplevelFocus from seditBind.tcl -haldevore
+    Support for multiple pgp keys -"Jan L. Peterson" <jlp@Part.NET> via cwg
 
 cvs repository 4/29/1999
     Fixed bug in which people using an external editor get a PGP related 

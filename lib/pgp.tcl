@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.6  1999/04/30 19:09:00  cwg
+# Jan Peterson's multiple PGP key patch
+#
 # Revision 1.5  1999/04/20 21:46:17  cwg
 # Is CVS working now?
 #
@@ -297,10 +300,23 @@ proc Pgp_ChoosePrivateKey { text } {
 }
 
 proc Pgp_SetMyName {} {
-   global pgp
+   global pgp pgpPass
+
+# first, save old pgpPass if set
+   if {[info exists pgpPass(cur)] && [info exists pgp(myname)]} {
+      set keyid [lindex $pgp(myname) 0]
+      set pgpPass($keyid) $pgpPass(cur)
+   }
 
    set pgp(myname) [Pgp_ChoosePrivateKey \
 	 "Please select the default key to use for signing"]
+
+   set keyid [lindex $pgp(myname) 0]
+   set keyname [lindex $pgp(myname) 1]
+   if [info exists pgpPass($keyid)] {
+      set pgpPass(cur) $pgpPass($keyid)
+   }
+   set pgp(sedit_label) "PGP passphrase for $keyname:"
 }
 
 proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
