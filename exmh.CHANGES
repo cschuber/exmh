@@ -1,5 +1,20 @@
 HISTORY
 cvs repository 02/09/2003 welch@panasas.com
+    Making the 2.6 release, cvs tag exmh-2-6
+    These files were updated:
+    COPYRIGHT
+    Makefile
+    exmh.CHANGES
+    exmh.README
+    exmh.install
+    version.sed
+    lib/html/exmh.README.html
+    lib/html/index.html
+    lib/html/software.html
+    In addition, this tar file of handy scrips was uncommited in my misc dir.
+    misc/mhutils.tar.gz
+
+cvs repository 02/09/2003 welch@panasas.com
     main.tcl - added microsecond granularity time stamps to log messages
     msg.tcl - added Msg_ShowCurrent compatibility routine
 

@@ -49,10 +49,10 @@
 
 <h3><a NAME="version">Version</a></h3>
 Last modified:
-Mon Jul  9 09:12:49 PDT 2001
+Sun Feb  9 21:32:38 PST 2003
 <br>
 
-exmh version: 2.5
+exmh version: 2.6
 <br>
 
 "Brent Welch" &lt;welch@acm.org&gt;
@@ -61,7 +61,8 @@ exmh version: 2.5
 <p>
 Version 2.3 requires Tcl/Tk 8.0 or higher. <i>exmh</i> is known to work
 with MH versions 6.7 and 6.8.*.  There is a clean replacement for MH
-called <b>nmh</b> available at www.mhost.com/nmh.
+called <b>nmh</b> available at
+<a href="http://www.nongnu.org/nmh/">http://www.nongnu.org/nmh</a>
 <p>
 Experienced EXMH installers should check FLASHES below and the <i>exmh.CHANGES</i>
 file. 
@@ -97,6 +98,10 @@ is turned on. The symptom of this is a message like "exmh: Error in
 ./lib/app-defaults: missing colon on line 2" and there are no buttons
 or menus in the interface. 
 <hr>
+<h4><a NAME="wiki">Exmh Wiki</a></h4>
+See <a HREF="http://www.beedub.com/cgi-bin/wiki.cgi/exmh/">exmh wiki</a>
+for a web site you can use to share tips and tricks with other users.
+<hr>
 <h4><a NAME="faq">Frequently Asked Questions</a></h4>
 See <a HREF="http://www.beedub.com/exmh/exmh-faq.html">exmh-faq.html</a> for answers to some frequently
 asked questions. This information is now available via the FAQ button
@@ -104,6 +109,8 @@ in <i>exmh</i>.
 <hr>
 <h4><a NAME="flashes">Flashes</a></h4>
 <ul>
+<li>2.6 adds generalized sequence handling and fixes various bugs.
+
 <li>2.5 adds color highlighting for in-lined replies.
 Fixes a bug with "Keep on Send" in 2.4.
 
@@ -135,7 +142,7 @@ message to which you are replying.
 <li>2.0beta has many bug fixes for the alpha release. The new line-breaking
 behavior of the built-in editor has been made optional, with the old
 line-breaking behavior as the default. 
-<li>2.5 fixed an installation bug in 2.3 that showed up when you
+<li>2.6 fixed an installation bug in 2.3 that showed up when you
 installed without the .exmhinstall cache file.
 <li>2.3 captures 6 months of feature tweaks and bug fixes by the
 hard working exmh-workers crew.  The CVS sources are now at SourceForge.
@@ -295,7 +302,8 @@ Honorable mentions:
 <li>John LoVerso (<a href="mailto:loverso@osf.org">loverso@osf.org</a>
 ) who contributed the popup nested folder display. 
 <li>Chris Garrigues (<a href="mailto:cwg@deepeddy.com">cwg@deepeddy.com</a>
-) who rewrote the mime display code. 
+) who rewrote the mime display code, and recently generalized sequence
+handling.
 <li>Marc VanHeyningen (<a href="mailto:mvanheyn@cs.indiana.edu">mvanheyn@cs.indiana.edu</a>
 ) who wrote the mailcap parsing code. 
 <li>Allen Downey, <a href="mailto:downey@cs.berkeley.edu">downey@cs.berkeley.edu</a>
@@ -318,6 +326,9 @@ now been merged into the seqwin display.
 who contributed the multipart/security code for PGP. 
 <li>Hal DeVore, <a href="mailto:haldevore@geocities.com">haldevore@geocities.com</a>,
 who overhauled the address book.
+<li>J C Lawrence, <a href="mailto:claw@kanga.nu">claw@kanga.nu</a>,
+who worked on the message colorization code.
+
 </ul>
 <p>
 There are a lot of other folks that contributed code and patches. Without
@@ -531,7 +542,7 @@ in <i>exmh</i> were originally contributed by its users.
 <h4><a NAME="author">Author</a></h4>
 -- "Brent Welch" &lt;welch@acm.org&gt;
 <p>
-<a HREF="http://www.beedub.com/exmh/index.html">exmh:The Right Tool
+<a HREF="http://www.beedub.com/exmh/">exmh:The Right Tool
 for the Job </a> 
  
 

@@ -496,19 +496,18 @@ proc Exmh_DoCommand {} {
 }
 
 proc Tcl_Tk_Vers_Init {} {
-# Here we do any special tuning needed for specific Tcl/Tk releases
-# For instance, 8.4a2 and later moved some private variables into
-# namespaces, so we need to do backward-compatibility until we
-# fix the code everyplace.
-global tk_version tk_patchLevel tcl_version tcl_patchLevel
-    if [info exists tk_version] {
-        if {$tk_version > "8.3"} {
-	    ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
-	    ::tk::unsupported::ExposePrivateCommand tkEntrySeeInsert
-	    ::tk::unsupported::ExposePrivateCommand tkMenuUnpost
-	    ::tk::unsupported::ExposePrivateCommand tkTextButton1
-	    ::tk::unsupported::ExposePrivateCommand tkTextResetAnchor
-	    ::tk::unsupported::ExposePrivateVariable tkPriv
-        }
+    # Here we do any special tuning needed for specific Tcl/Tk releases
+    # For instance, 8.4a2 and later moved some private variables into
+    # namespaces, so we need to do backward-compatibility until we
+    # fix the code everyplace.
+    global tk_version tk_patchLevel tcl_version tcl_patchLevel
+    if {[info exists tk_version] && ($tk_version > "8.3")} {
+        ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
+        ::tk::unsupported::ExposePrivateCommand tkEntrySeeInsert
+        ::tk::unsupported::ExposePrivateCommand tkMenuUnpost
+        ::tk::unsupported::ExposePrivateCommand tkTextButton1
+        ::tk::unsupported::ExposePrivateCommand tkEntryButton1
+        ::tk::unsupported::ExposePrivateCommand tkTextResetAnchor
+        ::tk::unsupported::ExposePrivateVariable tkPriv
     }
 }

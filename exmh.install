@@ -14,8 +14,8 @@
 source ./install.tcl
 
 set program exmh
-set vers 2.5
-set date 07/13/2001
+set vers 2.6
+set date 02/09/2003
 
 if [catch {package require Tcl 8.0}] {
     error "Tcl/Tk 8.0 or higher required for exmh.  You have $tcl_version"
@@ -94,8 +94,8 @@ of the settings are file or directory names. Make sure the file system
 pathnames are correct for your system. The fields are described below.
 
 <p>
-The wish pathname is for the program that runs exmh. As of exmh2.0,
-Tk 4.1 is required. 
+The wish pathname is for the program that runs exmh.
+Tk 8.0 or higher (e.g., Tk 8.4) is required.
 <p>
 By default, the program is installed as "exmh", and it also uses related
 scripts named "exmh-bg" and "exmh-async". If you want to install it
