@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 5/4/1999
+    Fixed Help...>Color Legend crash -cwg
+
 cvs repository 5/3/1999
     Added code and doc for "New" button in address database browser
         -Ovidiu Predescu via haldevore

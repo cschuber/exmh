@@ -18,7 +18,11 @@ proc Help_KeyDisplay {} {
 	set b .key.but
 
 	set l [Widget_Label $b]
-	$l configure -text [if {[winfo depth .] > 4} "color" "monochrome"]
+	if {[winfo depth .] > 4} {
+	    $l configure -text "color"
+	} else {
+	    $l configure -text "monochrome"
+	}
 
 	set font $fdisp(font)
 
