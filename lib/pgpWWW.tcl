@@ -10,6 +10,16 @@
 # -- Markus Gruber
 #
 # $Log$
+# Revision 1.6  2001/08/23 23:13:26  kchrist
+# Minor bug fix. Trying to set "Method for querying GnuPG keys"
+# to other led to:
+#
+# extra switch pattern with no body, this may be due to a comment
+# incorrectly placed outside of a switch body - see the "switch"
+# documentation
+#
+# Moving the '#' solved the problem.
+#
 # Revision 1.5  2000/06/16 23:41:37  jmorzins
 # Corrected the email address for the pgp.mit.edu email keyserver.
 #
@@ -83,7 +93,7 @@ proc Pgp_WWW_QueryKey { v id } {
             hkp { Pgp_WWW_QueryHKPKey $v $id }
             WWW { Pgp_WWW_QueryWWWKey $v $id }
             email { Pgp_WWW_QueryEmailKey $v $id }
-#            email { Pgp_Misc_Send [set pgp($v,keyserver)] "GET 0x$id" }
+            #email { Pgp_Misc_Send [set pgp($v,keyserver)] "GET 0x$id" }
             default { Pgp_WWW_QueryOtherKey $v $id }
         }
     } else {
