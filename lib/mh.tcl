@@ -412,7 +412,7 @@ proc Mh_Cur { folder } {
 }
 proc MhCur { folder } {
     # pick +folder cur changes the context, so we access the files directly
-    global mhProfile mhPriv
+    global mhProfile
     if {$folder == {}} {
 	return {}
     }
@@ -423,63 +423,113 @@ proc MhCur { folder } {
 	return {}
     }
 }
-proc Mh_Sequences { f } {
-    global mhProfile
-    set result {}
-    if {[catch {open $mhProfile(path)/$f/$mhProfile(mh-sequences) r} in] == 0} {
-        set old [read $in]
-        close $in
-        foreach line [split $old \n] {
-            if {[regexp "^(.*):" $line x seq]} {
-                lappend result $seq
-            }
-        }
+proc MhReadSeqs {folder seqsvar} {
+    global mhProfile mhPriv
+    upvar $seqsvar seqs
+    # First read the private sequence
+    set mhPriv(changed,private) 0
+    set filename $mhProfile(context)
+    if [file exists $filename] {
+	set mtime [file mtime $filename]
+	if {![info exists mhPriv(privmtime)] || ($mtime != $mhPriv(privmtime))} {
+	    foreach elem [array names mhPriv] {
+		set indices [split $elem ,]
+		if {[lindex $indices 0] == {privseq}} {
+		    if {[lindex $indices 1] == $folder} {
+			unset mhPriv($elem)
+		    }
+		}
+	    }
+	    if {[catch {open $filename r} in] == 0} {
+		Exmh_Debug Reading $filename
+		set old [read $in]
+		close $in
+		foreach line [split $old \n] {
+		    if {$line != {}} {
+			if {[regexp {^([^:]*):\s*(.*)$} $line foo tag msgids]} {
+			    if {[regexp "atr-(.*)-$mhProfile(path)/(.*)" $tag foo seq thisfolder]} {
+				set mhPriv(privseq,$thisfolder,$seq) [MhSeqExpand $thisfolder $msgids]
+				set mhPriv(mode,$seq) private
+			    } else {
+				lappend mhPriv(otherpriv) "$line"
+			    }
+			} else {
+			    Exmh_Status "Bad line in $filename: $line"
+			}
+		    }
+		}
+		set mhPriv(privmtime) $mtime
+	    }
+	}
     }
-    # private sequences
-    if {[catch {open $mhProfile(context) r} in] == 0} {
-        set old [read $in]
-        close $in
-        # Turn off all special characters in folder name (e.g., c++)
-        # Thanks to John Farrell
-        set pattern $mhProfile(path)/$f
-        regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
-        foreach line [split $old \n] {
-            if {[regexp "^atr-(.*)-$pattern" $line x seq]} {
-                lappend result $seq
-            }
-        }
+    foreach elem [array names mhPriv] {
+	set indices [split $elem ,]
+	if {[lindex $indices 0] == {privseq}} {
+	    if {[lindex $indices 1] == $folder} {
+		set seqs([lindex $indices 2]) $mhPriv($elem)
+	    }
+	}
     }
-    return $result
+    # Then read the public sequence
+    set mhPriv(changed,public) 0
+    set filename "$mhProfile(path)/$folder/$mhProfile(mh-sequences)"
+    if [file exists $filename] {
+	set mtime [file mtime $filename]
+	if {![info exists mhPriv(seqmtime,$folder)] || ($mtime != $mhPriv(seqmtime,$folder))} {
+	    foreach elem [array names mhPriv] {
+		set indices [split $elem ,]
+		if {[lindex $indices 0] == {pubseq}} {
+		    if {[lindex $indices 1] == $folder} {
+			unset mhPriv($elem)
+		    }
+		}
+	    }
+	    if {[catch {open $filename r} in] == 0} {
+		Exmh_Debug Reading $filename
+		set old [read $in]
+		close $in
+		foreach line [split $old \n] {
+		    if {$line != {}} {
+			if {[regexp {^([^:]*):\s*(.*)$} $line foo seq msgids]} {
+			    if {[info exists mhPriv(mode,$seq)] && $mhPriv(mode,$seq) == "private"} {
+				# If this was also in the private file, merge the two
+				# and move to the public file.
+				set mhPriv(changed,private) 1
+				lappend mhPriv(pubseq,$folder,$seq) [MhSeq $folder $seq add $mhPriv(pubseq,$folder,$seq) [MhSeqExpand $folder $msgids]]
+			    } else {
+				set mhPriv(pubseq,$folder,$seq) [MhSeqExpand $folder $msgids]
+			    }
+			    set mhPriv(mode,$seq) public
+			} else {
+			    Exmh_Status "Bad line in $filename: $line"
+			}
+		    }
+		}
+		set mhPriv(seqmtime,$folder) $mtime
+	    }
+	}
+    }
+    foreach elem [array names mhPriv] {
+	set indices [split $elem ,]
+	if {[lindex $indices 0] == {pubseq}} {
+	    if {[lindex $indices 1] == $folder} {
+		set seqs([lindex $indices 2]) $mhPriv($elem)
+	    }
+	}
+    }
+}
+proc Mh_Sequences { folder } {
+    MhReadSeqs $folder seqs
+    return [array names seqs]
 }
 proc Mh_Sequence { folder seq } {
     # pick +folder cur changes the context, so we access the files directly
-    global mhProfile mhPriv
-    set result {}
-    if {[catch {open $mhProfile(path)/$folder/$mhProfile(mh-sequences) r} in] ==
- 0} {
-        set old [read $in]
-        close $in
-        foreach line [split $old \n] {
-            if {[regexp "^$seq: (.*)" $line x msgids]} {
-                set result $msgids
-            }
-        }
+    MhReadSeqs $folder seqs
+    if [info exists seqs($seq)] {
+	return [MhSeqExpand $folder $seqs($seq)]
+    } else {
+	return {}
     }
-    # private sequences
-    if {[catch {open $mhProfile(context) r} in] == 0} {
-        set old [read $in]
-        close $in
-        # Turn off all special characters in folder name (e.g., c++)
-        # Thanks to John Farrell
-        set pattern atr-$seq-$mhProfile(path)/$folder
-        regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
-        foreach line [split $old \n] {
-            if {[regexp "$pattern: (.*)" $line x msgids]} {
-                set result [Seq_Modify $folder add $result $msgids]
-            }
-        }
-    }
-    return [MhSeqExpand $folder $result]
 }
 proc MhSeqExpand { folder sequence } {
     global mhProfile
@@ -516,96 +566,78 @@ proc MhSeqExpand { folder sequence } {
 # from a sequence
 proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
     global mhProfile mhPriv
-    array unset sequences
-    array unset mode
-    # First read the private sequence
-    set changed(private) 0
-    if {[catch {open $mhProfile(context) r} in] == 0} {
-	set old [read $in]
-	close $in
-	set pattern $mhProfile(path)/$folder
-	regsub -all {]|[.^$*+|()\[\\]} $pattern {\\&} pattern
-        foreach line [split $old \n] {
-	    if {$line != {}} {
-		if {[regexp {^([^:]*):\s*(.*)$} $line foo tag thesemsgids]} {
-		    if {[regexp "atr-(.*)-$pattern" $tag foo thisseq]} {
-			set sequences($thisseq) $thesemsgids
-			set mode($thisseq) private
-		    } else {
-			lappend otherprivate "$line"
-		    }
-		} else {
-		    Exmh_Status "Bad line in $mhProfile(context): $line"
-		}
+    if {0} {
+	Exmh_Debug Mh_SequenceUpdate $folder $how $seq $msgids $which
+	set l [info level]
+	while {[incr l -1] > 0} {
+	    Exmh_Debug "    : [info level $l]"
+	}
+    }
+    array unset seqs
+    foreach elem [array names mhPriv] {
+	set indices [split $elem ,]
+	if {[lindex $indices 0] == {mode}} {
+	    if {[lindex $indices 1] == $folder} {
+		unset mhPriv($elem)
 	    }
 	}
     }
-    # Then read the public sequence
-    set changed(public) 0
-    if {[catch {open $mhProfile(path)/$folder/$mhProfile(mh-sequences) r} in] == 0} {
-	set old [read $in]
-	close $in
-	foreach line [split $old \n] {
-	    if {$line != {}} {
-		if {[regexp {^([^:]*):\s*(.*)$} $line foo thisseq thesemsgids]} {
-		    if {[catch {string compare $mode($thisseq) "private"}] == 0} {
-			# If this was also in the private file, merge the two
-			# and move to the public file.
-			set changed(private) 1
-			set sequences($thisseq) [MhSeq $folder $seq add $sequences($thisseq) $thesemsgids]
-		    } else {
-			set sequences($thisseq) $thesemsgids
-		    }
-		    set mode($thisseq) public
-		} else {
-		    Exmh_Status "Bad line in $mhProfile(path)/$folder/$mhProfile(mh-sequences): $line"
-		}
-	    }
-	}
-    }
+    MhReadSeqs $folder seqs
     # Set the value for the sequence we're updating
-    if [catch {set sequences($seq)} oldmsgids] {
+    if [catch {set seqs($seq)} oldmsgids] {
 	set oldmsgids {}
     }
-    set sequences($seq) [MhSeq $folder $seq $how $oldmsgids $msgids]
-    if {![catch {set mode($seq)}] && ($mode($seq) != $which)} {
-	set changed($mode($seq)) 1
+    set seqs($seq) [MhSeq $folder $seq $how $oldmsgids $msgids]
+    if {![catch {set mhPriv(mode,$seq)}] && ($mhPriv(mode,$seq) != $which)} {
+	set mhPriv(changed,$mhPriv(mode,$seq)) 1
     }
-    set mode($seq) $which
-    set changed($which) 1
-    if {$changed(public) == 1} {
+    set mhPriv(mode,$seq) $which
+    if {$seqs($seq) != [MhSeqMake $oldmsgids]} {
+	Exmh_Debug "$seq: $oldmsgids => $seqs($seq)"
+	set mhPriv(changed,$which) 1
+    }
+    if {$mhPriv(changed,public) == 1} {
+	set mhPriv(pubseq,$folder,$seq) [MhSeqExpand $folder $seqs($seq)]
 	set filename $mhProfile(path)/$folder/$mhProfile(mh-sequences)
 	if {[catch {open $filename.new w} out] == 0} {
-	    foreach sequence [array names sequences] {
-		if {[string compare $mode($sequence) "public"] == 0} {
-		    if {![regexp {^ *$} $sequences($sequence)]} {
-			puts $out "$sequence: $sequences($sequence)"
+	    Exmh_Debug Writing $filename
+	    foreach thisseq [array names seqs] {
+		if {![info exists mhPriv(mode,$thisseq)]} {
+		    set mhPriv(mode,$thisseq) public
+		}
+		if {$mhPriv(mode,$thisseq) == "public"} {
+		    if {![regexp {^ *$} $seqs($thisseq)]} {
+			puts $out "$thisseq: $seqs($thisseq)"
 		    }
 		}
 	    }
 	    close $out
 	    Mh_Rename $filename.new $filename
+	    set mhPriv(seqmtime,$folder) [file mtime $filename]
 	} else {
 	    Exmh_Status "Couldn't write to $mhProfile(path)/$folder/$mhProfile(mh-sequences).new"
-	    set changed(private) 1
-	    foreach sequence [array names sequences] {
-		set mode($sequence) "private"
+	    set mhPriv(changed,private) 1
+	    foreach thisseq [array names seqs] {
+		set mhPriv(mode,$thisseq) "private"
 	    }
 	}
     }
-    if {$changed(private) == 1} {
+    if {$mhPriv(changed,private) == 1} {
+	set mhPriv(privseq,$folder,$seq) [MhSeqExpand $folder $seqs($seq)]
 	set filename $mhProfile(context)
 	if {[catch {open $filename.new w} out] == 0} {
-	    puts $out [join $otherprivate "\n"]
-	    foreach sequence [array names sequences] {
-		if {[string compare $mode($sequence) "private"] == 0} {
-		    if {![regexp {^ *$} $sequences($sequence)]} {
-			puts $out "atr-$sequence-$mhProfile(path)/$folder: $sequences($sequence)"
+	    Exmh_Debug Writing $filename
+	    puts $out [join $mhPriv(otherpriv) "\n"]
+	    foreach thisseq [array names seqs] {
+		if {[string compare $mhPriv(mode,$thisseq) "private"] == 0} {
+		    if {![regexp {^ *$} $seqs($thisseq)]} {
+			puts $out "atr-$thisseq-$mhProfile(path)/$folder: $seqs($thisseq)"
 		    }
 		}
 	    }
 	    close $out
 	    Mh_Rename $filename.new $filename
+	    set mhPriv(privmtime) [file mtime $filename]
 	}
     }
 }
@@ -638,11 +670,10 @@ proc MhSeq { folder seq how oldmsgids msgids } {
 		lappend merge $id
 	    }
 	}
-	set seq [MhSeqMake $merge]
-	return $seq
+	return [MhSeqMake $merge]
     } elseif {[string compare $how "replace"] == 0} {
 	# replace
-	return $msgids
+	return [MhSeqMake $msgids]
     } else {
 	return {}
     }
