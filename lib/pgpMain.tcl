@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.5  1999/08/04 00:21:57  iko
+# Fix multiple Mime-Version: with pgp signed messages
+#
 # Revision 1.4  1999/08/03 18:06:43  bmah
 # Permit user to cancel selection of a private key for signing (affects
 # the "Choose Key..." dialog in sedit and the button at the bottom of the
@@ -514,6 +517,10 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
 	}
       }
       
+    # remove pgp-action and mime-version headers
+    set mailheaders [Pgp_Misc_Filter line \
+	{![regexp "^(mime-version|pgp-action):" $line]} $mailheaders]
+
     # setup the header of the application/pgp subpart
     if $rfc822 {
 	set pgpheaders [concat \
