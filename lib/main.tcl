@@ -12,7 +12,13 @@
 # any specification.
 
 proc Exmh {} {
-    global exmh argv
+    global exmh argv nmh
+
+    if ![ catch {string match *-group* [exec repl -help] } ] {
+	set nmh 1
+    } else {
+	set nmh 0
+    }
 
     Mh_Init		;# Defines mhProfile
 

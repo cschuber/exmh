@@ -5,6 +5,9 @@ cvs repository 08/24/1999
 	keys to an email message is now RFC 2015 compliant 
 	(content-type: application/pgp-keys instead of application/pgp).
 	--Kevin.Christian@lsil.com via bmah.
+    Made reply-to-all invoke repl -group if repl claims to support a
+	-group flag (i.e. is nmh). Adapted from Debian 2.0.2-7 package.
+	(iko)
 
 cvs repository 08/22/1999
     Fix a few bugs related to email PGP querying (queries now can go out).  

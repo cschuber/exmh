@@ -373,7 +373,7 @@ exmh.iconic:		0
 *Mops.reply.m.l_reply: 	Reply to sender <Key-r>
 *Mops.reply.m.c_reply:		Msg_Reply -nocc to -nocc cc
 *Mops.reply.m.l_replyall: 	Reply all <Key-R>
-*Mops.reply.m.c_replyall:	Msg_Reply -cc to -cc cc
+*Mops.reply.m.c_replyall:	Msg_ReplyAll
 
 *Mops.reply.m.t_sep:	separator
 *Mops.reply.m.l_help:	Defining more...

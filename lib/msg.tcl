@@ -284,6 +284,17 @@ proc MsgComp {args} {
     }
     return 1
 }
+
+proc Msg_ReplyAll { } {
+    global nmh
+
+    if {$nmh == 1} {
+	Msg_Reply -group -nocc me
+    } else {
+	Msg_Reply -cc to -cc cc
+    }
+}
+
 proc Msg_Reply { args } {
     global exmh msg mhProfile
     set exmh(ctype) {repl}
