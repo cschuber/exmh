@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 3/4/2005 cwg-exmh@deepeddy.com
+  lib/seqwin.tcl - Make Warp & Narrow work if you aren't already in
+  the folder.
+
 cvs repository 3/1/2005 cwg-exmh@deepeddy.com
   lib/html_content.tcl, lib/main.tcl, lib/mime.tcl, lib/msg.tcl, 
   lib/seditExtras.tcl - Call tk_getOpenDialog or tk_GetSaveDialog

@@ -519,7 +519,7 @@ proc SeqWinButton {seq y mode} {
 		    if {[string compare $mode Warp] == 0} {
 			Folder_Change $folder
 		    } elseif {[string compare $mode "Warp & Narrow"] == 0} {
-			Folder_Change $folder [list Ftoc_NewFtoc [Ftoc_FindMsgs [Seq_Msgs $folder $seq]]]
+			Folder_Change $folder "Ftoc_NewFtoc \[Ftoc_FindMsgs \[Seq_Msgs $folder $seq\]\]"
 		    } else {
 			Folder_Change $folder [list Msg_Show $seq]
 		    }
