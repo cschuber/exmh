@@ -19,6 +19,11 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.4  1999/08/03 18:06:43  bmah
+# Permit user to cancel selection of a private key for signing (affects
+# the "Choose Key..." dialog in sedit and the button at the bottom of the
+# pgpsedit window).
+#
 # Revision 1.3  1999/08/03 16:31:43  cwg
 # Display the body of a message which fails to be decoded by PGP.
 #
@@ -397,13 +402,13 @@ proc Pgp_ChoosePrivateKey { v text } {
     global pgp
 
     set signkeys {}
-    while {[llength $signkeys] != 1} {
-       if [catch {Pgp_KeyBox $v $text Sec [set pgp($v,privatekeys)]} signkeys] {
- 	   set signkeys [list [set pgp($v,myname)]]
-       }
-    }
 
-    return [lindex $signkeys 0]
+    if [catch {Pgp_KeyBox $v $text Sec [set pgp($v,privatekeys)]} signkeys] {
+	set signkeys [list [set pgp($v,myname)]]
+	return [lindex $signkeys 0]
+    } else {
+	return $signkeys
+    }
 }
 
 proc Pgp_SetMyName { v } {
@@ -415,16 +420,19 @@ proc Pgp_SetMyName { v } {
       set pgp($v,pass,$keyid) $pgpPass(cur)
    }
 
-   set pgp($v,myname) [Pgp_ChoosePrivateKey $v \
+   set newname [Pgp_ChoosePrivateKey $v \
 	 "Please select the default key to use for signing"]
+   if ([string length $newname]) {
+       set pgp($v,myname) "$newname"
 
-   set keyid [lindex $pgp($v,myname) 0]
-   set keyalg [lindex $pgp($v,myname) 1]
-   set keyname [lindex $pgp($v,myname) 4]
-   if [info exists pgp($v,pass,$keyid)] {
-      set pgpPass(cur) $pgp($v,pass,$keyid)
+       set keyid [lindex $pgp($v,myname) 0]
+       set keyalg [lindex $pgp($v,myname) 1]
+       set keyname [lindex $pgp($v,myname) 4]
+       if [info exists pgp($v,pass,$keyid)] {
+	   set pgpPass(cur) $pgp($v,pass,$keyid)
+       }
+       set pgp(sedit_label) "$keyid $keyalg $keyname"
    }
-   set pgp(sedit_label) "$keyid $keyalg $keyname"
 }
 
 proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
