@@ -22,7 +22,7 @@ caching, such as between runs of the browser."}
     {imagecachesize imageCacheSize 10 {Max Images Cached in Memory}
 "This limits the number of images saved in main memory.
 A setting of 0 minimizes memory use."}
-    {window(imagesEnable) imageEnable ON {Enable display of in-line images}
+    {window(imagesEnabled) imageEnable ON {Enable display of in-line images}
 "Use this to enable or disable images in your HTML messages."}
 }
     HtmlInitVars
