@@ -1,0 +1,9 @@
+./CVS
+./misc
+./lib/CVS
+./lib/html/CVS
+./lib/html/Tar.exclude
+./.exmhinstall
+./Tar.exclude
+./html-2.1.1.tar.gz
+./exmh-2.1.1.tar.gz
