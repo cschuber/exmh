@@ -508,11 +508,11 @@ proc Ftoc_FindMsg { msgid {line {}} } {
 	}
 	if {$msgid > $maxMsg || $msgid < $minMsg} {
 	    Exmh_Status "Cannot find $msgid ($minMsg,$maxMsg)" warn
-	    set msgtolinecache($msgno) -1
+	    set msgtolinecache($msgid) -1
 	    return "" ;# new message not listed
 	}
 	if {$maxLine == $minLine} {
-	    set msgtolinecache($msgno) -1
+	    set msgtolinecache($msgid) -1
 	    return ""	;# not found
 	}
 	set nextLine [expr int(($maxLine+$minLine)/2)]
