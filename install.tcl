@@ -608,7 +608,7 @@ proc installInner { {logProc nolog} } {
 			installCmd $logProc [list chmod a+r $dir/$newf]
 		    }
 		} msg] {
-		    installFeedback "Dir install error: $msg"
+		    installFeedback "Dir install $f error: $msg"
 		    return
 		} else {
 		    if {$logProc == "nolog"} {

@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 12/2/1999
+    Applied Burkhardt patch for specifying POP host with -host flag
+    Fixed "double page up" bug in HTML by eliminating redundant bindings
+    Tweaked error message in install.tcl
+
 cvs repository 11/08/1999
     Roll back 11/04/1999 bug fix and re-implement it in a different 
     way. -kchrist
