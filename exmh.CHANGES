@@ -4,6 +4,7 @@ cvs repository 08/21/2002 cwg-exmh@deepeddy.com
 	is undefined. 
     app-defaults - Msg_MarkUnseen is now {Msg_Mark unseen}.
     msg.tcl - left a $ off of $mhProfile(unseen-sequence)
+    ftoc.tcl - Needed quotes around argument to Exmh_Status.
 
 cvs repository 08/20/2002 cwg-exmh@deepeddy.com
     app-defaults-color - Change default colors of ftoc so highlighted

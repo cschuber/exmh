@@ -1360,7 +1360,7 @@ proc FtocToggleSequence { seq } {
     set origmsgids [Seq_Msgs $folder $seq]
     set selmsgids [Ftoc_CurMsgs]
     if {$selmsgids == {}} {
-	Exmh_Status No messages were selected
+	Exmh_Status "No messages were selected"
     } else {
 	# If any selected message is not already in the sequence, then add 
 	#   messages to the sequence.
