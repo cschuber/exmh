@@ -87,7 +87,7 @@ proc SelectBackSpace { w } {
     set select(sel) [string range $select(sel) 0 [expr [string length $select(sel)]-2]]
     Exmh_Status "$select(prompt) $select(sel)"
     if ![info exists select(folder)] {
-	Msg_Change $select(sel) noshow
+	catch { Msg_Change $select(sel) noshow }
     }
 }
 proc SelectToggle {w} {
@@ -101,7 +101,9 @@ proc SelectToggle {w} {
 	set select(prompt) "[lindex $select(toggle) 0] Folder:"
     } else {
 	catch {
-	    incr select(sel)
+	    if [regexp {^[0-9]+$} $select(sel)] {
+	        incr select(sel)
+	    }
 	    Msg_Change $select(sel) noshow
 	}
     }
@@ -113,7 +115,9 @@ proc SelectPrev {w} {
 	SelectTypein $w "-"
     } else {
 	catch {
-	    incr select(sel) -1
+	    if [regexp {^[0-9]+$} $select(sel)] {
+	        incr select(sel) -1
+	    }
 	    Msg_Change $select(sel) noshow
 	}
         Exmh_Status "$select(prompt) $select(sel)"
@@ -161,7 +165,9 @@ proc SelectReturn { w {a {}} } {
 	unset select(folder)
 	catch {unset select(allfolders)}
     } else {
-	Msg_Change $select(sel) show
+	if [regexp {^[0-9]+$} $select(sel)] {
+	    Msg_Change $select(sel) show
+	}
     }
     $select(entry) configure -state disabled
     Exmh_Focus
