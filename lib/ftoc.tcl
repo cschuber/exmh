@@ -463,10 +463,10 @@ proc Ftoc_FindMsg { msgid } {
     if {![catch {set msgtolinecache($msgid)} L]} {
 	return $L
     }
-#
-# Linear search for pick and thread FTOCs (pseudo-displays)
-#
     if !$ftoc(displayValid) {
+	#
+	# Linear search for pick and thread FTOCs (pseudo-displays)
+	#
         for {set L 1} {$L <= $ftoc(numMsgs)} {incr L} {
             if {[Ftoc_MsgNumber $L] == $msgid} {
                 return $L
@@ -475,6 +475,9 @@ proc Ftoc_FindMsg { msgid } {
         return {}
     }
 
+    #
+    # Binary search for other FTOCs
+    #
     set minLine 1
     set minMsg [Ftoc_MsgNumber $minLine]
     if {$msgid == $minMsg} {
@@ -496,9 +499,11 @@ proc Ftoc_FindMsg { msgid } {
 	    return {}	;# not found
 	}
 	#set nextLine [expr int(($maxLine+$minLine)/2)]
-	# Don't divide in two, guestimate the where the line might be instead
+	# Don't divide in two, guestimate where the line might be instead
 	set nextLine [expr int($minLine+1+($msgid-$minMsg)*($maxLine-$minLine-2)/($maxMsg-$minMsg))]
 	set nextMsg [Ftoc_MsgNumber $nextLine]
+	# Note that a side effect of Ftoc_MsgNumber was to put this entry in the cache,
+	# so we don't have to do it here.
 	if {$nextMsg == $msgid} {
 	    return $nextLine
 	} elseif {$nextMsg > $msgid} {
