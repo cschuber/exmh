@@ -1,5 +1,8 @@
 HISTORY
 cvs repository 1/3/2005 welch@panasas.com
+  lib/html/software.html: updated links
+
+cvs repository 1/3/2005 welch@panasas.com
   added misc/mafe, as contributed by Andrew Billyard
   which is a perl-tk editor for mh aliases files.
 

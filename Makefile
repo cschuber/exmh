@@ -14,12 +14,7 @@ SNAPDATE=`/bin/date +%Y%m%d`
 srctar: realsrctar
 
 realsrctar: htmltar
-	echo ./CVS > Tar.exclude
-	echo ./lib/CVS >> Tar.exclude
-	echo ./misc/CVS >> Tar.exclude
-	echo ./misc/RPM/CVS >> Tar.exclude
-	echo ./lib/html/CVS >> Tar.exclude
-	echo ./lib/bitmaps/CVS >> Tar.exclude
+	find . -name CVS > Tar.exclude
 	echo ./lib/html/Tar.exclude >> Tar.exclude
 	echo ./.exmhinstall >> Tar.exclude
 	echo ./Tar.exclude >> Tar.exclude
