@@ -224,14 +224,14 @@ proc HMlink_callback {win href {query ""}} {
 	    }
 	    mailto {
 		if {[string match exmh* [tk appname]]} {
-		    Sedit_Mailto $href
+		    Msg_Mailto $href
 		} else {
 		    set interps [winfo interps]
 		    set ix [lsearch -regexp $interps {exmh( #.)?$}]
 		    if {$ix >= 0} {
 			set exmh [lindex $interps $ix]
 			Status $win "Using $exmh to send mail"
-			send $exmh [list Sedit_Mailto $href]
+			send $exmh [list Msg_Mailto $href]
 		    } else {
 			regsub mailto: $href {} address
 			Status $win "Please send mail to $address"
