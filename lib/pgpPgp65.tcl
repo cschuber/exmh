@@ -1,6 +1,9 @@
 # pgpPgp65.tcl
 
 # $Log$
+# Revision 1.3  2000/06/09 05:42:17  valdis
+# Fixed the OTHER broken regexp...
+#
 # Revision 1.2  2000/06/09 04:58:37  valdis
 # Fix stoopid confusion between two regexps - use right one..
 #
@@ -59,7 +62,7 @@ set pgp(pgp6,parse_config) 1
 #############
 # Exec_Batch
 # Batchmode flags
-set pgp(pgp6,flags_batch) {+armorlines=0 "+comment=$pgp(pgp6,comment)" +batchmode=on +verbose=0 +pager=cat +compatible=on}
+set pgp(pgp6,flags_batch) {+armorlines=0 "+comment=$pgp(pgp6,comment)" +batchmode=on +verbose=0 +pager=cat}
 #
 proc Pgp_pgp6_PassFdSet {} {
             global env
@@ -96,13 +99,13 @@ set pgp(pgp6,pat_dropKeys) \
 set pgp(pgp6,pat_splitKeys) \n
 # Patterns that match out interesting keys
 set pgp(pgp6,pat_keySec) \
-                {^.*(sec) +[0-9]+/+([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$}
+                {^.*(RSA|DSS|DH) +[0-9]+/+[0-9]+ +0x([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$}
 set pgp(pgp6,pat_keyPub) \
-                {^.*(pub) +[0-9]+/+([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$}
+                {^.*(RSA|DSS|DH) +[0-9]+/+[0-9]+ +0x([0-9A-F]+) +[0-9]+/ ?[0-9]+/[0-9]+ +(.*)$}
 set pgp(pgp6,pat_uid) \
                 {^ +(.+)$}
 # TclCmd to match out userid and keyid
-set pgp(pgp6,cmd_keyMatch) { set match [regexp $keypattern $line algo {}  keyid {}]
+set pgp(pgp6,cmd_keyMatch) { set match [regexp $keypattern $line {} algo  keyid userid]
                             set match }
 set pgp(pgp6,cmd_uidMatch) { regexp $uidpattern $line {} userid }
 
