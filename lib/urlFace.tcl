@@ -12,13 +12,13 @@ set urlFace(height) 48
 proc UrlGetCachedImageFileName { href } {
     global urlFace
 
-    set extension [file extension $href]
-
-    if [catch {exec echo $href | sed -e s^/^_^g} trhref] {
-	UrlFaceLog "cannot process URL! ($trhref)"
+    regsub -all {[^-.~[:print:]]} $href {_} trhref
+    if {$trhref == ""} {
+	UrlFaceLog "cannot process URL! ($href)"
 	# Cannot process the URL; create a temp file to hold the image
 	set trhref "temp.$extension"
     }
+    set extension [file extension $trhref]
     set rootname [file rootname $trhref]
 
     # Handle image types not currently known by Tk. This requires the
@@ -213,7 +213,7 @@ proc UrlFaceQueryDone { href filename msgPath pane } {
 	set normalized [UrlFaceGetNormalizedImage $data(file)]
 	UrlFaceLog "normalized file is $normalized"
 
-	UrlFaceLog "executing cp [glob $normalized] $filename"
+	UrlFaceLog "copying file [glob $normalized] $filename"
 	if [catch {file copy  -- [glob $normalized] $filename} err] {
 	    Exmh_Status "cannot create face file in ~/.exmh/exmh-images! ($err)" warning
 	    UrlFaceLog "cannot create face file in ~/.exmh/exmh-images! ($err)"

@@ -41,7 +41,7 @@ proc Preferences_Init { userDefaults appDefaults } {
     set pref(localDefaults) \
 	"[file dirname $appDefaults]/local.[file tail $appDefaults]"
 
-    catch {file mkdir -p [glob ~]/.exmh}
+    catch {file mkdir [glob ~]/.exmh}
 
     if {[file exists [glob ~]/.exmh-defaults] 
 	&& ![file exists $userDefaults]} { 

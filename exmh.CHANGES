@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 07/28/2004 valdis.kletnieks@vt.edu
+  Clean up 2 bugs from the 07/26 'exec' hunt...
+  lib/preferences.tcl - remove extraneous -p flag on 'file mkdir'
+  lib/urlFace.tcl - missed an 'exec' call better done with regsub.
+
 cvs repository 07/26/2004 welch@panasas.com
   exmh-strip.MASTER: removed use of mime(encode)
   exmh.install: set version to 2.7.1
