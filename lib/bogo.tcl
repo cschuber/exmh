@@ -46,7 +46,7 @@ this is the destination folder."}
     }		
 }
 
-proc MyBogoFilter {{spam spam}} {
+proc Bogo_Filter {{spam spam}} {
     global exmh msg bogo
     Exmh_Debug Bogo $spam
     if {$spam == "spam"} {
@@ -84,4 +84,23 @@ proc MyBogoFilter {{spam spam}} {
 	Exmh_Status "Spam button config error."
 	return
     }
+}
+proc Bogo_FilterFolder {{spam spam}} {
+  global exmh
+  global mhProfile
+  set folder $exmh(folder)
+
+  Exmh_Status "Learning $exmh(folder) as $spam"
+  set pipe [open "|sa-learn --$spam $mhProfile(path)/$exmh(folder)"]
+  fileevent $pipe readable [list BogoFilterReader $pipe $spam]
+}
+proc BogoFilterReader {pipe spam} {
+  global exmh
+  if {[eof $pipe]} {
+    Exmh_Status "Learned $exmh(folder) as $spam"
+    close $pipe
+  } else {
+    gets $pipe line
+    Exmh_Debug "BogoFilterReader: $line"
+  }
 }

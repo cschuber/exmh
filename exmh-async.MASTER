@@ -6,6 +6,7 @@
 # LastArg: pathname of draft message
 #
 
+package require Tk
 wm withdraw .
 
 # simple argv cracking

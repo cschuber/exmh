@@ -16,8 +16,8 @@ proc Mh_Init {} {
     global exmh nmh
     MhParseProfile
 
-    set nmh 0
-    catch {string match *group* [MhExec repl -help] } nmh
+    catch {MhExec repl -help} output
+    set nmh [string match *group* $output]
 
     # set $exmh(mh_vers) to a pretty-printable string...
     set exmh(mh_vers) "unknown"

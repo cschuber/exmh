@@ -19,8 +19,9 @@
 #CONFIGURATION
 #END CONFIGURATION
 
-if [catch {file join a b}] {
-    error "Tk 4.1 (final release) or higher required."
+package require Tk
+if {$tcl_version < 8.0} {
+    error "Tcl 8.0 (final release) or higher required."
     exit 1
 }
 # Do this so popups related to user initialization
@@ -70,7 +71,15 @@ foreach exmh(userLibrary) [list [glob ~]/.exmh/lib [glob ~]/.tk/exmh] {
 # are other places in the code that assume exmh(userLibrary) is defined
 
 # Set up the environment
-Env_Init
+if {[catch {
+  Env_Init
+} err]} {
+  puts stderr "Error running Env_Init: $err"
+  puts stderr "This usually means exmh isn't installed right"
+  puts stderr "Check the main exmh script for the CONFIGURATION section"
+  puts stderr "and make sure exmh(library) is a valid absolute pathname"
+  exit 1
+}
 
 # For WindowMaker, http://www.inf.ufrgs.br/~kojima/wmaker/
 wm group . .

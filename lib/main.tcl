@@ -96,6 +96,7 @@ is displayed to debug the flist module."}
     Busy_Init
     Post_Init
     Quote_Init
+    Bogo_Init
 
     wm protocol . WM_DELETE_WINDOW Exmh_Done
     Exwin_Layout

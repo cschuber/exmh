@@ -1,4 +1,13 @@
 HISTORY
+
+cvs repository 06/14/2004 welch@panasas.com
+  mh.tcl: Slight tweak to version detection to make it more robust.
+  bogo.tcl: moved misc/mybogo.tcl to lib/bogo.tcl - this is a wrapper
+        around spamassasin or other spam filters
+  lib/app-defaults-mono: removed "blue" from the monochrome Xdefaults
+  app-defaults: added file magic strings for PDF documents
+        force the frame padding to 0 because it is non-zero in 8.4
+
 cvs repository 05/22/2004 cwg-exmh@deepeddy.com
   exmhwrapper - Prepend the hostname if we're running on the local
   host.  This allows bifffolder to work even if it's on a different

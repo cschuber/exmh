@@ -19,6 +19,7 @@
 #CONFIGURATION
 #END CONFIGURATION
 
+package require Tk
 wm withdraw .
 
 if {$argc < 3} {

@@ -75,6 +75,9 @@
 *padY:		2
 *Button.padX:	1
 *Button.padY:	1
+! Tk 8.4 now has padding on frames
+*Frame.padX:	0
+*Frame.padY:	0
 *Button.highlightThickness: 0
 *Checkbutton.highlightThickness: 0
 *Radiobutton.highlightThickness: 0
@@ -569,6 +572,10 @@ exmh.iconic:		0
 *magic_lLotus worksheet:		application/x-lotus-123
 *magic_lMS Word document:		application/msword
 *magic_lAdobe PDF file:			application/pdf
+*magic_lPDF document, version 1.1:      application/pdf
+*magic_lPDF document, version 1.2:      application/pdf
+*magic_lPDF document, version 1.3:      application/pdf
+*magic_lPDF document, version 1.4:      application/pdf
 *magic_lFrame Maker document:		application/x-frame
 *magic_lGIF file, v87:			image/gif
 *magic_lGIF file, v89:			image/gif

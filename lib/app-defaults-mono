@@ -25,7 +25,9 @@
 *sequences: current unseen moved deleted selected range mrange drange
 *Usequences: 
 *sequence_current: -bgstipple {}
-*sequence_unseen: -foreground blue
+! Actual colors cause errors, don't use blue
+! *sequence_unseen: -foreground blue
+*sequence_unseen: -foreground black
 *sequence_moved: -bgstipple gray25
 *sequence_deleted: -overstrike 1
 *sequence_selected: -foreground black -background #ececec
