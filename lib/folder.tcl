@@ -119,6 +119,7 @@ proc FolderChange {folder msgShowProc} {
     set exmh(folder) $folder
     Flist_UnseenUpdate $folder
     Scan_CacheUpdate
+    Ftoc_ShowSequences
     Exmh_Status $folder
     # Usually {Msg_Show $seq} or {Msg_Change $msg}
     eval $msgShowProc

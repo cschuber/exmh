@@ -14,6 +14,7 @@
 #### Display folder contents
 
 proc Scan_Folder {folder {adjustDisplay 1}} {
+    Exmh_Debug Scan_Folder $folder $adjustDisplay
     Exmh_Debug Scan_Folder [time [list ScanFolder $folder $adjustDisplay]]
 }
 proc ScanFolder {folder adjustDisplay} {
@@ -98,7 +99,6 @@ proc ScanFolder {folder adjustDisplay} {
     if {$adjustDisplay} {
 	Ftoc_Yview end
     }
-    Ftoc_ShowSequences
     return
 }
 proc Scan_FolderForce {{folder ""}} {
@@ -162,7 +162,6 @@ proc Scan_Inc {folder incOutput} {
     if {$ftoc(showNew)} {
 	Ftoc_Yview end
     }
-    Ftoc_ShowSequences
     Label_Folder $folder
 }
 proc Scan_IO {folder scanIO } {

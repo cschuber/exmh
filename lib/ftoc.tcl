@@ -85,7 +85,16 @@ proc Ftoc_Reset { numMsgs msgid folder } {
 proc Ftoc_Update { numMsgs } {
     # Update size of message list after inc'ing into current folder
     global ftoc
-    Exmh_Debug Ftoc_Update $ftoc(folder) has $numMsgs msgs
+    Exmh_Debug Ftoc_Update $ftoc(folder) has $numMsgs msgs (was $ftoc(numMsgs))
+    if {$numMsgs > $ftoc(numMsgs)} {
+	set msgids {}
+	set lineno $ftoc(numMsgs)
+	while {$lineno < $numMsgs} {
+	    incr lineno
+	    lappend msgids [Ftoc_MsgNumber $lineno]
+	}
+	Ftoc_ShowSequences $msgids
+    }
     set ftoc(numMsgs) $numMsgs
 }
 

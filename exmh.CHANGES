@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 02/07/2003 cwg-exmh@deepeddy.com
+    folder.tcl, ftoc,tcl, scan.tcl - Call Ftoc_ShowSequences in
+	Ftoc_Update on the new messages.  Cal Ftoc_ShowSequences in
+	FolderChange.  Don't call Ftoc_ShowSequences in ScanFolder and
+	Scan_Inc.  This both cuts down on the number of lines we call
+	Ftoc_ShowSequences on and eliminates a timing window that was
+	generating "Cannot find $msgid ($minmsgid,$maxmsgid)" warnings.
+
 cvs repository 11/07/2002 valdis.kletnieks@vt.edu
     mh.tcl, flist.tcl, tclIndex - add new function MhGetSeqCache to
 	speed up flist/sequence handling.  We now only call MhReadSeqs
