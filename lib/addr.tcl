@@ -115,78 +115,85 @@ proc Addr_Init {} {
             addressdbLDAPServer
             {}
             "LDAP Server"
-            "The server to send LDAP queries to."
+            "The server to send LDAP queries to, prefixed with any necessary command-line option flags."
         }
         {
             addr_db(ldap_searchbase)
             addressdbLDAPSearchBase
             {}
             "LDAP Search Root"
-            "The root under which to conduct LDAP searches."
-        }
+	    "The root under which to conduct LDAP searches. Prefixed with any necessary command-line option flags."
+	}
 	{
 	    addr_db(ldap_encoding)
 	    addressdbLDAPEncoding
 	    {utf-8}
-	    "LDAP Encoding"
+            "LDAP Encoding"
 	    "The character encoding used by the LDAP server."
 	}
-        {
-            addr_db(filter_regexp)
-            addressdbFilterRegexp
-            {}
-            "Regular expression filter"
-            "If set, addresses matching this regular expression pattern will not be saved in the database."
-        }
-        {
-            addr_db(skip_folders)
-            addressdbFoldersSkip
-            {}
-            "Folders to ignore"
-            "A list of one or more folders separated by spaces.  Exmh will not save addresses from the mail in the folders in this list. An empty list will allow Exmh to add addresses from every folder.  Groups of folders may be specified using * as a wild card anywhere in a folder name."
-        }
-        {
-            addr_db(filter_alternate_mailboxes) 
-            addressdbFilterAltMailboxes
-            ON
-            "Ignore alternate mailboxes"
-            "If set, addresses that match the names specified as \"Alternate mailboxes\" in your MH profile will not be saved."
-        }
-        {
-            addr_db(key_force_save)
-            addressdbForceSave 
-            <Control-Tab>
-            "Key to save an address"
-            "Key which, if pressed, will cause the address from the current message to be stored regardless of any filtering specified.  This key is only active in the main exmh window so it may be the same as the \"Key to expand addresses\" without conflict.  Pressing this key stores an address in the database even if it would have been filtered (not stored) due to matching \"Regular expression filter\", \"Folders to ignore\", or one of your alternate mailboxes."
-        }
-        {
-            addr_db(standard_address_format)
-            addressdbStandardFormat
-            ON
-            "Use \"address (Full Name)\" Format"
-            "If on, use \"address (Full Name)\" format for expanded addresses.  Otherwise, use \"Full Name <address>\" format."
-        }
-        {
-            addr_db(remove_entries)
-            addressdbRemoveEntries
-            OFF
-            "Remove Old Entries"
-            "If on, remove old entries from the database"
-        }
-        {
-            addr_db(remove_days)
-            addressdbRemoveDays
-            {}
-            "Days Until Removal"
-            "Number of days until inactive entry is removed"
-        }
-        {
-            addr_db(remove_invalid_date)
-            addressdbRemoveInvalidDate
-            OFF
-            "Remove Invalid Date"
-            "If on, delete any entry with a non-null, but invalid date"
-        }
+	{
+	    addr_db(ldap_searchprog)
+	    addressdbLDAPSearchprog
+	    {ldapsearch -B}
+	    "LDAP search program"
+	    "The command-line LDAP search program, with arguments"
+	}
+	{
+	    addr_db(filter_regexp)
+	    addressdbFilterRegexp
+	    {}
+	    "Regular expression filter"
+	    "If set, addresses matching this regular expression pattern will not be saved in the database."
+	}
+	{
+	    addr_db(skip_folders)
+	    addressdbFoldersSkip
+	    {}
+	    "Folders to ignore"
+	    "A list of one or more folders separated by spaces.  Exmh will not save addresses from the mail in the folders in this list. An empty list will allow Exmh to add addresses from every folder.	Groups of folders may be specified using * as a wild card anywhere in a folder name."
+	}
+	{
+	    addr_db(filter_alternate_mailboxes)
+	    addressdbFilterAltMailboxes
+	    ON
+	    "Ignore alternate mailboxes"
+	    "If set, addresses that match the names specified as \"Alternate mailboxes\" in your MH profile will not be saved."
+	}
+	{
+	    addr_db(key_force_save)
+	    addressdbForceSave
+	    <Control-Tab>
+	    "Key to save an address"
+	    "Key which, if pressed, will cause the address from the current message to be stored regardless of any filtering specified.  This key is only active in the main exmh window so it may be the same as the \"Key to expand addresses\" without conflict.  Pressing this key stores an address in the database even if it would have been filtered (not stored) due to matching \"Regular expression filter\", \"Folders to ignore\", or one of your alternate mailboxes."
+	}
+	{
+	    addr_db(standard_address_format)
+	    addressdbStandardFormat
+	    ON
+	    "Use \"address (Full Name)\" Format"
+	    "If on, use \"address (Full Name)\" format for expanded addresses.  Otherwise, use \"Full Name <address>\" format."
+	}
+	{
+	    addr_db(remove_entries)
+	    addressdbRemoveEntries
+	    OFF
+	    "Remove Old Entries"
+	    "If on, remove old entries from the database"
+	}
+	{
+	    addr_db(remove_days)
+	    addressdbRemoveDays
+	    {}
+	    "Days Until Removal"
+	    "Number of days until inactive entry is removed"
+	}
+	{
+	    addr_db(remove_invalid_date)
+	    addressdbRemoveInvalidDate
+	    OFF
+	    "Remove Invalid Date"
+	    "If on, delete any entry with a non-null, but invalid date"
+	}
     }
 
     #addr_db is an array used for keeping state.
@@ -684,16 +691,16 @@ proc LDAP_Lookup {n} {
         return {}
     }
     
-    Exmh_Status "Querying $addr_db(ldap_server) from $addr_db(ldap_searchbase) with $n..."
+    Exmh_Status "Querying $addr_db(ldap_server) from $addr_db(ldap_searchbase) with $n via $addr_db(ldap_searchprog)..."
 
     set query "(|(cn=*$n*)(mail=*$n*)(sn=*$n*)(givenname=*$n*))"
     if {[catch {set query "[encoding convertto $addr_db(ldap_encoding) "$query"]"} err]} {
 	Exmh_Debug "LDAP_Lookup encoding convertto: $err"
     }
-    if [catch {set ldap_results [exec ldapsearch -B -h [string trim $addr_db(ldap_server)] \
-                                                 -b $addr_db(ldap_searchbase) \
+    if [catch {set ldap_results [eval exec $addr_db(ldap_searchprog) [string trim $addr_db(ldap_server)] \
+                                                 $addr_db(ldap_searchbase) \
                                                  "$query" cn mail]} err] {
-        Exmh_Status "Error executing ldapsearch: $err"
+        Exmh_Status "Error executing $addr_db(ldap_searchprog): $err"
         return {}
     }
 

@@ -1,4 +1,24 @@
 HISTORY
+04/30/2002 welch@panasas.com
+    A whole collection of patches.  If marked with ** then I've lost
+    track of who gave them to me and I apologize for that:
+    exmh-strip.MASTER: added pref initialization to quiet errors caused
+      by changes elsewhere in the main body of exmh
+    install.tcl: fixed errors that occur when you try to display a
+      dialog box (e.g., the Verify window) that is already displayed
+    lib/addr.tcl: a new set of options for configuring LDAP (Mark Bergman)
+    lib/extrasInit.tcl: help text updates about the uquoteAdd resource (**)
+    lib/faces.tcl: fix for space-in-pathname problem (**)
+    lib/fcache.tcl: New Feature! display the count of unseen messages
+      in the folder cache. (Paul Menage) 
+    lib/html_get_http.tcl: trap errors from bad http: links
+    lib/inc.tcl: tweaked feedback about inc'ed messages to do case-insensitive
+      grep for Subject: (**)
+    lib/mime.tcl: for for space-in-pathname problem
+    lib/pgpExec.tcl: eliminated Exmh_Debug message that could dump out
+      a massive keyring to the log, taking many many seconds (**)
+    lib/unseenwin.tcl: fix to tolerate space-in-folder-name (I think) (**)
+
 
 cvs repository 04/04/2002-04/17/2002 cwg-exmh@deepeddy.com
     various files - some more code cleanup and a whole bunch of

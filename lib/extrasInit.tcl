@@ -314,9 +314,9 @@ resources for tuning *quoteOmit.
 non-empty, the function in *quote_type is run on that MIME section.
 For instance, if the following resources were set:
 
-*quoteUAdd: message/rfc822 text/* multipart/* application/pgp \
+*uquoteAdd: message/rfc822 text/* multipart/* application/pgp \
     foo1/bar1 foo2/bar2 foo3/*
-*quoteUOmit: foo3/barnone
+*uquoteOmit: foo3/barnone
 *quote_message/rfc822:          Quote_Message
 *quote_multipart/signed:        Quote_MultipartSigned
 *quote_multipart/encrypted:     Quote_MultipartEncrypted

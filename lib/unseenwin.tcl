@@ -90,6 +90,9 @@ proc UnseenWinTrace {array elem op} {
   if [catch {
     if {[scan $elem "new,%s" folder] != 1} {
       return
+    } else {
+      regsub "new," $elem "" folder
+      regsub "\n" $folder "" folder
     }
     if [info exists flist($elem)] {
       set num $flist($elem)

@@ -59,11 +59,15 @@ folder in your cache."}
         {fcache(nicknames) fcacheNickNames ON {Use nicknames in the display}
 "Use nicknames in the folder cache display. Very convenient if your folder
 structure is deeply nested." }
+        {fcache(unseenCount) fcacheUnseenCount ON {Show unseen message count in folder cache}
+	"For folders containing unseen messages, display the number of unseen messages as well as highlighting the folder cache entries." }
     }
     trace variable fcache(lines) w FcacheFixupLines
     trace variable fcache(sticky) w FcacheFixupSticky
     trace variable fcache(sortByName) w Fcache_Redisplay
     trace variable fcache(nicknames) w Fcache_Redisplay
+    trace variable fcache(unseenCount) w Fcache_Redisplay
+    trace variable flist wu Fcache_RedisplayUnseen
 
     # Init the cache and handle various error cases.
 
@@ -91,7 +95,14 @@ structure is deeply nested." }
 proc Fcache_Redisplay { args } {
    Fcache_Display 1
 }
-proc Fcache_FolderName { folder } {
+proc Fcache_RedisplayUnseen { array elem op } {
+    global flist fcache
+    if {$fcache(unseenCount)} {
+	Fcache_Display [scan $elem "new,%s" folder]
+    }
+}
+
+proc Fcache_FolderNickName { folder } {
    global folderNickName nickNameFolders fcache
 
    if {! $fcache(nicknames)} {
@@ -121,9 +132,9 @@ proc Fcache_FolderName { folder } {
 	    lappend nickNameFolders($nickname) $folder
 	    foreach clashingFolder $folders {
 	       catch {unset folderNickName($clashingFolder)}
-	       Fcache_FolderName $clashingFolder
+	       Fcache_FolderNickName $clashingFolder
 	    }
-	    return [Fcache_FolderName $folder]
+	    return [Fcache_FolderNickName $folder]
 	 }
       } else {
 	 set nickNameFolders($nickname) [list $folder]
@@ -134,6 +145,21 @@ proc Fcache_FolderName { folder } {
    set folderNickName($folder) $folder
    return $folder
 }
+
+proc Fcache_FolderName { folder } {
+    global flist fcache
+
+    set fname [ Fcache_FolderNickName $folder ]
+    if {$fcache(unseenCount)} {
+	set key "new,$folder"
+	if [ info exists flist($key)] {
+	    set num $flist($key)
+	    set fname "$fname:$num"
+	}
+    }
+    return $fname
+}
+
 proc Fcache_CreateWindow {} {
     global fdisp fcache
     # Create the canvas for cache display

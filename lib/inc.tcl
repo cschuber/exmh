@@ -244,7 +244,7 @@ proc Inc_Presort {{doinc 1}} {
 		continue
 	    }
 	    if {$inc(presortFeedback)} {
-		if [catch {exec grep "^Subject:" $file | head -1} \
+		if [catch {exec grep -i "^Subject:" $file | head -1} \
 		    subject] {
 		    set subject ""
 		}
@@ -279,7 +279,7 @@ proc Inc_Presort {{doinc 1}} {
 		Mh_Refile MyIncTmp [file tail $file] MyIncErrors 
 	    } else {
 		#
-		# print the messages we got (Brent, delete if you don't like)
+		# print the messages we got
 		#
 
 		foreach line [split $err "\n"] {

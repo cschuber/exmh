@@ -6,6 +6,26 @@
 # 
 
 # $Log$
+# Revision 1.18  2002/05/01 02:24:07  welch
+# A whole collection of patches.  If marked with ** then I've lost
+# track of who gave them to me and I apologize for that:
+# exmh-strip.MASTER: added pref initialization to quiet errors caused
+#   by changes elsewhere in the main body of exmh
+# install.tcl: fixed errors that occur when you try to display a
+#   dialog box (e.g., the Verify window) that is already displayed
+# lib/addr.tcl: a new set of options for configuring LDAP (Mark Bergman)
+# lib/extrasInit.tcl: help text updates about the uquoteAdd resource (**)
+# lib/faces.tcl: fix for space-in-pathname problem (**)
+# lib/fcache.tcl: New Feature! display the count of unseen messages
+#   in the folder cache. (Paul Menage)
+# lib/html_get_http.tcl: trap errors from bad http: links
+# lib/inc.tcl: tweaked feedback about inc'ed messages to do case-insensitive
+#   grep for Subject: (**)
+# lib/mime.tcl: for for space-in-pathname problem
+# lib/pgpExec.tcl: eliminated Exmh_Debug message that could dump out
+#   a massive keyring to the log, taking many many seconds (**)
+# lib/unseenwin.tcl: fix to tolerate space-in-folder-name (I think) (**)
+#
 # Revision 1.17  2001/12/08 00:39:52  kchrist
 # Fixed "GPG silently ignores untrusted keys during encryption" bug.
 # Thanks to Ben Escoto.
@@ -304,7 +324,9 @@ proc Pgp_Exec_KeyList { v pattern keyringtype } {
     regsub -all [set pgp($v,pat_splitKeys)] $keylist \x81 keylist
     set keylist [split $keylist \x81]
 
-    Exmh_Debug "<Pgp_Exec_Keylist>: Splitted keylist: $keylist"
+    # This print statement converts keylist from a Tcl list to
+    # a string. For really big keylists, this is reportedly very expensive
+    # Exmh_Debug "<Pgp_Exec_Keylist>: Splitted keylist: $keylist"
 
     # Match out interesting keys
     set keypattern [set pgp($v,pat_key$keyringtype)]

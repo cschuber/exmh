@@ -363,6 +363,9 @@ proc installVerify {} {
 	installFeedback "Verify OK"
 	return
     }
+    if {[winfo exists .verify]} {
+      destroy .verify
+    }
     toplevel .verify
     frame .verify.top
     button .verify.top.quit -text "Dismiss" -command {destroy .verify}
@@ -458,6 +461,9 @@ proc installPatch {} {
     if {$numLines == 0} {
 	installFeedback "No diffs after patching"
 	return
+    }
+    if {[winfo exists .test]} {
+      destroy .test
     }
     toplevel .test
     frame .test.top
@@ -647,6 +653,9 @@ proc MakeDir { logProc dir } {
 }
 proc installFake {} {
     global exmh install
+    if {[winfo exists .fake]} {
+      destroy .fake
+    }
     toplevel .fake
     wm title .fake "Install Actions"
     wm iconname .fake "Install Actions"

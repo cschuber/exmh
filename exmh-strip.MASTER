@@ -93,6 +93,8 @@ proc Exmh_Debug { args } {
 }
 
 # We fault in routines from the regular library of exmh procedures.
+set exmh(userLibrary) [glob ~/.tk/exmh]
+Preferences_Init "~/.exmh/exmh-defaults" "$exmh(library)/app-defaults"
 
 Mh_Init
 Mime_Init
@@ -426,3 +428,4 @@ proc MimeParseMulti {part fileIO boundary defType out} {
 }
 
 Mime_Strip $msg_path
+exit 0

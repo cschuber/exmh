@@ -271,7 +271,7 @@ proc FacePathlist { from } {
     for {set i [expr [llength $from]-1]} {$i>=0} {incr i -1} {
 	append path $prefix [lindex $from $i]
 	set prefix /
-	set pathlist [concat $path $pathlist]
+	set pathlist [linsert $pathlist 0 $path]
     }
     lappend pathlist {}
     return $pathlist

@@ -2788,9 +2788,15 @@ proc Mime_Magic { fileName } {
     global exmh env
     Exmh_Debug Mime_Magic $fileName
 
-    foreach m { "-m $exmh(userLibrary)/.magic" \
-     "-m $exmh(library)/local.magic" ""} {
-	if [catch {eval exec file $m $fileName} result] {
+    foreach m [list $exmh(userLibrary)/.magic \
+	     $exmh(library)/local.magic" "" ] {
+	# Avoid eval in this command to tolerate spaces in file names
+	set cmd {exec file}
+	if {[string length $m]} {
+	    lappend cmd -m $m
+	}
+	lappend cmd $fileName
+	if [catch $cmd result] {
 	    continue
 	}
 

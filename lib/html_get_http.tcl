@@ -173,6 +173,10 @@ proc Http_poke {} {
 	    Http_kill $url
 	    return
 	}
+    } else {
+        HttpLog "Unsupported URL: $url"
+        Http_kill $url
+        return
     }
     set data(socket) $sock
     set data(mime) {}
