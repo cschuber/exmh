@@ -480,11 +480,8 @@ proc Tcl_Tk_Vers_Init {} {
 # namespaces, so we need to do backward-compatibility until we
 # fix the code everyplace.
 global tk_version tk_patchLevel tcl_version tcl_patchLevel
-puts stderr "Now in Tcl_TkVers_Init"
     if [info exists tk_patchLevel] {
-puts stderr "We have a $tk_patchLevel"
         if {$tk_patchLevel > "8.4a2"} {
-puts stderr "Doing it"
 	    ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
 	    ::tk::unsupported::ExposePrivateCommand tkEntrySeeInsert
 	    ::tk::unsupported::ExposePrivateCommand tkMenuUnpost
@@ -493,5 +490,4 @@ puts stderr "Doing it"
 	    ::tk::unsupported::ExposePrivateVariable tkPriv
         }
     }
-puts stderr "all done"
 }
