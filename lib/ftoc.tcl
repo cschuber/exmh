@@ -1365,18 +1365,17 @@ proc FtocToggleSequence { sequencename } {
     set sequence [Mh_Sequence $folder $sequencename]
     # If any selected message is not in the sequence, then add to the sequence.
     # If none are in the sequence, then remove from the sequence.
-    set flag -delete
+    set flag del
     set msgs {}
     Ftoc_Iterate line {
 	set msgid [Ftoc_MsgNumber $line]	
 	lappend msgs $msgid
 	if {[lsearch -exact $sequence $msgid] == -1} {
-	    set flag -add
+	    set flag add
 	}
     }
     if {$msgs != {}} {
-	Exmh_Status "mark +$folder $msgs $flag -sequence $sequencename"
-	eval MhExec mark +$folder $msgs $flag -sequence $sequencename
+	Mh_SequenceUpdate $folder $flag $sequencename $msgs
 	Ftoc_ShowSequences $folder
     }
 }
