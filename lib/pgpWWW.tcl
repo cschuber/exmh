@@ -10,6 +10,9 @@
 # -- Markus Gruber
 #
 # $Log$
+# Revision 1.4  2000/06/09 03:19:55  valdis
+# Provide known working default URL for PGP keys - www-swiss.ai.mit.edu wasnt working
+#
 # Revision 1.3  1999/08/22 18:17:08  bmah
 # Email PGP queries now go out correctly.  Use Exmh_Status to inform
 # user of state of an outgoing email key query.
@@ -48,7 +51,7 @@ ch de es fi kr nl no uk us pt se hr tw pl
 See also http://www.pgp.net/pgpnet/" }
 #
 set pgp(pref,keyserverUrl) { keyserverUrl KeyServerURL 
-{http://www-swiss.ai.mit.edu/htbin/pks-extract-key.pl?op=get&search=0x%s}
+{http://keys.pgp.com:11371/pks/lookup?op=get&exact=on&search=0x%s}
 {URL to fetch keys interactively}
 "The WWW keyserver is forms based.  Enter a URL here where
 the key id (sans 0x) is substituted with %s (using format)" }
