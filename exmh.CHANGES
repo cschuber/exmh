@@ -7,6 +7,8 @@ cvs repository 10/29/2002 cwg-exmh@deepeddy.com
     flist.tcl - in FlistResetVars, sort array names so that totalcount
 	gets cleared after seqcount in order to keep it from going
 	negative. 
+    mh.tcl - When rewriting the sequences file, don't expand the other
+	sequences.
 
 cvs repository 10/28/2002 cwg-exmh@deepeddy.com
     msg.tcl, editor.tcl, folder.tcl, ftoc.tcl, main.tcl, mh.tcl, 
