@@ -157,10 +157,14 @@ proc HMinit_win {win} {
 	bind $win <Configure> {
 	    %W tag configure last -spacing3 %h
 	}
-	bind TScroll <Key-Next> {%W yview scroll 1 page}
-	bind TScroll <Key-Prior> {%W yview scroll -1 page}
-	bind TScroll <Key-Home> {%W see 1.0}
-	bind TScroll <Key-End> {%W see end}
+	if {0} {
+	    # These are already on the exmh window
+
+	    bind TScroll <Key-Next> {%W yview scroll 1 page}
+	    bind TScroll <Key-Prior> {%W yview scroll -1 page}
+	    bind TScroll <Key-Home> {%W see 1.0}
+	    bind TScroll <Key-End> {%W see end}
+	}
 
 }
 

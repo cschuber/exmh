@@ -321,7 +321,22 @@ proc Mh_SetContext { key value } {
     }
 }
 proc Mh_MsgChk {} {
-    catch {MhExec msgchk -nodate -notify mail} result
+    global inc pop
+    
+    if {[string length $inc(pophost)]} {
+	# See if we know the password for this host
+	Pop_GetPassword $inc(pophost)
+	catch {exec msgchk -nodate -notify mail -host $inc(pophost) << $pop(password)} result
+	Exmh_Debug Mh_MsgChk $result
+	# Remove 'Password (host:user):' prompt from result string, and
+	# msgchk returned 1 because no messages were waiting, remove the
+	# error message left by 'exec'
+	regsub {.*\):} $result {} result
+	regsub "\n.*" $result {} result
+    } else {
+	catch {MhExec msgchk -nodate -notify mail} result
+    }
+
     return $result
 }
 proc Mh_MsgCount { spool } {

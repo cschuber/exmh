@@ -128,7 +128,7 @@ proc Inc_PresortMultidrop {} {
 
 proc Inc_Inbox {} {
     # Inc from the spool file to the inbox folder
-    global exmh mhProfile ftoc pop
+    global exmh mhProfile ftoc pop inc
     if [info exists mhProfile(inbox)] {
 	set inbox [string trimleft $mhProfile(inbox) +]
     } else {
@@ -137,12 +137,18 @@ proc Inc_Inbox {} {
     Exmh_Status "Inc ..."
     set cmd [list exec inc +$inbox -truncate -nochangecur -width $ftoc(scanWidth)]
     if {[info exist pop(password)]} {
-	lappend cmd << $pop(password)
+	lappend cmd -host $inc(pophost) << $pop(password)
     }
+
+    # Return value from 'inc' is 1 when there are no messages....
     if [catch $cmd incout] {
 	Exmh_Debug Inc_Inbox $cmd: $incout
 	set incout {}
-    }
+    } elseif {[info exist pop(password)]} {
+	# eliminate 'Password (host:user):' prompt.
+	regsub {.*\): *} $incout {} incout
+    }	
+
     BgRPC Inc_InboxFinish $inbox $incout Flist_Done
 }
 proc Inc_InboxFinish { f incout {hook {}} } {
