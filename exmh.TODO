@@ -377,16 +377,10 @@ Priority: Med
 Scope: 
 Complexity: 
 
-Apply horizontal scroll bar patch from Valdis Kletnieks
-
-
-
-Number: 43
-Priority: Med
-Scope: 
-Complexity: 
-
-Apply MDN patch from Valdis Kletnieks
+Apply patches from Valdis Kletnieks
+  - horizontal scroll bar patch from Valdis Kletnieks
+  - MDN patch 
+  - Delivery Service Notification
 
 
 
