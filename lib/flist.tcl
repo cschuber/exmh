@@ -469,39 +469,47 @@ proc FlistFindUnseen {reset} {
 	# Flist active
 	return
     }
-    FlistGetContext
-    set result {}
-    set keep {}
-    foreach f $flist(unseenfolders) {
-	set hit 0
-	foreach line $flist(context) {
-	    set line [split $line]
-	    set key [lindex $line 0]
-	    if {$key == "atr-$mhProfile(unseen-sequence)-$mhProfile(path)/$f:"} {
-		set seq [lindex [split $line :] 1]
-		BgRPC Flist_AddUnseen $f [FlistSeq $f $seq]
-		set hit 1
-		break
+    if {[catch {
+	FlistGetContext
+	set result {}
+	set keep {}
+	foreach f $flist(unseenfolders) {
+	    set hit 0
+	    foreach line $flist(context) {
+		set line [split $line]
+		set key [lindex $line 0]
+		if {$key == "atr-$mhProfile(unseen-sequence)-$mhProfile(path)/$f:"} {
+		    set seq [lindex [split $line :] 1]
+		    BgRPC Flist_AddUnseen $f [FlistSeq $f $seq]
+		    set hit 1
+		    break
+		}
 	    }
-	}
-	if {! $hit} {
-	    set path $mhProfile(path)/$f/$mhProfile(mh-sequences)
-	    if {![file exists $path] ||
-		([info exists flist(mtime,$f)] &&
-		 ([file mtime $path] <= $flist(mtime,$f)))} {
-		# No state to report
-	    } else {
-		if {[catch {open $path} in] == 0} {
-		    set se \n[read $in]
-		    if [regexp \n$mhProfile(unseen-sequence):\[^\n\]*\n $se line] {
-			set seq [lindex [split $line :\n] 2]
-			BgRPC Flist_AddUnseen $f [FlistSeq $f $seq]
+	    if {! $hit} {
+		set path $mhProfile(path)/$f/$mhProfile(mh-sequences)
+		if {![file exists $path] ||
+		    ([info exists flist(mtime,$f)] &&
+		     ([file mtime $path] <= $flist(mtime,$f)))} {
+		    # No state to report
+		} else {
+		    if {[catch {open $path} in] == 0} {
+			set se \n[read $in]
+			if [regexp \n$mhProfile(unseen-sequence):\[^\n\]*\n $se line] {
+			    set seq [lindex [split $line :\n] 2]
+			    BgRPC Flist_AddUnseen $f [FlistSeq $f $seq]
+			}
+			close $in
+			set flist(mtime,$f) [file mtime $path]
 		    }
-		    close $in
-		    set flist(mtime,$f) [file mtime $path]
 		}
 	    }
 	}
+    } err]} {
+	# An error here is most likely a flakey NFS connection
+	# It is important to trap this so we can mark the
+	# flist action as "Done" below.  Otherwise, we'll stop
+	# looking for new messages.
+	Exmh_Debug "FlistFindUnseen: $err"
     }
     BgRPC Flist_Done
 }
