@@ -432,23 +432,11 @@ exmh.iconic:		0
 *Mops.more.m.l_grabaddr: Save "From" address
 *Mops.more.m.c_grabaddr: Address_Save
 
-*Mops.more.m.pgp.entrylist: encrypt decrypt extract
-*Mops.more.m.pgp.l_encrypt: Encrypt
-*Mops.more.m.pgp.t_encrypt: cascade
-*Mops.more.m.pgp.m_encrypt: encrypt
-
+*Mops.more.m.pgp.entrylist: decrypt extract
 *Mops.more.m.pgp.l_decrypt: Decrypt in Place
 *Mops.more.m.pgp.c_decrypt: Pgp_Old_Decrypt
 *Mops.more.m.pgp.l_extract: Extract keys
 *Mops.more.m.pgp.c_extract: Pgp_Old_ExtractKeys \"\$mhProfile(path)/\$exmh(folder)/\$msg(id)\"
-
-*Mops.more.m.pgp.encrypt.entrylist: pgp2 pgp5 gpg
-*Mops.more.m.pgp.encrypt.l_pgp2: PGP2
-*Mops.more.m.pgp.encrypt.c_pgp2: Pgp_ExmhEncrypt pgp
-*Mops.more.m.pgp.encrypt.l_pgp5: PGP5
-*Mops.more.m.pgp.encrypt.c_pgp5: Pgp_ExmhEncrypt pgp5
-*Mops.more.m.pgp.encrypt.l_gpg: GPG
-*Mops.more.m.pgp.encrypt.c_gpg: Pgp_ExmhEncrypt gpg
 
 *Mops.buttonlist:	link move delete next prev comp forward
 *Mops.ubuttonlist:

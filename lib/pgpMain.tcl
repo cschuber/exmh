@@ -19,6 +19,11 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.11  1999/08/22 19:21:33  bmah
+# Remove More...->old PGP->Encrypt menu.  Getting this to work will be
+# really hard and there doesn't seem to be a lot of demand for it, given
+# the other PGP functionality.
+#
 # Revision 1.10  1999/08/18 15:52:37  bmah
 # Commit modification to seditpgp user interface, and fix a couple of
 # bugs.
@@ -288,6 +293,7 @@ proc Pgp_SetPath {} {
     }
 }
 
+# XXX Orphaned code, from exmh More->old PGP->encrypt menu
 # encrypts the current message with the user's key
 proc Pgp_ExmhEncrypt { v } {
     global exmh msg mhProfile pgp
@@ -364,6 +370,7 @@ proc Pgp_SeditEncrypt { action v draft t } {
     $t insert 1.0 "$pgpaction\n"
 }
 
+# XXX Orphaned code (from now-dead sedit Crypt...->PGP Preview menu item)
 proc Pgp_EncryptDebug { srcfile } {
     global pgp env miscRE
 
