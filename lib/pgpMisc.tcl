@@ -8,6 +8,9 @@
 # todo:
 
 # $Log$
+# Revision 1.8  1999/04/15 23:41:59  cwg
+# Make the crypt menu values be per-window instead of global.
+#
 # Revision 1.7  1999/04/10 04:20:08  cwg
 # Do the right thing if pgp(seditpgp) is not enabled.
 #
@@ -286,6 +289,8 @@ proc Misc_GetHeader { in } {
 proc Misc_PostProcess { srcfile } {
     global mhProfile pgp pgpPass
 
+    set id [SeditId $srcfile]
+
     set dstfile [Mh_Path $mhProfile(draft-folder) new]
     set curfile $srcfile
 
@@ -296,7 +301,7 @@ proc Misc_PostProcess { srcfile } {
 
     # call the pgp postprocesing if necessary
     if {$pgp(enabled)} {
-	if {$pgp(encrypt) || $pgp(sign)} {
+	if {$pgp(encrypt,$id) || $pgp(sign,$id)} {
 	    if !$pgp(seditpgp) {
 		Pgp_GetPass $pgp(myname)
 	    } 

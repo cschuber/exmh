@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.4  1999/04/15 23:41:59  cwg
+# Make the crypt menu values be per-window instead of global.
+#
 # Revision 1.3  1999/03/29 20:49:20  cwg
 # If doing a plain signature, disable usage of the pgp(mime) flag.
 #
@@ -264,9 +267,10 @@ proc Pgp_ExmhEncrypt {  } {
     Exmh_Status "pgp -e $exmh(folder)/$msg(id)"
 
     set pgp(param,recipients) [lindex $pgp(myname) 0]
-    set pgp(encrypt) 1;
-    set pgp(sign) 0;
-    set pgp(format) "pm";
+    set id [SeditId $file]
+    set pgp(encrypt,$id) 1;
+    set pgp(sign,$id) 0;
+    set pgp(format,$id) "pm";
 
     Pgp_Process $file $tmpfile 1
     Mh_Rename $tmpfile $file
@@ -304,6 +308,7 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
 
     Exmh_Debug Pgp_Process
 
+    set id [SeditId $srcfile]
     # get the header of the draft and split it into mime and non-mime headers
     set allheaders [Misc_Segregate line \
 	    {[regexp $miscRE(mimeheaders) $line]} [Misc_GetHeader $orig]]
@@ -316,21 +321,21 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
     }
     
     # if there is nothing to do, stop here
-    if {!$pgp(encrypt) && !$pgp(sign)} {
+    if {!$pgp(encrypt,$id) && !$pgp(sign,$id)} {
 	close $orig
 	error "no action"
     }
 
-    if {$pgp(format) == "app"} {
+    if {$pgp(format,$id) == "app"} {
 	Exmh_Debug app format
-	if {$pgp(encrypt)} {
-	    if {$pgp(sign)} {
+	if {$pgp(encrypt,$id)} {
+	    if {$pgp(sign,$id)} {
 		set typeparams "; x-action=encryptsign;"
 	    } else {
 		set typeparams "; x-action=encrypt;"
 	    }
 	} else {
-	    if {$pgp(clearsign)} {
+	    if {$pgp(clearsign,$id)} {
 		set typeparams "; x-action=signclear;"
 	    } else {
 		set typeparams "; x-action=signbinary;"
@@ -346,20 +351,20 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
   }
 
     # setup the originator (if necessary)
-    if $pgp(sign) {
+    if $pgp(sign,$id) {
 	Exmh_Debug PGP signing
 	if [info exists pgp(param,originator)] {
 	    set originator [PgpMatch_Simple $pgp(param,originator) $pgp(secring)]
 	} else {
 	    set originator $pgp(myname)
 	}
-	if {$pgp(format) == "app"} {
+	if {$pgp(format,$id) == "app"} {
 	    append typeparams "; x-originator=[string range [lindex $originator 0] 2 end]"
 	}
     }
 
     # get the ids of the recipients (if necessary)
-    if $pgp(encrypt) {
+    if $pgp(encrypt,$id) {
 	Exmh_Debug PGP encrypting
 	if [info exists pgp(param,recipients)] {
 	    set ids [Misc_Map id {PgpMatch_Simple $id $pgp(pubring)} \
@@ -370,7 +375,7 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
 	}
 	ExmhLog "<Pgp_Process> Encrypting with public key(s): [join $ids ", "]"
 
-	if {$pgp(format) == "app"} {
+	if {$pgp(format,$id) == "app"} {
 	    append typeparams ";\n\tx-recipients=\"[join [Misc_Map key {string range [lindex $key 0] 2 end} $ids] ", "]\""
 	}
       }
@@ -389,8 +394,8 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
     # write the message to be encrypted
     set msgfile [Mime_TempFile "msg"]
     set msg [open $msgfile w 0600]
-    if {$pgp(format) == "plain"} {
-	set pgp(mime) 0
+    if {$pgp(format,$id) == "plain"} {
+	set pgp(mime,$id) 0
     } else {
 	foreach line $pgpheaders { puts $msg [Pgp_FixHeader $line] }
     }
@@ -401,19 +406,19 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
 
     set pgpfile [Mime_TempFile "pgp"]
     if [catch {
-	Exmh_Debug "encrypt=$pgp(encrypt); sign=$pgp(sign); mime=$pgp(mime); clearsign=$pgp(clearsign)"
-	if {$pgp(encrypt)} {
-	    if {$pgp(sign)} {
+	Exmh_Debug "encrypt=$pgp(encrypt,$id); sign=$pgp(sign,$id); mime=$pgp(mime,$id); clearsign=$pgp(clearsign,$id)"
+	if {$pgp(encrypt,$id)} {
+	    if {$pgp(sign,$id)} {
 		PgpExec_EncryptSign $msgfile $pgpfile $originator $ids 
 	    } else {
 		PgpExec_Encrypt $msgfile $pgpfile $ids 
 	    }
 	} else {
-	    if {$pgp(sign)} {
-		if {$pgp(mime)} {
+	    if {$pgp(sign,$id)} {
+		if {$pgp(mime,$id)} {
 		    PgpExec_SignPM $msgfile $pgpfile $originator 
 		} else { 
-		    PgpExec_Sign $msgfile $pgpfile $originator $pgp(clearsign) 
+		    PgpExec_Sign $msgfile $pgpfile $originator $pgp(clearsign,$id) 
 		}
 	    } else {
 		error "<PGP> Message is neither signed, nor encrypted"
@@ -430,7 +435,7 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
 	set mailheaders {}
     }
 	
-    switch $pgp(format) {
+    switch $pgp(format,$id) {
         app { 
             lappend mailheaders \
                 "mime-version: 1.0" \
@@ -447,7 +452,7 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
             close $dst
         }
         pm { 
-            Pgp_ProcessPM $dstfile $pgpfile $mailheaders $msgfile
+            Pgp_ProcessPM $dstfile $pgpfile $mailheaders $msgfile $id
         }
         plain { 
             Pgp_ProcessPlain $dstfile $pgpfile $mailheaders $msgfile
@@ -458,7 +463,7 @@ proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
     File_Delete $msgfile $pgpfile
 }
 
-proc Pgp_ProcessPM {dstfile pgpfile mailheaders plainfile} {
+proc Pgp_ProcessPM {dstfile pgpfile mailheaders plainfile id} {
 
     global pgp
 
@@ -466,7 +471,7 @@ proc Pgp_ProcessPM {dstfile pgpfile mailheaders plainfile} {
 
     # Put in specified headers.  
     lappend mailheaders "mime-version: 1.0"
-    if {$pgp(encrypt)} {
+    if {$pgp(encrypt,$id)} {
 	lappend mailheaders "content-type: multipart/encrypted; boundary=\"$boundary\";\n\t protocol=\"application/pgp-encrypted\""
     } else {
 	lappend mailheaders "content-type: multipart/signed; boundary=\"$boundary\";\n\t micalg=pgp-md5; protocol=\"application/pgp-signature\""
@@ -480,7 +485,7 @@ proc Pgp_ProcessPM {dstfile pgpfile mailheaders plainfile} {
     foreach line $mailheaders { puts $dst [Pgp_FixHeader $line] }
     puts $dst ""
     puts $dst "--$boundary"
-    if {$pgp(encrypt)} {
+    if {$pgp(encrypt,$id)} {
 	puts $dst "Content-Type: application/pgp-encrypted"
 	puts $dst ""
 	puts $dst "Version: 1"

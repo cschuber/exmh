@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 4/15/1999
+    Crypt menu values are now 'per window', not global. -cwg
+
 cvs repository 4/14/1999
     Fixed small bug in searching body of message -haldevore
     Fixed (hacked out) bug with compose in empty drafts folder -haldevore

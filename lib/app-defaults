@@ -889,31 +889,31 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.entrylist: pgpformat pgpencrypt pgpsign pgpmime pgpclearsign
 *Sedit.Menubar.pgp.m.l_pgpencrypt:	Encrypt
 *Sedit.Menubar.pgp.m.t_pgpencrypt:	check
-*Sedit.Menubar.pgp.m.v_pgpencrypt:	pgp(encrypt)
+*Sedit.Menubar.pgp.m.v_pgpencrypt:	pgp(encrypt,$id)
 *Sedit.Menubar.pgp.m.l_pgpsign:		Sign
 *Sedit.Menubar.pgp.m.t_pgpsign:		check
-*Sedit.Menubar.pgp.m.v_pgpsign:		pgp(sign)
+*Sedit.Menubar.pgp.m.v_pgpsign:		pgp(sign,$id)
 *Sedit.Menubar.pgp.m.l_pgpmime:		Mime
 *Sedit.Menubar.pgp.m.t_pgpmime:		check
-*Sedit.Menubar.pgp.m.v_pgpmime:		pgp(mime)
+*Sedit.Menubar.pgp.m.v_pgpmime:		pgp(mime,$id)
 *Sedit.Menubar.pgp.m.l_pgpclearsign:	Clear Sign
 *Sedit.Menubar.pgp.m.t_pgpclearsign:	check
-*Sedit.Menubar.pgp.m.v_pgpclearsign:	pgp(clearsign)
+*Sedit.Menubar.pgp.m.v_pgpclearsign:	pgp(clearsign,$id)
 *Sedit.Menubar.pgp.m.l_pgpformat:	Format
 *Sedit.Menubar.pgp.m.t_pgpformat:	cascade
 *Sedit.Menubar.pgp.m.m_pgpformat:	format
 *Sedit.Menubar.pgp.m.format.entrylist:	plain app pm
 *Sedit.Menubar.pgp.m.format.l_plain:	Plain
 *Sedit.Menubar.pgp.m.format.t_plain:	radio
-*Sedit.Menubar.pgp.m.format.v_plain:	pgp(format)
+*Sedit.Menubar.pgp.m.format.v_plain:	pgp(format,$id)
 *Sedit.Menubar.pgp.m.format.x_plain:	plain
 *Sedit.Menubar.pgp.m.format.l_app:	Application/PGP
 *Sedit.Menubar.pgp.m.format.t_app:	radio
-*Sedit.Menubar.pgp.m.format.v_app:	pgp(format)
+*Sedit.Menubar.pgp.m.format.v_app:	pgp(format,$id)
 *Sedit.Menubar.pgp.m.format.x_app:	app
 *Sedit.Menubar.pgp.m.format.l_pm:	Multipart/MIME
 *Sedit.Menubar.pgp.m.format.t_pm:	radio
-*Sedit.Menubar.pgp.m.format.v_pm:	pgp(format)
+*Sedit.Menubar.pgp.m.format.v_pm:	pgp(format,$id)
 *Sedit.Menubar.pgp.m.format.x_pm:	pm
 
 *Sedit.Menubar.pgp.m.l_signkey:	Change Default Key
