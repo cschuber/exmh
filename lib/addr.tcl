@@ -775,6 +775,9 @@ proc Addr_Browse { {state normal} } {
                 { Addr_Browse_LoadListbox "Sorting database..." normal } <Meta-t>
         if { $Addr_debug == 1 }  {	Widget_AddBut $f ldsrc  "LdSrc"  { Addr_Load_Source } }
 
+ 	# Create the New button
+        Widget_AddBut $f new   "New"   { Addr_Browse_New }
+
         # Finally, create the Help button
         Widget_AddBut $f help   "Help"   { Help AddrEdit }
         $f.help configure -takefocus {}
@@ -1111,6 +1114,61 @@ proc Addr_Browse_Edit {sel} {
 
 
 
+proc Addr_Browse_New {} {
+    global addr_db addr_list
+
+    set t .addr_ed
+    set id 0
+    for {set id 1} {$id < 21} {incr id} {
+        AddrDebug "winfo exists $t$id is [winfo exists $t$id]"
+        if [winfo exists $t$id] continue
+        append t $id
+        break
+    }
+    if [winfo exists $t] {
+        Exmh_Status "Too many editors open, close one or more and try again"
+        return
+    }
+    if [Exwin_Toplevel $t "New DB address" Addr_Ed] {
+
+        set f $t.but
+
+        $t.but.quit configure -text Cancel -command "Addr_Edit_Dismiss $t"
+        $t configure -width 500
+
+        Widget_AddBut $f save "Save"      "Addr_New_Save $t"
+
+        Addr_LabelledTextField $t.name    "Full Name" 12 "Addr_New_Save $t"
+        Addr_LabelledTextField $t.address "Address"   12 "Addr_New_Save $t"
+
+        pack $t.name $t.address
+    }
+}
+
+proc Addr_New_Save {winname} {
+    global addr_db addr_list
+
+    set name [$winname.name.entry get]
+    set addr [$winname.address.entry get]
+    set last ""
+    set date ""
+
+    set index [MsgParseFrom $addr]
+    # NEED TO STUFF new NAME into entry!
+    set addr [format "%s <%s>" $name $index]
+    Exmh_Status "Updating address \"$index\"."
+    set addr_db(changed) 1
+    set addr_list($index) [list $last $date  \
+            [Addr_ParseFrom $addr] $addr] 
+
+    # update browser window...
+    $addr_db(win) insert end [Addr_Entry_FormatForListbox $index]
+
+    # make it all go away so we can redo it next time.
+    Addr_Edit_Dismiss $winname
+}
+  
+  
 proc Addr_Load_Source {}  {
     global env
     # HACK HACK HACK!!!
