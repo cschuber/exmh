@@ -148,26 +148,29 @@ proc Exmh_Status { string {color black} } {
 	return
     }
     set exmh(instatus) 1
-    if ![info exists exmh(c_st_background)] {
-	if {[tk colormodel .] == "color"} {
-	    set exmh(c_st_background) [option get . c_st_background {}]
-	    if {$exmh(c_st_background) == {}} {
-		set exmh(c_st_background) [option get . bgMsgColor {}]
-		if {$exmh(c_st_background) != {}} {
-		    puts stderr "Warning: old resource bgMsgColor, changed to c_st_background"
-		} else {
-		    set exmh(c_st_background) "medium sea green"
-		}
-	    }
-	} else {
-	    set exmh(c_st_background) [option get . c_st_background {}]
-	    if {$exmh(c_st_background) == {}} {set exmh(c_st_background) black}
-	    if {$exmh(c_st_background) != "white" && $exmh(c_st_background) != "black"} {
-		set exmh(c_st_background) black
-	    }
-	}
-    }
-    BgRPC Exmh_Status $string $exmh(c_st_background)
+# All this code to evaluate something that should be evaluated in
+# the main Exmh interpreter if BgRPC suceeds - and if we call our stub
+# Exmh_Status the value is ignored anyhow.
+#   if ![info exists exmh(c_st_bg_msgs)] {
+#	if {[tk colormodel .] == "color"} {
+#	    set exmh(c_st_bg_msgs) [option get . c_st_bg_msgs {}]
+#	    if {$exmh(c_st_bg_msgs) == {}} {
+#		set exmh(c_st_bg_msgs) [option get . bgMsgColor {}]
+#		if {$exmh(c_st_bg_msgs) != {}} {
+#		    puts stderr "Warning: old resource bgMsgColor, changed to c_st_bg_msgs"
+#		} else {
+#		    set exmh(c_st_bg_msgs) "medium sea green"
+#		}
+#	    }
+#	} else {
+#	    set exmh(c_st_bg_msgs) [option get . c_st_bg_msgs {}]
+#	    if {$exmh(c_st_bg_msgs) == {}} {set exmh(c_st_bg_msgs) black}
+#	    if {$exmh(c_st_bg_msgs) != "white" && $exmh(c_st_bg_msgs) != "black"} {
+#		set exmh(c_st_bg_msgs) black
+#	    }
+#	}
+#   }
+    BgRPC Exmh_Status $string background
     unset exmh(instatus)
 }
 

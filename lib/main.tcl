@@ -218,6 +218,7 @@ proc ExmhResources {} {
 	Preferences_Resource exmh(c_st_normal) c_st_normal blue
 	Preferences_Resource exmh(c_st_error) c_st_error purple
 	Preferences_Resource exmh(c_st_warn) c_st_warn red
+	Preferences_Resource exmh(c_st_bg_msgs) c_st_bg_msgs "medium sea green"
 	Preferences_Resource exmh(c_st_background) c_st_background "\#d9d9d9"
     } else {
 	Preferences_Resource exmh(c_st_normal) c_st_normal black
@@ -231,13 +232,13 @@ proc ExmhResources {} {
 }
 
 proc Exmh_Status {string { level normal } } {
-    global exmh exwin tk_patchLevel
+    global exmh exwin tk_version
     if {[string compare $string 0] == 0 } { set string $exmh(version) }
     if [info exists exwin(status)] {
 	switch -- $level {
-	    warn	-
-	    error	-
-	    background	-
+	    warn	{ # do nothing }
+	    error	{ # do nothing }
+	    background	{set level bg_msgs}
 	    normal	{ # do nothing }
 	    default	{set level normal}
 	}
@@ -250,8 +251,8 @@ proc Exmh_Status {string { level normal } } {
 	$exwin(status) insert 0 $string
 	# Oh, the inhumanity.. backward-incompatible behavior changes
 	set state "disabled -bg $exmh(c_st_background)"
-	if [info exists tk_patchLevel] {
-	    if {$tk_patchLevel > "8.4a1"} {
+	if [info exists tk_version] {
+	    if {$tk_version > "8.3"} {
 		set state "readonly -readonlybackground $exmh(c_st_background)"
 	    }
 	}

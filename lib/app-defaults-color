@@ -85,6 +85,7 @@
 *c_st_normal:	blue
 *c_st_error:	red
 *c_st_warn:	purple
+*c_st_bg_msgs:	medium sea green
 ! 
 ! background color for the Status field
 !

@@ -1,6 +1,17 @@
 HISTORY
 
-cvs repository 01/22/2002 valdis.kletnieks@vt.edu
+cvs repository 01/24/2002 valdis.kletnieks@vt.edu
+    exmh-bg.MASTER, lib/main.tcl, lib/app-defaults-color, lib/html/custom.html
+	So there *was* code using c_st_background. That color specification
+	is now c_st_bg_msgs, and exmh-bg no longer tries to lookup a colorspec
+	but just passes 'background' to Exmh_Status.
+
+cvs repository 01/23/2002 valdis.kletnieks@vt.edu
+    lib/app-defaults-color, lib/html/custom.html - Default for c_st_error
+	is now red, and the default for c_st_warn is purple (be more
+	consistent with usual meaning of a red message indicating an error)
+
+cvs repository 01/23/2002 valdis.kletnieks@vt.edu
     install.tcl, lib/main.tcl - Do version test as per Jeff Hobb's suggestion.
 
 cvs repository 01/22/2002 valdis.kletnieks@vt.edu
