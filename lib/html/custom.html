@@ -200,9 +200,9 @@ so you can dig into the code if you want to.
       scrolling keeps the last line of text stuck to the bottom of the 
       text display. (exwin.tcl and widgetText.tcl) 
 
-  <dt><a name="unseen">Unseen Window</a>
-  <dd>This is a summary window that lists which folders have unseen
-      messages. (unseenwin.tcl)
+  <dt><a name="seqwin">Sequences Window</a>
+  <dd>This is a summary window that lists which folders have messages
+  in sequences. (seqwin.tcl)
 
   <dt><a name="fcache">Folder Cache</a>
   <dd>Set how many lines are in your folder cache display, and what
@@ -1079,9 +1079,9 @@ pathname otherwise.
 </dl>
 <p>
 You can reference any global exmh variable in the icon label. The two
-most useful are $flist(newMsgs), which is a count across all folders
-of messages in the unseen sequence, and $exmh(numUnInced), which is
-the number of messages in your system spool file. This later value
+most useful are $flist(totalcount,unseen), which is a count across all
+folders of messages in the unseen sequence, and $exmh(numUnInced), which
+is the number of messages in your system spool file. This later value
 is only computed by the background "count" operation. 
 <p>
 The icon*Glyph values are color images for the icons; the icon*Bitmap
@@ -1738,6 +1738,12 @@ The remainder of the files are kept in the script library.
   <dt>select.tcl 
   <dd>The keyboard selection of folders and messages is implemented here.
 
+  <dt>sequences.tcl
+  <dd>Routines for handling sequences.
+
+  <dt>seqwin.tcl
+  <dd>Support for a small window listing sequences by folders.
+
   <dt>sound.tcl 
   <dd>Sound effects. 
 
@@ -1758,9 +1764,6 @@ The remainder of the files are kept in the script library.
 
   <dt>tioga.tcl
   <dd>Support for viewing multipart/x-tioga messages.
-
-  <dt>unseenwin.tcl
-  <dd>Support for a small window listing folders with unseen messages.
 
   <dt>uri.tcl 
   <dd>The code that scans messages for URLs. 

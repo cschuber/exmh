@@ -202,7 +202,7 @@ Log, Help..., Bindings..., Address..., Preferences, and Quit.
 <p>
 The middle set of buttons has folder commands:
 <button -command "Folder_New">New</button>, 
-<Button -command "Busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</Button>,
+<Button -command "Busy Flist_FindSeqs 1 ; Inc_PresortFinish">Flist</Button>,
 <button -command "Inc">Inc</button>,
 <Button -command "Folder_Commit">Commit</Button>, 
 Search... and More... 
@@ -216,16 +216,16 @@ Search... and More...
       <button -command Folder_Delete>Delete folder</button>
       operation is under the More... menu. 
 
-  <dt><Button -command "Busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</Button> 
+  <dt><Button -command "Busy Flist_FindSeqs 1 ; Inc_PresortFinish">Flist</Button> 
   <dd>The 
-      <Button -command "Busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</Button> 
+      <Button -command "Busy Flist_FindSeqs 1 ; Inc_PresortFinish">Flist</Button> 
       button refreshes the color feedback of folder buttons so you can
       tell which folders have unseen messages in them. If you use
       presort inc style, then this is done automatically. However, if
       you read all the unseen messages in a folder from outside
       <i>exmh</i>, then it will miss the transition out of the unseen
       state, so the 
-      <Button -command "Busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</Button> 
+      <Button -command "Busy Flist_FindSeqs 1 ; Inc_PresortFinish">Flist</Button> 
       button will help reset its view of the folder state. 
 
   <dt><button -command "Inc">Inc</button> 
@@ -254,8 +254,8 @@ Search... and More...
   <dt>Sequences...
   <dd>This is a menu of defined sequences that selected messages can
       be added to or removed from.  By default, the only defined
-      sequence is 'unseen' for messages which have not yet been seen.
-      To add to this menu, see the
+      sequences are 'unseen' (for messages which have not yet been
+      seen), and 'urgent'.  To add to this menu, see the
       <A HREF="custom.html#sequences">documentation on the sequences
       resources</A>. 
   <dt>Search...
@@ -561,7 +561,7 @@ actions have their text grayed out.
 	<dd>Display a new toplevel window containing the current
 	    message. 
 
-	<dt><button -command Msg_ShowUnseen>First Unseen</button>
+	<dt><button -command Msg_Show unseen>First Unseen</button>
 	<dd>Display the first unseen message, if any. Also keystroke
 	    'U'. 
 

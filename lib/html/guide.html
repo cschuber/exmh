@@ -1210,10 +1210,10 @@ There are several ways to search for things in exmh:
       <br>
       The "Add to Sequence(s)" option will add the matching messages
       to an MH sequence. Just pick a meaningful name for the
-      sequence. (Sequences are not supported well by exmh, yet.) The
-      "Pick from Seq/msg(s)" lets you narrow the search to a sequence
-      (e.g., "unseen" or something you defined yourself) or a set of
-      messages (e.g., last:100 for the last 100 messages in the folder).
+      sequence. The "Pick from Seq/msg(s)" lets you narrow the search
+      to a sequence (e.g., "unseen" or something you defined yourself)
+      or a set of messages (e.g., last:100 for the last 100 messages
+      in the folder). 
       <br>
       The "All to Sel" option determines if the matching messages are
       added to the currently selected set, or if a new set is created. 
@@ -1263,10 +1263,10 @@ There are several ways to search for things in exmh:
       already do this via an external agent, then you should have
       <i>exmh</i> periodically check for new mail in your folders,
       which is the
-      <button -command "busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</button> 
+      <button -command "busy Flist_Seqs 1 ; Inc_PresortFinish">Flist</button> 
       action. The folder highlighting and icon feedback work best with
       <button -command "Inc">Inc</button> and 
-      <button -command "busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</button>. 
+      <button -command "busy Flist_FindSeqs 1 ; Inc_PresortFinish">Flist</button>. 
       You can also have it periodically run <code>msgchk</code> or
       count messages in your spool file, but the disadvantage of doing
       this is that there is no audible or icon feedback when it sees
@@ -1314,10 +1314,10 @@ There are several ways to search for things in exmh:
       situation. In the meantime...
       <p>
       Really big folders with lots of messages in the unseen sequence
-      are really slow. Use the "Catch-up unseen" folder
-      More... operation to clear the unseen sequence. You probably
-      want to do this when you import mail from other systems
-      mailboxes. 
+      are really slow. Use the <button -Command Pick_MarkSeen>Catch-up
+      unseen</button> folder More... operation to clear the unseen
+      sequence. You probably want to do this when you import mail from
+      other systems mailboxes. 
 
   <dt>More Keyboard Stuff
   <dd>If you really like using the keyboard instead of the mouse, you
@@ -1492,8 +1492,7 @@ depth supported for directories in your file system. Information about
 message sequences is kept in a file named .mh_sequences in each mail
 folder directory. The current message is in the sequence named "cur",
 for example. New mail is in the sequence named "unseen". You can define
-more sequences, up to 10 per folder, but exmh doesn't support them
-very well. 
+more sequences, up to 10 per folder.
 <p>
 Exmh adds a few more files for its own purposes. It uses an alternate
 context stored in .exmhcontext so that command line MH programs and

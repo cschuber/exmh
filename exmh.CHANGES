@@ -1,5 +1,10 @@
 HISTORY
-cvs repository 08/21/2002 cwg-exmh@deepeddy.com
+cvs repository 08/23/2002 cwg-exmh@deepeddy.com
+    Intro.html, Search.html, custom.html, exmh.README.html,
+    guide.html, overview.html, reference.html, tutorial.html -
+	Documentation updates for all my recent patches.
+
+cvs repository 08/22/2002 cwg-exmh@deepeddy.com
     mh.tcl - Cache sequences so we don't read the .sequences files
 	over and over and over.
     seqwin.tcl, sequences.tcl - New preferences item for orientation
