@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 05/31/2001 kchrist
+    lib/scan.tcl: Allow arguments in scan-proc configuration.
+    lib/app-defaults: Have "Use message as draft" call Msg_CompUse. This
+      sidesteps an internal bug in MsgComp. To fix the bug MsgComp
+      needs to be drafts-folder aware like Mh_CompSetup.      
+
 cvs repository 05/18/2001 bmah
     lib/extrasInit.tcl:
     lib/pgpBase.tcl:	PGP detection code now tries to execute a
