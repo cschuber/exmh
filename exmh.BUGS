@@ -66,11 +66,20 @@ Not cleaning up MIME parts saved into temp files.  Not cleaning up
 audit logs.
 
 
-
 Number: 6
 Version: 2.0.3 + cvs as of around 4/7
-Priority: Medium
+Priority: Low
 Scope: Narrow
 Complexity: ?
 
-I-Spell seems to have gotten busted.
+I-Spell gets turned off by magic.  Make the magic go away.
+
+
+Number: 7
+Version: 2.0.3
+Priority: Low
+Scope: Narrow
+Complexity: ?
+
+The "use message as draft" does not highlight the body (not obeying
+the "colorize multipart" preference?).
