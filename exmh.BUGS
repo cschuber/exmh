@@ -374,3 +374,36 @@ invalid command name "color"
     invoked from within
 "tkMenuInvoke .main.help.m 1"
     (command bound to event)
+
+
+----------------------------------------------------------------------
+Number: 23
+Version: ?
+Priority: Med
+Scope: Narrow
+Complexity: ?
+Status:
+
+Subject: Stupid User Tricks, PGP-style
+From: Valdis.Kletnieks@vt.edu
+Date: Mon, 03 May 1999 12:06:42 -0400 (11:06 CDT)
+
+I synched to the CVS version just now (Monday morning), and encountered the
+following:
+
+1) In my 'components' file, I have a line:
+
+Pgp-Action: PGP/MIME-signclear; rfc822=off; originator="<Valdis.Kletnieks@vt.edu>"
+
+So by default things are signed.  This sets the "Sign", "MIME", and "Clearsign"
+toggles on the Crypt... menu in sedit.
+
+2) Hit "Send", and wait for the popup box to enter the PGP password.
+
+3) Hit the "Abort" button.
+
+You then get a nice dialog box telling you:
+
+can't read "pgpPass(0x29B60F49)": no such variable
+
+Not the friendliest of aborts....
