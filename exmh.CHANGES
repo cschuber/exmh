@@ -1,31 +1,31 @@
 HISTORY
-cvs repository 07/12/2001 cwg-exmh@deepeddy.com
-    scan.tcl - In yesterday's patch, we only wanted to do that if we
-	were changing folders.  If we aren't, we still want to do it
-	the old way.
+cvs repository 07/12/2002 cwg-exmh@deepeddy.com
+    scan.tcl - Back out the removal of Ftoc_Reset from 7/3/2002 as
+	well as yesterday's attempt to fix some of the problems caused
+	by that bad idea. 
 
-cvs repository 07/11/2001 cwg-exmh@deepeddy.com
+cvs repository 07/11/2002 cwg-exmh@deepeddy.com
     scan.tcl - in ScanFolder, we don't know what the last message is
 	yet, so we need to use Widget_Text_End instead.  Also,
 	call Ftoc_RescanLine if need be.
 
-cvs repository 07/10/2001 cwg-exmh@deepeddy.com
+cvs repository 07/10/2002 cwg-exmh@deepeddy.com
     ftoc.tcl - In Ftoc_ClearCurrent, if ftoc(curLine) isn't set use
 	Mh_Cur to find where we're clearing.
 
-cvs repository 07/03/2001 cwg-exmh@deepeddy.com
+cvs repository 07/03/2002 cwg-exmh@deepeddy.com
     folder.tcl, ftoc.tcl - Don't call Scan_Folder in FolderChange;
 	properly initialize ftoc(displayValid) to 1 so that
 	Scan_Folder will be called when needed.
 
-cvs repository 07/03/2001 cwg-exmh@deepeddy.com
+cvs repository 07/03/2002 cwg-exmh@deepeddy.com
     scan.tcl - Remove unnecessary call to Ftoc_Reset in ScanFolder
 
-cvs repository 07/02/2001 cwg-exmh@deepeddy.com
+cvs repository 07/02/2002 cwg-exmh@deepeddy.com
     folder.tcl - Call Flist_UnseenUpdate just before calling Scan_Folder 
 	in FolderChange
 
-cvs repository 07/02/2001 cwg-exmh@deepeddy.com
+cvs repository 07/02/2002 cwg-exmh@deepeddy.com
     scan.tcl - Remove bogus call to Flist_ForgetUnseen
 
 cvs repository 06/07/2002 welch@panasas.com
