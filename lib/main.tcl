@@ -477,17 +477,6 @@ proc ExmhLogSave {} {
 }
 #### Misc
 
-proc TraceInfo {} {
-    if {[info commands tclanalyze] != {}} {
-	catch {destroy .traceinfo}
-	Widget_Toplevel .traceinfo
-	text .traceinfo.msg -width 50 -height 10
-	pack append .traceinfo .traceinfo.msg {top expand fill}
-	.traceinfo.msg insert end [tclanalyze info]
-	bind .traceinfo.msg <Button-1> {destroy .traceinfo}
-    }
-}
-
 proc DoNothing { args } {
     return ""
 }
