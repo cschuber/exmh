@@ -8,6 +8,7 @@ Version: 2.0.3
 Priority: Low
 Scope: Narrow
 Complexity: ?
+Status: assigned to slipcon
 
 When you launch the installer, it brings up an HTML window as well as the 
 installer window.  If you dismiss the HTML window before it finishes rendering 
@@ -22,6 +23,7 @@ Version: 2.0.3
 Priority: Medium
 Scope: Narrow
 Complexity: High
+Status: 
 
 With the new PGP composition code, the PGP password no longer times
 out.
@@ -37,6 +39,7 @@ Version: 2.0.3
 Priority: Low
 Scope: Narrow
 Complexity: Medium
+Status: 
 
 This is an old bug.  The MIME display code misses one part of the RFC's
 requirements on multiparts in which the number of CRLFs at the end of
@@ -50,6 +53,7 @@ Version: 2.0.3
 Priority: Medium
 Scope: Narrow
 Complexity: ?
+Status: 
 
 Not cleaning up MIME parts saved into temp files.  Not cleaning up
 audit logs.
@@ -60,6 +64,7 @@ Version: 2.0.3 + cvs as of around 4/7
 Priority: Low
 Scope: Narrow
 Complexity: ?
+Status: 
 
 I-Spell gets turned off by magic.  Make the magic go away.
 
@@ -69,6 +74,7 @@ Version: 2.0.3
 Priority: Low
 Scope: Narrow
 Complexity: ?
+Status: 
 
 The "use message as draft" does not highlight the body (not obeying
 the "colorize multipart" preference?).
@@ -79,6 +85,7 @@ Version: 2.0.3
 Priority: Medium
 Scope: Narrow
 Complexity: ?
+Status: 
 
 if a "mailto:" url contains a subject line, it doesn't get put in the
 right place.  For example, 
@@ -98,6 +105,7 @@ Version: 2.0.3
 Priority: Low
 Scope: Narrow
 Complexity: ?
+Status: 
 
 A URL of the form "http://host.dom" without a trailing slash doesn't
 work.
@@ -108,6 +116,7 @@ Version: 2.0.3
 Priority: Med
 Scope: Narrow
 Complexity: ?
+Status: 
 
 From: "Jacob Morzinski" <jmorzins@MIT.EDU>
 
@@ -136,6 +145,7 @@ Version: 2.0.2
 Priority: ?
 Scope: ?
 Complexity: ?
+Status: 
 
 Message received at submit@bugs.debian.org:
 From: "Thomas Gebhardt" <gebhardt@HRZ.Uni-Marburg.DE>
@@ -190,6 +200,7 @@ Version: 2.0.2
 Priority: ?
 Scope: ?
 Complexity: ?
+Status: 
 
 Message received at submit@bugs.debian.org:
 From: Martin Weinberg <weinberg@osprey.phast.umass.edu>
@@ -206,6 +217,7 @@ Version: 1.6.9
 Priority: ?
 Scope: ?
 Complexity: ?
+Status: 
 
 Message received at submit@bugs.debian.org:
 From: Dominik Kubla <kubla@netz.klinik.uni-mainz.de>
@@ -218,6 +230,7 @@ Version: 1.6.9
 Priority: ?
 Scope: ?
 Complexity: ?
+Status: 
 
 [This may be impossible to fix, since PGP doesn't really
 output any useful exit status]
@@ -246,7 +259,7 @@ Version: 1.6.9
 Priority: ?
 Scope: ?
 Complexity: ?
-
+Status: 
 
 Subject: Odd "unseen" exmh weirdnesses
 Date: Tue, 13 Apr 1999 00:28:07 -0500
