@@ -249,18 +249,12 @@ proc installFieldDone {} {
     }
 }
 
-proc installSetValue { _var } {
+proc installSetValue { varName } {
     global install
-    if [info exists install(entry,$_var)] {
-	set _value [$install(entry,$_var) get]
-	if [string match *(* $_var] {
-	    set _arrayName [lindex [split $_var (] 0]
-	    global $_arrayName
-	} else {
-	    global $_var
-	}
-	set $_var $_value
-#	installFeedback "$_var $_value"
+    if [info exists install(entry,$varName)] {
+	set value [$install(entry,$varName) get]
+	upvar #0 $varName var
+	set var $value
     }
 }
 proc installGetValue { var } {
@@ -296,6 +290,9 @@ proc installVerify {} {
 	    if ![file isdirectory $path] {
 		set willMakeDir 0
 		foreach dirType $install(dirlist) {
+		    if {![info exist install(dir,$dirType)]} {
+			installSetValue install(dir,$dirType)
+		    }
 		    set newdir $install(dir,$dirType)
 		    if {$newdir == $path} {
 			set willMakeDir 1

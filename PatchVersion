@@ -1,0 +1,16 @@
+#!/bin/sh 
+# \
+exec tclsh "$0" ${1+"$@"}
+
+set version [lindex $argv 0]
+set out stdout
+set in stdin
+while {[gets $in line] >= 0} {
+   if {[regexp "^set vers" $line]} {
+	puts $out [list set vers $version]
+    } elseif {[regexp "^set date" $line]} {
+	puts $out [list set date [clock format [clock seconds] -format %m/%d/%Y]]
+    } else {
+	puts $out $line
+    }
+}

@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 4/14/1999
+    Added Mime_SetFileEncoding to set the character set encodings when
+	reading mail messages. Tcl 8.1 automatically converts the characters
+	to Unicode as it reads the file. -welch
+
 cvs repository 4/13/1999
     Took the "Dates display localtime in parentheses" enhancement from March
 	31, and made the format settable as resource localTimeFormat. -jbeck

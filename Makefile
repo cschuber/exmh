@@ -1,8 +1,10 @@
 # Create a tar distribution for exmh
 
-VERSION=2.0.3
+# Remember to update exmh.install when changing version numbers.
 
-srctar: htmltar
+VERSION=2.1.0
+
+srctar: version htmltar
 	echo ./CVS > Tar.exclude
 	echo ./misc >> Tar.exclude
 	echo ./lib/CVS >> Tar.exclude
@@ -14,6 +16,10 @@ srctar: htmltar
 	mkdir /tmp/exmh-$(VERSION)
 	tar cvfX - Tar.exclude . | (chdir /tmp/exmh-$(VERSION) ; tar xf -)
 	(chdir /tmp ; tar cf - exmh-$(VERSION) | gzip > /home/welch/download/exmh-$(VERSION).tar.gz)
+
+version: 
+	./PatchVersion $(VERSION) < exmh.install > exmh.install.new
+	mv exmh.install.new exmh.install
 
 ftpdist:
 	scp /home/welch/download/exmh-$(VERSION).tar.gz www:~ftp/pub/tcl/exmh
