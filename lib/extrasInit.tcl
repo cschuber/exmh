@@ -841,7 +841,7 @@ Warp & Show: Warp then select the first unseen message"
 this setting.
 
 Nothing:     Does nothing
-Inc:         Just like clicking the Inc button
+Inc:         Just like clicking the Inc button"
     }
 
     { unseenwin(mb1mode) unseenWinModifiedButton1
