@@ -1,6 +1,8 @@
 HISTORY
 
 cvs repository 4/26/1999
+    Add documentation for mime_alternative_prefs resource to
+        exmh-custom html doc.  -haldevore
     Fix error in regexps in ftoc.tcl where digits followed by a "+"
         would confuse the marking of current message
         -Jan L. Peterson via haldevore

@@ -1042,13 +1042,29 @@ RESOURCES</a></h3>
 <dl>
 <dt>helpInOneWindow 
 <dd>Set this to 1 to get a new preferences interface. 
+<br>
+<br>
 <dt>localTimeFormat
 <dd>If a message was sent from another time zone, the local equivalent is
     calculated and appended in parentheses to the displayed <code>Date:</code>
     header.  This resource describes the format, which uses the
     <code>strftime(3C)</code> syntax.  The default value is:
 <pre><blockquote>%H:%M %Z
-</blockquote></pre></dl>
+</blockquote></pre>
+<dt>mime_alternative_prefs
+<dd>If a message contains a MIME part of type multipart/alternative,
+exmh will select one of the alternatives for display.  You can control
+the order of preference of the various alternatives.  The most common
+use for this is to establish the precedence of text/plain over
+text/html for exmh users who do not use the in-line html viewer for
+showing text/html content.
+<p>Example:
+<pre><blockquote>
+*mime_alternative_prefs: text/plain text/richtext text/html
+</blockquote></pre>
+If no value of mime_alternative_prefs is provided, exmh will display
+the last alternative that it is capable of displaying.
+</dl>
 <h3><a NAME="PROGRAMMING EXMH" HREF="#CONTENTS">PROGRAMMING EXMH</a></h3>
 <p>
 <i>Exmh</i> is implemented as a Tcl/Tk script that uses the MH programs

@@ -231,14 +231,6 @@ user-specifiable path to par binary).
 
 
 
-Number: 30
-Priority: Med
-Scope: Narrow
-Complexity: Low
-
-Add multipart/alternative prioritization code as a user option
-
-
 Number: 31
 Priority: Med
 Scope: Narrow
