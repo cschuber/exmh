@@ -230,7 +230,7 @@ proc Msg_CompUse {folder id} {
     }
 }
 # Compose a message to a particular person
-proc Msg_CompTo {address args} {
+proc Msg_CompTo {url args} {
     global mhProfile
     if {![eval MsgComp $args]} {
 	return
@@ -245,7 +245,35 @@ proc Msg_CompTo {address args} {
 	set in [open $path]
 	set X [read $in]
 	close $in
-	regsub -nocase "(^|\n)to:\[^\n\]*\n" $X "\\1To: $address\n" X
+	if {[regexp -nocase {^(.*)\?} $url address]} {
+	    regsub -nocase {[^\?]*\?(.*)} $url {\1} headers
+	    foreach hdr [split $headers &] {
+		if {[regexp -nocase {body=} $hdr]} {
+		    regsub -nocase {body=} $hdr {} body
+		    set body [DecodeURL $body]
+		    set X "$X$body"
+		} else {
+		    regsub {=.*} $hdr {} hdr_name
+		    set hdr_name [string toupper [string range $hdr_name 0 0]][string tolower [string range $hdr_name 1 end]]
+		    regsub {.*=} $hdr {} hdr_value
+		    set hdr_value [DecodeURL $hdr_value]
+		    if {[string compare $hdr_name to] == 0} {
+			set to $hdr_value
+		    }
+		    regsub -nocase "(^|\n)$hdr_name:\[^\n\]*\n" $X "\\1$hdr_name: $hdr_value\n" X
+		}
+	    }
+	    regsub -nocase {\?.*} $url {} url
+	    set url [DecodeURL $url]
+ 	    if [info exists to] {
+		regsub -nocase "(^|\n)to:\[^\n\]*\n" $X "\\1To: $url, $to\n" X
+ 	    } else {
+		regsub -nocase "(^|\n)to:\[^\n\]*\n" $X "\\1To: $url\n" X
+ 	    }
+	} else {
+	    set address $url
+	    regsub -nocase "(^|\n)to:\[^\n\]*\n" $X "\\1To: $address\n" X
+	}
 	set out [open $path w]
 	puts -nonewline $out $X
 	close $out
