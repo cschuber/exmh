@@ -4,7 +4,8 @@ welch@acm.org
  
 exmh is a TCL/TK based interface to the MH mail system,
 which can be found at http://www.mhost.com/nmh/
-Version 2 requires Tk 4.1 or higher - works with Tk 8.0
+Version 2.1 requires Tk 8.0 or higher - works with
+the latest (8.3.1 and 8.4a1)
 
 All the docs have moved into html and are viewable from within
 the installer as well as from within a running exmh.
@@ -20,3 +21,19 @@ but you may get better response from the exmh-users mailing list.
 Subscribe via "exmh-users-request@redhat.com"
 Send a message whose subject line reads 'subscribe' and whose
 From or Reply-To line contains the email address to add.
+
+Thanks to the dozen or so folks that have write access to
+the CVS code base who continue to add features and fix bugs.
+You see this folks listed in the exmh.CHANGES file:
+
+cwg		Chris Garrigues <cwg-exmh@DeepEddy.Com>
+iko		Anders Hammarquist <iko@cd.chalmers.se>
+haldevore	Hal DeVore <haldevore@earthling.net>
+jbeck		John Beck <jbeck@eng.sun.com>
+slipcon		Scott Lipcon <slipcon@acm.jhu.edu>
+gruber		Markus Gruber <gruber@eikon.tum.de>
+jrennie		Jason Rennie <jrennie@justresearch.com>
+valdis		Valdis.Kletnieks@vt.edu
+bmah		bmah@CA.Sandia.GOV (Bruce A. Mah)
+kchrist		Kevin.Christian@lsil.com
+jmorzins	Jacob Morzinski <jmorzins@MIT.EDU>
