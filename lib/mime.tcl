@@ -656,6 +656,15 @@ proc MimeSetDisplayFlag {part} {
 	    Exmh_Debug "vcard: not displaying"
 	    return
 	}
+	# Special case to not show the original message in a SPAM
+	# wrapped report. 
+	if {[info exists mimeHdr($part,hdr,content-description)]} {
+	    set disp [split $mimeHdr($part,hdr,content-description) \;]
+	    if [regexp {original message before SpamAssassin} [lindex $disp 0]] {
+		set mimeHdr($part,display) 0
+		return
+	    }
+	}
 	if ![info exists mimeHdr($part,display)] {
 	    set mimeHdr($part,display) \
 		[expr {[file exists $mimeHdr($part,file)] && \

@@ -1,5 +1,9 @@
 HISTORY
-cvs repository 1/24/2005 cwg-exmh@deepeddy.com
+cvs repository 1/25/2005 cwg-exmh@deepeddy.com
+  lib/mime.tcl: Special case display of original message in
+  spamassassin processed mail so it doesn't display by default.
+
+cvs repository 1/24/2005 welch@panasas.com
   lib/folder.tcl: fixed the background folder purging script
     to properly pick up things from the script library
 
