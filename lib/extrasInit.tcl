@@ -530,11 +530,10 @@ window so that you will not be prompted with the passphrase prompt." }
 version are currently selected.  Users with multiple PGP keys or PGP
 versions may find it helpful.  Changing this value will require that 
 you exit and re-enter exmh if you've already composed email." }
-    {pgp(sign) pgpSign {CHOICE none standard detached clearsign encryptsign} {Signature options}
+    {pgp(sign) pgpSign {CHOICE none standard clearsign encryptsign} {Signature options}
 "There are multiple ways to sign a message.
     None: Do not sign outgoing messages.
     Standard: Sign outgoing messages.
-    Detached: Use MIME encapsulation for signatures.
     Clearsign: Sign messages so that they can be read by non-PGP mail readers.
     Encryptsign: Sign and encrypt in a single operation.
 This can be changed on the fly from the sedit window." }
@@ -586,6 +585,7 @@ this time period, in minutes, has elapsed." }
 
     # Fix up change in pgp(sign) value
     switch $pgp(sign) {
+	detached -
 	1 {set pgp(sign) standard}
 	0 {set pgp(sign) none}
     }

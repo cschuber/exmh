@@ -1,6 +1,17 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.9  1999/10/25 15:38:39  kchrist
+# Added a dropKeys pattern to pgpGPG.tcl.
+#
+# Simplified PGP GUI by removing "detached" signature option. Problem
+# was that MIME+standard includes a copy of the message being signed
+# in the signature attachement. What really should be used is
+# MIME+detached. Decided to overload the meaning of "standard". If
+# the format is plain, standard means "binary". If the format is
+# anything else, standard means "detached". Less flexibility but
+# better chances of "doing the right thing".
+#
 # Revision 1.8  1999/09/30 03:51:07  kchrist
 # pgp($v,cmd_Beauty) was getting in the way of pgp($v,cmd_User) for
 # v=gpg so I had to rearrange things a bit.
@@ -312,7 +323,7 @@ set pgp(gpg,args_listPub) {--with-colons --list-keys \"$pattern\"}
 # List seckeys args prototype
 set pgp(gpg,args_listSec) {--with-colons --list-secret-keys \"$pattern\"}
 # Pattern that matches out revoked and nonvalid keys
-set pgp(gpg,pat_dropKeys) {}
+set pgp(gpg,pat_dropKeys) {(^|\n)(pub|sub|sec|ssb|uid):[dren]:[^\n]+}
 # Where to split up the listKeys raw output to form a list
 set pgp(gpg,pat_splitKeys) \n
 # Patterns that match out interesting keys

@@ -19,6 +19,17 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.18  1999/10/25 15:38:39  kchrist
+# Added a dropKeys pattern to pgpGPG.tcl.
+#
+# Simplified PGP GUI by removing "detached" signature option. Problem
+# was that MIME+standard includes a copy of the message being signed
+# in the signature attachement. What really should be used is
+# MIME+detached. Decided to overload the meaning of "standard". If
+# the format is plain, standard means "binary". If the format is
+# anything else, standard means "detached". Less flexibility but
+# better chances of "doing the right thing".
+#
 # Revision 1.17  1999/10/07 14:29:28  kchrist
 # Changed quote file name documentation string to remove ambiguity regarding
 # the location of this file.
@@ -592,7 +603,6 @@ proc Pgp_Process { v srcfile dstfile } {
 	    set typeparams "; x-action=encrypt;"
 	} else {
 	    switch $pgp(sign,$id) {
-		detached -
 		standard {set typeparams "; x-action=signbinary;"}
 		clearsign {set typeparams "; x-action=signclear;"}
 		encryptsign {set typeparams "; x-action=encryptsign;"}
@@ -655,11 +665,7 @@ proc Pgp_Process { v srcfile dstfile } {
     # write the message to be encrypted
     set msgfile [Mime_TempFile "msg"]
     set msg [open $msgfile w 0600]
-    if {$pgp(format,$id) == "plain" && $pgp(sign,$id) == "detached"} {
-	set pgp(sign,$id) "standard"
-    } else {
-	foreach line $pgpheaders { puts $msg [Pgp_Misc_FixHeader $line] }
-    }
+    foreach line $pgpheaders { puts $msg [Pgp_Misc_FixHeader $line] }
     puts $msg ""
     puts -nonewline $msg [read $orig]
     close $orig
@@ -672,10 +678,26 @@ proc Pgp_Process { v srcfile dstfile } {
 	    Pgp_Exec_Encrypt $pgp(version,$id) $msgfile $pgpfile $ids 
 	} else {
 	    switch $pgp(sign,$id) {
-		standard -
-		detached -
-		clearsign {Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile $originator $pgp(sign,$id)}
-		encryptsign {Pgp_Exec_EncryptSign $pgp(version,$id) $msgfile $pgpfile $originator $ids}
+		standard {
+		    # Depending on format standard may mean different
+		    # things. It was decided to keep this ambiguity
+		    # internal instead of exporting it via the GUI.
+		    if {$pgp(format,$id) == "plain"} {
+			Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
+				$originator standard
+		    } else {
+			Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
+				$originator detached
+		    }
+		}
+		clearsign {
+		    Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile \
+			    $originator clearsign
+		}
+		encryptsign {
+		    Pgp_Exec_EncryptSign $pgp(version,$id) $msgfile $pgpfile \
+			    $originator $ids
+		}
 		none -
 		default {error "<PGP> Message is neither signed, nor encrypted"}
 	    }

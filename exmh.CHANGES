@@ -1,6 +1,20 @@
 HISTORY
 
+cvs repository 10/25/1999
+    Added a dropKeys pattern to pgpGPG.tcl.
+    Simplified PGP GUI by removing "detached" signature option. Problem
+    was that MIME+standard includes a copy of the message being signed
+    in the signature attachement. What really should be used is
+    MIME+detached. Decided to overload the meaning of "standard". If
+    the format is plain, standard means "binary". If the format is
+    anything else, standard means "detached". Less flexibility but
+    better chance of "doing the right thing". -kchrist
+
 exmh-2.1.1 Released, 10/15/1999
+
+cvs repository 10/12/1999
+    Fixed a bug that caused a new sedit window to bomb if the PGP
+    selection for new windows was not supported. -kchrist
 
 cvs repository 10/07/1999
     Changed documentation string for quote file name to indicate it

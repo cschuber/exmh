@@ -926,7 +926,7 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.l_pgpsign:		Sign
 *Sedit.Menubar.pgp.m.t_pgpsign:		cascade
 *Sedit.Menubar.pgp.m.m_pgpsign:		sign
-*Sedit.Menubar.pgp.m.sign.entrylist:	none std det clr enc
+*Sedit.Menubar.pgp.m.sign.entrylist:	none std clr enc
 *Sedit.Menubar.pgp.m.sign.l_none:	None
 *Sedit.Menubar.pgp.m.sign.t_none:	radio
 *Sedit.Menubar.pgp.m.sign.v_none:	pgp(sign,$id)
@@ -935,10 +935,6 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.sign.t_std:	radio
 *Sedit.Menubar.pgp.m.sign.v_std:	pgp(sign,$id)
 *Sedit.Menubar.pgp.m.sign.x_std:	standard
-*Sedit.Menubar.pgp.m.sign.l_det:	Detached
-*Sedit.Menubar.pgp.m.sign.t_det:	radio
-*Sedit.Menubar.pgp.m.sign.v_det:	pgp(sign,$id)
-*Sedit.Menubar.pgp.m.sign.x_det:	detached
 *Sedit.Menubar.pgp.m.sign.l_clr:	Clear Sign
 *Sedit.Menubar.pgp.m.sign.t_clr:	radio
 *Sedit.Menubar.pgp.m.sign.v_clr:	pgp(sign,$id)
@@ -1137,7 +1133,7 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.l_pgpsign:	Sign
 *WhatNow.more.m.encrypt.t_pgpsign:	cascade
 *WhatNow.more.m.encrypt.m_pgpsign:	sign
-*WhatNow.more.m.encrypt.sign.entrylist:	none std det clr enc
+*WhatNow.more.m.encrypt.sign.entrylist:	none std clr enc
 *WhatNow.more.m.encrypt.sign.l_none:	None
 *WhatNow.more.m.encrypt.sign.t_none:	radio
 *WhatNow.more.m.encrypt.sign.v_none:	pgp(sign,$id)
@@ -1146,10 +1142,6 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.sign.t_std:	radio
 *WhatNow.more.m.encrypt.sign.v_std:	pgp(sign,$id)
 *WhatNow.more.m.encrypt.sign.x_std:	standard
-*WhatNow.more.m.encrypt.sign.l_det:	Detached
-*WhatNow.more.m.encrypt.sign.t_det:	radio
-*WhatNow.more.m.encrypt.sign.v_det:	pgp(sign,$id)
-*WhatNow.more.m.encrypt.sign.x_det:	detached
 *WhatNow.more.m.encrypt.sign.l_clr:	Clear Sign
 *WhatNow.more.m.encrypt.sign.t_clr:	radio
 *WhatNow.more.m.encrypt.sign.v_clr:	pgp(sign,$id)
