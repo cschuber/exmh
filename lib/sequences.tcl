@@ -216,8 +216,12 @@ Exmh_Debug "Seq_Trace $array $elem $op"
 	    }
 	}
 	if {$delta != 0} {
-            # Sequence information changed, so update the fcache
-            Fcache_RedisplayUnseen $folder
+	    global fcache
+
+	    if {$fcache(lines) > 0} {
+                # Sequence information changed, so update the fcache
+                Fcache_RedisplayUnseen $folder
+	    }
 	    if {[info exists flist(totalcount,$seq)]} {
 		incr flist(totalcount,$seq) $delta
 	    } else {

@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 04/02/2003 haldevore@acm.org
+  flist.tcl - Only call Fcache_Redisplay if folders being cached
+
 cvs repostiory 4/1/2003 welch@panasas.com
   flist.tcl, sequences.tcl - Fix to call Fcache_Redisplay from
   the trace on flist.
