@@ -526,6 +526,11 @@ PGP modules." {
 window so that you will not be prompted with the passphrase prompt.  
 Changing this value will require that you exit and re-enter exmh if 
 you've already composed email." }
+    {pgp(seditpgpextras) pgpSeditPgpExtras OFF {Sedit PGP extras info}
+"Turning this on gives extra information about what key and PGP
+version are currently selected.  Users with multiple PGP keys or PGP
+versions may find it helpful.  Changing this value will require that 
+you exit and re-enter exmh if you've already composed email." }
     {pgp(sign) pgpSign ON {Sign outgoing messages}
 "If this is turned on, outgoing messages will be signed." }
     {pgp(encrypt) pgpEncrypt OFF {Encrypt outgoing messages}
@@ -547,7 +552,7 @@ This can be changed on the fly from the sedit window" }
     PGP5:   Pretty Good Privacy, Version 5
     GPG:    GNU Privacy Guard
 This can be changed on the fly from the sedit window" }
-    {pgp(passtimeout) PassTimeout 60 {Minutes to cache PGP passphrase}
+    {pgp(passtimeout) pgpPassTimeout 60 {Minutes to cache PGP passphrase}
 "Exmh will clear its memory of PGP passphrases after
 this time period, in minutes, has elapesed." }
     }

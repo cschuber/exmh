@@ -19,6 +19,10 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.10  1999/08/18 15:52:37  bmah
+# Commit modification to seditpgp user interface, and fix a couple of
+# bugs.
+#
 # Revision 1.9  1999/08/13 00:39:05  bmah
 # Fix a number of key/passphrase management problems:  pgpsedit now
 # manages PGP versions, keys, and passphrases on a per-window
@@ -459,7 +463,7 @@ proc Pgp_SetMyName { v id } {
    }
 }
 
-# Set seditpgp name (PGP key name gets set in multiple places
+# Set seditpgp labels (PGP key name gets set in multiple places
 # so we should collapse them all here)
 proc Pgp_SetSeditPgpName { myname id } {
     global pgp
@@ -467,8 +471,10 @@ proc Pgp_SetSeditPgpName { myname id } {
     set keyid [lindex $myname 0]
     set keyalg [lindex $myname 1]
     set keyname [lindex $myname 4]
+    set fullname $pgp($pgp(version,$id),fullName)
 	
-    set pgp(sedit_label,$id) "$keyid $keyalg $keyname"
+    set pgp(sedit_label,$id) "$keyname"
+    set pgp(sedit_label2,$id) "$fullname KeyID: $keyid ($keyalg)"
 }
 
 # Update seditpgp PGP version
@@ -498,7 +504,6 @@ proc Pgp_SetSeditPgpVersion { v id } {
 	set pgp(cur,pass,$id) {}
     }
     Pgp_SetSeditPgpName $pgp($v,myname,$id) $id
-    set pgp(fullName,$id) $pgp($v,fullName)
 
 }
 
