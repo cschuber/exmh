@@ -25,10 +25,12 @@ srctar: version htmltar
 
 clean:
 	rm -f ./Tar.exclude
+	rm -f ./lib/html/Tar.exclude
 	rm -f ./exmh-$(VERSION).tar.gz
 	rm -f ./html-$(VERSION).tar.gz
 	rm -f ./exmh-$(VERSION)-1.noarch.rpm
 	rm -f ./exmh-$(VERSION)-1.src.rpm
+	rm -f ./lib/html/exmh.CHANGES.txt
 
 rpm:	srctar
 	cp exmh-$(VERSION).tar.gz /usr/src/redhat/SOURCES/
