@@ -223,6 +223,10 @@ proc Seq_Trace {array elem op} {
     } elseif {$var == {totalcount}} {
 	set seq [lindex $indices 1]
 	#Exmh_Debug "$flist(totalcount,$seq) $seq msgs in [llength $flist($seq)] folders ($flist($seq))"
+	if {$flist(totalcount,$seq) <  0} {
+	    Exmh_Status "$flist(totalcount,$seq) $seq!"
+	    set flist(totalcount,$seq) 0
+	}
 	if {$seqwin(on)} {
 	    SeqWinShowSeqPane $seq
 	}
@@ -334,29 +338,27 @@ proc Seq_Set {folder seq msgids} {
 	Fdisp_HighlightUnseen $folder
     }
 }
-# Deletes messages from a folder
+# Deletes messages from a sequence
 proc Seq_Del {folder seq msgids} {
     global flist mhProfile
     Exmh_Debug Seq_Del $folder $seq $msgids
 #   eval {MhExec mark +$folder -seq $seq -delete} $msgids
     Mh_SequenceUpdate $folder del $seq $msgids
+    set delta 0
     foreach msgid $msgids {
 	if [info exists flist(seq,$folder,$seq)] {
 	    set ix [lsearch $flist(seq,$folder,$seq) $msgid]
 	    if {$ix >= 0} {
 		set flist(seq,$folder,$seq) \
 		    [lreplace $flist(seq,$folder,$seq) $ix $ix]
-		incr flist(seqcount,$folder,$seq) -1
-		if {$seq == $mhProfile(unseen-sequence)} {
-		    if {$flist(seqcount,$folder,$seq) == 0} {
-			FlistUnseenFolder $folder
-		    }
-		}
-		if {$flist(totalcount,$seq) <  0} {
-		    Exmh_Status "$flist(totalcount,$seq) $seq!"
-		    set flist(totalcount,$seq) 0
-		}
+		incr delta -1
 	    }
+	}
+    }
+    incr flist(seqcount,$folder,$seq) $delta
+    if {$seq == $mhProfile(unseen-sequence)} {
+	if {$flist(seqcount,$folder,$seq) == 0} {
+	    FlistUnseenFolder $folder
 	}
     }
 }

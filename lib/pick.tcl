@@ -204,6 +204,7 @@ proc PickMarkSeen {} {
 	return
     }
     Seq_Del $exmh(folder) $mhProfile(unseen-sequence) $pick(ids)
+    Ftoc_ShowSequences $exmh(folder)
 }
 proc Pick_MarkSeen {} {
     global exmh pick mhProfile
