@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 01/26/2002 valdis.kletnieks@vt.edu
+    lib/app-defaults-color, lib/main.tcl, lib/html/custom.html - drop the
+	need for c_st_background color setting, use same scheme as lib/sedit.tcl
+	to propogate the value. The 'background msgs' color stays c_st_bg_msgs
+
 cvs repository 01/25/2002 slipcon@mercea.net
     lib/html/ppp.howto.html - added postfix instructions, using
         Kevin Oberman (oberman@es.net)'s diff

@@ -87,10 +87,6 @@
 *c_st_warn:	purple
 *c_st_bg_msgs:	medium sea green
 ! 
-! background color for the Status field
-!
-*c_st_background: #d9d9d9
-
 ! Highlight color for URI links
 ! Background and foreground
 *c_uri:		thistle

@@ -250,13 +250,15 @@ proc Exmh_Status {string { level normal } } {
 	$exwin(status) delete 0 end
 	$exwin(status) insert 0 $string
 	# Oh, the inhumanity.. backward-incompatible behavior changes
-	set state "disabled -bg $exmh(c_st_background)"
 	if [info exists tk_version] {
 	    if {$tk_version > "8.3"} {
-		set state "readonly -readonlybackground $exmh(c_st_background)"
+		# get the readonlyBackground to match the regular one...
+		set state_color [lindex [ $exwin(status) configure -background ] 4 ]
+		$exwin(status) configure -state readonly -readonlybackground $state_color
+	    } else {
+		$exwin(status) configure -state disabled
 	    }
 	}
-	eval $exwin(status) configure -state $state
 	ExmhLog $string
 	update idletasks
     } else {
