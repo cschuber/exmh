@@ -309,6 +309,28 @@ proc Preferences_Dialog {} {
 		set maxWidth $len
 	    }
 	}
+        FontWidget listbox $body.listbox \
+            -exportselection 0 \
+            -selectmode single \
+            -width $maxWidth \
+            -yscrollcommand "$body.scrollbar set"
+
+        scrollbar $body.scrollbar \
+                -command "$body.listbox yview"
+
+        $body.listbox insert end "The Top Ten"
+        foreach x [lsort [concat $pref(panes) Fonts]] {
+            if {$x != "The TopTen"} {
+              $body.listbox insert end $x
+            }
+        }
+        bind $body.listbox <Button-1> {PreferencesListboxHit %W %y}
+
+        pack $body.scrollbar -side right -fill y
+        pack $body.listbox -side left -fill both -expand true
+
+if {0} {
+  # Old Button List
 	Widget_AddBut $body font Fonts Font_Dialog	{top}
 	$body.font configure -width $maxWidth
 	set i 0
@@ -318,8 +340,18 @@ proc Preferences_Dialog {} {
 	    $body.but$i configure -width $maxWidth
 	    incr i
 	}
+}
+
 	wm protocol .pref WM_DELETE_WINDOW PreferencesDelete
     }
+}
+proc PreferencesListboxHit {listbox y} {
+  set id [$listbox get @0,$y]
+  if {$id == "Fonts"} {
+      Font_Dialog
+  } else {
+      PreferencesSectionDialog $id
+  }
 }
 
 proc PreferencesSectionDialog { id } {

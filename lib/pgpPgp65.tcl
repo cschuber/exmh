@@ -1,6 +1,11 @@
 # pgpPgp65.tcl
 
 # $Log$
+# Revision 1.6  2003/05/20 03:22:57  welch
+# pgpPgp65.tcl - Added +compatible=off to batchmode flags (Neil Rickert)
+# preferences.tcl - In the toplevel display,
+#     changed row of unsorted buttons to a sorted listbox
+#
 # Revision 1.5  2000/09/21 14:57:50  valdis
 # Broken regexp - fixed so PGP 6.5 support can find RSA keys again
 #
@@ -68,7 +73,8 @@ set pgp(pgp6,parse_config) 1
 #############
 # Exec_Batch
 # Batchmode flags
-set pgp(pgp6,flags_batch) {+armorlines=0 "+comment=$pgp(pgp6,comment)" +batchmode=on +verbose=0 +pager=cat}
+# +compatible=off contributed by Neil Rickert
+set pgp(pgp6,flags_batch) {+armorlines=0 "+comment=$pgp(pgp6,comment)" +batchmode=on +compatible=off +verbose=0 +pager=cat}
 #
 proc Pgp_pgp6_PassFdSet {} {
             global env

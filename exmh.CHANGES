@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 05/19/2003 welch@panasas.com
+  pgpPgp65.tcl - Added +compatible=off to batchmode flags (Neil Rickert)
+  preferences.tcl - In the toplevel display, 
+      changed row of unsorted buttons to a sorted listbox
+
 cvs repository 04/21/2003 valdis.kletnieks@vt.edu
   pgpMain.tcl - I can't type, fix elsif to elseif
 
