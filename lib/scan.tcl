@@ -13,24 +13,24 @@
 
 #### Display folder contents
 
-proc Scan_Folder {F {adjustDisplay 1}} {
-    Exmh_Debug Scan_Folder [time [list ScanFolder $F $adjustDisplay]]
+proc Scan_Folder {folder {adjustDisplay 1}} {
+    Exmh_Debug Scan_Folder [time [list ScanFolder $folder $adjustDisplay]]
 }
-proc ScanFolder {F adjustDisplay} {
+proc ScanFolder {folder adjustDisplay} {
     global mhProfile flist ftoc exwin exmh
 
-    if {[string compare $F $ftoc(folder)] == 0} {
-	Exmh_Debug Updating $F
+    if {[string compare $folder $ftoc(folder)] == 0} {
+	Exmh_Debug Updating $folder
 	set update 1	;# Need to check for new messages.
-	set sameF 1	;# Same folder as before
+	set samefolder 1	;# Same folder as before
 	ScanAddLineInit
     } else {
-	set sameF 0
-	set cacheFile $mhProfile(path)/$F/.xmhcache
+	set samefolder 0
+	set cacheFile $mhProfile(path)/$folder/.xmhcache
 	if [catch {open $cacheFile} input] {
 	    # No cache, scan last N messages
-	    Exmh_Status "Limit scan $F last:$ftoc(scanSize) - Rescan?" warn
-	    set input  [open "|$mhProfile(scan-proc) [list +$F] \
+	    Exmh_Status "Limit scan $folder last:$ftoc(scanSize) - Rescan?" warn
+	    set input  [open "|$mhProfile(scan-proc) [list +$folder] \
 		    last:$ftoc(scanSize) -width $ftoc(scanWidth)"]
 	    set ftoc(displayDirty) 1
 	    set update 0
@@ -39,7 +39,7 @@ proc ScanFolder {F adjustDisplay} {
 	    set ftoc(displayDirty) 0
 	    set update 1	;# Need to check for new messages.
 	}
-	ScanAddLineReset $F
+	ScanAddLineReset $folder
 	ScanAddLines [read $input]
 	catch {close $input}
     }
@@ -47,13 +47,13 @@ proc ScanFolder {F adjustDisplay} {
     if {$update} {
 	# Add new messages to cached information
 	# Scan last message (again) plus any new messages
-	if {! $sameF} {
-	    Ftoc_Reset [Widget_TextEnd $exwin(ftext)] {} $F
+	if {! $samefolder} {
+	    Ftoc_Reset [Widget_TextEnd $exwin(ftext)] {} $folder
 	}
 	set id [Ftoc_MsgNumber [Ftoc_FindMsg {} last]]
 	if [catch {
 	    Exmh_Debug Scanning new messages $id-last
-	    set input [open "|$mhProfile(scan-proc) [list +$F] \
+	    set input [open "|$mhProfile(scan-proc) [list +$folder] \
 		    $id-last -width $ftoc(scanWidth)"]
 	    set check [gets $input]
 	    set new [read $input]
@@ -75,26 +75,26 @@ proc ScanFolder {F adjustDisplay} {
 	if {$update} {
 	    # Something went wrong: rescan
 	    if {[Ftoc_Changes "Scan Update Failed"] == 0} {
-	    Exmh_Status "scan +$F last:$ftoc(scanSize)"
+	    Exmh_Status "scan +$folder last:$ftoc(scanSize)"
 		Background_Wait
-		set input  [open "|$mhProfile(scan-proc) [list +$F] \
+		set input  [open "|$mhProfile(scan-proc) [list +$folder] \
 			last:$ftoc(scanSize) -width $ftoc(scanWidth)"]
 		set ftoc(displayDirty) 1
-		ScanAddLineReset $F
+		ScanAddLineReset $folder
 		ScanAddLines [read $input]
 		catch {close $input}
 	    }
 	}
     }
-    ScanAddLineCleanup $F
-    if {! $sameF} {
-	Msg_Reset [Widget_TextEnd $exwin(ftext)] $F
+    ScanAddLineCleanup $folder
+    if {! $samefolder} {
+	Msg_Reset [Widget_TextEnd $exwin(ftext)] $folder
     } else {
-	Ftoc_Update [Widget_TextEnd $exwin(ftext)] $F
+	Ftoc_Update [Widget_TextEnd $exwin(ftext)] $folder
     }
     set ftoc(displayValid) 1
 
-    set curMsg [Mh_Cur $F]
+    set curMsg [Mh_Cur $folder]
     if {$curMsg != {}} {
 	set line [Ftoc_FindMsg $curMsg]
 	if {$line != {}} {
@@ -104,44 +104,44 @@ proc ScanFolder {F adjustDisplay} {
     if {$adjustDisplay} {
 	Ftoc_Yview end
     }
-    Ftoc_ShowSequences $F
+    Ftoc_ShowSequences $folder
     return
 }
-proc Scan_FolderForce {{F ""}} {
+proc Scan_FolderForce {{folder ""}} {
     global exmh mhProfile ftoc
-    if {$F == ""} {
-	set F $exmh(folder)
+    if {$folder == ""} {
+	set folder $exmh(folder)
     }
-    set cacheFile $mhProfile(path)/$F/.xmhcache
-    if {$F == ""} {
+    set cacheFile $mhProfile(path)/$folder/.xmhcache
+    if {$folder == ""} {
 	Exmh_Status "No current folder" warning
-    } elseif {$F != $exmh(folder)} {
+    } elseif {$folder != $exmh(folder)} {
 	# If we aren't currently viewing the folder, just delete
 	# the cache file and we'll take care of this later
 	Exmh_Debug "Clearing $cacheFile"
 	file delete $cacheFile
     } elseif {! [Ftoc_Changes Rescan]} {
 	Background_Wait
-	Label_Folder $F
-	Exmh_Status "rescanning $F ..."
-	Scan_IO $F [open "|$mhProfile(scan-proc) [list +$F] \
+	Label_Folder $folder
+	Exmh_Status "rescanning $folder ..."
+	Scan_IO $folder [open "|$mhProfile(scan-proc) [list +$folder] \
 		-width $ftoc(scanWidth)"]
 	set ftoc(displayValid) 1
 	set ftoc(displayDirty) 1
 	Ftoc_Yview end
-	Flist_ForgetUnseen $F
-	Ftoc_ShowSequences $F
+	Flist_ForgetUnseen $folder
+	Ftoc_ShowSequences $folder
 	Exmh_Status ok
     }
 }
-proc Scan_FolderUpdate { f } {
+proc Scan_FolderUpdate { folder } {
     global ftoc
 
     if !$ftoc(displayValid) {
         return                  ;#  don't update pseudo-displays
     }
-    Label_Folder $f
-    Scan_Folder $f 0
+    Label_Folder $folder
+    Scan_Folder $folder 0
 }
 proc Scan_Iterate { incout lineVar body } {
     upvar $lineVar line
@@ -241,14 +241,14 @@ proc Scan_ProjectSelection { ids } {
     Msg_ClearCurrent
     Msg_Reset $num
 }
-proc Scan_CacheValid {F} {
+proc Scan_CacheValid {folder} {
     # Maintain a cache of folder listings
     global mhProfile exmh
-    set cacheFile $mhProfile(path)/$F/.xmhcache
+    set cacheFile $mhProfile(path)/$folder/.xmhcache
     if {![file exists $cacheFile] || ![file size $cacheFile]} {
 	return 0
     }
-    if {[file mtime $mhProfile(path)/$F] >
+    if {[file mtime $mhProfile(path)/$folder] >
 	[file mtime $cacheFile]} {
 	return 0
     }
