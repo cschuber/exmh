@@ -153,7 +153,8 @@ proc Html_Display {markup base} {
 proc Html_MimeShow {win part} {
     upvar #0 HM$win var
     global mimeHdr window
-    if ![info exists var] {
+
+    if {![info exists var]} {
 	Map_Init
 	HMinit_win $win
 	HMset_state $win -insert insert		;# We use the "insert" mark
@@ -210,6 +211,7 @@ proc Html_DisplayInline {win url html} {
     catch {unset var(S_urlPending)}
     HMreset_win $win 0			;# Set display state
     HMset_indent $win $window(indentsize) ;# Restore tab stops
+    HMset_state $win -insert insert	;# We use the "insert" mark
     Embed_Reset $win			;# Nuke applets
     Feedback $win busy
     HMset_state $win -update 10		;# Frequent updates during 1st display
