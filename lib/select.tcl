@@ -69,9 +69,10 @@ proc SelectTypein {w {a {}}} {
 	unset select(match)
 	catch {unset select(allfolders)}
     }
-    if {![regexp {[0-9]} $a]} {
-        return
-    }
+# Attempt to fix traceback removed, breaks folder select by keyboard
+#    if {![regexp {[0-9]} $a]} {
+#        return
+#    }
     append select(sel) $a
     Exmh_Status "$select(prompt) $select(sel)"
     if ![info exists select(folder)] {

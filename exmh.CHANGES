@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 03/31/2003 haldevore@acm.org
+  select.tcl, removed fix for non-numeric typing
+
 cvs repostiory 3/30/2003 welch@panasas.com
    sequences.tcl, flist.tcl, main.tcl, exmh-bg.MASTER - restructure
     sequence searching so it is done in the background process
