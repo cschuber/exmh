@@ -101,7 +101,8 @@ proc Flag_NewMail { {folder {}} } {
 # This is called after viewing a message
 proc Flag_MsgSeen { {folder {}} } {
     global flist mhProfile
-    if {$flist(totalcount,$mhProfile(unseen-sequence)) > 0} {
+    if {[info exists flist(totalcount,$mhProfile(unseen-sequence))] &&
+	$flist(totalcount,$mhProfile(unseen-sequence)) > 0} {
 	FlagInner spool iconspool labelup
     } else {
 	FlagInner down icondown labeldown
