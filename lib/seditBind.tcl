@@ -846,7 +846,6 @@ proc Sedit_Pref {} {
 	    }
 	}
     }
-    Exwin_ToplevelFocus .seditpref none
 }
 proc SeditPrefItem { frame width name keystroke } {
     global sedit
