@@ -54,3 +54,13 @@ Complexity: Low
 Old bug in the "message clip" and possibly other windows.  You must
 get the focus on the scrollbar in order to scroll with the cursor
 keys.  Brent's book discusses how to properly deal with this.
+
+
+Number: 5
+Version: 2.0.3
+Priority: Medium
+Scope: Narrow
+Complexity: ?
+
+Not cleaning up MIME parts saved into temp files.  Not cleaning up
+audit logs.
