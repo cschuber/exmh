@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.15  2000/09/21 15:06:44  valdis
+# Catch PGP stderr so 'Get key' and 'Generate Key' work...
+#
 # Revision 1.14  2000/06/16 18:16:26  valdis
 # Various PGP fixes...
 #
@@ -160,7 +163,7 @@ proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
 
 # batch mode
 proc Pgp_Exec_Batch { v exectype arglist outvar {password {}} } {
-    global pgp exmh
+    global pgp exmh errorCode
     upvar $outvar output
 
     Exmh_Debug "Pgp_Exec_Batch $v $exectype $arglist $outvar \(password\)"
@@ -178,8 +181,8 @@ proc Pgp_Exec_Batch { v exectype arglist outvar {password {}} } {
         Pgp_${v}_PassFdSet
     }
 
-    set result [catch {eval $tclcmd} output]
-    Exmh_Debug "<Pgp_Exec_Batch>: Exit status: $result"
+    set result [catch {eval $tclcmd |& cat} output]
+    Exmh_Debug "<Pgp_Exec_Batch>: Exit status: $result $errorCode"
 
     # Unset file descriptor for passphrase
     Pgp_${v}_PassFdUnset

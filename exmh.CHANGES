@@ -1,6 +1,8 @@
 HISTORY
 
 cvs repository 09/21/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
+    lib/pgpExec.tcl - fix 'set result' so 'PGP Get Key' and 'PGP Generate Key' work.
+cvs repository 09/21/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/pgpPgp65.tcl - fix a stupid regexp problem so it finds RSA keys
 cvs respository 09/15/2000 Hal DeVore <haldevore@earthling.net>
     lib/inc.tcl Added code to allow the use of procmail or any
