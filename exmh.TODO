@@ -1,20 +1,5 @@
 
 ----------------------------------------------------------------------
-Number: 1
-Priority: High
-Scope: Medium
-Complexity: High
-Status: Anders Hammarquist <iko@cd.chalmers.se> has a forked version
-	of the sources in which he's working on this
-	Bruce A. Mah <bmah@acm.org> merged the multipgp branch changes
-	into the main trunk.
-
-Incorporate The PGP 5.0 patch from the 2.0.2 patch list.
-Unfortunately, it conflicts with some other already installed patches.
-(Keep this item and #12 on the TODO list until enough people have beat
-on the merged changes that there's some confidence in them.)
-
-----------------------------------------------------------------------
 Number: 2
 Priority: Med 
 Scope: Wide
@@ -83,16 +68,6 @@ Status:
 Convert address book to use some sort of real database instead of a
 dumped tcl list, or flesh out the LDAP support to provide this
 functionality. 
-
-----------------------------------------------------------------------
-Number: 12
-Priority: Med
-Scope: Narrow
-Complexity: 
-Status: Anders Hammarquist <iko@cd.chalmers.se>'s work on #1 includes
-	this. 
-
-Support GnuPG.
 
 ----------------------------------------------------------------------
 Number: 13
@@ -371,16 +346,6 @@ used by exmh.  This might include any or all of the following:
 .tk/exmh            user library directory
 .webtkcache         html viewer cache
 $EXMHTMPDIR         temp files
-
-----------------------------------------------------------------------
-Number: 46
-Priority: Med
-Scope: Narrow (?)
-Complexity: ?
-Status: 
-
-The PGP code needs to remember the settings for a particular
-draft between edits.
 
 ----------------------------------------------------------------------
 Number: 47
