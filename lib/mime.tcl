@@ -2908,6 +2908,34 @@ proc Mime_SaveAttachments {{dir {}}} {
       set dir $mime(saveDir)
     }
     file mkdir $dir
-    exec $install(dir,bin)/exmh-strip $msg(path) $dir
+    if {[catch {
+      exec $install(dir,bin)/exmh-strip $msg(path) $dir
+    } err]} {
+        if {[regexp {(.*) exists} $err _ file]} {
+            if {[Mime_SaveAttachmentRetry $file]} {
+                file delete $file
+                exec $install(dir,bin)/exmh-strip $msg(path) $dir
+            }
+        }
+    }
     Msg_ShowCurrent
+}
+proc Mime_SaveAttachmentRetry {file} {
+    global exwin mime
+    set f [frame $exwin(mtext).save_err -bd 2 -relief ridge]
+
+    message $f.msg1 -text "File Exists\n$file\nDelete and retry?" -aspect 1000
+    pack $f.msg1 -side top -fill both
+
+    set b1 [frame $f.but -bd 10 -relief flat]
+    pack $b1 -side top
+
+    set mime(retry_save) 0
+    button $b1.cancel -text "Cancel" -command {destroy $exwin(mtext).save_err}
+    button $b1.ok -text "OK" -command {set mime(retry_save) 1; destroy $exwin(mtext).save_err}
+    pack $b1.cancel $b1.ok -side left -padx 3
+
+    Widget_PlaceDialog $exwin(mtext) $f
+    tkwait window $f
+    return $mime(retry_save)
 }

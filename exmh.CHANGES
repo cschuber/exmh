@@ -8,6 +8,8 @@ cvs repository 1/7/2005 welch@panasas.com
     the user has withdrawn the message display
   exmh-strip.MASTER: cleared out the Exmh_Debug messages
     that leak to standard output
+  lib/mime.tcl: added dialog to Save/Extract attachments if the
+    file already exists.
   exmh.install: changed 2.7.2 date to 1/7/2005
 
 cvs repository 1/6/2005 welch@panasas.com
