@@ -1,4 +1,12 @@
 HISTORY
+cvs repository 11/1/2002 cwg-exmh@deepeddy.com
+    seqwin.tcl - prepend sequence names with "pane" when using to name
+	panes because a pane can't start with a Capital letter.
+
+cvs repository 10/30/2002 cwg-exmh@deepeddy.com
+    mh.tcl - When compacting sequences, don't compact if it's already
+	compacted. 
+
 cvs repository 10/29/2002 cwg-exmh@deepeddy.com
     msg.tcl - In Msg_Show, if there are no messages in the sequence
 	we're trying to show, then show 'cur'.

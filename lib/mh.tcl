@@ -603,7 +603,11 @@ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
 		}
 		if {$mhPriv(mode,$thisseq) == "public"} {
 		    if {![regexp {^ *$} $seqs($thisseq)]} {
-			set seq [MhSeqMake $seqs($thisseq)]
+			if [regexp -- {-} $seqs($thisseq)] {
+			    set seq $seqs($thisseq)
+			} else {
+			    set seq [MhSeqMake $seqs($thisseq)]
+			}
 			puts $out "$thisseq: $seq"
 		    }
 		}
@@ -628,7 +632,11 @@ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
 	    foreach thisseq [array names seqs] {
 		if {[string compare $mhPriv(mode,$thisseq) "private"] == 0} {
 		    if {![regexp {^ *$} $seqs($thisseq)]} {
-			set seq [MhSeqMake $seqs($thisseq)]
+			if [regexp -- {-} $seqs($thisseq)] {
+			    set seq $seqs($thisseq)
+			} else {
+			    set seq [MhSeqMake $seqs($thisseq)]
+			}
 			puts $out "atr-$thisseq-$mhProfile(path)/$folder: $seq"
 		    }
 		}

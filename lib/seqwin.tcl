@@ -10,13 +10,13 @@ proc SeqWinSetGeom {seq width height} {
     global seqwin
 
     incr width [expr $seqwin(digits,$seq) + 1]
-    .sequences.$seq.lb configure -width $width -height $height
+    .sequences.pane$seq.lb configure -width $width -height $height
 }
 
 proc SeqWinSetSelection {seq {which -1}} {
-    .sequences.$seq.lb select clear 0 end
+    .sequences.pane$seq.lb select clear 0 end
     if {$which != -1} {
-	.sequences.$seq.lb select set $which
+	.sequences.pane$seq.lb select set $which
     }
 }
 
@@ -55,34 +55,34 @@ proc SeqWinShowSeqPane {seq} {
 	if {![info exists seqwin(digits,$seq)]} {
 	    set seqwin(digits,$seq) 1
 	}
-	if {![winfo exists .sequences.$seq]} {
-	    frame .sequences.$seq
-	    label .sequences.$seq.l -text $seq -font $seqwin(font)
-	    pack .sequences.$seq.l -side top -fill x
-	    listbox .sequences.$seq.lb -exportselection no -font $seqwin(font) \
+	if {![winfo exists .sequences.pane$seq]} {
+	    frame .sequences.pane$seq
+	    label .sequences.pane$seq.l -text $seq -font $seqwin(font)
+	    pack .sequences.pane$seq.l -side top -fill x
+	    listbox .sequences.pane$seq.lb -exportselection no -font $seqwin(font) \
 		-relief flat -bd 2
-	    .sequences.$seq.lb configure -highlightthickness 0 -setgrid 1
+	    .sequences.pane$seq.lb configure -highlightthickness 0 -setgrid 1
 	    SeqWinSetGeom $seq $seqwin(minwidth) $seqwin(minlines)
 	    SeqWinEmptyMsg $seq
 	    set seqopts [option get . sequence_$seq {}]
 	    if {$seqopts != {}} {
-		catch {eval .sequences.$seq configure $seqopts}
-		catch {eval .sequences.$seq.l configure $seqopts}
-		catch {eval .sequences.$seq.lb configure $seqopts}
+		catch {eval .sequences.pane$seq configure $seqopts}
+		catch {eval .sequences.pane$seq.l configure $seqopts}
+		catch {eval .sequences.pane$seq.lb configure $seqopts}
 	    }
-	    pack .sequences.$seq.lb -side top
+	    pack .sequences.pane$seq.lb -side top
 
-	    bind .sequences.$seq.lb <1> "SeqWinButton $seq %y b1mode"
+	    bind .sequences.pane$seq.lb <1> "SeqWinButton $seq %y b1mode"
 	    foreach b { Shift-1 Control-1 Control-Shift-1 } {
-		bind .sequences.$seq.lb <$b> "SeqWinButton $seq %y mb1mode"
+		bind .sequences.pane$seq.lb <$b> "SeqWinButton $seq %y mb1mode"
 	    }
 	    foreach b { B1-Motion Shift-B1-Motion Control-B1-Motion
 		2 B2-Motion
 		3 B3-Motion Control-3 Control-Shift-3 } {
-		bind .sequences.$seq.lb <$b> {;}
+		bind .sequences.pane$seq.lb <$b> {;}
 	    }
-	    bind .sequences.$seq.lb <Any-ButtonRelease-2> "SeqWinButton $seq %y b2mode"
-	    bind .sequences.$seq.lb <Any-ButtonRelease-3> "SeqWinButton $seq %y b3mode"
+	    bind .sequences.pane$seq.lb <Any-ButtonRelease-2> "SeqWinButton $seq %y b2mode"
+	    bind .sequences.pane$seq.lb <Any-ButtonRelease-3> "SeqWinButton $seq %y b3mode"
 	    SeqWinToggleClick $seq
 
 	}
@@ -90,18 +90,18 @@ proc SeqWinShowSeqPane {seq} {
 	if {$num <= 0} {
 	    SeqWinEmptyMsg $seq
 	    if {[lsearch $seqwin(alwaysshow) $seq] < 0} {
-		if {[winfo ismapped .sequences.$seq]} {
+		if {[winfo ismapped .sequences.pane$seq]} {
 		    SeqWinHideSeqPane $seq
 		}
 	    }
 	}
 	if {[lsearch $seqwin(nevershow) $seq] < 0} {
 	    if {($num > 0) || ([lsearch $seqwin(alwaysshow) $seq] >= 0)} {
-		if {![winfo ismapped .sequences.$seq]} {
+		if {![winfo ismapped .sequences.pane$seq]} {
 		    if {$seqwin(orientation) == "Horizontal"} {
-			pack .sequences.$seq -side left -anchor n -fill y
+			pack .sequences.pane$seq -side left -anchor n -fill y
 		    } else {
-			pack .sequences.$seq -side top -anchor n -fill y
+			pack .sequences.pane$seq -side top -anchor n -fill y
 		    }
 		}
 	    }
@@ -111,8 +111,8 @@ proc SeqWinShowSeqPane {seq} {
 proc SeqWinHideSeqPane {seq} {
     global seqwin
     if {[winfo exists .sequences]} {
-	if {[winfo exists .sequences.$seq]} {
-	    pack forget .sequences.$seq
+	if {[winfo exists .sequences.pane$seq]} {
+	    pack forget .sequences.pane$seq
 	}
 	if {[pack slaves .sequences] == {}} {
 	    if $seqwin(hidewhenempty) {
@@ -160,7 +160,7 @@ proc SeqWinShow {seq index delete folder count} {
     global seqwin
     
     if $delete {
-	.sequences.$seq.lb delete $index
+	.sequences.pane$seq.lb delete $index
     }
     if {![info exists seqwin(listwidth,$seq)]} {
 	set seqwin(listwidth,$seq) $seqwin(minwidth)
@@ -170,9 +170,9 @@ proc SeqWinShow {seq index delete folder count} {
     }
     set width $seqwin(listwidth,$seq)
     set digits $seqwin(digits,$seq)
-    .sequences.$seq.lb insert $index [format "%${width}s %${digits}d" $folder $count]
+    .sequences.pane$seq.lb insert $index [format "%${width}s %${digits}d" $folder $count]
     if {$width > $seqwin(curwidth,$seq)} {
-	.sequences.$seq.lb xview [expr $width - $seqwin(curwidth,$seq)]
+	.sequences.pane$seq.lb xview [expr $width - $seqwin(curwidth,$seq)]
     }
 }
 
@@ -185,9 +185,9 @@ proc SeqWinAdd {seq folder num} {
 	    catch {wm deiconify .sequences}
 	    raise .sequences
 	}
-	.sequences.$seq.lb delete 0 end
+	.sequences.pane$seq.lb delete 0 end
     } elseif {$index < $seqwin(curlines,$seq)} {
-	.sequences.$seq.lb delete end
+	.sequences.pane$seq.lb delete end
     }
     
     set newlines $index
@@ -230,12 +230,12 @@ proc SeqWinAdd {seq folder num} {
     }
     if {($seqwin(listwidth,$seq) > $seqwin(curwidth,$seq)) ||
 	($index >= $seqwin(curlines,$seq))} {
-	bind .sequences.$seq.lb <2> {%W scan mark %x %y}
-	bind .sequences.$seq.lb <B2-Motion> {%W scan dragto %x %y}
+	bind .sequences.pane$seq.lb <2> {%W scan mark %x %y}
+	bind .sequences.pane$seq.lb <B2-Motion> {%W scan dragto %x %y}
     }
     if {$index == 0} {
 	for {set i 1} {$i < $seqwin(curlines,$seq)} {incr i} {
-	    .sequences.$seq.lb insert end " "
+	    .sequences.pane$seq.lb insert end " "
 	}
     }
     if $redisplay {
@@ -293,7 +293,7 @@ proc SeqWinRemove {seq index folder} {
     
     set seqwin(folders,$seq) [lreplace $seqwin(folders,$seq) $index $index]
     set newlines [llength $seqwin(folders,$seq)]
-    .sequences.$seq.lb delete $index
+    .sequences.pane$seq.lb delete $index
 
     set resize 0
     set redisplay 0
@@ -346,8 +346,8 @@ proc SeqWinRemove {seq index folder} {
     }
     if {($seqwin(listwidth,$seq) == $seqwin(curwidth,$seq)) &&
 	($newlines <= $seqwin(curlines,$seq))} {
-	bind .sequences.$seq.lb <2> {;}
-	bind .sequences.$seq.lb <B2-Motion> {;}
+	bind .sequences.pane$seq.lb <2> {;}
+	bind .sequences.pane$seq.lb <B2-Motion> {;}
     }
     if {$newlines == 0} {
 	SeqWinEmptyMsg $seq
@@ -360,7 +360,7 @@ proc SeqWinRemove {seq index folder} {
 	    }
 	}
 	while {$newlines < $seqwin(curlines,$seq)} {
-	    .sequences.$seq.lb insert end " "
+	    .sequences.pane$seq.lb insert end " "
 	    incr newlines
 	}
     }
@@ -383,15 +383,15 @@ proc SeqWinToggleIcon {args} {
 proc SeqWinToggleClick {seq args} {
     global seqwin
     
-    if [winfo exists .sequences.$seq] {
+    if [winfo exists .sequences.pane$seq] {
 	if {[string match "W*" $seqwin(b1mode)] ||
 	    [string match "W*" $seqwin(mb1mode)]} {
-	    bind .sequences.$seq.lb <Leave> "SeqWinSetSelection $seq"
-	    bind .sequences.$seq.lb <Motion> "SeqWinMove $seq %y"
+	    bind .sequences.pane$seq.lb <Leave> "SeqWinSetSelection $seq"
+	    bind .sequences.pane$seq.lb <Motion> "SeqWinMove $seq %y"
 	} else {
 	    SeqWinSetSelection $seq
-	    bind .sequences.$seq.lb <Leave> {;}
-	    bind .sequences.$seq.lb <Motion> {;}
+	    bind .sequences.pane$seq.lb <Leave> {;}
+	    bind .sequences.pane$seq.lb <Motion> {;}
 	}
     }
 }
@@ -400,9 +400,9 @@ proc SeqWinChangeFont {seq args} {
     global seqwin
     
     if [winfo exists .sequences] {
-	set old [lindex [.sequences.$seq.lb configure -font] 4]
+	set old [lindex [.sequences.pane$seq.lb configure -font] 4]
 	if {[catch {
-	    .sequences.$seq.lb configure -font $seqwin(font)
+	    .sequences.pane$seq.lb configure -font $seqwin(font)
 	} err] != 0} {
 	    set seqwin(font) $old
 	}
@@ -439,13 +439,13 @@ proc SeqWinEmptyMsg {seq} {
 	    set pad [expr ((($seqwin(listwidth,$seq) + 4) - $elen) / 2) + $elen]
 	    set empty [expr (($seqwin(curlines,$seq) + 1) / 2) - 1]
 
-	    .sequences.$seq.lb delete 0 end
+	    .sequences.pane$seq.lb delete 0 end
 	    for {set i 1} {$i < $seqwin(curlines,$seq)} {incr i} {
-		.sequences.$seq.lb insert end " "
+		.sequences.pane$seq.lb insert end " "
 	    }
-	    .sequences.$seq.lb insert $empty [format "%${pad}s" $seqwin(emptymsg)]
-	    .sequences.$seq.lb yview 0
-	    .sequences.$seq.lb xview 0
+	    .sequences.pane$seq.lb insert $empty [format "%${pad}s" $seqwin(emptymsg)]
+	    .sequences.pane$seq.lb yview 0
+	    .sequences.pane$seq.lb xview 0
 	    SeqWinSetSelection $seq
 	}
     }
@@ -454,7 +454,7 @@ proc SeqWinEmptyMsg {seq} {
 proc SeqWinMove {seq y} {
     global seqwin
     
-    set entry [.sequences.$seq.lb nearest $y]
+    set entry [.sequences.pane$seq.lb nearest $y]
     
     if {$entry < [llength $seqwin(folders,$seq)]} {
 	SeqWinSetSelection $seq $entry
@@ -472,7 +472,7 @@ proc SeqWinButton {seq y mode} {
 	return
     }
     
-    set entry [.sequences.$seq.lb nearest $y]
+    set entry [.sequences.pane$seq.lb nearest $y]
     
     switch $mode {
 	Inc {
