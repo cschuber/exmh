@@ -117,11 +117,6 @@ proc FolderChange {folder msgShowProc} {
     Fdisp_HighlightCur $folder
     Flist_Visited $folder
     set exmh(folder) $folder
-    if {$ftoc(autoSort)} {
-	if [Flist_NumUnseen $folder] {
-	    Ftoc_Sort
-	}
-    }
     Flist_UnseenUpdate $folder
     Scan_CacheUpdate
     Exmh_Status $folder
@@ -191,7 +186,7 @@ proc Folder_Sort { args } {
 	Scan_FolderForce
 	set id [Mh_Cur $exmh(folder)]
 	if {$id != {}} {
-	    Msg_Change $id
+	    Msg_Change $id skipdisplay
 	} else {
 	    Msg_ClearCurrent
 	}

@@ -1,4 +1,24 @@
 HISTORY
+cvs repository 07/25/2002 cwg-exmh@deepeddy.com
+    flist.tcl - New proc Flist_SetUnseen which can be called instead
+	of Flist_AddUnseen to avoid calling Flist_ForgetUnseen.  Call
+	it in Flist_UnseenMsgs.  Also remove some ancient dead code
+	from the end of Flist_AddUnseen. 
+    folder.tcl, flist.tcl - Move ftoc(autoSort) test from
+	FolderChange to Flist_UnseenUpdate so that it will be called
+	more in more cases.
+    msg.tcl, folder.tcl - Add new possible value for second value to
+	Msg_Change of "skipdisplay" which says to not change the
+	message display when changing messages; then use this value in
+	Folder_Sort so sorts don't cause the message display to
+	rescroll to the top.  This makes them much less anoying;
+	pretty important if it gets called automatically by background
+	processing. 
+    scan.tcl - In Scan_FolderForce, call Flist_UnseenMsgs instead of
+	Flist_ForgetUnseen so that the folder doesn't move in the
+	unseen window; also call Ftoc_Change because the current
+	message can get	lost somehow.
+
 cvs repository 07/22/2002 cwg-exmh@deepeddy.com
     scan.tcl - In ScanFolder, don't try to scan for only new messages
 	if ftoc(numMsgs) is zero.

@@ -363,13 +363,34 @@ proc Flist_AddUnseen {folder seq} {
 	lappend flist(unvisitedNext) $folder
     }
     Fdisp_HighlightUnseen $folder
-    if 0 {
-	# This line of code causes doubling of messages in the scan listing.
-	# don't do it
-	if {[string compare $exmh(folder) $folder] == 0} {
-	  Scan_Folder $folder
-	}
+}
+# Set the Unseen list for a folder.
+proc Flist_SetUnseen {folder seq} {
+    global flist exmh
+
+    if [info exists flist(new,$folder)] {
+	set oldnum $flist(new,$folder)
+    } else {
+	set oldnum 0
     }
+    set newnum [llength $seq]
+    if {$newnum <= 0} {
+	incr flist(newMsgs) -$oldnum
+	set flist(new,$folder) 0
+	set flist(newseq,$folder) {}
+	return
+    }
+    incr flist(newMsgs) [expr $newnum - $oldnum]
+    set flist(new,$folder) $newnum
+    set flist(newseq,$folder) $seq
+    if {[lsearch $flist(unseen) $folder] < 0} {
+	lappend flist(unseen) $folder
+    }
+    if {[string compare $folder $exmh(folder)] != 0 &&
+	[lsearch $flist(unvisited) $folder] < 0} {
+	lappend flist(unvisitedNext) $folder
+    }
+    Fdisp_HighlightUnseen $folder
 }
 proc Flist_Done {} {
     global flist exmh
@@ -402,9 +423,15 @@ proc Flist_Done {} {
 # they add messages to a folder
 
 proc Flist_UnseenUpdate { folder } {
-    global exmh flist
+    global exmh flist ftoc
+    Exmh_Debug Flist_UnseenUpdate $folder
     Flist_UnseenMsgs $folder
     if {[string compare $folder $exmh(folder)] == 0} {
+	if {$ftoc(autoSort)} {
+	    if [Flist_NumUnseen $folder] {
+		Ftoc_Sort
+	    }
+	}
 	Scan_FolderUpdate $folder
     } elseif {[lsearch $flist(unvisited) $folder] < 0} {
 	lappend flist(unvisited) $folder
@@ -415,7 +442,7 @@ proc Flist_UnseenUpdate { folder } {
 }
 proc Flist_UnseenMsgs { folder } {
     global flist
-    Flist_AddUnseen $folder [Mh_Unseen $folder]
+    Flist_SetUnseen $folder [Mh_Unseen $folder]
     return $flist(newseq,$folder)
 }
 proc Flist_NumUnseen { folder } {

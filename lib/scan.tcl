@@ -123,8 +123,11 @@ proc Scan_FolderForce {{folder ""}} {
 	set ftoc(displayValid) 1
 	set ftoc(displayDirty) 1
 	Ftoc_Yview end
-	Flist_ForgetUnseen $folder
+	Flist_UnseenMsgs $folder
 	Ftoc_ShowSequences $folder
+	# Should probably figure out why we've lost the current folder 
+	# instead of resetting it here.
+	Ftoc_Change [Ftoc_FindMsg [Mh_Cur $folder]]
 	Exmh_Status ok
     }
 }

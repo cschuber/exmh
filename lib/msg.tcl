@@ -134,7 +134,7 @@ proc MsgChange {msgid {show show}} {
 	if {$show == "show"} {
 	    MsgShow $msgid
 	    Mh_MarkSeen $exmh(folder) $msgid
-	} else {
+	} elseif {$show != "skipdisplay"} {
 	    MsgClear
 	}
 	if {$line != {}} {
@@ -461,7 +461,7 @@ proc MsgOk { number msgvar } {
 }
 
 proc Msg_Remove { {rmProc Ftoc_RemoveMark} {show show} } {
-    Exmh_Debug Msg_Remove $rmProc
+    Exmh_Debug Msg_Remove $rmProc $show
     Ftoc_Iterate line {
 	set msgid [Ftoc_MsgNumber $line]
 	Exmh_Debug Msg_Remove l=$line m=$msgid
