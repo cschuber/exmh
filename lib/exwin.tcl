@@ -234,7 +234,7 @@ proc Exwin_Layout {} {
     Msg_Setup $exwin(mtext)
     Bindings_Main $exwin(mtext)
     if {$exwin(toplevelMsg) || $exwin(toplevelFtoc)} {
-      Bindings_Main $exwin(ftext)
+      Ftoc_Bindings $exwin(ftext)
       focus $exwin(ftext)
     } else {
       focus $exwin(mtext)
