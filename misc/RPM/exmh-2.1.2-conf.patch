@@ -48,10 +48,10 @@
 + set pgp(gpg,path) /usr/bin
 + set glimpse(path) /usr/bin
 + set sound(cmd) {/usr/bin/play -v 38}
-+ set exmh(library) /usr/lib/exmh-2.1.1
++ set exmh(library) /usr/lib/exmh-2.1.2
 + set install(dir,bin) /usr/bin
 + set install(dir,man) /usr/man/manl
-+ set install(dir,lib) /usr/lib/exmh-2.1.1
++ set install(dir,lib) /usr/lib/exmh-2.1.2
 + 
   #END CONFIGURATION
   
@@ -93,15 +93,15 @@ child process exited abnormally
 + set faces(set,news) news
 + set faces(defaultDomain) eng.sun.com
 + set faces(suffix) {xpm gif xbm}
-+ set pgp(pgp, path) /usr/bin
-+ set pgp(pgp5, path) /usr/bin
-+ set pgp(gpg, path) /usr/bin
++ set pgp(pgp,path) /usr/bin
++ set pgp(pgp5,path) /usr/bin
++ set pgp(gpg,path) /usr/bin
 + set glimpse(path) /usr/bin
 + set sound(cmd) {/usr/bin/play -v 38}
-+ set exmh(library) /usr/lib/exmh-2.1.1
++ set exmh(library) /usr/lib/exmh-2.1.2
 + set install(dir,bin) /usr/bin
 + set install(dir,man) /usr/man/manl
-+ set install(dir,lib) /usr/lib/exmh-2.1.1
++ set install(dir,lib) /usr/lib/exmh-2.1.2
 + 
   #END CONFIGURATION
   
