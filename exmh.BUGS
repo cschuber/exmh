@@ -1,3 +1,19 @@
+
+Number: 1
+Version: 2.1.0
+Priority: Medium
+Scope: Narrow
+Complexity: Easy
+Status:
+
+Harry G. McGavran Jr. <hgm@lanl.gov> reports on exmh-users that 
+double-clicking the iconified window still refuses to de-iconify.  My
+recollection is that a 1 or 2 line fix was posted to exmh-workers a while 
+back, but I can't find it in the archive.  
+- slipcon
+
+
+
 These are known bugs in exmh, along with the release under which they
 were reported.
 
