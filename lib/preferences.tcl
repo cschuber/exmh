@@ -56,10 +56,12 @@ proc Preferences_Init { userDefaults appDefaults } {
 }
 
 proc PreferencesCopyToNewLocation {} {
-    global pref
+    global pref exmh
 
     Widget_Toplevel .newprefs "Copy User Preferences"
     Widget_Message .newprefs msg -aspect 1000 -text "
+Welcome to Exmh $exmh(version)
+
 It appears you have not run Exmh since the [file tail $pref(userDefaults)] 
 and other related files moved in to the ~/.exmh directory.
 
