@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 01/22/2002 valdis.kletnieks@vt.edu
+    lib/main.tcl - add new procedure Tcl_Tk_Vers_Init to do per-release
+        tweaking of the environment.  Currently used to re-expose
+        commands moved to private namespace in Tk8.4a2.
+
 cvs repository 01/20/2002 valdis.kletnieks@vt.edu
     lib/ispell.tcl - fix old syntax error finally caught by tcl8.4a4.
 

@@ -14,6 +14,7 @@
 proc Exmh {} {
     global exmh argv 
 
+    Tcl_Tk_Vers_Init	;# Do per-release Tcl/Tk setup here
     Mh_Init		;# Defines mhProfile and identifies mh vs nmh
 
     Preferences_Init "~/.exmh/exmh-defaults" "$exmh(library)/app-defaults"
@@ -471,4 +472,26 @@ proc Exmh_DoCommand {} {
 	$t insert end $result\n\n
     }
     $t see end
+}
+
+proc Tcl_Tk_Vers_Init {} {
+# Here we do any special tuning needed for specific Tcl/Tk releases
+# For instance, 8.4a2 and later moved some private variables into
+# namespaces, so we need to do backward-compatibility until we
+# fix the code everyplace.
+global tk_version tk_patchLevel tcl_version tcl_patchLevel
+puts stderr "Now in Tcl_TkVers_Init"
+    if [info exists tk_patchLevel] {
+puts stderr "We have a $tk_patchLevel"
+        if {$tk_patchLevel > "8.4a2"} {
+puts stderr "Doing it"
+	    ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
+	    ::tk::unsupported::ExposePrivateCommand tkEntrySeeInsert
+	    ::tk::unsupported::ExposePrivateCommand tkMenuUnpost
+	    ::tk::unsupported::ExposePrivateCommand tkTextButton1
+	    ::tk::unsupported::ExposePrivateCommand tkTextResetAnchor
+	    ::tk::unsupported::ExposePrivateVariable tkPriv
+        }
+    }
+puts stderr "all done"
 }
