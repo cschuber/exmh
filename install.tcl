@@ -13,7 +13,13 @@ option add *font 			fixed 	startup
 option add *Text.c_link			blue	startup
 
 proc install_init { appName dotFile } {
-    global install
+    global install tk_version tk_patchLevel tcl_version tcl_patchLevel
+    # Work around namespaces issue in Tk8.4a2 and later
+    if [info exists tk_patchLevel] {
+        if {$tk_patchLevel > "8.4a2"} {
+            ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
+        }
+    }
     set install(appName) $appName
     install_progVar wish [installGuessPath /usr/local/bin/wish wish] {wish absolute pathname}
     set install(dotFile) $dotFile
