@@ -395,6 +395,24 @@ Provide the ability to reply, forward, etc, an attached message (from
 a digest or forwarded or wherever).
 
 
+Number: 45
+Priority: Med
+Scope: Wide
+Complexity: Medium
+
+Create a $HOME/.exmh directory to contain all the "ancillary" files
+used by exmh.  This might include any or all of the following:
+.exmh-defaults      X resources
+.exmh_addrs         Address book
+.exmhbindings       main bindings
+.exmhsedit          sedit bindings
+.exmh-images        x-url-image cache directory
+.tk/exmh            user library directory
+.webtkcache         html viewer cache
+$EXMHTMPDIR         temp files
+
+
+
 $Id$
 
 # Emacs stuff
