@@ -296,7 +296,7 @@ proc ExwinFtocMsgStop {canvas x y} {
 	    set chunk [expr $fdisp(itemHeight) + $fdisp(ygap)]
 	}
     }
-    Exmh_Debug "dy $dy chunk $chunk"
+    Exmh_Debug ExwinFtocMsgStop "dy $dy chunk $chunk"
     set dl [expr int(round($dy / double($chunk)))]
     if {$dl != 0} {
 	# The exwin(ftextLines) and fdisp(maxLines) are traced so

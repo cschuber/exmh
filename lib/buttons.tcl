@@ -233,7 +233,7 @@ proc ButtonMenuInner { menu {level 1} } {
 	    set x [option get $menu x_$e {}]
 	    set v [uplevel $level [list subst $v]]	 ;# was ident
 	    set c [uplevel $level [list subst $c]]
-	    Exmh_Debug \"$l\" $c
+	    Exmh_Debug ButtonMenuInner \"$l\" $c
 	    case [option get $menu t_$e {}] {
 		default {Widget_AddMenuItem $menu $l $c}
 		check   {Widget_CheckMenuItem $menu $l $c $v}

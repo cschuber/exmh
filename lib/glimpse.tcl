@@ -300,7 +300,7 @@ proc Glimpse_Start {} {
 	if [catch {
 	    open "| $glimpse(path)/glimpse $opts -H $idir -e \"$glimpse(search)\"" r
 	} x] {
-	    Exmh_Debug $x
+	    Exmh_Debug Glimpse error $x
 	    set result $x
 	} else {
 	    set glimpse(result) {}

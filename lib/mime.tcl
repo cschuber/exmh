@@ -952,7 +952,7 @@ proc MimeMetaMail {contentType encoding fileName} {
 	}
 	lappend mcmd $fileName < /dev/null > /dev/null &
 	# recall that eval concats its arguments, thus exploding things for us
-	Exmh_Debug $mcmd
+	Exmh_Debug MimeMetaMail $mcmd
 	eval $mcmd
     } err] {
 	 Exmh_Status "$err"

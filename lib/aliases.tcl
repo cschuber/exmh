@@ -510,30 +510,30 @@ proc AliasesChop { rawline } {
     while {[string length $rawline] > 0} {
 	if [regexp -indices {^[ 	]*("[^"]+"[ 	]*<[^>]+>)[ 	]*,?} \
 		$rawline match addr] {
-	    Exmh_Debug [eval {string range $rawline} $addr]
+	    Exmh_Debug "AliasesChop regexp1" [eval {string range $rawline} $addr]
 	    lappend list [eval {string range $rawline} $addr]
 	    set next [expr [lindex $match 1]+1]
 	    set rawline [string range $rawline $next end]
 	} elseif [regexp -indices {^[ 	]*(\([^\)]+\)[ 	]*<[^>]+>)[ 	]*,?}\
 		$rawline match addr] {
-	    Exmh_Debug [eval {string range $rawline} $addr]
+	    Exmh_Debug "AliasesChop regexp2" [eval {string range $rawline} $addr]
 	    lappend list [eval {string range $rawline} $addr]
 	    set next [expr [lindex $match 1]+1]
 	    set rawline [string range $rawline $next end]
 	} elseif [regexp -indices {^[ 	]*(<[^>]+>)[ 	]*,?}\
 		$rawline match addr] {
-	    Exmh_Debug [eval {string range $rawline} $addr]
+	    Exmh_Debug "AliasesChop regexp3" [eval {string range $rawline} $addr]
 	    lappend list [eval {string range $rawline} $addr]
 	    set next [expr [lindex $match 1]+1]
 	    set rawline [string range $rawline $next end]
 	} elseif [regexp -indices {^[ 	]*([^ 	]+)[ 	]*,?}\
 		$rawline match addr] {
-	    Exmh_Debug [eval {string range $rawline} $addr]
+	    Exmh_Debug "AliasesChop regexp4" [eval {string range $rawline} $addr]
 	    lappend list [eval {string range $rawline} $addr]
 	    set next [expr [lindex $match 1]+1]
 	    set rawline [string range $rawline $next end]
 	} else {
-	    Exmh_Debug "miss"
+	    Exmh_Debug "AliasesChop miss"
 	    break
 	}
     }

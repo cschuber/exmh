@@ -321,7 +321,7 @@ proc Mh_AnnoCleanup { draftID } {
 
 proc Mh_Folder { f } {
     if {[catch {MhExec folder +$f < /dev/null} info]} {
-	Exmh_Debug $info
+	Exmh_Debug Mh_Folder caught $info
 	return {}
     } else {
 	if {[regexp {\+[^0-9]+ ([0-9]+) [^(]*\(([^)]+)\)} $info x total range]} {

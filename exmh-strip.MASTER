@@ -278,7 +278,7 @@ proc MimeStripPart {part headers body out} {
     set path [file join $doc_directory $mimeHdr($part,param,filename)]
     if {[catch {open $path w} newout]} {
 	# Cannot save to suggested file name
-	Exmh_Debug $newout
+	Exmh_Debug "exmh-strip:MimeStripPart can't open $newout"
 	return 0
     }
     if {[MimeSavePart $part $body $out $newout]} {

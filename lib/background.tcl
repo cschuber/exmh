@@ -172,7 +172,7 @@ proc Background_DoPeriodic {} {
     }
     if {[string length $bgProc] != 0} {
 	if [catch $bgProc err] {
-	    Exmh_Debug $bgProc $err
+	    Exmh_Debug "DoPeriodic" $bgProc $err
 	}
     }
 

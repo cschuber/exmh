@@ -82,7 +82,7 @@ proc FlistTraceTotalUnseen {args} {
     global flist mhProfile
     set l [info level]
     incr l -1
-    Exmh_Debug flist(totalcount,$mhProfile(unseen-sequence)) => $flist(totalcount,$mhProfile(unseen-sequence)) : [info level $l] $args
+    Exmh_Debug FlistTraceTotalUnseen flist(totalcount,$mhProfile(unseen-sequence)) => $flist(totalcount,$mhProfile(unseen-sequence)) : [info level $l] $args
 }
 proc FlistTraceUnseen {args} {
     global flist

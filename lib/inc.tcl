@@ -184,7 +184,7 @@ proc Inc_Expect {cmd} {
 	lappend cmd << $pop(password)
     }
     regsub <<.* $cmd {} clean
-    Exmh_Debug $clean
+    Exmh_Debug Inc_Expect $clean
     
     return $cmd
 }

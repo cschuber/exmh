@@ -101,7 +101,7 @@ proc GetNewsInt {} {
 	}	
 	if {[string first 211 $line]} {
 	    Exmh_Status "Cannot select newsgroup $thegrps($thisg)"
-	    Exmh_Debug "Line: $line"
+	    Exmh_Debug "GetNews Line: $line"
 	    set thearts($thisg) "X"
 	    incr thisg
 	    continue

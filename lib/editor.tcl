@@ -352,7 +352,7 @@ proc EditStart { draft {type prog} } {
 		    }
 		}
 	    }
-	    Exmh_Debug $id mxReset
+	    Exmh_Debug mxReset $id
 	    if [catch {send $id mxReset}] {
 		if [catch {send $exmh(editInterp) {set mxVersion}}] {
 		    Exmh_Status "Starting mxedit..." warn
@@ -434,7 +434,7 @@ proc Edit_Done {act {msg cur}} {
 	    return
 	}
     }
-    Exmh_Debug action = $act msg = $msg
+    Exmh_Debug Edit_Done action = $act msg = $msg
     if ![regexp {^[0-9]+$} $msg] {
 	# Message not in the drafts folder
 	set path $mhProfile(path)/$msg

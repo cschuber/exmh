@@ -127,7 +127,7 @@ proc busyIcon { cmd } {
 	    [label $parent.busy -foreground $busy(color) -bitmap $busy(Xbitmap)]
 	Face_BusyPlace $label
     } err] {
-	Exmh_Debug $err
+	Exmh_Debug "busyIcon" $err
     }
 
     set error [catch {uplevel #0 $cmd} result]

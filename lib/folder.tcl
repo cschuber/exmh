@@ -331,7 +331,7 @@ proc Folder_IsShared {folder} {
 proc Folder_FindShared {} {
     global mhProfile
     if {[catch {open $mhProfile(path)/.folders_shared} in]} {
-	Exmh_Debug $in
+	Exmh_Debug Folder_FindShared $in
 	return
     }
     foreach folder [split [read $in] \n] {

@@ -405,7 +405,7 @@ proc FaceShowFile {facefile pane} {
 # }]
 		}
 	    } id] {
-		Exmh_Debug $id
+		Exmh_Debug FaceShowFile $id
 		return 0
 	    }
 	}
@@ -413,7 +413,7 @@ proc FaceShowFile {facefile pane} {
 	    if [catch {
 		$pane config -bitmap @$facefile
 	    } id] {
-		Exmh_Debug $id
+		Exmh_Debug FaceShowFile $id
 		return 0
 	    }
 	}

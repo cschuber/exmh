@@ -466,7 +466,7 @@ proc SeqWinMove {seq y} {
 proc SeqWinButton {seq y mode} {
     global seqwin exmh ftoc
     
-    Exmh_Debug $seq $y $mode
+    Exmh_Debug SeqWinButton $seq $y $mode
     set mode $seqwin($mode)
     if {[string compare $mode None] == 0} {
 	return

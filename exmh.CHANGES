@@ -1,5 +1,12 @@
 HISTORY
 cvs repository 02/10/2003 valdis.kletnieks@vt.edu
+    exmh-strip.MASTER, lib/aliases.tcl, lib/background.tcl, lib/busy.tcl
+    lib/buttons.tcl, lib/editor.tcl, lib/exwin.tcl, lib/faces.tcl
+    lib/flist.tcl, lib/folder.tcl, lib/getnews.tcl, lib/glimpse.tcl
+    lib/inc.tcl, lib/mh.tcl lib/mime.tcl lib/seqwin.tcl
+    Add greppable text to Exmh_Debug call
+
+cvs repository 02/10/2003 valdis.kletnieks@vt.edu
     lib/fcache.tcl - Put in John Beck's fix for extraneous 'folder:0'
     in the fdisp
 
