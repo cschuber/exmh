@@ -1,13 +1,17 @@
 # Create a tar distribution for exmh
 
-# Remember to update exmh.install when changing version numbers.
-
+# To change the version,
+# change this variable and type "make version"
 VERSION=2.7.2
+
 RELDATE:=$(shell grep '^set date' ./exmh.install | cut -f3 -d" ")
 SNAPRELDATE:=$(shell /bin/date +%m/%d/%Y)
 SNAPDATE=`/bin/date +%Y%m%d`
 
-srctar: version realsrctar
+# Don't add "version" to the srctar production because it may
+# re-write files we've tinkered with by hand (e.g., lib/html/exmh.README.html)
+
+srctar: realsrctar
 
 realsrctar: htmltar
 	echo ./CVS > Tar.exclude

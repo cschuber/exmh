@@ -7,10 +7,13 @@
 # You still want to add release notes to
 # exmh.README and probably the other html files.
 
-foreach f ( Makefile exmh.README exmh.install lib/html/index.html lib/html/software.html lib/html/exmh.README.html )
+foreach f ( Makefile exmh.README lib/html/index.html lib/html/software.html )
     echo $f
     sed -f version.sed < $f > $f.new
     mv $f $f.old
     mv $f.new $f
     diff $f.old $f
 end
+
+echo "Edit lib/html/exmh.README.html by hand"
+echo "Use PatchVersion to fix exmh.install"
