@@ -38,14 +38,32 @@ proc Flag_Init {} {
     Preferences_Resource flag(iconupmask) iconUpMask flagup.mask
     Preferences_Resource flag(icondownmask) iconDownMask flagdown.mask
     Preferences_Resource flag(iconspoolmask) iconSpoolMask flagspool.mask
+    Preferences_Resource flag(iconupglyph) iconUpGlyph flagup.gif
+    Preferences_Resource flag(icondownglyph) iconDownGlyph flagdown.gif
+    Preferences_Resource flag(iconspoolglyph) iconSpoolGlyph flagup.gif
 
-    foreach i {iconup icondown iconspool iconupmask icondownmask iconspoolmask} {
+    foreach i {iconup icondown iconspool iconupmask icondownmask iconspoolmask iconupglyph icondownglyph} {
 	if ![string match /* $flag($i)] {
 	    set flag($i) $exmh(library)/$flag($i)
 	}
 	if ![file exists $flag($i)] {
 	    set flag($i) 0
 	}
+    }
+    if [catch {
+	Exmh_Debug "Creating .icon"
+	toplevel .icon
+	wm group .icon .
+	pack [canvas .icon.c]
+	image create photo icondown -file $flag(icondownglyph)
+	image create photo iconup -file $flag(iconupglyph)
+	image create photo iconspool -file $flag(iconspoolglyph)
+	.icon.c configure -width [image width iconup] \
+		-height [image height iconup]
+	wm iconwindow . .icon
+    } err] {
+	Exmh_Debug "Can't create .icon: $err"
+	destroy .icon
     }
     FlagInner down icondown labeldown
 }
@@ -70,12 +88,21 @@ proc Flag_NoSpooled {} {
 }
 proc FlagInner {state icon label} {
     global exmh flag
+    Exmh_Debug "In FlagInner $state $icon $label"
     if {$flag(state) != $state} {
-	wm iconbitmap . @$flag($icon)
-	if {$flag(${icon}mask) != 0} {
-	    wm iconmask . @$flag(${icon}mask)
+	if [winfo exists .icon.c] {
+	    Exmh_Debug "Setting flag glyph to $icon"
+	    .icon.c delete image -tag $icon
+	    .icon.c create image 0 0 -anchor nw -image $icon -tag icon
+	} else {
+	    Exmh_Debug "Setting flag bitmap to $icon"
+	    wm iconbitmap . @$flag($icon)
+	    if {$flag(${icon}mask) != 0} {
+		wm iconmask . @$flag(${icon}mask)
+	    }
 	}
 	set flag(state) $state
+	Exmh_Debug "Set flag state to $state"
     }
     set l [uplevel #0 list $flag($label)]
     if {[info exists flag(lastLabel)] &&

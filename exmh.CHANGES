@@ -13,10 +13,12 @@ cvs repository 4/1/1999
     Forward Subject patch that optionally adds (fwd) to the
         subject of forwarded messages. 
         -Chris Keane via haldevore
+    Support for color icons on main window -cwg
+    New black&white and color icons -jbeck@eng.sun.com  via cwg
 
 cvs repository 3/31/1999
     New interface for PGP composition -cwg
-    Dates display localtime in parentheses -cwg
+    Dates display localtime in parentheses -patch page via cwg
     Better support for WindowMaker -cwg
     support for the X-image-url: header -ovidiu@cup.hp.com via cwg
     middle button on unseenwin configurable to do an inc 

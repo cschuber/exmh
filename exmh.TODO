@@ -132,18 +132,6 @@ ones in other applications we use.
 
 
 
-Number: 14
-Priority: Low
-Scope: Narrow
-Complexity: Low
-
-Support for color icons.  It be nice to find someone who likes to
-create opensource icons to make buttons for all the existing windows
-(and possibly also for the buttons left in item 13, although I for one
-already run netscape with my buttons in "label only" mode.
-
-
-
 Number: 15
 Priority: Med
 Scope: 
@@ -268,19 +256,6 @@ Incorporate patches from the New Features section of the Patch page
   7.Preference item to turn off scroll-to-next message. 
   8.String From lines before posting. 
 
-
-Number: 26
-Priority: Med
-Scope: Narrow
-Complexity: trivial
-
-Request from John Beck:
-
-Replacement flagdown.bitmap and flagup.bitmap files, and new
-flagdown.mask and flagup.mask files.  I like this bitmap better (I'm
-not the artist), and others (I think incl. Brent at one time) have
-agreed.  Available from:
-ftp://playground.sun.com/pub/jbeck/exmh/flag-bitmaps.tar
 
 
 
