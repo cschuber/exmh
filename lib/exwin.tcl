@@ -74,6 +74,10 @@ OFF, if you place a window and dismiss it, exmh will remember its
 placement and re-use it for the rest of the current session.
 Disabling this option always allows your window manager to place
 windows."}
+    {exwin(toplevelFtoc) toplevelFtoc ON {Use separate Ftoc window}
+"Description of separate Ftoc window here."}
+    {exwin(toplevelMsg) toplevelMsg ON {Use separate Msg window}
+"Description of separate Msg window here."}
     }
     set exwin(ftextLinesSave) $exwin(ftextLines)
     trace variable exwin(ftextLines) w ExwinFixupFtextLines
@@ -134,13 +138,28 @@ proc Exwin_Layout {} {
     # Folders with unread messages
     Fdisp_Window [Widget_Frame . flist Fdisp $fixed]
 
+    if { $exwin(toplevelFtoc) || $exwin(toplevelMsg)} {
+        set flavor $expand
+#        set exwin(ftextLines) [expr $exwin(ftextLines) + $exwin(mtextLines)]
+    } else {
+        set flavor $fixed
+    }
+
+    # The folder buttons and Ftoc display are put in here
+    if {$exwin(toplevelFtoc)} {
+        set exwin(ftocframe) [Widget_Toplevel .ftocframe "Folder ToC"]
+    } else {
+        set exwin(ftocframe) [Widget_Frame . ftocframe Ftoc $flavor]
+    }
+    pack propagate $exwin(ftocframe) 0
+
     # Second row of buttons for folder ops and current folder label
-    set exwin(fopButtons) [Widget_Frame . fops Fops $fixed]
+    set exwin(fopButtons) [Widget_Frame .ftocframe fops Fops $fixed]
     Buttons_Folder $exwin(fopButtons)
     Label_FolderSetup $exwin(fopButtons)
 
     # Folder display (Ftoc)
-    set exwin(ftext) [Widget_Text [Widget_Frame . ftoc Ftoc $fixed] \
+    set exwin(ftext) [Widget_Text [Widget_Frame .ftocframe ftoc Ftoc $flavor] \
 				$exwin(ftextLines)]
     Ftoc_Bindings $exwin(ftext)
     Ftoc_InitSequences $exwin(ftext)
@@ -149,8 +168,17 @@ proc Exwin_Layout {} {
 	mscroll $exwin(ftext) 1
     }
 
+    # Create a frame for Message stuff.
+    # The message buttons and display are put in here.
+    if {$exwin(toplevelMsg)} {
+        set exwin(msgframe) [Widget_Toplevel .msgframe "Message Display"]
+    } else {
+        set exwin(msgframe) [Widget_Frame . msgframe Msg $expand]
+    }
+    pack propagate $exwin(msgframe) 0
+
     # Frame for faces, status, message buttons
-    set mid     [Widget_Frame . mid Mid $fixed]
+    set mid     [Widget_Frame .msgframe mid Mid $fixed]
     Widget_SplitFrameR $mid Face Right
     Faces_Create $mid.left
 
@@ -159,10 +187,15 @@ proc Exwin_Layout {} {
     Widget_SplitFrameV $right Status Mops
 
     # FTOC/MSG boundary changer
-    ExwinFtocMsgBoundary $right.top
+    if {!$exwin(toplevelMsg)} {
+        ExwinFtocMsgBoundary $right.top
+    } elseif {!$exwin(toplevelFtoc)} {
+        Widget_SplitFrameR .ftocframe.fops Fops Right
+        ExwinFtocMsgBoundary .ftocframe.fops.right
+    }
 
     set exwin(status) [Widget_Entry $right.top msg {right expand fill}]
-    set statusConfig [option get . statusConfig StatusConfig]
+    set statusConfig [option get .msgframe statusConfig StatusConfig]
     if {[string length $statusConfig] > 0} {
         catch [concat $exwin(status) configure $statusConfig]
     }
@@ -175,13 +208,22 @@ proc Exwin_Layout {} {
     Buttons_Message $exwin(mopButtons)
 
     # Message display
-    set exwin(mtext) [Widget_Text [Widget_Frame . msg Msg $expand] \
+    set exwin(mtext) [Widget_Text [Widget_Frame .msgframe msg Msg $expand] \
 				$exwin(mtextLines)]
     Msg_Setup $exwin(mtext)
     Bindings_Main $exwin(mtext)
 
+    # Re-pack the two frames if necessary.  If one or both of them are
+    # Toplevel windows, there's no need to repack.
+    if {([winfo toplevel .ftocframe] == ".") &&
+        ([winfo toplevel .msgframe] == ".")} {
+        pack forget .ftocframe .msgframe
+        pack .ftocframe .msgframe -fill both -anchor center -expand 1
+    }
+
     focus $exwin(mtext)
 }
+
 proc ExwinFtocMsgBoundary {frame} {
     global exwin
     set c [canvas $frame.boundary -width 16 -height 15]
@@ -193,6 +235,7 @@ proc ExwinFtocMsgBoundary {frame} {
     $c bind $it <ButtonRelease-1> {ExwinFtocMsgStop %W %x %y}
     set exwin(mode) {}
 }
+
 proc ExwinTopY {w y} {
     # Find Y hit relative to toplevel window
     set top [winfo toplevel $w]
@@ -230,7 +273,13 @@ proc ExwinFtocMsgScroll {canvas x y} {
     } else {
 	catch {unset exwin(yfdisp)}
     }
-    set exwin(mode) ftoc
+    if {!$exwin(toplevelFtoc)} {
+        set exwin(mode) ftoc
+    } elseif {!$fdisp(toplevel)} {
+        set exwin(mode) fdisp
+    } else {
+        set exwin(mode) fcache
+    }
 }
 proc ExwinFtocMsgMove {canvas x y} {
     global exwin
@@ -296,7 +345,6 @@ proc ExwinFtocMsgStop {canvas x y} {
 	    set chunk [expr $fdisp(itemHeight) + $fdisp(ygap)]
 	}
     }
-    Exmh_Debug ExwinFtocMsgStop "dy $dy chunk $chunk"
     set dl [expr int(round($dy / double($chunk)))]
     if {$dl != 0} {
 	# The exwin(ftextLines) and fdisp(maxLines) are traced so
@@ -325,6 +373,14 @@ proc ExwinFtocMsgStop {canvas x y} {
 		set var fdisp(maxLines)
 	    }
 	}
+
+        if {!$exwin(toplevelFtoc)} {
+            $exwin(ftocframe) configure -height [expr [winfo height $exwin(ftocframe)] + $dy]
+        }
+        if {!$exwin(toplevelMsg)} {
+            $exwin(msgframe)  configure -height [expr [winfo height $exwin(msgframe)] - $dy]
+        }
+
 	# Let redisplay kick in
 	after 100 "
 	    Exmh_Status \"$msg...\"
@@ -345,7 +401,8 @@ proc ExwinLineHeight {w} {
 	incr i
 	scan [$w index @0,$i] %d next
 	if {$next != $top} {
-	    return $i
+	    # Magic - -1 because we've overshot one pixel, and -4 for borders/etc
+	    return [expr $i - 5]
 	}
     }
     error "Cannot handle empty windows"

@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 07/02/2004 valdis.kletnieks@vt.edu
+  lib/exwin.tcl - first cut at separable ftoc and msg panes
+
 cvs repository 06/18/2004 welch@panasas.com
   Updating version to 2.7.0 in preparation for a release
 
