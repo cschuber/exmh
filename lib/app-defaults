@@ -763,16 +763,16 @@ exmh.iconic:		0
 
 *Sedit.Menubar.builtin: 	quit send sign
 *Sedit.Menubar.quit.text: 	Dismiss
-*Sedit.Menubar.quit.command:	SeditQuit $draft $t
+*Sedit.Menubar.quit.command:	SeditQuit {$draft} {$t}
 *Sedit.Menubar.send.text:	Send
 *Sedit.Menubar.send.padX:	15
-*Sedit.Menubar.send.command:	SeditSend $draft $t 0
+*Sedit.Menubar.send.command:	SeditSend {$draft} {$t} 0
 !
 ! The sign button turns into a menu with one entry for
 ! each file that matches the glob pattern ~/.signature*
 !
 *Sedit.Menubar.sign.text:	Sign
-*Sedit.Menubar.sign.command:	SeditSign $draft $t
+*Sedit.Menubar.sign.command:	SeditSign {$draft} {$t}
 !
 ! buttons is standard buttons
 ! ubuttons is for extra user-specific buttons
@@ -781,20 +781,20 @@ exmh.iconic:		0
 *Sedit.Menubar.help.text:	Help
 *Sedit.Menubar.help.command:	SeditHelp
 *Sedit.Menubar.abort.text:	Abort
-*Sedit.Menubar.abort.command:	SeditAbort $draft $t
+*Sedit.Menubar.abort.command:	SeditAbort {$draft} {$t}
 *Sedit.Menubar.save.text: 	Save&Quit
-*Sedit.Menubar.save.command: 	SeditSave $draft $t SeditNuke
+*Sedit.Menubar.save.command: 	SeditSave {$draft} {$t} SeditNuke
 *Sedit.Menubar.post.text:	Post
 *Sedit.Menubar.post.padX:	10
-*Sedit.Menubar.post.command:	SeditSend $draft $t 1
+*Sedit.Menubar.post.command:	SeditSend {$draft} {$t} 1
 
 ! The repl button is well-known.  It is disabled except when replying.
 *Sedit.Menubar.repl.text:	Quote...
 *Sedit.Menubar.repl.m.entrylist:	quote attach
 *Sedit.Menubar.repl.m.l_quote:		Quote
-*Sedit.Menubar.repl.m.c_quote:		SeditInsertFile $draft $t $quote(filename)
+*Sedit.Menubar.repl.m.c_quote:		SeditInsertFile {$draft} {$t} {$quote(filename)}
 *Sedit.Menubar.repl.m.l_attach:		Quote MIME
-*Sedit.Menubar.repl.m.c_attach:		SeditAttachQuotedMessage $draft $t $msg(path)
+*Sedit.Menubar.repl.m.c_attach:		SeditAttachQuotedMessage {$draft} {$t} {$msg(path)}
 !
 ! menus is for standard menus
 ! umenus is for extra user-specific menus
@@ -845,15 +845,15 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.format.t_mhn: check
 *Sedit.Menubar.more.m.format.v_mhn: sedit($t,mhn)
 *Sedit.Menubar.more.m.format.l_mhn2: Run mhn now
-*Sedit.Menubar.more.m.format.c_mhn2: SeditMHN $draft $t
+*Sedit.Menubar.more.m.format.c_mhn2: SeditMHN {$draft} {$t}
 *Sedit.Menubar.more.m.format.l_quote: Quote Printable
 *Sedit.Menubar.more.m.format.t_quote: check
 *Sedit.Menubar.more.m.format.v_quote: sedit($t,quote)
 
 *Sedit.Menubar.more.m.l_receipt: Ask for Receipt
-*Sedit.Menubar.more.m.c_receipt: MDNAskReceipt $draft $t
+*Sedit.Menubar.more.m.c_receipt: MDNAskReceipt {$draft} {$t}
 *Sedit.Menubar.more.m.l_cite: Cite Selection
-*Sedit.Menubar.more.m.c_cite: SeditCiteSelection $draft $t
+*Sedit.Menubar.more.m.c_cite: SeditCiteSelection {$draft} {$t}
 *Sedit.Menubar.more.m.l_addr: 	Addresses
 *Sedit.Menubar.more.m.c_addr: 	Addr_Browse
 
@@ -862,27 +862,27 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.m_attach: attach
 *Sedit.Menubar.more.m.attach.entrylist: part message external insert keys
 *Sedit.Menubar.more.m.attach.l_part: Attach File...
-*Sedit.Menubar.more.m.attach.c_part: SeditInsertFileDialog $draft $t
+*Sedit.Menubar.more.m.attach.c_part: SeditInsertFileDialog {$draft} {$t}
 *Sedit.Menubar.more.m.attach.l_message: Attach Message...
-*Sedit.Menubar.more.m.attach.c_message: SeditInsertMessageDialog $draft $t
+*Sedit.Menubar.more.m.attach.c_message: SeditInsertMessageDialog {$draft} {$t}
 *Sedit.Menubar.more.m.attach.l_external: Attach Reference...
-*Sedit.Menubar.more.m.attach.c_external: SeditInsertExternalDialog $draft $t
+*Sedit.Menubar.more.m.attach.c_external: SeditInsertExternalDialog {$draft} {$t}
 *Sedit.Menubar.more.m.attach.l_insert: Insert File...
-*Sedit.Menubar.more.m.attach.c_insert: SeditInsertFileDirect $draft $t
+*Sedit.Menubar.more.m.attach.c_insert: SeditInsertFileDirect {$draft} {$t}
 *Sedit.Menubar.more.m.attach.l_keys:   Attach PGP Keys...
-*Sedit.Menubar.more.m.attach.c_keys:   Pgp_InsertKeys $draft $t
+*Sedit.Menubar.more.m.attach.c_keys:   Pgp_InsertKeys {$draft} {$t}
 *Sedit.Menubar.more.m.l_whom:	Whom
-*Sedit.Menubar.more.m.c_whom:	SeditWhom $draft $f $t
+*Sedit.Menubar.more.m.c_whom:	SeditWhom {$draft} {$f} {$t}
 *Sedit.Menubar.more.m.l_save: Save Buffer
-*Sedit.Menubar.more.m.c_save: SeditSave $draft $t
+*Sedit.Menubar.more.m.c_save: SeditSave {$draft} {$t}
 *Sedit.Menubar.more.m.l_spell: Spell...
-*Sedit.Menubar.more.m.c_spell: SeditSpell $draft $f $t
+*Sedit.Menubar.more.m.c_spell: SeditSpell {$draft} {$f} {$t}
 *Sedit.Menubar.more.m.l_find: Find SEL
-*Sedit.Menubar.more.m.c_find: Sedit_Find $draft $t
+*Sedit.Menubar.more.m.c_find: Sedit_Find {$draft} {$t}
 *Sedit.Menubar.more.m.l_preview: Mime Preview
-*Sedit.Menubar.more.m.c_preview: SeditClip $draft $t
+*Sedit.Menubar.more.m.c_preview: SeditClip {$draft} {$t}
 *Sedit.Menubar.more.m.l_alt: Alternate Editor
-*Sedit.Menubar.more.m.c_alt: SeditAlternate $draft $t
+*Sedit.Menubar.more.m.c_alt: SeditAlternate {$draft} {$t}
 
 *Sedit.Menubar.pgp.text:	Crypt...
 *Sedit.Menubar.pgp.m.entrylist: pgpformat pgpversion pgpsign pgpencrypt pgpchoosekey pgpclearpp
