@@ -77,37 +77,70 @@ old files by hand.
     tkwait window .newprefs
 }
 
+proc PreferencesCopyDone { movedFiles } {
+    Widget_Toplevel .filesmoved "Files Copied"
+    Widget_Message .filesmoved msg -aspect 1000 -text "
+The following files have been moved and renamed.  Once you have 
+verified that Exmh is working properly, you can delete these files.
+
+[puts $movedFiles]
+"
+
+    Widget_Frame .filesmoved rim Pad {top expand fill}
+    Widget_AddBut .filesmoved.rim.but ok "OK" {destroy .filesmoved }
+    tkwait window .filesmoved
+}
+
 proc PreferencesDoCopyFiles { } {
     if {[file exists [glob ~]/.exmh-defaults] 
 	&& ![file exists [glob ~]/.exmh/exmh-defaults]} {
 	catch {exec cp -r [glob ~]/.exmh-defaults [glob ~]/.exmh/exmh-defaults}
+	append movedList ".exmh-defaults\n"
+    }
+	
+    if {[file exists [glob ~]/.exmh-defaults-mono]
+        && ![file exists [glob ~]/.exmh/exmh-defaults-mono]} {
+        catch {exec cp -r [glob ~]/.exmh-defaults-mono [glob ~]/.exmh/exmh-defaults-mono}
+        append movedList ".exmh-defaults-mono\n"
+    }
+
+    if {[file exists [glob ~]/.exmh-defaults-color]
+        && ![file exists [glob ~]/.exmh/exmh-defaults-color]} {
+        catch {exec cp -r [glob ~]/.exmh-defaults-color [glob ~]/.exmh/exmh-defaults-color}
+        append movedList ".exmh-defaults-color\n"
     }
 
     if {[file exists [glob ~]/.exmh_addrs] 
 	&& ![file exists [glob ~]/.exmh/exmh_addrs]} {
 	catch {exec cp -r [glob ~]/.exmh_addrs [glob ~]/.exmh/exmh_addrs}
+        append movedList ".exmh_addrs\n"
     }
 
     if {[file exists [glob ~]/.exmh_addrs.bak] 
 	&& ![file exists [glob ~]/.exmh/exmh_addrs.bak]} {
 	catch { exec cp -r [glob ~]/.exmh_addrs.bak [glob ~]/.exmh/exmh_addrs.bak}
+        append movedList ".exmh_addrs.bak\n"
     }
     
     if {[file exists [glob ~]/.exmh-images] 
 	&& ![file exists [glob ~]/.exmh/exmh-images]} {
 	catch { exec cp -r [glob ~]/.exmh-images [glob ~]/.exmh/exmh-images}
+        append movedList ".exmh-images\n"
     }
     
     if {[file exists [glob ~]/.exmhbindings] 
 	&& ![file exists [glob ~]/.exmh/exmhbindings]} {
 	catch { exec cp -r [glob ~]/.exmhbindings [glob ~]/.exmh/exmhbindings}
+        append movedList ".exmhbindings\n"
     }
     
     if {[file exists [glob ~]/.exmhsedit] 
 	&& ![file exists [glob ~]/.exmh/exmhsedit]} {
 	catch { exec cp -r [glob ~]/.exmhsedit [glob ~]/.exmh/exmhsedit}
+        append movedList ".exmhsedit\n"
     }
     catch {destroy .newprefs}
+   # PreferencesCopyDone movedList
 }
 
 proc PreferencesReadFile { basename level } {
