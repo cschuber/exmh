@@ -88,7 +88,8 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
     Face_Delete
 
     # Honor X-Face even if faces is disabled
-    if {[string compare "" $xface] && \
+    if {$faces(xFaceEnabled) && \
+	[string compare "" $xface] && \
 	[string compare "" $faces(xfaceProg)]} {
 
 	if {$faces(rowEnabled) && $faces(defer)} {
@@ -100,7 +101,7 @@ proc Face_Show { fromwho {xface {}} {ximageurl {}} } {
 
     # Honor X-Image-URL even if X-Face was displayed or the faces are
     # disabled
-    if {[string compare "" $ximageurl]} {
+    if {$faces(xImageUrl) && [string compare "" $ximageurl]} {
 	if {![info exists failedURLs]
 	    || ([info exists failedURLs]
 		&& [lsearch $failedURLs $ximageurl] == -1)} {

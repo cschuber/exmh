@@ -122,6 +122,9 @@ proc Faces_Init {} {
 
 Any given mail address can match a range of face images, from most specific (such as an X-Face) or most general (such as an a default image for a toplevel domain)." {
 
+        {faces(xFaceEnabled) xFaceEnabled ON {Use X-Face headers}
+	"If a message contains an X-Face header, display the image encoded into the header."}
+
 	{faces(xfaceProg) xfaceProg {} {X-Face command}
 "A command to convert an X-Face: header line into a displayable X11 bitmap.
 
@@ -135,6 +138,9 @@ Defining this enables the display of X-Face images.  This is independent of the 
 
 	{faces(rowEnabled) facesRow OFF {Use faces row}
 "Use a horizontal row to display all the matching images of a face, rather than the most specific one."}
+
+        {faces(xImageUrl) xImageUrl ON {Use X-Image-URL}
+"If a message contains an X-Image-URL header, display the image referenced in that header."}
 
 	{faces(defer) facesDefer ON {Background processing} 
 "When on, this causes faces display to be handled as a background task.  This allows the display of a faces row to be aborted when another message is selected.  If your machine can display faces quickly enough, you should turn this off."}
