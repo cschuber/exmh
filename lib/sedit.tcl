@@ -70,12 +70,13 @@ proc Sedit_Start { draft } {
 	Drop_Attach $t SeditDragDrop
 
 	# PGP version-setting moved out from seditpgp code
-	if {$pgp(enabled)} {
-	    if {![info exists pgp($pgp(version,$id),myname,$id)]} {
-		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
-	    }
-	    EditMaybeAddPhrasePane $id .sedit$id
-	}
+ 	if {$pgp(enabled)} {
+ 	    if {[info exits pgp(version,$id)]
+		&& ![info exists pgp($pgp(version,$id),myname,$id)]} {
+ 		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
+ 	    }
+ 	    EditMaybeAddPhrasePane $id .sedit$id
+ 	}
 
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]
 
