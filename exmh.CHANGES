@@ -1,5 +1,11 @@
 HISTORY
-cvs repostiory 06/16/2000 Brent Welch <welch@ajubasolutions.com>
+cvs repository 06/16/2000 Bruce A. Mah <bmah@cisco.com>
+    lib/html/exmh-faq.html:  Add FAQ #22 about giving preference 
+      to displaying text/plain over text/html.  Fix minor HTML glitch 
+      in FAQ #21. 
+    exmh.CHANGES:  In a fit of anal-retentiveness, fix a typo.
+
+cvs repository 06/16/2000 Brent Welch <welch@ajubasolutions.com>
     (By way of Jacob Morzinski)
     lib/extrasInit.tcl, lib/faces.tcl, lib/flag.tcl
     Generalized the "slow display icon" preference item to give

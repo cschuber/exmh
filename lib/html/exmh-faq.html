@@ -146,6 +146,10 @@
   <dd><a HREF="#21">How do I make exmh look good with WindowMaker or
       GNUstep?</a> 
 
+  <dt>22
+  <dd><a HREF="#22">How do I make exmh want to display messages
+      as plain-text rather than HTML-formatted?</a>
+
 </dl>
 <hr>
 <dl COMPACT>
@@ -908,7 +912,7 @@ sent to, or what its subject line says.
 <p>
 
 <h3><a NAME="21">21. How do I make exmh look good with WindowMaker or
-GNUstep?</a>
+GNUstep?</a></h3>
 <p>
 First get tkstep up and running.  tkstep may be found at one of these
 locations:
@@ -923,7 +927,19 @@ Third, go into Preferences>Windows & Scrolling and move the Vertical
 Scrollbar from the right side to the left side.
 <p>
 
+<h3><a NAME="22">22. How do I make exmh want to display messages
+as plain-text rather than HTML-formatted?</a></h3>
+<p>
+Add the following lines to your ~/.exmh/exmh-defaults file
+and restart exmh.
+<p>
+<code>
+*mime_alternative_prefs: text/plain text/richtext text/html
+</code>
+</p>
+
 <a HREF="index.html"><img SRC="left-arrow.gif" ALT="" WIDTH=36 HEIGHT=23>Back
 to the exmh index</a> 
 </Body>
 </Html>
+
