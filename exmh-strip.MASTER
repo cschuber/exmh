@@ -96,6 +96,9 @@ proc Exmh_Status { string args } {
 proc Exmh_Debug { args } {
     switch -glob -- $args {
 	Pref_Add* { return }
+	{*MH anno*} { return }
+	{*Unable to load Img*} { return }
+	MimeTypes* { return }
     	default {
 	    catch {puts stdout [join $args]}
 	}

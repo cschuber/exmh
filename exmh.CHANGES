@@ -6,6 +6,8 @@ cvs repository 1/7/2005 welch@panasas.com
     positions in the case that the window is "stale".
   lib/msgShow.tcl: added call to Exwin_SeeToplevelMsg in case
     the user has withdrawn the message display
+  exmh-strip.MASTER: cleared out the Exmh_Debug messages
+    that leak to standard output
   exmh.install: changed 2.7.2 date to 1/7/2005
 
 cvs repository 1/6/2005 welch@panasas.com
