@@ -1,5 +1,9 @@
 HISTORY
 cvs repository 07/02/2001 cwg-exmh@deepeddy.com
+    folder.tcl - Call Flist_UnseenUpdate just before callig Scan_Folder 
+	in FolderChange
+
+cvs repository 07/02/2001 cwg-exmh@deepeddy.com
     scan.tcl - Remove bogus call to Flist_ForgetUnseen
 
 cvs repository 06/07/2002 welch@panasas.com

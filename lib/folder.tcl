@@ -122,6 +122,7 @@ proc FolderChange {f msgShowProc} {
 	    Ftoc_Sort
 	}
     }
+    Flist_UnseenUpdate $f
     Scan_Folder $f 1
     Exmh_Status $f
     # Either Msg_ShowCurrent or Msg_ShowUnseen
