@@ -461,11 +461,21 @@ proc MDNBuildDraft { draft address doit choice} {
     global env mimeHdr faces exmh
     set host [exec hostname]
 
-    set domain $faces(defaultDomain)
-    if {$domain == ""} {
-	catch {set domain [exec grep domain /etc/resolv.conf | cut -f2 -d\ ]'}
+    # If /bin/hostname has a '.' in it, assume it's already a FQDN.
+    if [ regexp {\.} $host ] {
+        set sourcehost $host
+    } else { #otherwise, try to find a domain from $faces or resolv.conf
+        set domain $faces(defaultDomain)
+        if {$domain == ""} {
+	    catch {set domain [exec grep domain /etc/resolv.conf | cut -f2 -d\ ]'}
+        }
+	# Try this last, as YP domainname may not match actual DNS domain
+	if {$domain == ""} {
+	    catch {set domain [exec domainname]}
+	}
+        set sourcehost $host.$domain
     }
-    set rcpt $env(USER)@$host.$domain
+    set rcpt $env(USER)@$sourcehost
 
     if [catch {open $draft} in] {
 	error "Cannot read original message"
@@ -475,6 +485,8 @@ proc MDNBuildDraft { draft address doit choice} {
 	close $in
 	error "Cannot create mdn"
     }
+    # Bug - someplace right here, we need to make 'post' generate
+    # a 'MAIL FROM:<>' to be fully RFC compliant.,..
     puts $out "Subject: Disposition notification\nTo: $address"
 
     set bdry [FvMimeStartMulti $out \
@@ -494,7 +506,7 @@ of the message's disposition.
 "
     }
     FvMimeAddPart $out $bdry "message/disposition-notification"
-    puts $out "\nReporting-UA: $host.$domain (Exmh $exmh(version))"
+    puts $out "\nReporting-UA: $sourcehost (Exmh $exmh(version))"
     if [info exists mimeHdr(0=1,hdr,original-recipient)] {
 	puts $out "Original-Recipient: $mimeHdr(0=1,hdr,original-recipient)"
     }
