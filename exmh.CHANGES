@@ -1,6 +1,9 @@
 HISTORY
 
 cvs repository 01/24/2002 valdis.kletnieks@vt.edu
+    lib/sedit.tcl - missed a readonly/disabled issue for Tk8.4 (status field)
+
+cvs repository 01/24/2002 valdis.kletnieks@vt.edu
     exmh-bg.MASTER, lib/main.tcl, lib/app-defaults-color, lib/html/custom.html
 	So there *was* code using c_st_background. That color specification
 	is now c_st_bg_msgs, and exmh-bg no longer tries to lookup a colorspec

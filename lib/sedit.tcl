@@ -411,11 +411,17 @@ proc SeditNuke { draft t } {
 }
 proc SeditMsg { t text } {
     # Status line message output
-    global sedit
+    global sedit tk_version
     $sedit($t,status) configure -state normal
     $sedit($t,status) delete 0 end
     $sedit($t,status) insert 0 $text
-    $sedit($t,status) configure -state disabled
+    if {$tk_version > 8.3} {
+        # get the readonlybackground to match the regular one...
+        set stat_color [lindex [ $sedit($t,status) configure -background ] 4 ]
+        $sedit($t,status) configure -state readonly -readonlybackground $stat_color
+    } else {
+        $sedit($t,status) configure -state disabled
+    }
     update idletasks
 }
 
