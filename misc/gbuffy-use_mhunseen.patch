@@ -1,0 +1,571 @@
+Index: config.c
+===================================================================
+RCS file: /home/zamboni/cvsroot/tools/gbuffy/config.c,v
+retrieving revision 1.1.1.1
+diff -c -r1.1.1.1 config.c
+*** config.c	2000/10/16 18:13:09	1.1.1.1
+--- config.c	2000/10/19 21:17:54
+***************
+*** 15,20 ****
+--- 15,21 ----
+  static char *DefaultsFile; /* = "GBuffy";*/
+  
+  static char *get_defaults_file ();
++ void configure_get_mh_unseenseq ();
+  
+  static proplist_t pl_get_dict_entry (proplist_t dict, char *key)
+  {
+***************
+*** 357,362 ****
+--- 358,366 ----
+      return NULL;
+    }
+  
++   /* Get the unseen-sequence for MH */
++   configure_get_mh_unseenseq();
++ 
+    PLRelease(top);
+    return box;
+  }
+***************
+*** 406,409 ****
+--- 410,437 ----
+      strncat (path, "/GBuffy", sizeof (path) - strlen (path));
+    }
+    return safe_strdup (path);
++ }
++ 
++ /* Gets the name of the unseen sequence from the MH config file.
++  * If multiple names are defined, we use the first one.
++  */
++ void configure_get_mh_unseenseq ()
++ {
++   char *tmp;
++   tmp=get_mh_value("~/.mh_profile", "unseen-sequence");
++   if (!tmp)
++   {
++     if (errno == ENOENT)
++     {
++       fprintf (stderr, "-E- File ~/.mh_profile does not exist\n");
++     }
++     fprintf (stderr, "-E- No MH unseen sequence defined - not using it\n");
++   }
++   else
++   {
++     /* Get only the first component */
++     MH_UnseenSeq=safe_strdup(strtok(tmp, " \t"));
++     safe_free((void **)&tmp);
++   }
++   return;
+  }
+Index: count.c
+===================================================================
+RCS file: /home/zamboni/cvsroot/tools/gbuffy/count.c,v
+retrieving revision 1.1.1.1
+diff -c -r1.1.1.1 count.c
+*** count.c	2000/10/16 18:13:11	1.1.1.1
+--- count.c	2000/10/23 15:50:24
+***************
+*** 10,15 ****
+--- 10,17 ----
+  #include "gbuffy.h"
+  #include "rfc2047.h"
+  
++ void process_message (BOX_INFO *mbox, GList *headers, char *path, char *fname);
++ 
+  int parse_mime_header (BOX_INFO *mbox, GList *headers, FILE *fp)
+  {
+    static char *buffer = NULL;
+***************
+*** 25,31 ****
+  
+    while (*(buffer = read_rfc822_line (fp, buffer, &buflen)) != 0) 
+    {
+!     if (!strncmp (buffer, "Status:", 7)) 
+      {
+        status = TRUE;
+        if (!strchr (buffer, 'R') && !strchr (buffer, 'O')) 
+--- 27,34 ----
+  
+    while (*(buffer = read_rfc822_line (fp, buffer, &buflen)) != 0) 
+    {
+!     /* Only check Status: header if we are not using an unseen sequence */
+!     if (!strncmp (buffer, "Status:", 7) && !MH_UnseenSeq) 
+      {
+        status = TRUE;
+        if (!strchr (buffer, 'R') && !strchr (buffer, 'O')) 
+***************
+*** 158,173 ****
+    DIR *dp = 0;
+    FILE *fp = 0;
+    char buffer[STRING];
+!   char garbage[STRING];
+    char from[STRING] = "";
+    char subject[STRING] = "";
+    char path[_POSIX_PATH_MAX];
+-   char file[_POSIX_PATH_MAX];
+    int found = FALSE;
+    int status = FALSE;
+    int is_new = FALSE;
+    int mailfile = TRUE;
+    int count = 0;
+    struct dirent *de;
+    struct stat s;
+    struct timeval t[2];
+--- 161,178 ----
+    DIR *dp = 0;
+    FILE *fp = 0;
+    char buffer[STRING];
+!   char tmppath[_POSIX_PATH_MAX];
+    char from[STRING] = "";
+    char subject[STRING] = "";
+    char path[_POSIX_PATH_MAX];
+    int found = FALSE;
+    int status = FALSE;
+    int is_new = FALSE;
+    int mailfile = TRUE;
+    int count = 0;
++   char *mh_unseen_seq;
++   int mh_msg;
++   char mh_msg_s[STRING];
+    struct dirent *de;
+    struct stat s;
+    struct timeval t[2];
+***************
+*** 197,257 ****
+  
+    mbox->num_messages = 0;
+    mbox->new_messages = 0;
+- 
+-   dp = opendir (path);
+-   if (dp == NULL)
+-     return 0;
+  
+!   while ((de = readdir (dp)) != NULL)
+    {
+!     mailfile = TRUE;
+!     if (mbox->type == GB_MH) 
+      {
+!       char *p;
+! 
+!       p = de->d_name;
+!       while (*p && mailfile)
+        {
+! 	if (!isdigit (*p)) 
+! 	  mailfile = FALSE;
+! 	p++;
+        }
+!     } 
+!     else if (mbox->type == GB_MAILDIR) 
+      {
+!       if (*de->d_name == '.') 
+! 	mailfile = FALSE;
+      }
+!     if (mailfile)
+      {
+!       mbox->num_messages++;
+!       if (headers != NULL || mbox->type == GB_MH) 
+        {
+! 	/* Ok, we need to get the From: and Subject: lines */
+! 	if (mbox->type == GB_MAILDIR) {
+! 	  snprintf (file, sizeof (file), "%s/new/%s", path, de->d_name);
+! 	} else {
+! 	  snprintf (file, sizeof (file), "%s/%s", path, de->d_name);
+! 	}
+! 	fp = fopen (file, "r");
+! 	if (fp != NULL) 
+  	{
+! 	  parse_mime_header (mbox, headers, fp);
+! 	  fclose(fp);
+  	}
+        }
+!       else
+        {
+! 	/* For maildir, if we aren't getting headers, we just count
+! 	 * everything in this directory as new 
+! 	 */
+! 	if (mbox->type == GB_MAILDIR) 
+! 	  mbox->new_messages++;
+        }
+      }
+    }
+-   closedir(dp);
+- 
+    /* Restore the access time of the mailbox for other checking programs */
+    t[0].tv_sec = s.st_atime;
+    t[0].tv_usec = 0;
+--- 202,261 ----
+  
+    mbox->num_messages = 0;
+    mbox->new_messages = 0;
+  
+!   if (mbox->type == GB_MH && MH_UnseenSeq)
+    {
+!     /* If the unseen sequence is defined, count according to that */
+!     snprintf(tmppath, sizeof(tmppath), "%s/.mh_sequences", path);
+!     mh_unseen_seq=get_mh_value(tmppath, MH_UnseenSeq);
+!     if (mh_unseen_seq)
+      {
+!       /* Seed the sequence string to the function that parses it */
+!       expand_mhseq(mh_unseen_seq);
+!       while((mh_msg=expand_mhseq(NULL)))
+        {
+! 	snprintf(mh_msg_s, sizeof(mh_msg_s), "%d", mh_msg);
+! 	process_message(mbox, headers, path, mh_msg_s);
+        }
+!     }
+!     else
+      {
+!       /* There are no new messages in this folder */
+      }
+!   }
+!   else
+!   {
+!     dp = opendir (path);
+!     if (dp == NULL)
+!       return 0;
+! 
+!     while ((de = readdir (dp)) != NULL)
+      {
+!       mailfile = TRUE;
+!       if (mbox->type == GB_MH) 
+        {
+! 	char *p;
+! 
+! 	p = de->d_name;
+! 	while (*p && mailfile)
+  	{
+! 	  if (!isdigit (*p)) 
+! 	    mailfile = FALSE;
+! 	  p++;
+  	}
++       } 
++       else if (mbox->type == GB_MAILDIR) 
++       {
++ 	if (*de->d_name == '.') 
++ 	  mailfile = FALSE;
+        }
+!       if (mailfile)
+        {
+! 	process_message(mbox, headers, path, de->d_name);
+        }
+      }
++     closedir(dp);
+    }
+    /* Restore the access time of the mailbox for other checking programs */
+    t[0].tv_sec = s.st_atime;
+    t[0].tv_usec = 0;
+***************
+*** 261,266 ****
+--- 265,304 ----
+    utimes (path, t);
+  
+    return 1;
++ }
++ 
++ void process_message (BOX_INFO *mbox, GList *headers, char *path, char *fname)
++ {
++   char file[_POSIX_PATH_MAX];
++   FILE *fp;
++ 
++   mbox->num_messages++;
++   if (headers != NULL || mbox->type == GB_MH) 
++   {
++     /* Ok, we need to get the From: and Subject: lines */
++     if (mbox->type == GB_MAILDIR)
++     {
++       snprintf (file, sizeof (file), "%s/new/%s", path, fname);
++     }
++     else
++     {
++       snprintf (file, sizeof (file), "%s/%s", path, fname);
++     }
++     fp = fopen (file, "r");
++     if (fp != NULL) 
++     {
++       parse_mime_header (mbox, headers, fp);
++       fclose(fp);
++     }
++   }
++   else
++   {
++     /* For maildir, if we aren't getting headers, we just count
++       * everything in this directory as new 
++       */
++     if (mbox->type == GB_MAILDIR) 
++       mbox->new_messages++;
++   }
+  }
+  
+  int external_folder_count (BOX_INFO *mbox, int force, GList *headers)
+Index: gbuffy.c
+===================================================================
+RCS file: /home/zamboni/cvsroot/tools/gbuffy/gbuffy.c,v
+retrieving revision 1.1.1.1
+diff -c -r1.1.1.1 gbuffy.c
+*** gbuffy.c	2000/10/16 18:13:12	1.1.1.1
+--- gbuffy.c	2000/10/16 18:19:43
+***************
+*** 15,20 ****
+--- 15,21 ----
+  char *Maildir = NULL;
+  char *Spooldir = "/var/spool/mail";
+  char *DefaultNewserver;
++ char *MH_UnseenSeq = NULL;
+  int Vertical = FALSE;
+  int PollTime = 10;
+  int PollId = 0;
+Index: gbuffy.h
+===================================================================
+RCS file: /home/zamboni/cvsroot/tools/gbuffy/gbuffy.h,v
+retrieving revision 1.1.1.1
+diff -c -r1.1.1.1 gbuffy.h
+*** gbuffy.h	2000/10/16 18:13:13	1.1.1.1
+--- gbuffy.h	2000/10/17 14:57:11
+***************
+*** 73,78 ****
+--- 73,85 ----
+    char *face;
+  } MESSAGE_INFO;
+  
++ typedef struct _mh_seq
++ {
++   int first;
++   int last;
++   int cur;
++   struct _mh_seq *next;
++ } MH_SEQ;
+  
+  /* Global Variables */
+  extern int Vertical;
+***************
+*** 83,88 ****
+--- 90,96 ----
+  extern int PollTime;
+  extern BOX_INFO *MailboxInfo;
+  extern BOX_CLASS MailboxClass[];
++ extern char *MH_UnseenSeq;
+  #ifdef DEBUG
+  extern FILE *debugfile;
+  extern int debuglevel;
+***************
+*** 116,121 ****
+--- 124,131 ----
+  char *gbuffy_expand_path (char *s, size_t slen);
+  void safe_realloc (void **p, size_t siz);
+  char *read_rfc822_line (FILE *f, char *line, size_t *linelen);
++ int expand_mhseq (char *s);
++ char *get_mh_value (char *file, char *attr);
+  
+  /* nntp.c */
+  int nntp_get_status (char *group, char *npath, int article_num);
+Index: lib.c
+===================================================================
+RCS file: /home/zamboni/cvsroot/tools/gbuffy/lib.c,v
+retrieving revision 1.1.1.1
+diff -c -r1.1.1.1 lib.c
+*** lib.c	2000/10/16 18:13:15	1.1.1.1
+--- lib.c	2000/10/23 15:53:40
+***************
+*** 24,29 ****
+--- 24,31 ----
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <pwd.h>
++ #include <sys/stat.h>
++ #include <errno.h>
+  
+  #include "gbuffy.h"
+  
+***************
+*** 187,191 ****
+--- 189,377 ----
+      }
+    }
+    /* not reached */
++ }
++ 
++ /* Expand an MH sequence into individual message numbers. The first
++  * call sets the sequence specification, and returns 0.  Subsequent
++  * calls must have a NULL argument and will return succesive elements
++  * from the sequence. After the sequence is exhausted, NULL will be
++  * returned. All the elements allocated for the sequence are freed
++  * as they are returned, so after the last call (the one that returns
++  * NULL) there's nothing left to be freed. */
++ int expand_mhseq (char *s)
++ {
++   char *seq_str;
++   static MH_SEQ *seq=NULL;
++   MH_SEQ *tmp, *last;
++   char *p, *q;
++   
++   /* If a string is given, initialize things */
++   if (s)
++   {
++     /* Clear up linked list of subsequences */
++     if (seq)
++     {
++       MH_SEQ *t = seq;
++       while (t)
++       {
++ 	seq=t->next;
++ 	FREE(&t);
++ 	t=seq;
++       }
++     }
++     seq=NULL;
++     tmp=NULL;
++     last=NULL;
++ 
++     /* Allocate the new seq specification */
++     seq_str=safe_strdup(s);
++ 
++     /* Allocate a new linked list of subsequences */
++     /* First, split by spaces */
++     p=strtok(seq_str, " ");
++     while (p)
++     {
++       /* Create new element and link it in */
++       last=tmp;
++       tmp=safe_calloc(1, sizeof(MH_SEQ));
++       if (!seq)
++       {
++ 	seq=tmp;
++       }
++       else
++       {
++ 	last->next=tmp;
++       }
++       tmp->next=NULL;
++ 
++       /* Examine the current subsequence to fill the data structure */
++       if ((q=strchr(p, '-')))
++       {
++ 	/* Subsequence with more than one element, of the form first-last */
++ 	*q='\0';
++ 	tmp->first=atoi(p);
++ 	tmp->last=atoi((char *)(q+1));
++ 	tmp->cur=-1;
++       }
++       else
++       {
++ 	/* Single element subsequence */
++ 	tmp->first=atoi(p);
++ 	tmp->last=tmp->first;
++ 	tmp->cur=-1;
++       }
++ 
++       /* Get next subsequence */
++       p=strtok(NULL, " ");
++     }
++ 
++     FREE(&seq_str);
++     return 0;
++   }
++   else
++   {
++     if (!seq)
++     {
++       g_print ("-E- expand_mhseq(NULL) called without seeding first\n");
++       sleep(1);
++       gtk_exit(1);
++     }
++     /* Get next element */
++     if (seq->cur < 0)
++     {
++       /* First element in this subsequence */
++       seq->cur = seq->first;
++     }
++     else
++     {
++       (seq->cur)++;
++       /* Check if we need to move to the next subsequence */
++       if (seq->cur > seq->last)
++       {
++ 	MH_SEQ *t;
++ 	t=seq;
++ 	seq=seq->next;
++ 	/* We free elements of the list as we go past them */
++ 	FREE(&t);
++ 	if (!seq)
++ 	{
++ 	  /* We are at the end of the list */
++ 	  return 0;
++ 	}
++ 	else
++ 	{
++ 	  seq->cur = seq->first;
++ 	}
++       }
++     }
++     /* Return the current element */
++     return seq->cur;
++   }
++ }
++ 
++ /* Get the value of the given attribute from a file in MH-attribute format (attr: value).
++  */
++ char *get_mh_value (char *file, char *attr)
++ {
++   FILE *f;
++   struct stat s;
++   char path[_POSIX_PATH_MAX];
++   char line[2048];
++   char *p;
++   char *res=NULL;
++ 
++   strfcpy(path, file, sizeof(path));
++   gbuffy_expand_path(path, sizeof(path));
++   if (stat (path, &s) == -1)
++   {
++     /*    fprintf (stderr, "-E- Error accessing file %s\n", path);
++ 	  perror ("stat");*/
++     return NULL;
++   }
++   else
++   {
++     errno=0;
++     if ( (f=fopen(path, "r")) == NULL)
++     {
++       fprintf (stderr, "-E- Error opening %s\n", path);
++       perror ("fopen");
++       return NULL;
++     }
++     else 
++     {
++       while (!feof(f))
++       {
++         if (fgets(line, sizeof(line), f))
++ 	{
++ 	  line[strlen(line)-1]='\0'; /* Remove end-of-line character */
++ 	  /* Split into tokens */
++ 	  p=strtok(line, ": \t");
++ 	  if (p)
++ 	  {
++ 	    /* Look for the attribute name we need, case-insensitive */
++ 	    if (strncasecmp(p, attr, strlen(p))==0)
++ 	    {
++ 	      /* Get the rest of the line */
++ 	      p=strtok(NULL, "");
++ 	      if (p)
++ 	      {
++ 		SKIPWS(p);
++ 		if (*p)
++ 		{
++ 		  /* Not empty string */
++ 		  res=safe_strdup(p);
++ 		  break;
++ 		}
++ 	      }
++ 	      /* We get here if the attribute has no value */
++ 	      fprintf (stderr, "-E- Null value for attribute %s in file %s\n", attr, path);
++ 	    }
++ 	  }
++ 	}
++       }
++       fclose(f);
++       return (res);
++     }
++   }
+  }
+  

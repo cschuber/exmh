@@ -1,0 +1,13 @@
+gbuffy is a gtk based biff program, which supports multiple mailboxes
+and MH style boxes.   gbuffy can be found at:
+
+	http://www.fiction.net/blong/programs/gbuffy/
+
+gbuffy-use_mhunseen.patch is a patch by Diego Zamboni which enables
+gbuffy to use the mh unseen sequence to properly display the number
+of unseen messages in an MH mailbox.   This patch is against version
+0.2.2 of gbuffy.  The latest gbuffy is 0.2.3, but no one has ported
+the unseen patch yet.  If you do, please send it to the 
+exmh-workers@redhat.com mailing list.
+
+ 
