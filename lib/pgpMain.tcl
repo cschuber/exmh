@@ -19,6 +19,10 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.8  1999/08/11 06:16:39  bmah
+# Properly decode multipart/signed PGP messages whose boundary strings
+# contain characters that are interpreted as special regexp characters.
+#
 # Revision 1.7  1999/08/05 15:46:29  bmah
 # Fix seditpgp key-changing button label code (update properly when
 # user changes her key or changes the PGP version).
@@ -964,12 +968,13 @@ proc Pgp_GetSignedText {tkw part} {
     global mimeHdr
 
     set boundary $mimeHdr($part,param,boundary)
+    regsub -all {([\.\+\?\(\)])} $boundary {\\&} boundarypat
     
     set fileIO [open $mimeHdr($part,file) r]
     set raw [read $fileIO]
     close $fileIO
 
-    if {![regexp -- "--${boundary}\n(.*)\n--${boundary}.*--${boundary}--" $raw match text]} {
+    if {![regexp -- "--${boundarypat}\n(.*)\n--${boundarypat}.*--${boundarypat}--" $raw match text]} {
         error "<Pgp_GetSignedText>: Wrong PGP/MIME multipart/signed format"
     }
 
