@@ -1,5 +1,11 @@
 HISTORY
 
+cvs repository 4/23/1999
+    Make background process run User_Layout()
+        -Christer Borang via haldevore
+    Add code to allow user to choose precedence of multipart/alternative
+        accessible by changing a resource only   -bwelch
+
 cvs repository 4/20/1999
     Attaching something while using "plain" encryption now changes the
 	encryption to multipart -cwg
