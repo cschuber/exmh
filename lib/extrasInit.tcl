@@ -507,7 +507,8 @@ proc Pgp_Init {} {
     # if there is an appropriate keyring
     foreach v $pgp(supportedversions) {
         if { [file exists [set pgp($v,pubring)]] && 
-             [file isdirectory [set pgp($v,path)]]} {
+             [file isdirectory [set pgp($v,path)]] &&
+	     [file exists $pgp($v,path)/$pgp($v,executable,verify)]} {
             set pgp($v,enabled) 1
             set pgp(enabled) 1
             lappend setup $v
@@ -560,6 +561,7 @@ This can be changed on the fly from the sedit window." }
 "There are multiple versions of the PGP program.
     PGP:    Pretty Good Privacy, Version 2
     PGP5:   Pretty Good Privacy, Version 5
+    PGP6:   Pretty Good Privacy, Version 6
     GPG:    GNU Privacy Guard
 This can be changed on the fly from the sedit window." ] \
     [list pgp(noversion) pgpNoVersion [concat CHOICE $setup] \
@@ -571,6 +573,7 @@ In such a case Exmh falls back to a default PGP version.
 Here you can select, which version to use in these cases.
     PGP:    Pretty Good Privacy, Version 2
     PGP5:   Pretty Good Privacy, Version 5
+    PGP6:   Pretty Good Privacy, Version 6
     GPG:    GNU Privacy Guard." ] ]
 
     Preferences_Add "General PGP Interface" "" {
