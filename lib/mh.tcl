@@ -463,6 +463,16 @@ proc Mh_Sequences { f } {
 	    }
 	}
     }
+    # private sequences
+    if {[catch {open $mhProfile(context) r} in] == 0} {
+	set old [read $in]
+	close $in
+	foreach line [split $old \n] {
+	    if {[regexp "^atr-(.*)-$mhProfile(path)/$f" $line x seq]} {
+		lappend result $seq
+	    }
+	}
+    }
     return $result
 }
 proc Mh_Sequence { f seq } {
