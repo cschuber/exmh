@@ -115,11 +115,11 @@ proc MsgChange {msgid {show show}} {
     Ftoc_ClearCurrent
     set oldcur [Seq_Msgs $exmh(folder) cur]
     Mh_SetCur $exmh(folder) $msgid
-    Ftoc_ShowSequence cur [concat $oldcur $msgid]
     set lineno [Ftoc_FindMsg $msgid]
     if {! [Ftoc_Change $lineno $show]} {
 	Exmh_Status "Cannot find msg $msgid - Rescan?"
     } else {
+	Ftoc_ShowSequence cur [concat $oldcur $msgid]
 	if {$msg(id) == {}} {
 	    Buttons_Current 1
 	}
