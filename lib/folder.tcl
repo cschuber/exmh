@@ -69,7 +69,7 @@ proc Folder_Change {f {msgShowProc Msg_ShowCurrent}} {
     Exmh_Debug Folder_Change $f [time [list  FolderChange $f $msgShowProc]]
 }
 proc FolderChange {f msgShowProc} {
-    global exmh mhProfile ftoc
+    global exmh mhProfile ftoc msg
     if {[string compare [wm state .] normal] != 0} {
 	if {$exmh(iconic)} {
 	    # Ignore once if starting up with -iconic flag
@@ -95,6 +95,7 @@ proc FolderChange {f msgShowProc} {
     }
     set oldFolder $exmh(folder)
     Exmh_Status "Changing to $f ..."
+    set msg(id) ""
     if {$f != $exmh(folder)} {
 	Exmh_Debug Exmh_CheckPoint [time Exmh_CheckPoint]
 	global mhProfile
