@@ -1,0 +1,281 @@
+
+Number: 1
+Priority: High
+Scope: varies
+Complexity: varies
+
+Incorporate any outstanding patches from the patch page.  And troll
+thru the mailing list archive for other patches
+
+Here's the 2.0.2 patch list:
+
+- PGP 5.0 support
+- Long word in URL patch
+- Local date patch
+- Glimpse initialization patch
+- Folder purge patch
+- Ovidiu's URL faces patch
+- Space in file names patch for Sedit
+- Mime menu in long messages patch
+- Sequences bookkeeping patch
+- Quote menu patch
+- Add (fwd) to subject on forwarding
+- Header encoding patch
+- text/html images stop working patch
+- Source hook patch
+- Receipt notification patch
+
+
+Number: 2
+Priority: Med 
+Scope: Wide
+Complexity: High
+
+Improve/simplify font handling.  See especially the mime preview
+window and the message clip window (which may be the same set of
+widgets).
+
+
+
+Number: 3
+Priority: Med 
+Scope: Narrow
+Complexity: Low
+
+Incorporate mime-forwarding (is this already there?) as is used by
+many "exmh hackers" already but with a look at Jerry Peek's section on
+"mforw".
+
+
+
+Number: 4
+Priority: Med
+Scope: Narrow
+Complexity: Low
+
+Allow a user-preference setting for what mouse button 3 on a folder
+does, allow "link", "copy", "move", or "only select".
+
+
+
+Number: 5
+Priority: Med
+Scope: Narrow
+Complexity: Low
+
+Fix address-book lookup/expansion to create a new "To:", "cc:" or
+whatever line so wrapping isn't a problem.
+
+
+
+Number: 6
+Priority: Med
+Scope: 
+Complexity: 
+
+Improve capabilities for use over slow links.  Including, but not
+limited to, slow access to files and slow access to display.
+
+
+
+Number: 7
+Priority: Med
+Scope: 
+Complexity: 
+
+Improve ability to run multiple exmh instances to the same X server
+and the same mail folders and anywhere else there might be problems
+
+
+
+Number: 8
+Priority: Med
+Scope: 
+Complexity: High
+
+Add ability to have multiple "current" messages being viewed
+
+
+
+Number: 9
+Priority: Med
+Scope: 
+Complexity: High
+
+Add ability to have multiple FTOCs viewed.
+
+
+
+Number: 10
+Priority: Med
+Scope: Narrow
+Complexity: 
+
+Add LDAP lookup module to address book using OpenLDAP.
+
+
+
+Number: 11
+Priority: Med
+Scope: Narrow
+Complexity: 
+
+Convert address book to use some sort of real database instead of a
+dumped tcl list (may be synonymous with adding LDAP lookup).
+
+
+
+Number: 12
+Priority: Med
+Scope: Narrow
+Complexity: 
+
+Support GnuPG (or does it already work?)
+
+
+
+Number: 13
+Priority: Med
+Scope: 
+Complexity: 
+
+Put a real menu bar on the top of the windows and move many of the
+buttons into the menu bar.  Those items that make sense as buttons,
+could remain buttons, but the look of them should be more like the
+ones in other applications we use.
+
+
+
+Number: 14
+Priority: 
+Scope: 
+Complexity: 
+
+Support for color icons.  It be nice to find someone who likes to
+create opensource icons to make buttons for all the existing windows
+(and possibly also for the buttons left in item 13, although I for one
+already run netscape with my buttons in "label only" mode.  I've been
+looking at the tricks you have to do too put a color icon on a tk app,
+and it doesn't seem to integrate into exmh very well at all.
+
+
+
+Number: 15
+Priority: 
+Scope: 
+Complexity: 
+
+Support for RFC2369.  This is new functionality, but it's also a look
+and feel issue because it's an interface to the mailing lists.  It
+should probably happen after the real menu bar is added.
+
+
+
+Number: 16
+Priority: 
+Scope: 
+Complexity: 
+
+Composition of multipart messages is ugly.  I'm sure we can do better.
+Also, it would be nice to be able to control where attached messages
+get in-lined instead of always putting them at the bottom.
+
+
+
+Number: 17
+Priority: 
+Scope: 
+Complexity: 
+
+Display of multipart messages is less than ideal (ugly, but not as
+ugly as the composition).  I wrote it before tk had the ability to
+in-line graphics.
+
+
+
+Number: 18
+Priority: 
+Scope: 
+Complexity: 
+
+Since exmh is already documented as requiring at least TK 4.1, take a
+pass through the code removing all tests for versions older than that
+to get rid of dead code.  Since this is gratuitous, it should probably
+happen fairly soon.  Probably just after integrating all the current
+patches.
+
+For that matter, is it time to raise the minimal TK version?  Some
+cool things that exmh can do won't happen with earlier versions (such
+as in-lining graphics).
+
+
+
+Number: 19
+Priority: 
+Scope: 
+Complexity: 
+
+Automatic detection of what style digital signatures to use.
+
+
+
+Number: 20
+Priority: 
+Scope: 
+Complexity: 
+
+Is there anything useful we can do with these text/x-vcard's that
+people have been attaching to their messages?  At minimum, we should
+display them with the triangle pointing right 'cause they're ugly.
+
+
+
+Number: 21
+Priority: 
+Scope: 
+Complexity: 
+
+Generalized support for sequences
+
+
+
+Number: 22
+Priority: 
+Scope: 
+Complexity: 
+
+Generalized support for per-recipient twiddling of headers.  Includes
+ability to control the "from", "reply-to"
+
+
+
+Number: 23
+Priority: 
+Scope: 
+Complexity: 
+
+Support for group addresses (address lists) in the address book.
+
+
+
+Number: 24
+Priority: 
+Scope: 
+Complexity: 
+
+Support for nmh 1.0 (any changes necessary?)
+
+
+
+
+$Id$
+
+$Log$
+Revision 1.1  1999/03/31 21:36:15  haldevore
+Added the exmh.TODO file to track pending changes.
+
+
+# Emacs stuff
+# Local Variables:
+# mode: text
+# End:
