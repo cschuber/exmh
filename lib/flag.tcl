@@ -79,10 +79,16 @@ proc Flag_Trace args {
     } else {
 	set oldtotal 0
     }
-    set delta [expr {$flist(totalcount,$mhProfile(unseen-sequence)) - $oldtotal}]
-    set flist(oldtotalcount,$mhProfile(unseen-sequence)) $flist(totalcount,$mhProfile(unseen-sequence))
-    if {($delta > 0) && ($flist(totalcount,$mhProfile(unseen-sequence)) > 0)} {
-	set count $flist(totalcount,$mhProfile(unseen-sequence))
+    if {[info exists flist(totalcount,$mhProfile(unseen-sequence))]} {
+	set newtotal $flist(totalcount,$mhProfile(unseen-sequence))
+    } else {
+	set newtotal 0
+    }
+Exmh_Debug oldtotal $oldtotal newtotal $newtotal
+    set delta [expr {$newtotal - $oldtotal}]
+    set flist(oldtotalcount,$mhProfile(unseen-sequence)) $newtotal
+    if {($delta > 0) && ($newtotal > 0)} {
+	set count $newtotal
 	if {$count == 1} {set m ""} else {set m "s"}
 	set len [llength $flist($mhProfile(unseen-sequence))]
 	if {$len == 1} {set f ""} else {set f "s"}
@@ -90,7 +96,7 @@ proc Flag_Trace args {
 	Flag_NewMail
 	Sound_Feedback $delta
     }
-    if {($flist(totalcount,$mhProfile(unseen-sequence)) <= 0) && ($delta != 0)} {
+    if {($newtotal <= 0) && ($delta != 0)} {
 	Flag_NoUnseen
 	Exmh_Status "No unseen messages"
     }
