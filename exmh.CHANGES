@@ -1,12 +1,10 @@
 HISTORY
 
 cvs repository 4/12/1999
+    Added support for faces for newsgroups. -jbeck
     Added somewhat smart auto-probe for default paths in install
     Fixed permissions on html documentation in install
 	- slipcon
-
-cvs repository 4/10/1999
-    Added support for faces for newsgroups. -jbeck
 
 cvs repository 4/9/1999
     Support for RFC2369.  If a message contains RFC2369 compliant
