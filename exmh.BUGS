@@ -222,20 +222,6 @@ This is an exmh bug...
 
 
 
-
-----------------------------------------------------------------------
-Number: 18
-Version: 2.1.0 cvs
-Priority: high
-Scope: Narrow
-Complexity: I'm stumped [cwg]
-Status:
-
-If the PGP sedit field is enabled, a new sedit window puts focus in
-the wrong place.
-
-
-
 ----------------------------------------------------------------------
 Number: 19
 Version: 2.0.2
