@@ -1,4 +1,18 @@
 HISTORY
+
+cvs repository 11/21/2001 Brent Welch <welch@panasas.com>
+    lib/main.tcl: Moved WM_SAVE_YOURSELF registration a bit later
+    	because it has an Exmh_Checkpoint side-effect that causes
+	exmh to forget the current folder.
+    exmh.strip.MASTER
+    	fixed #! line so it gets installed right.
+    lib/mh.tcl: Plugged file descriptor leak in Mh_ParseProfile
+	Fixed ParseProfile to handled indented continuation lines
+    lib/seditExtras.tcl: Tweaked paragraph formatting in Sedit to honor
+	requested line length and the anticipated repl prefix length.
+    custom.html: fixed m_tagnames documentation
+    software.html: fixed uudeview URL
+
 cvs repository 11/15/2001 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/folders.tcl: Fix typo in function name
 
