@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 06/27/2000 Hal DeVore <haldevore@earthling.net>
+    lib/{mh.tcl,msg.tcl}: Add upward search for components,
+    forwcomps, and replcomps.  Add search for distcomps also.
+
 cvs repository 06/26/2000 Bruce A. Mah <bmah@cisco.com>
     lib/{extrasInit,sedit,seditExtras}.tcl: Add the ability for sedit
     to filter the selected text region through an arbitrary UNIX

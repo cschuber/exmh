@@ -323,8 +323,9 @@ proc Msg_Reply { args } {
 		}
 		set ix [lsearch $args -form]
 		if {$ix < 0} {
-		    if [file exists $mhProfile(path)/$exmh(folder)/replcomps] {
-			lappend args -form $exmh(folder)/replcomps
+                    set path [Mh_FindFile "replcomps"]
+		    if {0 != [string length $path]} {
+			lappend args -form $path/replcomps
 			Exmh_Status "repl $args" purple
 		    }
 		}

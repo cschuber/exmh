@@ -69,7 +69,7 @@ proc MhBackup {} {
     catch {set sbackup [exec mhparam sbackup]}
     if {[string length $sbackup] == 0} {
 	catch {exec mhparam -help} x
-	regexp {SBACKUP='"([^"]+)"'} $x match sbackup
+	regexp {SBACKUP="\"([^\"]+)\""} $x match sbackup
     }
     if {[string length $sbackup] == 0} {
 	set sbackup #
@@ -110,9 +110,10 @@ proc Mh_CompSetup {} {
 	Exmh_Status "comp -use $msg(id)"
 	Mh_SetCur $mhProfile(draft-folder) $msg(id)
     } else {
-	if [file exists $mhProfile(path)/$exmh(folder)/components] {
-	    Exmh_Status "comp -form $exmh(folder)/components"
-	    MhExec comp -nowhatnowproc -form $exmh(folder)/components
+        set path [Mh_FindFile "components"]
+	if {0 != [string length $path]} {
+	    Exmh_Status "comp -form $path/components"
+	    MhExec comp -nowhatnowproc -form $path/components
 	} else {
 	    Exmh_Status "comp"
 	    MhExec comp -nowhatnowproc
@@ -135,9 +136,10 @@ proc Mh_CompUseSetup {} {
 }
 proc Mh_ReplySetup { folder msg } {
     global mhProfile exmh
-    if [file exists $mhProfile(path)/$exmh(folder)/replcomps] {
-	Exmh_Status "repl +$folder $msg -form $exmh(folder)/replcomps"
-	MhExec repl +$folder $msg -nowhatnowproc -nocc cc -nocc to -form $exmh(folder)/replcomps
+    set path [Mh_FindFile "replcomps"]
+    if {0 != [string length $path]} {
+	Exmh_Status "repl +$folder $msg -form $path/replcomps"
+	MhExec repl +$folder $msg -nowhatnowproc -nocc cc -nocc to -form $path/replcomps
     } else {
 	Exmh_Status "repl +$folder $msg"
 	MhExec repl +$folder $msg -nowhatnowproc -nocc cc -nocc to
@@ -146,9 +148,10 @@ proc Mh_ReplySetup { folder msg } {
 }
 proc Mh_ReplyAllSetup { folder msg } {
     global mhProfile exmh
-    if [file exists $mhProfile(path)/$exmh(folder)/replcomps] {
-	Exmh_Status "repl +$folder $msg -form $exmh(folder)/replcomps"
-	MhExec repl +$folder $msg -nowhatnowproc -cc cc -cc to -form $exmh(folder)/replcomps
+    set path [Mh_FindFile "replcomps"]
+    if {0 != [string length $path]} {
+	Exmh_Status "repl +$folder $msg -form $path/replcomps"
+	MhExec repl +$folder $msg -nowhatnowproc -cc cc -cc to -form $path/replcomps
     } else {
 	Exmh_Status "repl +$folder $msg"
 	MhExec repl +$folder $msg -nowhatnowproc -cc cc -cc to
@@ -199,9 +202,10 @@ proc Mh_Forw_MungeSubj { folder msgs } {
 }
 proc Mh_ForwSetup { folder msgs } {
     global mhProfile exmh
-    if [file exists $mhProfile(path)/$exmh(folder)/forwcomps] {
-	Exmh_Status "forw +$folder $msgs -form $exmh(folder)/forwcomps"
-	eval {MhExec forw +$folder} $msgs -nowhatnowproc -form $exmh(folder)/forwcomps
+    set path [Mh_FindFile "forwcomps"]
+    if {0 != [string length $path]} {
+	Exmh_Status "forw +$folder $msgs -form $path/forwcomps"
+	eval {MhExec forw +$folder} $msgs -nowhatnowproc -form $path/forwcomps
     } else {
 	Exmh_Status "forw +$folder $msgs"
 	eval {MhExec forw +$folder} $msgs -nowhatnowproc
@@ -213,8 +217,14 @@ proc Mh_ForwSetup { folder msgs } {
 }
 proc Mh_DistSetup { folder msg } {
     global exmh mhProfile
-    Exmh_Status "dist +$folder $msg"
-    MhExec dist +$folder $msg -nowhatnowproc
+    set path [Mh_FindFile "distcomps"]
+    if {0 != [string length $path]} {
+	Exmh_Status "dist +$folder $msg -form $path/distcomps"
+        MhExec dist +$folder $msg -nowhatnowproc -form $path/distcomps
+    } else {
+        Exmh_Status "dist +$folder $msg"
+        MhExec dist +$folder $msg -nowhatnowproc
+    }
     MhAnnoSetup $folder $msg dist
 }
 proc MhAnnoSetup { folder msg key {args {}} } {
@@ -1048,4 +1058,21 @@ proc Mh_Rename { old new } {
     } else {
 	eval exec mv $mh_mv_flag {$old $new} < /dev/null
     }
+}
+
+# find a *comp* file going up from the current folder
+proc Mh_FindFile { filename } {
+    global mhProfile exmh
+    if [file exists [file join $mhProfile(path) $exmh(folder) $filename]] {
+        return $exmh(folder)
+    }
+    set path $exmh(folder)
+    while {[string compare [set path [file dirname $path]] "."] != 0} {
+        if [file exists [file join $mhProfile(path) $path $filename]] {
+            return $path
+        }
+    }
+    # Not found until got to $mhProfile(path), return null string
+    return ""
+    
 }
