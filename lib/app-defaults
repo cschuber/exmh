@@ -885,21 +885,7 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.c_alt: SeditAlternate $draft $t
 
 *Sedit.Menubar.pgp.text:	Crypt...
-*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpversion pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey
-*Sedit.Menubar.pgp.m.l_pgpencrypt:	Encrypt
-*Sedit.Menubar.pgp.m.t_pgpencrypt:	check
-*Sedit.Menubar.pgp.m.v_pgpencrypt:	pgp(encrypt,$id)
-*Sedit.Menubar.pgp.m.l_pgpsign:		Sign
-*Sedit.Menubar.pgp.m.t_pgpsign:		check
-*Sedit.Menubar.pgp.m.v_pgpsign:		pgp(sign,$id)
-*Sedit.Menubar.pgp.m.l_pgpmime:		Mime
-*Sedit.Menubar.pgp.m.t_pgpmime:		check
-*Sedit.Menubar.pgp.m.v_pgpmime:		pgp(mime,$id)
-*Sedit.Menubar.pgp.m.l_pgpclearsign:	Clear Sign
-*Sedit.Menubar.pgp.m.t_pgpclearsign:	check
-*Sedit.Menubar.pgp.m.v_pgpclearsign:	pgp(clearsign,$id)
-*Sedit.Menubar.pgp.m.l_pgpchoosekey:	Choose Key
-*Sedit.Menubar.pgp.m.c_pgpchoosekey:	Pgp_SetMyName \$pgp(version,$id) $id
+*Sedit.Menubar.pgp.m.entrylist: pgpformat pgpversion pgpsign pgpencrypt pgpchoosekey pgpclearpp
 *Sedit.Menubar.pgp.m.l_pgpformat:	Format
 *Sedit.Menubar.pgp.m.t_pgpformat:	cascade
 *Sedit.Menubar.pgp.m.m_pgpformat:	format
@@ -937,10 +923,38 @@ exmh.iconic:		0
 *Sedit.Menubar.pgp.m.version.v_gpg:	pgp(version,$id)
 *Sedit.Menubar.pgp.m.version.x_gpg:	gpg
 
-*Sedit.Menubar.pgp.m.l_signkey:	Change Default Key
-*Sedit.Menubar.pgp.m.c_signkey:	Pgp_SetMyName \$pgp(version,$id) $id
-*Sedit.Menubar.pgp.m.l_clear:	Clear Cached Password
-*Sedit.Menubar.pgp.m.c_clear:	Pgp_ClearPassword
+*Sedit.Menubar.pgp.m.l_pgpsign:		Sign
+*Sedit.Menubar.pgp.m.t_pgpsign:		cascade
+*Sedit.Menubar.pgp.m.m_pgpsign:		sign
+*Sedit.Menubar.pgp.m.sign.entrylist:	none std det clr enc
+*Sedit.Menubar.pgp.m.sign.l_none:	None
+*Sedit.Menubar.pgp.m.sign.t_none:	radio
+*Sedit.Menubar.pgp.m.sign.v_none:	pgp(sign,$id)
+*Sedit.Menubar.pgp.m.sign.x_none:	none
+*Sedit.Menubar.pgp.m.sign.l_std:	Standard
+*Sedit.Menubar.pgp.m.sign.t_std:	radio
+*Sedit.Menubar.pgp.m.sign.v_std:	pgp(sign,$id)
+*Sedit.Menubar.pgp.m.sign.x_std:	standard
+*Sedit.Menubar.pgp.m.sign.l_det:	Detached
+*Sedit.Menubar.pgp.m.sign.t_det:	radio
+*Sedit.Menubar.pgp.m.sign.v_det:	pgp(sign,$id)
+*Sedit.Menubar.pgp.m.sign.x_det:	detached
+*Sedit.Menubar.pgp.m.sign.l_clr:	Clear Sign
+*Sedit.Menubar.pgp.m.sign.t_clr:	radio
+*Sedit.Menubar.pgp.m.sign.v_clr:	pgp(sign,$id)
+*Sedit.Menubar.pgp.m.sign.x_clr:	clearsign
+*Sedit.Menubar.pgp.m.sign.l_enc:	plus Encrypt
+*Sedit.Menubar.pgp.m.sign.t_enc:	radio
+*Sedit.Menubar.pgp.m.sign.v_enc:	pgp(sign,$id)
+*Sedit.Menubar.pgp.m.sign.x_enc:	encryptsign
+
+*Sedit.Menubar.pgp.m.l_pgpencrypt:	Encrypt Only
+*Sedit.Menubar.pgp.m.t_pgpencrypt:	check
+*Sedit.Menubar.pgp.m.v_pgpencrypt:	pgp(encrypt,$id)
+*Sedit.Menubar.pgp.m.l_pgpchoosekey:	Choose Key
+*Sedit.Menubar.pgp.m.c_pgpchoosekey:	Pgp_SetMyName \$pgp(version,$id) $id
+*Sedit.Menubar.pgp.m.l_pgpclearpp:	Clear Passphrase(s)
+*Sedit.Menubar.pgp.m.c_pgpclearpp:	Pgp_ClearPassword \$pgp(version,$id)
 
 ! This stuff is just a skeleton.  The functions don't do much yet
 *Sedit.Menubar.mime.text:	Mime...
@@ -1085,21 +1099,7 @@ exmh.iconic:		0
 *WhatNow.more.m.t_encrypt:	cascade
 *WhatNow.more.m.m_encrypt:	encrypt
 *WhatNow.more.m.l_encrypt:	Crypt...
-*WhatNow.more.m.encrypt.entrylist: pgpformat pgpversion pgpencrypt pgpsign pgpmime pgpclearsign pgpchoosekey
-*WhatNow.more.m.encrypt.l_pgpencrypt:	Encrypt
-*WhatNow.more.m.encrypt.t_pgpencrypt:	check
-*WhatNow.more.m.encrypt.v_pgpencrypt:	pgp(encrypt,$id)
-*WhatNow.more.m.encrypt.l_pgpsign:		Sign
-*WhatNow.more.m.encrypt.t_pgpsign:		check
-*WhatNow.more.m.encrypt.v_pgpsign:		pgp(sign,$id)
-*WhatNow.more.m.encrypt.l_pgpmime:		Mime
-*WhatNow.more.m.encrypt.t_pgpmime:		check
-*WhatNow.more.m.encrypt.v_pgpmime:		pgp(mime,$id)
-*WhatNow.more.m.encrypt.l_pgpclearsign:	Clear Sign
-*WhatNow.more.m.encrypt.t_pgpclearsign:	check
-*WhatNow.more.m.encrypt.v_pgpclearsign:	pgp(clearsign,$id)
-*WhatNow.more.m.encrypt.l_pgpchoosekey:	Choose Key
-*WhatNow.more.m.encrypt.c_pgpchoosekey:	Pgp_SetMyName \$pgp(version,$id) $id
+*WhatNow.more.m.encrypt.entrylist: pgpformat pgpversion pgpsign pgpencrypt pgpchoosekey pgpclearpp
 *WhatNow.more.m.encrypt.l_pgpformat:	Format
 *WhatNow.more.m.encrypt.t_pgpformat:	cascade
 *WhatNow.more.m.encrypt.m_pgpformat:	format
@@ -1134,10 +1134,38 @@ exmh.iconic:		0
 *WhatNow.more.m.encrypt.version.v_gpg:	pgp(version,$id)
 *WhatNow.more.m.encrypt.version.x_gpg:	gpg
 
-*WhatNow.more.m.encrypt.l_signkey:	Change Default Key
-*WhatNow.more.m.encrypt.c_signkey:	Pgp_SetMyName \$pgp(version,$id) $id
+*WhatNow.more.m.encrypt.l_pgpsign:	Sign
+*WhatNow.more.m.encrypt.t_pgpsign:	cascade
+*WhatNow.more.m.encrypt.m_pgpsign:	sign
+*WhatNow.more.m.encrypt.m.sign.entrylist:	none std det clr enc
+*WhatNow.more.m.encrypt.m.sign.l_none:	None
+*WhatNow.more.m.encrypt.m.sign.t_none:	radio
+*WhatNow.more.m.encrypt.m.sign.v_none:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.m.sign.x_none:	none
+*WhatNow.more.m.encrypt.m.sign.l_std:	Standard
+*WhatNow.more.m.encrypt.m.sign.t_std:	radio
+*WhatNow.more.m.encrypt.m.sign.v_std:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.m.sign.x_std:	standard
+*WhatNow.more.m.encrypt.m.sign.l_det:	Detached
+*WhatNow.more.m.encrypt.m.sign.t_det:	radio
+*WhatNow.more.m.encrypt.m.sign.v_det:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.m.sign.x_det:	detached
+*WhatNow.more.m.encrypt.m.sign.l_clr:	Clear Sign
+*WhatNow.more.m.encrypt.m.sign.t_clr:	radio
+*WhatNow.more.m.encrypt.m.sign.v_clr:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.m.sign.x_clr:	clearsign
+*WhatNow.more.m.encrypt.m.sign.l_enc:	plus Encrypt
+*WhatNow.more.m.encrypt.m.sign.t_enc:	radio
+*WhatNow.more.m.encrypt.m.sign.v_enc:	pgp(sign,$id)
+*WhatNow.more.m.encrypt.m.sign.x_enc:	encryptsign
+
+*WhatNow.more.m.encrypt.l_pgpchoosekey:	Choose Key
+*WhatNow.more.m.encrypt.c_pgpchoosekey:	Pgp_SetMyName \$pgp(version,$id) $id
+*WhatNow.more.m.encrypt.l_pgpencrypt:	Encrypt
+*WhatNow.more.m.encrypt.t_pgpencrypt:	check
+*WhatNow.more.m.encrypt.v_pgpencrypt:	pgp(encrypt,$id)
 *WhatNow.more.m.encrypt.l_clear:	Clear Cached Password
-*WhatNow.more.m.encrypt.c_clear:	Pgp_ClearPassword
+*WhatNow.more.m.encrypt.c_clear:	Pgp_ClearPassword \$pgp(version,$id)
 
 ! Sedit bindings
 *sedit_typeKillsSel: 1

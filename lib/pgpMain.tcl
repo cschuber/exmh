@@ -19,6 +19,14 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.13  1999/09/22 16:36:44  kchrist
+# Changes made to support a different structure under the PGP Crypt... button.
+# Instead of an ON/OFF pgp($v,sign) variable now we use it to specify
+# the form of the signature (none, standard, detached, clear, or w/encrypt).
+# Code changed in several places to support this new variable definition.
+#
+# Updated Sedit.html to include a description of the new interface.
+#
 # Revision 1.12  1999/08/24 15:51:07  bmah
 # Patch from Kevin Christian to make email PGP key queries work, and
 # to make key attachment RFC 2015 compliant.
@@ -310,7 +318,7 @@ proc Pgp_ExmhEncrypt { v } {
 #    set pgp(param,recipients) [lindex $pgp($v,myname) 0]
     set id [SeditId $file]
     set pgp(encrypt,$id) 1;
-    set pgp(sign,$id) 0;
+    set pgp(sign,$id) "none";
     set pgp(format,$id) "pm";
 
     Pgp_Process $v $file $tmpfile 1
@@ -399,12 +407,12 @@ proc Pgp_EncryptDebug { srcfile } {
     }
     
     # if there is nothing to do, stop here
-    if {!$pgp(encrypt,$id) && !$pgp(sign,$id)} {
+    if {!$pgp(encrypt,$id) && $pgp(sign,$id)=="none"} {
 	Exmh_Debug "Pgp_EncryptDebug: No action"
     }
 
     # check originator (if necessary)
-    if $pgp(sign,$id) {
+    if {$pgp(sign,$id) != "none"} {
 	if [info exists pgp(param,originator)] {
 	    set originator [PgpMatch_Simple $pgp(param,originator) $pgp(secring)]
 	} else {
@@ -538,7 +546,7 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
     }
     
     # if there is nothing to do, stop here
-    if {!$pgp(encrypt,$id) && !$pgp(sign,$id)} {
+    if {!$pgp(encrypt,$id) && $pgp(sign,$id)=="none"} {
 	close $orig
 	error "no action"
     }
@@ -546,16 +554,13 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
     if {$pgp(format,$id) == "app"} {
 	Exmh_Debug app format
 	if {$pgp(encrypt,$id)} {
-	    if {$pgp(sign,$id)} {
-		set typeparams "; x-action=encryptsign;"
-	    } else {
 		set typeparams "; x-action=encrypt;"
-	    }
 	} else {
-	    if {$pgp(clearsign,$id)} {
-		set typeparams "; x-action=signclear;"
-	    } else {
-		set typeparams "; x-action=signbinary;"
+	    switch $pgp(sign,$id) {
+		detached -
+		standard {set typeparams "; x-action=signbinary;"}
+		clearsign {set typeparams "; x-action=signclear;"}
+		encryptsign {set typeparams "; x-action=encryptsign;"}
 	    }
 	}
     }
@@ -568,7 +573,7 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
   }
 
     # setup the originator (if necessary)
-    if $pgp(sign,$id) {
+    if {$pgp(sign,$id) != "none"} {
 	Exmh_Debug PGP signing
 	if [info exists pgp(param,originator)] {
 	    set originator [PgpMatch_Simple $pgp(param,originator) $pgp(secring)]
@@ -581,7 +586,7 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
     }
 
     # get the ids of the recipients (if necessary)
-    if $pgp(encrypt,$id) {
+    if {$pgp(encrypt,$id) || $pgp(sign,$id) == "encryptsign"} {
 	Exmh_Debug PGP encrypting
 	if [info exists pgp(param,recipients)] {
 	    set ids [Pgp_Misc_Map id {PgpMatch_Simple $id $pgp($v,pubring)} \
@@ -615,8 +620,8 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
     # write the message to be encrypted
     set msgfile [Mime_TempFile "msg"]
     set msg [open $msgfile w 0600]
-    if {$pgp(format,$id) == "plain"} {
-	set pgp(mime,$id) 0
+    if {$pgp(format,$id) == "plain" && $pgp(sign,$id) == "detached"} {
+	set pgp(sign,$id) "standard"
     } else {
 	foreach line $pgpheaders { puts $msg [Pgp_Misc_FixHeader $line] }
     }
@@ -627,24 +632,19 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
 
     set pgpfile [Mime_TempFile "pgp"]
     if [catch {
-	Exmh_Debug "encrypt=$pgp(encrypt,$id); sign=$pgp(sign,$id); mime=$pgp(mime,$id); clearsign=$pgp(clearsign,$id)"
+	Exmh_Debug "encrypt=$pgp(encrypt,$id); sign=$pgp(sign,$id)"
 	if {$pgp(encrypt,$id)} {
-	    if {$pgp(sign,$id)} {
-		Pgp_Exec_EncryptSign $pgp(version,$id) $msgfile $pgpfile $originator $ids 
-	    } else {
 		Pgp_Exec_Encrypt $pgp(version,$id) $msgfile $pgpfile $ids 
-	    }
 	} else {
-	    if {$pgp(sign,$id)} {
-		if {$pgp(mime,$id)} {
-		    Pgp_Exec_SignDetached $pgp(version,$id) $msgfile $pgpfile $originator 
-		} else { 
-		    Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile $originator $pgp(clearsign,$id) 
+	    switch $pgp(sign,$id) {
+		standard -
+		detached -
+		clearsign {Pgp_Exec_Sign $pgp(version,$id) $msgfile $pgpfile $originator $pgp(sign,$id)}
+		encryptsign {Pgp_Exec_EncryptSign $pgp(version,$id) $msgfile $pgpfile $originator $ids}
+		none -
+		default {error "<PGP> Message is neither signed, nor encrypted"}
 		}
-	    } else {
-		error "<PGP> Message is neither signed, nor encrypted"
 	    }
-	}
     } err] {
 	File_Delete $msgfile
 	error $err
@@ -667,7 +667,6 @@ proc Pgp_Process { v srcfile dstfile {pgpaction {}} } {
             Pgp_ProcessPlain $v $dstfile $pgpfile $mailheaders $msgfile
         }
     }
-    
     
     File_Delete $msgfile $pgpfile
 }

@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 09/22/1999
+    Changed the PGP interface, basically the stuff under the Crypt... 
+    button. The hope is that the change will help make the different
+    sign options a bit clearer - kchrist
+
 exmh-2.1.0 Released, 9/17/1999
 
 cvs repository 09/17/1999

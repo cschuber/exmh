@@ -531,27 +531,28 @@ you've already composed email." }
 version are currently selected.  Users with multiple PGP keys or PGP
 versions may find it helpful.  Changing this value will require that 
 you exit and re-enter exmh if you've already composed email." }
-    {pgp(sign) pgpSign ON {Sign outgoing messages}
-"If this is turned on, outgoing messages will be signed." }
-    {pgp(encrypt) pgpEncrypt OFF {Encrypt outgoing messages}
-"If this is turned on, outgoing messages will be encrypted." }
-    {pgp(mime) pgpMime ON {Use Mime for PGP}
-"If this is turned on, outgoing PGP messages will use Mime for encapsulation." }
-    {pgp(clearsign) pgpClearSign ON {Sign messages in the clear}
-"If this is turned on, messages will be signed so that they can be read by
-non-PGP mail readers." }
+    {pgp(sign) pgpSign {CHOICE none standard detached clearsign encryptsign} {Signature options}
+"There are multiple ways to sign a message.
+    None: Do not sign outgoing messages.
+    Standard: Sign outgoing messages.
+    Detached: Use MIME encapsulation for signatures.
+    Clearsign: Sign messages so that they can be read by non-PGP mail readers.
+    Encryptsign: Sign and encrypt in a single operation.
+This can be changed on the fly from the sedit window." }
+    {pgp(encrypt) pgpEncrypt OFF {Encrypt-only outgoing messages}
+"If this is turned on, outgoing messages will be encrypted but not signed." }
     {pgp(format) pgpFormat {CHOICE pm plain app} {Format to encode PGP}
 "There are multiple standards for PGP encoding.
     Pm:     Use the multipart/pgp standard (This is the preferred standard)
     Plain:  No MIME headers at all
     App:    Use the now deprecated application/pgp standard.
-This can be changed on the fly from the sedit window" }
+This can be changed on the fly from the sedit window." }
     {pgp(version) pgpVersion {CHOICE pgp pgp5 gpg} {Version of PGP for new messages}
 "There are multiple versions of the PGP program.
     PGP:    Pretty Good Privacy, Version 2
     PGP5:   Pretty Good Privacy, Version 5
     GPG:    GNU Privacy Guard
-This can be changed on the fly from the sedit window" }
+This can be changed on the fly from the sedit window." }
     {pgp(passtimeout) pgpPassTimeout 60 {Minutes to cache PGP passphrase}
 "Exmh will clear its memory of PGP passphrases after
 this time period, in minutes, has elapesed." }

@@ -6,6 +6,14 @@
 # 
 
 # $Log$
+# Revision 1.10  1999/09/22 16:36:44  kchrist
+# Changes made to support a different structure under the PGP Crypt... button.
+# Instead of an ON/OFF pgp($v,sign) variable now we use it to specify
+# the form of the signature (none, standard, detached, clear, or w/encrypt).
+# Code changed in several places to support this new variable definition.
+#
+# Updated Sedit.html to include a description of the new interface.
+#
 # Revision 1.9  1999/08/22 18:57:36  bmah
 # Sanitize PGP debugging entries before writing via Exmh_Debug.
 #
@@ -183,7 +191,7 @@ proc Pgp_Exec_Interactive { v exectype arglist outvar } {
     # Build shellcommand
     set shcmd "
         $pgpcmd \"[join [Pgp_Misc_Map x {
-	    regsub {([$"\`])} $x {\\1} x
+	    regsub {([$\"\`])} $x {\\1} x
 	    set dummy $x
         } $args] {" "}]\";
 	echo
@@ -382,27 +390,18 @@ proc Pgp_Exec_EncryptSign { v in out sigkey tokeys } {
     }
 }
  
-proc Pgp_Exec_Sign { v in out sigkey clear } {
+proc Pgp_Exec_Sign { v in out sigkey opt } {
     global pgp
 
-    Exmh_Debug "Pgp_Exec_Sign $v $in $out $sigkey $clear"
+    Exmh_Debug "Pgp_Exec_Sign $v $in $out $sigkey $opt"
 
     set keyid [lindex $sigkey 0]
-    if $clear {
-	Pgp_Exec $v sign [subst [set pgp($v,args_signClear)]] output $sigkey
-    } else {
-	Pgp_Exec $v sign [subst [set pgp($v,args_signBinary)]] output $sigkey
+    switch $opt {
+	standard {Pgp_Exec $v sign [subst [set pgp($v,args_signBinary)]] output $sigkey}
+	detached {Pgp_Exec $v sign [subst [set pgp($v,args_signDetached)]] output $sigkey}
+	clearsign {Pgp_Exec $v sign [subst [set pgp($v,args_signClear)]] output $sigkey}
+	default {set output "Pgp_Exec_Sign error. Unknown option."}
     }
-    Pgp_Exec_CheckSuccess $v $out $output "signed text"
-}
-    
-proc Pgp_Exec_SignDetached { v in out sigkey } {
-    global pgp
-
-    Exmh_Debug "Pgp_Exec_SignDetached $v $in $out $sigkey"
-
-    set keyid [lindex $sigkey 0]
-    Pgp_Exec $v sign [subst [set pgp($v,args_signDetached)]] output $sigkey
     Pgp_Exec_CheckSuccess $v $out $output "signed text"
 }
 

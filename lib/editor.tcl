@@ -264,7 +264,7 @@ proc EditStart { draft {type prog} } {
     if $pgp(enabled) {
 	# Copy the default PGP values into this window
 	set id [SeditId $draft]
-	foreach var {encrypt sign mime clearsign format version} {
+	foreach var {encrypt sign format version} {
 	    set pgp($var,$id) $pgp($var)
 	}
     }
