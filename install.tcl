@@ -935,7 +935,7 @@ proc install_html {html} {
     option add *Text*highlightBackground white
     option add *Text*highlightColor black
     proc Exmh_Status {string} {installFeedback $string}
-    set widgetText(smoothScroll) 0
     Env_Init
+    set widgetText(smoothScroll) 0
     set exwin(mtext) [Html_Display $html file:[file join [pwd] [info script]]]
 }

@@ -15,6 +15,8 @@ cvs repository 01/15/2001 Brent Welch <brent.welch@interwoven.com>
     lib/html/exmh-faq.html: Added FAQ about using a POP3 mail server.
     lib/bitmaps: added a contributed set of bitmaps to replace text
     buttons.  You'll need to set up your exmh-defaults to get these.
+    See the lib/bitmaps/exmh-defaults file for an example.
+    install.tcl: added call to Env_Init
 
 cvs repository 01/12/2001 Brent Welch <brent.welch@interwoven.com>
     lib/env.tcl - fix for symlink attack.  Exmh now chooses /tmp/<username>
