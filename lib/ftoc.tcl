@@ -909,6 +909,7 @@ proc FtocDialog { changes type } {
     Widget_AddBut $but ok "Commit and $type" {set ftoc(okToCommit) 1}
     focus $but
     bind $but <Return> "$but.ok flash ; $but.ok invoke"
+    bind $but <KP_Enter> "$but.ok flash ; $but.ok invoke"
     bind $but <Control-c> "$but.cancel flash ; $but.cancel invoke"
     Widget_PlaceDialog $exwin(mtext) $exwin(mtext).commit
     Visibility_Wait $but
