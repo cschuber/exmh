@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 09/15/1999
+    Typos in getnews.tcl - cwg
+
 cvs repository 09/03/1999
     Allow (again) spaces in address search strings. (addr.tcl) - kchrist
 

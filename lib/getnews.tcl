@@ -93,7 +93,7 @@ proc GetNewsInt {} {
 	NNTPCommand $nntpskt "GROUP $thegrps($thisg)"
 	set line [NNTPReply $nntpskt]
 	if ![string first 480 $line] {
-	    set ok [NNTPAutenticate $nntpskt]
+	    set ok [NNTPAuthenticate $nntpskt]
 	    if $ok {
 		NNTPCommand $nntpskt "GROUP $thegrps($thisg)"
 		set line [NNTPReply $nntpskt]
@@ -295,7 +295,7 @@ proc NNTPClose {nntpskt rcfiles} {
 # i.e., not AUTHINFO SIMPLE or AUTHINFO GENERIC
 # see 'Common NNTP extensions'
 #
-proc NNTPAutenticate {sock} {
+proc NNTPAuthenticate {sock} {
 
     global NNTP
 
