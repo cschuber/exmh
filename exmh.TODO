@@ -39,14 +39,6 @@ Improve handling of slow access to files.
 
 
 
-Number: 6b
-Priority: Med
-Scope: Medium
-Complexity: low
-
-Improve handling of slow access to displays.
-
-
 Number: 7
 Priority: Med
 Scope: 

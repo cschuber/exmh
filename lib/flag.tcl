@@ -50,20 +50,22 @@ proc Flag_Init {} {
 	    set flag($i) 0
 	}
     }
-    if [catch {
-	Exmh_Debug "Creating .icon"
-	toplevel .icon
-	wm group .icon .
-	pack [canvas .icon.c]
-	image create photo icondown -file $flag(icondownglyph)
-	image create photo iconup -file $flag(iconupglyph)
-	image create photo iconspool -file $flag(iconspoolglyph)
-	.icon.c configure -width [image width iconup] \
-		-height [image height iconup]
-	wm iconwindow . .icon
-    } err] {
-	Exmh_Debug "Can't create .icon: $err"
-	destroy .icon
+    if {!$exmh(slowDisp) || $exmh(slowDispIcons)} {
+	if [catch {
+	    Exmh_Debug "Creating .icon"
+	    toplevel .icon
+	    wm group .icon .
+	    pack [canvas .icon.c]
+	    image create photo icondown -file $flag(icondownglyph)
+	    image create photo iconup -file $flag(iconupglyph)
+	    image create photo iconspool -file $flag(iconspoolglyph)
+	    .icon.c configure -width [image width iconup] \
+		    -height [image height iconup]
+	    wm iconwindow . .icon
+	} err] {
+	    Exmh_Debug "Can't create .icon: $err"
+	    destroy .icon
+	}
     }
     FlagInner down icondown labeldown
 }

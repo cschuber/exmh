@@ -3,6 +3,14 @@ HISTORY
 cvs repository 4/13/1999
     Took the "Dates display localtime in parentheses" enhancement from March
 	31, and made the format settable as resource localTimeFormat. -jbeck
+    Added recognition that the display is unusually slow so that we
+	can disable certain UI features.  New preferences page to
+	select which features to disable and to change the sensitivty
+	to speed.  The current default for this sensitivity may
+	require tweaking; if a fast display is identified as slow or
+	vice versa, please look in the log for a line that reads "Fast
+	Display" or "Slow Display" and let me know what value it
+	shows. -cwg
     The unseen window has to decide how many characters to allocate for the
 	digits in the unseen count.  Previously the code was inconsistent
 	as to whether 2 or 3 digits should be used.  Now it is dynamically

@@ -67,12 +67,14 @@ is displayed to debug the flist module."}
 
     catch {exec date} d
     Audit "Startup $d $argv"
+
     # The order of the following mainly determines the way
     # their associated items appear in the Preferences dialog
     Sedit_Init		;# built in editor
     Ispell_Preferences
     Signature_Init
     Edit_Init		;# interface to external editors
+    SlowDisplay_Init	;# See if we're on a slow display
     Print_Init
     Buttons_Init
     Ftoc_Init

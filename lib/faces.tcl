@@ -68,9 +68,11 @@ proc Face_SetPath {} {
 		FaceAddPath $set $dir
 	    }
 	}
-	foreach dir $faces(set,news) {
-	    if ![file isdirectory $faces(base)$dir] continue
-	    FaceAddPath news $dir
+	if [info exists faces(set,news)] {
+	    foreach dir $faces(set,news) {
+		if ![file isdirectory $faces(base)$dir] continue
+		FaceAddPath news $dir
+	    }
 	}
     }
 }
@@ -88,10 +90,15 @@ proc FaceAddPath {set dir} {
 
 
 proc Face_Show { fromwho {xface {}} {ximageurl {}} {newsgrps {}} } {
-    global faces faceCache failedURLs
+    global faces faceCache failedURLs exmh
 
     set xfaceAvail 0
     set ximageurlAvail 0
+
+    # Don't do any of this if we're on a slow display
+    if {$exmh(slowDisp) && !$exmh(slowDispFaces)} {
+      return 0
+    }
 
     Face_Delete
 

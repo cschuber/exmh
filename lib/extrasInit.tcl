@@ -100,6 +100,40 @@ folders without committing moves and delete operations.
     }
 }
 
+proc SlowDisplay_Init {} {
+    global exmh
+
+    Preferences_Add "Slow Display" \
+"These items determine which parts of the system to disable when you have a 
+slow display" {
+        {exmh(slowDispLimit) slowDispLimit 200000	{Slow Display Limit}
+"This is the microsecond count used to determine if the user is on a
+\"slow display\"."}
+        {exmh(slowDispFaces) slowDispFaces OFF {Show faces on a slow display}
+	"Do faces processing if the display is slow"}
+        {exmh(slowDispIcons) slowDispIcons OFF {Show color icons on a slow display}
+	"Use color icons if the display is slow."}
+    }
+    Preferences_Resource exmh(testglyph) testGlyph flagdown.gif
+    if ![string match /* exmh(testglyph)] {
+	set exmh(testglyph) $exmh(library)/$exmh(testglyph)
+    }
+    set time [lindex [time {
+	toplevel .foo
+	pack [canvas .foo.c]
+	image create photo testicon -file $exmh(testglyph)
+	.foo.c configure -width [image width testicon] \
+		-height [image height testicon]
+	destroy .foo
+    }] 0]
+    set exmh(slowDisp) [expr {$time > $exmh(slowDispLimit)}]
+    if $exmh(slowDisp) {
+	Exmh_Debug "Slow display: $time"
+    } else {
+	Exmh_Debug "Fast display: $time"
+    }
+}
+
 proc Faces_Init {} {
     global faces
     if {$faces(dir) == {}} {
@@ -170,7 +204,7 @@ proc Faces_Create { parent } {
 }
 
 proc Faces_Setup args {
-    global faces faceCache
+    global faces faceCache exmh
 
     # should call this when one of these changes:
     #	faces(path), faces(dir), faces(sets), env(FACEPATH)
@@ -196,7 +230,7 @@ proc Faces_Setup args {
 	$faces(parent) config -width 0
     }
 
-    if $faces(rowEnabled) {
+    if {$faces(rowEnabled) && (!$exmh(slowDisp) || $exmh(slowDispFaces))} {
 	set row [Widget_Frame $faces(rowparent) faceRow Face {top fill}]
 	pack $row -before $faces(parent) -side bottom
 
@@ -211,7 +245,7 @@ proc Faces_Setup args {
 			-bitmap @$exmh(library)/exmh.bitmap]
 
     # kludge to get default background of the labels
-    if $faces(rowEnabled) {
+    if {$faces(rowEnabled) && (!$exmh(slowDisp) || $exmh(slowDispFaces))} {
 	set f [FaceAlloc]
 	set faces(facebg) [lindex [$f config -bg] 4]
 	Face_Delete
@@ -659,11 +693,11 @@ proc Glimpse_Init {} {
 	if [info exists glimpse(init)] { return }
 
 	if [catch {exec $glimpse(path)/glimpse -V} voutput] {
-	    Exmh_Debug "$voutput"
+	    ExmhLog "$voutput"
 	    return
 	}
 	if {! [regexp {[0-9]\.[0-9]} $voutput glimpse(version)] } {
-	    Exmh_Debug "glimpse version info error : $voutput"
+	    ExmhLog "glimpse version info error : $voutput"
 	    return
 	}
 	set glimpse(init) 1
