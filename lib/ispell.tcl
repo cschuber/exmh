@@ -694,8 +694,7 @@ proc Hook_SeditInit_TagMissSpelled { file window } {
 		bold       { set style "-font *bold*"}  \
 		other      { set style "$ispellVars(viewStyle-Other)" } \
 		bgcolor    { set style "-background $ispellVars(viewStyle-Color)" } \
-		fgcolor    { set style "-foreground $ispellVars(viewStyle-Color)" } \ 
-	
+		fgcolor    { set style "-foreground $ispellVars(viewStyle-Color)" }
 	
 	eval  $window tag configure MissSpelled $style
     } result ] } { 	
