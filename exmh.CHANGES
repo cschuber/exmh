@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 2/3/2005 cwg-exmh@deepeddy.com
+  lib/ftoc.tcl: Reset exwin(ftext) whenever the ftext window changes size.
+
 cvs repository 1/25/2005 cwg-exmh@deepeddy.com
   lib/mime.tcl: Special case display of original message in
   spamassassin processed mail so it doesn't display by default.

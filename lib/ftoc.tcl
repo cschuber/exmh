@@ -101,6 +101,8 @@ proc Ftoc_Update { numMsgs } {
 proc Ftoc_Bindings { w } {
     # Bindings for the ftoc text widget
 
+    bind $w <Configure> FtocDeduceSize
+
     # The TScroll binding to too general.
     # We'll do our own scroll bindings here.
     bindtags $w [list $w Command]
@@ -138,6 +140,16 @@ proc Ftoc_Bindings { w } {
     bind $w <B2-Motion> {WidgetTextDragto %W %y $exwin(scrollSpeed)}
 
     Drag_Attach $w FtocDragSelect Shift 3
+
+}
+proc FtocDeduceSize {} {
+    global exwin
+    set top [lindex [split [$exwin(ftext) index @0,0] .] 0]
+    set h [winfo height $exwin(ftext)]
+    set w [winfo width $exwin(ftext)]
+    set ix [$exwin(ftext) index @[expr $h-1],[expr $w-1]]
+    set bottom [lindex [split $ix .] 0]
+    set exwin(ftextLines) [expr $bottom-$top]
 }
 proc FtocRangeStart { lineno } {
     # For normal button-down "start a selection"
