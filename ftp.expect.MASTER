@@ -1,4 +1,6 @@
-#!expect -f
+#!/bin/sh
+# \
+exec expect -f
 
 set site [lindex $argv 0]
 set dir [lindex $argv 1]

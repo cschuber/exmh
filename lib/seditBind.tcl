@@ -489,6 +489,9 @@ proc Sedit_ClassBindings { } {
     SeditBind Entry selextend {
 	%W select to insert
     }
+    SeditBind $tclass highlight {
+	SeditBeautify %W
+    }
 
     bind $tclass <Button-1>		{WidgetTextSelBegin %W %x %y char}
     bind $tclass <Double-Button-1>	{WidgetTextSelBegin %W %x %y word}

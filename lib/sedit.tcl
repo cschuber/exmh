@@ -260,6 +260,14 @@ proc Sedit_Start { draft } {
 	}
     }
 }
+
+proc SeditBeautify { t } {
+    Msg_HighlightInit $t
+    set start [$t index "header + 1 line"]
+    set end   [$t index end]
+    Msg_TextHighlight $t $start $end
+}
+
 proc SeditSetContext { draft t } {
     # Called when menus are posted to set the context for some commands
     global sedit

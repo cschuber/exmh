@@ -57,14 +57,7 @@ proc Msg_Setup { t } {
     TextButton_Init $t
 
     # Tags for text highlighting
-
-    foreach tagname {attrib_me quote_me attrib1 attrib2 attrib3 attrib4 \
-			 attrib5 quote1 quote2 quote3 quote4 quote5 signature \
-			 listsig msheader1 msheader2 udiffold udiffnew \
-			 bugrpttok} {
-        set rval [option get . b_$tagname {}]
-        eval {$t tag configure $tagname} $rval
-    }
+    Msg_HighlightInit $t
         
     $t tag raise sel
 
@@ -74,6 +67,16 @@ proc Msg_Setup { t } {
 	label $t.fontlabel8 -font -*-*-*-*-*-*-8-*-*-*-*-*-iso8859-*
     }
 
+}
+
+proc Msg_HighlightInit { t } {
+    foreach tagname {attrib_me quote_me attrib1 attrib2 attrib3 attrib4 \
+			 attrib5 quote1 quote2 quote3 quote4 quote5 signature \
+			 listsig msheader1 msheader2 udiffold udiffnew \
+			 bugrpttok} {
+        set rval [option get . b_$tagname {}]
+        eval {$t tag configure $tagname} $rval
+    }
 }
 
 proc Msg_Redisplay { draft } {
@@ -284,8 +287,8 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 
 # Highlight text/plain regions of the message
 
-proc MsgTextHighlight {tkw start end} {
-    Exmh_Debug MsgTextHighlight $start $end
+proc Msg_TextHighlight {tkw start end} {
+    Exmh_Debug Msg_TextHighlight $start $end
     foreach cmd [info commands Hook_MsgHighlight*] {
 	$cmd $tkw $start $end
     }

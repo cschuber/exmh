@@ -1202,7 +1202,7 @@ exmh.iconic:		0
 	backword forwword backchar forwchar up1page down1page \
 	addrexpand format \
 	selclear selstart selforw selback selextend \
-	abortMsg quoteMsg
+	abortMsg quoteMsg highlight
 
 *sedit_key_selpaste:	 <Control-y> <Key-F18>
 
@@ -1236,6 +1236,7 @@ exmh.iconic:		0
 
 *sedit_key_addrexpand:	 <Control-Tab>
 *sedit_key_format:	 <Meta-q>
+*sedit_key_highlight:	 <Control-l>
 
 *sedit_key_selclear:	<Control-backslash>
 *sedit_key_selstart:	<Control-space> <Select> <Meta-bracketleft>

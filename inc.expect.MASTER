@@ -1,4 +1,6 @@
-#!expect -f
+#!/bin/sh
+# \
+exec expect -f "$0" -- ${1+"$@"}
 #
 # Script to run inc and provide a password.
 #

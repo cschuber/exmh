@@ -859,7 +859,7 @@ proc Mime_ShowDefault {tkw part} {
 	    $tkw insert insert [read $fileIO]
 	    MimeClose $fileIO
 	    set end [$tkw index insert]
-	    MsgTextHighlight $tkw $start $end
+	    Msg_TextHighlight $tkw $start $end
 	}
     } else {
 	$tkw insert insert "This is [Mime_TypeDescr $part]\n"
@@ -978,7 +978,7 @@ proc Mime_ShowText {tkw part} {
 		$tkw insert insert "$firstLine\n"
 		$tkw insert insert [read $fileIO]
 		set textEnd [$tkw index insert]
-		MsgTextHighlight $tkw $textStart $textEnd
+		Msg_TextHighlight $tkw $textStart $textEnd
 	    }
 	}
     }
@@ -2161,7 +2161,7 @@ proc MimeParseSingle {tkw part fileIO } {
 		}
 	    }
 	    set end [$tkw index end]
-	    MsgTextHighlight $tkw $start $end
+	    Msg_TextHighlight $tkw $start $end
 	    return 0
 	} else {
 	    # Copy message body to a temp file.

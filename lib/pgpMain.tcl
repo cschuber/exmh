@@ -19,6 +19,18 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.23  2001/07/11 18:13:59  welch
+# ftp.expect.MASTER:
+# inc.expect.MASTER: Changed to a #!/bin/sh header with exec hack
+# to be able to insert the -- flag to expect
+# install.tcl: Changed the expect patching to match the above change
+# lib/pgpMain.tcl:
+# lib/mime.tcl: Changed MsgTextHighlight to Msg_TextHighlight
+# lib/msgShow.tcl: Added Msg_HighlightInit
+# lib/sedit.tcl: Added SeditBeautify from John Beck
+# lib/seditBind.tcl: Added "highlight" virtual function to sedit bindings
+# lib/app-defaults: Added <Control-l> binding to sedit to beautify it.
+#
 # Revision 1.22  2001/07/09 16:45:33  welch
 # Jumbo commit - I think I forgot to commit a few things from the
 # aborted 2.4 release as well.  The main thing is the addition of
@@ -45,13 +57,13 @@
 # lib/mailcap.tcl: Fixed bug in mailcap parsing code that didn't quote
 # & in rules, leading to message corruption in SaveAttachments code.
 # lib/mh.tcl: minor tweak to variable unset
-# lib/mime.tcl: Added highlightText option and calls to MsgTextHighlight.
-# *  lib/msgShow.tcl: Added MsgTextHighlight and the jcl-beautify code,
+# lib/mime.tcl: Added highlightText option and calls to Msg_TextHighlight.
+# *  lib/msgShow.tcl: Added Msg_TextHighlight and the jcl-beautify code,
 # with minor changes to separate the bug reporting header highlighting
 # into a different hook.  There is now a "message show" hook that
 # operates on the whole message, a "message highlight" hook that
 # only operates on the text regions of a message.
-# lib/pgpMain.tcl: Added call to MsgTextHighlight.
+# lib/pgpMain.tcl: Added call to Msg_TextHighlight.
 # lib/pop.tcl: Fixed Pop_Dialog so it works right with multiple hosts.
 #
 # Revision 1.21  2000/06/16 18:16:26  valdis
@@ -1461,7 +1473,7 @@ proc Pgp_DisplayMsg { v tkw part pgpresultvar } {
 		set start [$tkw index insert]
 		$tkw insert insert [read $fileIO]
 		set end [$tkw index insert]
-		MsgTextHighlight $tkw $start $end
+		Msg_TextHighlight $tkw $start $end
 	    }
 	}
     }

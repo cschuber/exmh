@@ -1,4 +1,16 @@
 HISTORY
+cvs repository 07/11/2001 Brent Welch <welch@panasas.com>
+    ftp.expect.MASTER:
+    inc.expect.MASTER: Changed to a #!/bin/sh header with exec hack
+    to be able to insert the -- flag to expect
+    install.tcl: Changed the expect patching to match the above change
+    lib/pgpMain.tcl:
+    lib/mime.tcl: Changed MsgTextHighlight to Msg_TextHighlight
+    lib/msgShow.tcl: Added Msg_HighlightInit
+    lib/sedit.tcl: Added SeditBeautify from John Beck
+    lib/seditBind.tcl: Added "highlight" virtual function to sedit bindings
+    lib/app-defaults: Added <Control-l> binding to sedit to beautify it.
+    
 cvs repository 07/10/2001 Brent Welch <welch@panasas.com>
     lib/editor.tcl: A -- is passed to the exmh-async script to
     turn off any argument/flag parsing by wish.  This means you can
