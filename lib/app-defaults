@@ -405,7 +405,7 @@ exmh.iconic:		0
 ! is defined (for sedit), but in this case we want to re-eval it
 ! each time the entry is selected.
 !
-*Mops.more.m.c_use:	Msg_Compose +\$exmh(folder) \$msg(id)
+*Mops.more.m.c_use:	Msg_CompUse \$exmh(folder) \$msg(id)
 *Mops.more.m.l_edit: 	Edit message
 *Mops.more.m.c_edit:	Msg_Edit
 *Mops.more.m.l_uudecode: 	uudecode message
