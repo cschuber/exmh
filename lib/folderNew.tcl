@@ -88,13 +88,13 @@ proc FolderNewCommit { top entry } {
 	if {[catch {
 	    close [open [file join $path .mh_sequences] w]
 	    if [info exists mhProfile(folder-protect)] {
-		file attributes $path/.mh_sequences -permissions $mhProfile(folder-protect)
+		file attributes $path/.mh_sequences -permissions 0$mhProfile(folder-protect)
 	    }
 	} msg]} {
 	    Exmh_Debug ".mh_sequences: $msg"
 	}
 	if [info exists mhProfile(folder-protect)] {
-	    file attributes $path -permissions $mhProfile(folder-protect)
+	    file attributes $path -permissions 0$mhProfile(folder-protect)
 	}
     }
     Exmh_Status "Created folder $name"

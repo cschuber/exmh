@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 1/5/2005 welch@panasas.com
+  lib/folderNew.tcl: folder-protect value wasn't being interpreted as
+    octal when creating new folders.
+  exmh.install: bumped version date
+
 cvs repository 1/5/2005 valdis.kletnieks@vt.edu
   lib/fileselect.tcl, lib/seditExtras.tcl
    patch from George Ross <gdmr@inf.ed.ac.uk> to not smash filenames
