@@ -267,10 +267,44 @@ Support for nmh 1.0 (any changes necessary?)
 
 
 
+Number: 25
+Priority: High
+Scope: varies
+Complexity: varies
+
+Incorporate patches from the New Features section of the Patch page
+
+  1.Fixes for PGP 4.0 
+  2.Post messages from Sedit. 
+  3.Faces for newsgroups. 
+  4.Patch to slocal.c that allows regular expressions in .maildelivery files. 
+  5.Updates to the MDN message disposition handling (Anund Lie) 
+  6.Preference item to do flist on startup. 
+  7.Preference item to turn off scroll-to-next message. 
+  8.String From lines before posting. 
+
+
+Number: 25
+Priority: Med
+Scope: Narrow
+Complexity: trivial
+
+Request from John Beck:
+
+Replacement flagdown.bitmap and flagup.bitmap files, and new
+flagdown.mask and flagup.mask files.  I like this bitmap better (I'm
+not the artist), and others (I think incl. Brent at one time) have
+agreed.  Available from:
+ftp://playground.sun.com/pub/jbeck/exmh/flag-bitmaps.tar
+
+
 
 $Id$
 
 $Log$
+Revision 1.2  1999/04/01 01:28:23  haldevore
+Added items to the todo list.
+
 Revision 1.1  1999/03/31 21:36:15  haldevore
 Added the exmh.TODO file to track pending changes.
 
