@@ -19,6 +19,9 @@
 # to avoid auto-loading this whole file.
 
 # $Log$
+# Revision 1.5  1999/04/20 21:46:17  cwg
+# Is CVS working now?
+#
 # Revision 1.4  1999/04/15 23:41:59  cwg
 # Make the crypt menu values be per-window instead of global.
 #
@@ -300,7 +303,6 @@ proc Pgp_SetMyName {} {
 	 "Please select the default key to use for signing"]
 }
 
-#
 proc Pgp_Process { srcfile dstfile {pgpaction {}} } {
     global pgp env miscRE
 
@@ -875,6 +877,7 @@ proc Pgp_InsertKeys { draft t } {
 	    File_Delete $tmpfile
 	}
     }
+    Sedit_FixPgpFormat [SeditId $draft]
 }
 
 proc Pgp_GetTextAttributes { summary } {

@@ -827,6 +827,7 @@ proc SeditTestInsert { file {newpart 1} {encoding {}} {type text/plain} {desc {}
     global sedit
     set t $sedit(t)
     SeditInsertFile {} $t $file $newpart
+    Sedit_FixPgpFormat [SeditId $file]
 }
 proc SeditTestInit { {charset 0} } {
     global sedit

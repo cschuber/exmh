@@ -4,6 +4,8 @@ cvs repository 4/16/1999
     Fixed a minor bug in yesterday's crypt code; also made crypt menu
     values to be reset when a sedit window is opened, thereby making
     them 'per message', not 'per window'.  This seems more intuitive. -cwg
+    Attaching something while using "plain" encryption now changes the
+    encryption to multipart -cwg
 
 cvs repository 4/15/1999
     Crypt menu values are now 'per window', not global. -cwg

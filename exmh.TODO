@@ -323,15 +323,6 @@ Complexity:
 Provide support for editing "named" lists in aliases
 
 
-Number: 38
-Priority: Medium
-Scope: Narrow
-Complexity: Low
-
-If a user tries to PGP sign a multipart message with the plain format,
-intercept the attempt and use a different format.
-
-
 Number: 39
 Priority: Low
 Scope: Narrow

@@ -412,6 +412,7 @@ proc SeditInsertFileDialog { draft t } {
 	if [file readable $name] {
 	    set options [SeditFormatDialog $t $name]
 	    eval {SeditInsertFile $draft $t $name} $options
+	    Sedit_FixPgpFormat [SeditId $draft]
 	} else {
 	    SeditMsg $t "Cannot read $name"
 	}
@@ -434,6 +435,7 @@ proc SeditInsertExternalDialog { draft t } {
 					[exec uname -n]]
     close $fp
     eval {SeditInsertFile $draft $t $tmpfname} $options
+    Sedit_PgpFormat [SeditId $draft]
     File_Delete $tmpfname
 }
 proc SeditExternalDialog { t name } {
@@ -865,26 +867,38 @@ proc SeditExternalCmd { draft t cmd } {
 }
 
 proc SeditAttachQuotedMessage { draft t name } {
-	global sedit
-	if {$name != ""} {
-		if [file readable $name] {
-			set options [SeditFormatDialog $t $name]
-			eval {SeditInsertFile $draft $t $name} $options
-		} else {
-			SeditMsg $t "Cannot read $name"
-		}
+    global sedit
+    if {$name != ""} {
+	if [file readable $name] {
+	    set options [SeditFormatDialog $t $name]
+	    eval {SeditInsertFile $draft $t $name} $options
+	} else {
+	    SeditMsg $t "Cannot read $name"
 	}
+    }
 }
 
 proc SeditInsertMessageDialog { draft t } {
-	global sedit msg
-	set name [FSBox "Select message" $msg(path)]
-	if {$name != ""} {
-		if [file readable $name] {
-		set options [SeditFormatDialog $t $name]
-		eval {SeditInsertFile $draft $t $name} $options
-		} else {
-			SeditMsg $t "Cannot read $name"
-		}
+    global sedit msg
+    set name [FSBox "Select message" $msg(path)]
+    if {$name != ""} {
+	if [file readable $name] {
+	    set options [SeditFormatDialog $t $name]
+	    eval {SeditInsertFile $draft $t $name} $options
+	    Sedit_FixPgpFormat [SeditId $draft]
+	} else {
+	    SeditMsg $t "Cannot read $name"
 	}
+    }
 }
+
+# I had this in pgp.tcl, but I don't want that entire file loaded
+# if this is called.
+proc Sedit_FixPgpFormat {id} {
+    global pgp
+    if {$pgp(enabled) && ($pgp(format,$id) == "plain")} {
+	Exmh_Status "Changed PGP encoding from plain to multipart"
+	set pgp(format,$id) "pm"
+    }
+}
+
