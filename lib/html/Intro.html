@@ -14,14 +14,16 @@ Bugs and comments to Brent Welch, <a href="mailto:Welch@acm.org">Welch@acm.org</
 
 <h2>Folder Display </h2>
 <p>
-Exmh displays three panes of information. The top pane has a label
-for each of your MH folders. Each label is highlighted to reflect the
-state of the folder. There is one current folder, whose table of contents
-is displayed in the second pane. There is one folder that is the target
-for move operations. There may be several folders that have unread
-messages in them. Select <button -command Help_KeyDisplay>Color Legend</button>
-from the Help menu to display the key of how folder labels are highlighted.
-In addition, folders with nested sub-folders have a shadow-box highlight.
+Exmh displays three panes of information. The top pane has a label for
+each of your MH folders. Each label is highlighted to reflect the
+state of the folder. There is one current folder, whose table of
+contents is displayed in the second pane. There is one folder that is
+the target for <button -command "Msg_Move Ftoc_MoveMark">Move</button>
+operations. There may be several folders that have unread messages in
+them. Select <button -command Help_KeyDisplay>Color Legend</button>
+from the Help... menu to display the key of how folder labels are
+highlighted. In addition, folders with nested sub-folders have a
+shadow-box highlight. 
 
 
 <h3>Selecting Folders with the Mouse</h3>
@@ -46,7 +48,8 @@ middle mouse button.
 The middle pane lists the messages in the current folder, which comes
 from the output of the MH <em>scan</em> command. The display indicates
 the state of the message: (See <button -command Help_KeyDisplay>Color
-Legend</button> under Help to see how these are marked on your display)
+Legend</button> under Help... to see how these are marked on your
+display)
 
 <ul>
 <li>current message. 
@@ -64,8 +67,12 @@ Right clicking selects a message but does not display it.
 Dragging a selection with the Left button selects a range of messages.
 You can update a selection with Shift-Left. 
 <p>
-Message operations like Delete, Move, Link Unmark, and Print will operate
-on the whole selected set of messages. 
+Message operations like <button -command "Msg_Remove">Delete</button>,
+<button -command "Msg_Move Ftoc_MoveMark">Move</button>, <button
+-command "Msg_Move Ftoc_CopyMark advance?">Link</button>, <button
+-command "Ftoc_Unmark">Unmark</button>, and <button 
+-command "Print">Print</button> will operate on the whole selected set
+of messages.
 
 <h2>Message Display</h2>
 <p>
@@ -93,106 +100,128 @@ is for message operations.
 
 <h3>Global Commands</h3>
 <p>
-The top set of buttons is for global commands: Log, Help..., Bindings...,
-Preferences, Aliases and Quit. 
+The top set of buttons are for global commands: Log, Help..., Bindings...,
+<button -command Preferences_Dialog>Preferences</button>, Aliases and
+<button -command Exmh_Done>Quit</button>. 
 <p>
-Log appears if you enable logging in your Preferences. The log contains
-a record of actions taken, including debugging info I put in. 
+Log only appears if you enable logging in your Preferences. The log contains
+a record of actions taken, including debugging info. 
 <p>
-Under Help, Quick Intro gives you this window. FAQ shows the Frequently-Asked-Questions
-file. 
+Under Help, <button -command Help>Quick Intro</button> gives you this
+window. <button -command "Help exmh-faq">FAQ</button> shows the
+Frequently-Asked-Questions file.
 <p>
 You are encouraged to register as an exmh user, too. All this does
 is open a mail draft to me in which you can send your pro and con opinions
 about exmh. There is no obligation associated with registration. 
 <p>
-The Preferences dialog gives you some control over exmh features. Within
-this dialog you can get more help on setting preferences by clicking
-the Help button that is part of that dialog. 
+The <button -command Preferences_Dialog>Preferences</button> dialog
+gives you some control over exmh features. Within this dialog you can
+get more help on setting preferences by clicking the Help button that
+is part of that dialog.
 
 <h3>Message Commands</h3>
 <p>
 The bottom set of buttons are for message operations: 
-<p>
-Link - link a message into the target folder and go to the next message.
-<br>
 
-Move - move a message to the target folder and go to the next message.
-<br>
+<dl>
+  <dd><button -command "Msg_Move Ftoc_CopyMark advance?">Link</button>
+  <dt>link a message into the target folder and go to the next message. 
 
-Delete - mark the current message for deletion and go to the next
-message. 
-<br>
+  <dd><button -command "Msg_Move Ftoc_MoveMark">Move</button>
+  <dt>move a message to the target folder and go to the next message. 
 
-Next - move to the next message. This will chain to the next folder
-with unread messages if you are at the end of the current folder. <br>
+  <dd><button -command "Msg_Remove">Delete</button>
+  <dt>mark the current message for deletion and go to the next message. 
 
-Prev - move to the previous message. 
-<br>
+  <dd><button -command "Ftoc_Next show">Next</button>
+  <dt>move to the next message. This will chain to the next folder
+      with unread messages if you are at the end of the current folder. 
 
-Comp - compose a mail message. In the drafts folder, this opens the
-current message as the draft. 
-<br>
+  <dd><button -command "Ftoc_Prev show">Prev</button>
+  <dt>move to the previous message. 
 
-Reply... - a menu of reply choices. There are two choices by default,
-and instructions for adding more. 
-<br>
+  <dd><button -command "Msg_Compose">Comp</button>
+  <dt>compose a mail message. In the drafts folder, this opens the
+      current message as the draft. 
 
-Reply to sender - reply to the current message (-nocc cc -nocc to)
-<br>
+  <dd>Reply...
+  <dt>a menu of reply choices. There are two choices by default, and
+      instructions for adding more.  
+      <dl>
+        <dt><button -command "Msg_Reply -nocc to -nocc cc">Reply to
+            sender</button>
+        <dd>reply to the current message (-nocc cc -nocc to)
+	
+	<dt><button -command "Msg_Reply -cc to -cc cc">Reply
+	    all</button>
+	<dd>reply to the current message (-cc cc -cc to). 
+      </dl>
 
-Reply all - reply to the current message (-cc cc -cc to). 
-<br>
+  <dt><button -command "MsgForward">Forward</button>
+  <dd>forward the current message. 
+  <dt>More...
+  <dd>a menu with more message operations: 
+      <dl>
+        <dt><button -command "Print">Print</button>
+	<dd>print the current message. 
 
-Forward - forward the current message. 
-<p>
-More... - a menu with more message operations: 
-<br>
+	<dt><button -command "Ftoc_Unmark">Unmark</button>
+	<dd>cancel a <button -command "Msg_Move
+	    Ftoc_MoveMark">Move</button> or <button -command
+	    "Msg_Remove">Delete</button> mark. 
 
-Print - print the current message. 
-<br>
+	<dt><button -command "Msg_Clip">Clip</button>
+	<dd>make a new window containing the current message. 
 
-Unmark - cancel a move or delete mark. 
-<br>
+	<dt><button -command "Msg_ShowUnseen">First Unseen</button>
+	<dd>show the first unseen message. 
 
-Clip - make a new window containing the current message. 
-<br>
+	<dt><button -command "Msg_BurstDigest">Burst Digest</button>
+	<dd>use the MH burst command to explode a digest into messages.
 
-First Unseen - show the first unseen message. 
-<br>
-
-Burst Digest - use the MH burst command to explode a digest into messages.
-<br>
-
-Redistribute - use the MH dist command to remail a message. 
-<p>
+	<dt><button -command "Msg_Dist
+	    Msg_DistSetup">Redistribute</button> 
+	<dd>use the MH dist command to remail a message. 
+      </dl>
+</dl>
 And many more. Check out the <a HREF="exmh-ref.n.html">exmh-ref</a>
 man page for details. 
 <h4>UNDO</h4>
 <p>
-The Move, Link, and Delete operations mark a message with a pending
-operation. The way to undo this mark is to reselect the message(s)
-and select the Unmark operation from the More... menu. 
+The <button -command "Msg_Move Ftoc_MoveMark">Move</button>, <button
+-command "Msg_Move Ftoc_CopyMark advance?">Link</button>, and <button
+-command "Msg_Remove">Delete</button> operations mark a message with a
+pending operation. The way to undo this mark is to reselect the
+message(s) and select the <button
+-command "Ftoc_Unmark">Unmark</button> operation from the More... menu.
 
 <h3>Folder Commands</h3>
 <p>
 The middle set of buttons are for folder commands: New, Search...,
 Flist, Inc, Commit, and More... 
 <p>
-New brings up a dialog that lets you create new folders. (A Delete
-folder operation is under the More... menu.) 
-<p>
-Find causes a search dialog to appear. You can search over the message
-body (Msg), or the scan listing (FTOC). Radio buttons select which
-one. After typing in the search string, causes the search to begin.
-&lt;Control-s&gt; and &lt;Control-r&gt; cause subsequent forward and
-reverse searches, respectively. 
-<p>
-The Flist button refreshes the display of folder buttons. This counts
-up all the unseen messages in all folders. 
-<p>
-Commit causes pending delete and move operations to occur. This command
-is also bound to keystroke &lt;Return&gt;. 
+<dl>
+  <dt><button -command "Folder_New">New</button>
+  <dd>brings up a dialog that lets you create new folders. (A Delete
+      folder operation is under the More... menu.) 
+
+  <dt>Search...
+  <dd>a menu with Search options.  More info may be found <a
+      href="#search">below</a> 
+
+  <dt><button
+      -command "busy Flist_FindUnseen 1 ; Inc_PresortFinish">Flist</button>
+  <dd>refreshes the display of folder buttons. This counts up all the
+      unseen messages in all folders. 
+
+  <dt><button -command "Folder_Commit">Commit</button>
+  <dd>causes pending <button -command "Msg_Remove">Delete</button> and
+     <button -command "Msg_Move Ftoc_MoveMark">Move</button>
+     operations to occur. This command is also bound to keystroke
+     &lt;Return&gt;. 
+</dl>
+
 <h4>Incorporating Mail</h4>
 <p>
 The Inc button will incorporate new mail from your spool file into
@@ -211,7 +240,7 @@ dropbox names in a ~/.xmhcheck file. Dropbox names can be hostnames
 mail for you. In this case, "background flist" will highlight folders
 that have new mail in them. 
 </ul>
-<h3>Searching</h3>
+<h3><a name="search">Searching</a></h3>
 <p>
 Exmh provides several search mechanisms under the Search menu. The
 Search Message command searches for a string in the current message.
@@ -250,21 +279,33 @@ to start over. Sigh.
 <h3>Miscellaneous Folder Operations</h3>
 <p>
 The More... menu has more folder operations: 
-<p>
-"Rescan folder" forces a rescan of the folder contents. Exmh maintains
-a cache of the scan output that could get confused. The Rescan button
-forces a full scan. To optimistically rescan the current folder, click
-on its label in the top pane instead. 
-<p>
-"Sort folders" sorts the current folder by message date. 
-<p>
-"Pack folders" renumbers messages in the current folder to eliminate
-any gaps in the number sequence. 
-<p>
-"Find all folders" recurses through the directory structure looking
-for all MH folder directories. 
-<p>
-"Delete folder" lets you delete a folder. 
+
+<dl>
+  <dt><button -command "busy Scan_FolderForce">Rescan folder</button>
+  <dd>forces a rescan of the folder contents. Exmh maintains a cache
+      of the scan output that could get confused. The Rescan button
+      forces a full scan. To optimistically rescan the current folder,
+      click on its label in the top pane instead.  
+
+  <dt>Sort folder...
+  <dd>sorts the current folder by
+      <button -command "busy Folder_Sort -datefield date">Date</button>, 
+      <button -command "busy Folder_Sort -datefield subject -limit 0">Subject</button>, or
+      <button -command "busy Folder_Sort -datefield from">Sender</button>.
+
+
+  <dt><button -command "busy Folder_Pack">Pack folders</button>
+  <dd>renumbers messages in the current folder to eliminate any gaps
+      in the number sequence. 
+
+  <dt><button -command "busy Flist_Refresh">Find all folders</button>
+  <dd>recurses through the directory structure looking for all MH
+      folder directories. 
+
+  <dt><button -command Folder_Delete>Delete folder</button>
+  <dd>lets you delete a folder. 
+
+</dl>
 <p>
 There are more entries here. Check the <a HREF="exmh-ref.n.html">exmh-ref</a>
 man page for details. 

@@ -274,3 +274,16 @@ Status:
 
 The Hook_SeditInit predefined hooks are not mentioned in the html doc.
 There might be others, review the code and document any missing ones
+----------------------------------------------------------------------
+Number: 22
+Version: 2.0.2
+Priority: medium
+Scope: Narrow
+Complexity: 
+Status:
+
+Found this in Intro.html:
+
+BUG: if you have projected a New FTOC, a subsequent pick will only
+select messages still on the display. You need to rescan the folder
+to start over. Sigh. 
