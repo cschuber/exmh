@@ -641,7 +641,7 @@ proc Ftoc_InitSequences { w } {
 }
 proc Ftoc_ShowSequences { folder } {
     global exwin
-    Exmh_Debug "Ftoc_ShowSequences $folder"
+    Exmh_Debug Ftoc_ShowSequences $folder
     set sequences [option get . sequences {}]
     set hiddensequences [option get . hiddensequences {}]
     foreach sequence $sequences {

@@ -146,7 +146,8 @@ proc MsgChange {msgid {show show} {line {}} } {
         if {[string length $line] == 0} { set line 1 }
 	set msgid [Ftoc_MsgNumber [Ftoc_FindMsg $msgid $line]]
     }
-    Ftoc_ClearCurrent
+    Mh_SetCur $exmh(folder) $msgid
+    Ftoc_ShowSequences $exmh(folder)
     if {! [Ftoc_Change $msgid $line $show]} {
 	Exmh_Status "Cannot find msg $msgid - Rescan?"
     } else {
