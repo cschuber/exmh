@@ -724,6 +724,11 @@ proc SeditFormatMail { t out isigw } {
 		    }
 		    continue
 		}
+		if {$sedit($t,mhn) && [string first {#} $line] == 0} {
+		    # This is an mhn directive
+		    puts $out $line
+		    continue
+		}
 	    }
 	    if {$F1 < 0} {
 		# Nothing left to format

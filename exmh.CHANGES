@@ -1,4 +1,10 @@
 HISTORY
+
+cvs respository 08/30/2000 Hal DeVore <haldevore@earthling.net>
+    lib/seditMime.tcl applied patch from Chris Garrigues 
+    <cwg-exmh@deepeddy.com> to prevent flowing of mhn directives
+    when running sedit with formatting on send.
+
 cvs repository 08/28/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/html/software.html: Document 8.3.2 as most recent Tk/Tcl.
 
