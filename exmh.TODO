@@ -1,185 +1,189 @@
 
+----------------------------------------------------------------------
 Number: 1
 Priority: High
 Scope: Medium
 Complexity: High
+Status: Anders Hammarquist <iko@cd.chalmers.se> has a forked version
+	of the sources in which he's working on this
 
 Incorporate The PGP 5.0 patch from the 2.0.2 patch list.
 Unfortunately, it conflicts with some other already installed patches.
 
-
+----------------------------------------------------------------------
 Number: 2
 Priority: Med 
 Scope: Wide
 Complexity: High
+Status: 
 
 Improve/simplify font handling.  See especially the mime preview
 window and the message clip window (which may be the same set of
 widgets).
 
-
-
+----------------------------------------------------------------------
 Number: 3
 Priority: Med 
 Scope: Narrow
 Complexity: Low
+Status: 
 
 Incorporate mime-forwarding (is this already there?) as is used by
 many "exmh hackers" already but with a look at Jerry Peek's section on
 "mforw".
 
-
-
+----------------------------------------------------------------------
 Number: 6a
 Priority: Med
 Scope: 
 Complexity: 
+Status: 
 
 Improve handling of slow access to files.
 
-
-
+----------------------------------------------------------------------
 Number: 7
 Priority: Med
 Scope: 
 Complexity: 
+Status: 
 
 Improve ability to run multiple exmh instances to the same X server
 and the same mail folders and anywhere else there might be problems
 
-
-
+----------------------------------------------------------------------
 Number: 8
 Priority: Med
 Scope: 
 Complexity: High
+Status: 
 
 Add ability to have multiple "current" messages being viewed
 
-
-
+----------------------------------------------------------------------
 Number: 9
 Priority: Med
 Scope: 
 Complexity: High
+Status: 
 
 Add ability to have multiple FTOCs viewed.
 
-
-
+----------------------------------------------------------------------
 Number: 10
 Priority: Med
 Scope: Narrow
 Complexity: 
+Status: 
 
 Add LDAP lookup module to address book using OpenLDAP.
 
-
-
+----------------------------------------------------------------------
 Number: 11
 Priority: Med
 Scope: Narrow
 Complexity: 
+Status: 
 
 Convert address book to use some sort of real database instead of a
 dumped tcl list (may be synonymous with adding LDAP lookup).
 
-
-
+----------------------------------------------------------------------
 Number: 12
 Priority: Med
 Scope: Narrow
 Complexity: 
+Status: Anders Hammarquist <iko@cd.chalmers.se>'s work on #1 includes
+	this. 
 
 Support GnuPG.
 
-This is believed to be covered by the PGP5 patch.
-
-
+----------------------------------------------------------------------
 Number: 13
 Priority: Med
 Scope: 
 Complexity: 
+Status: 
 
 Put a real menu bar on the top of the windows and move many of the
 buttons into the menu bar.  Those items that make sense as buttons,
 should remain buttons, but the look of them should be more like the
 ones in other applications we use.
 
-
-
+----------------------------------------------------------------------
 Number: 16
 Priority: Low
 Scope: 
 Complexity: 
+Status: 
 
 Composition of multipart messages is ugly.  I'm sure we can do better.
 Also, it would be nice to be able to control where attached messages
 get in-lined instead of always putting them at the bottom.
 
-
-
+----------------------------------------------------------------------
 Number: 17
 Priority: Low
 Scope: 
 Complexity: 
+Status: 
 
 Display of multipart messages is less than ideal (ugly, but not as
 ugly as the composition).  I (cwg) wrote it before tk had the ability to
 in-line graphics.
 
-
-
+----------------------------------------------------------------------
 Number: 19
 Priority: 
 Scope: 
 Complexity: 
+Status: 
 
 Automatic detection of what style digital signatures to use.
 
-
-
+----------------------------------------------------------------------
 Number: 21
 Priority: 
 Scope: 
 Complexity: 
+Status: cwg is looking into this.
 
 Generalized support for sequences
 
-
-
+----------------------------------------------------------------------
 Number: 22
 Priority: 
 Scope: 
 Complexity: 
+Status: 
 
 Generalized support for per-recipient twiddling of headers.  Includes
 ability to control the "from", "reply-to"
 
-
-
+----------------------------------------------------------------------
 Number: 23
 Priority: 
 Scope: 
 Complexity: 
+Status: 
 
 Support for group addresses (address lists) in the address book.
 
-
-
+----------------------------------------------------------------------
 Number: 24
 Priority: 
 Scope: 
 Complexity: 
+Status: 
 
 Support for nmh 1.0 (any changes necessary?)
 
-
-
+----------------------------------------------------------------------
 Number: 25
 Priority: High
 Scope: varies
 Complexity: varies
+Status: 
 
 Incorporate patches from the New Features section of the Patch page
 
@@ -190,13 +194,12 @@ Incorporate patches from the New Features section of the Patch page
   7.Preference item to turn off scroll-to-next message. 
   8.String From lines before posting. 
 
-
-
-
+----------------------------------------------------------------------
 Number: 27
 Priority: Med
 Scope: Medium
 Complexity: Medium
+Status: 
 
 From: Anders Eriksson <anders.c.eriksson@era.ericsson.se>
 
@@ -210,39 +213,40 @@ app-defaults to get it to match the output of file. A quick
 look at the distributed app-defaults reveal that they seem
 to match Solaris' file. /Iko
 
-
-
+----------------------------------------------------------------------
 Number: 28
 Priority: Med
 Scope: Narrow
 Complexity: Medium?
+Status: 
 
 Always use "scan" to build or alter ftoc lines.
 
-
-
+----------------------------------------------------------------------
 Number: 29
 Priority: Med
 Scope: Medium
 Complexity: Medium
+Status: This is now in the misc directory.  Does it need to be integrated?
 
 Add John Klassa's "par" based quoter as a user option (should include
 user-specifiable path to par binary).
 
-
-
+----------------------------------------------------------------------
 Number: 31
 Priority: Med
 Scope: Narrow
 Complexity: Low
+Status: 
 
 Add a prompt before replacing the user's .mh_profile
 
-
+----------------------------------------------------------------------
 Number: 32
 Priority: Low
 Scope: Narrow
 Complexity: Low
+Status: 
 
 The html documentation says:
 
@@ -252,11 +256,12 @@ The html documentation says:
 
 Since it says this will happen, I think it belongs on the todo list.
 
-
+----------------------------------------------------------------------
 Number: 33
 Priority: High
 Scope: Narrow
 Complexity: Low
+Status: 
 
 Review patch from Mark Mabry:
 Description: 
@@ -267,77 +272,81 @@ When there are 2 different users running exmh on the same machine, update
 If it doesn't already the location of scancmds should be dependent on
 the tempdir environment variable.  Consider whether pid should be there.
 
-
+----------------------------------------------------------------------
 Number: 34
 Priority: Low
 Scope: Narrow
 Complexity: Low
+Status: 
 
 Update overview.html to current version.
 
-
+----------------------------------------------------------------------
 Number: 35
 Priority: Low
 Scope: Narrow
 Complexity: Low
+Status: 
 
 Review Exmh_Status and make more friendly to long messages.
 
-
-
+----------------------------------------------------------------------
 Number: 36
 Priority: Low
 Scope: Wide
 Complexity: Low
+Status: 
 
 Review handling of user-specified file and directory names, allow "~"
 in all cases.  Change internally using glob but do NOT save the
 "globbed" version.
 
-
+----------------------------------------------------------------------
 Number: 37
 Priority: Low
 Scope: Narrow
 Complexity: 
+Status: 
 
 Provide support for editing "named" lists in aliases
 
-
+----------------------------------------------------------------------
 Number: 39
 Priority: Low
 Scope: Narrow
 Complexity: Low
+Status: 
 
 Work over key bindings in the selection list presented when address
 expansion comes up with multiple hits.  In particular, the return key
 should "do the right thing".
 
-
-
+----------------------------------------------------------------------
 Number: 40
 Priority: Low
 Scope: Narrow
 Complexity: Low
+Status: 
 
 In the "message clip" and possibly other windows you must get the
 focus on the scrollbar in order to scroll with the cursor keys.
 Brent's book discusses how to properly deal with this.
 
-
-
+----------------------------------------------------------------------
 Number: 41
 Priority: Low
 Scope: Wide
 Complexity: Low
+Status: 
 
 Ensure that all toplevel windows have handlers for WM_* messages.
 
-
-
+----------------------------------------------------------------------
 Number: 42
 Priority: Med
 Scope: 
 Complexity: 
+Status: 
 
 Apply patches from Valdis Kletnieks
   - horizontal scroll bar patch from Valdis Kletnieks
@@ -348,28 +357,31 @@ NOTE: these are all "on hold".  The first two need documentation
 patches, the third requires a modified MH or nmh and will be held
 until that is distributed.
                                    
-
+----------------------------------------------------------------------
 Number: 43
 Priority: Low
 Scope: Narrow
 Complexity: ?
+Status: 
 
 If x-image-url fails to load and an x-face is present it should be used.
 
-
+----------------------------------------------------------------------
 Number: 44
 Priority: Low
 Scope: Narrow
 Complexity: Medium
+Status: 
 
 Provide the ability to reply, forward, etc, an attached message (from
 a digest or forwarded or wherever).
 
-
+----------------------------------------------------------------------
 Number: 45
 Priority: Med
 Scope: Wide
 Complexity: Medium
+Status: 
 
 Create a $HOME/.exmh directory to contain all the "ancillary" files
 used by exmh.  This might include any or all of the following:
@@ -382,14 +394,17 @@ used by exmh.  This might include any or all of the following:
 .webtkcache         html viewer cache
 $EXMHTMPDIR         temp files
 
+----------------------------------------------------------------------
 Number: 46
 Priority: Med
 Scope: Narrow (?)
 Complexity: ?
+Status: 
 
 The PGP code needs to remember the settings for a particular
 draft between edits.
 
+----------------------------------------------------------------------
 
 $Id$
 
