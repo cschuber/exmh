@@ -1,4 +1,7 @@
 HISTORY
+cvs repository 3/17/2005 welch@panasas.com channeling Alexander Zangerl
+  exmhcomp: support mailto URLs
+
 cvs repository 3/4/2005 cwg-exmh@deepeddy.com
   lib/seqwin.tcl - Make Warp & Narrow work if you aren't already in
   the folder.

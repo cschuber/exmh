@@ -1,0 +1,25 @@
+#!/usr/bin/wish
+
+wm withdraw .
+set exmh_path /usr/local/bin
+set exmh_bin exmh
+
+# if exmh isn't running , start it up and wait till it's there before continuing
+if {[lsearch [winfo interps] $exmh_bin ]==-1} {
+    exec $exmh_path/$exmh_bin -iconic 2>1 > /dev/null &
+    while {[lsearch [winfo interps] $exmh_bin ]==-1} {
+	after 200       
+    }
+}
+
+if { 0 == [string length $argv] } {
+    send exmh Msg_Compose
+    exit 0
+} else {
+    if { 0 == [string first "mailto:" $argv 0] } {
+	send exmh Msg_Mailto $argv
+    } else {
+	send exmh Msg_CompTo $argv
+    }
+    exit 0
+}
