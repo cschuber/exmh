@@ -195,6 +195,13 @@ proc Folder_Sort { args } {
     }
 }
 
+proc Folder_Previous {} {
+    set f [Ftoc_LastFolder]
+    if {[string length $f]} {
+	Folder_Change $f
+    }
+}
+
 proc Folder_Pack {} {
     global exmh
 
@@ -322,4 +329,28 @@ proc Folder_PurgeBg { {folderlist {}} } {
 proc Folder_PurgeAllBg {} {
     global flist
     Folder_PurgeBg $flist(allfolders)
+}
+
+# Called when changing messages.  If you are sharing a folder,
+# you need to checkpoint state to the file system at each message.
+
+proc Folder_CheckPointShared {} {
+    global exmh folder
+    if {[info exist folder(shared,$exmh(folder))]} {
+	Msg_CheckPoint
+    }
+}
+proc Folder_IsShared {folder} {
+    global folder
+    set folder(shared,$folder) 1
+}
+proc Folder_FindShared {} {
+    if {[catch {open ~/Mail/.folders_shared} in]} {
+	Exmh_Debug $in
+	return
+    }
+    foreach f [split [read $in] \n] {
+	Foldler_IsShared $f
+    }
+    close $in
 }

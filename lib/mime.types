@@ -11,6 +11,7 @@ application/mac-binhex40	hqx
 application/mac-compactpro	cpt
 application/macwriteii
 application/msword		doc
+application/msexcel		xls
 application/news-message-id
 application/news-transmission
 application/octet-stream	bin dms lha lzh exe class tgz taz

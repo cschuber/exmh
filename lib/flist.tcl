@@ -92,36 +92,38 @@ proc FlistTraceUnvisited {args} {
 
 ### Routines to find all folders, figure out which have nested folders, etc.
 
+# This is commonly bound to the "Flist" button - reset the state
+# about folders.
+
 proc Flist_Refresh {} {
     global flist
     FlistResetVars
     FlistFindAllInner
     Fdisp_Redisplay
     Flist_FindUnseen 1
+    Folder_FindShared
     Inc_PresortFinish
 }
 
-proc Flist_FindAllFolders {} {
+proc Flist_FindAllFolders {{force 0}} {
     global flist mhProfile flistSubCache flistParents
 
     if ![info exists flist(cacheFile)] {
 	set flist(cacheFile) $mhProfile(path)/.folders
     }
-    if {![file readable $flist(cacheFile)] ||
-	[file size $flist(cacheFile)] == 0} {
+    if {$force || ![file readable $flist(cacheFile)] ||
+	    [file size $flist(cacheFile)] == 0} {
 	FlistFindAllInner
-    } else {
-	if {![info exists flist(allfolders)]||
+    } elseif {![info exists flist(allfolders)]||
 	    [file mtime $flist(cacheFile)] > $flist(cacheFileMtime)} {
-	    set in [open $flist(cacheFile)]
-	    set flist(allfolders) [FlistSort [split [read $in] \n]]
-	    close $in
-	    set flist(cacheFileMtime) [file mtime $flist(cacheFile)]
-	    FlistSubFoldersInit
-	    BgAction FlistUnseenFoldersInit FlistUnseenFoldersInit
-	}
+	set in [open $flist(cacheFile)]
+	set flist(allfolders) [FlistSort [split [read $in] \n]]
+	close $in
+	set flist(cacheFileMtime) [file mtime $flist(cacheFile)]
+	FlistSubFoldersInit
+	BgAction FlistUnseenFoldersInit FlistUnseenFoldersInit
     }
-
+    Folder_FindShared
 }
 proc FlistFindAllInner {} {
     global flist flistSubCache flistParents mhProfile

@@ -767,7 +767,7 @@ proc Ftoc_Prev { {show show} } {
     }
 }
 proc Ftoc_NextFolder { {implied no} } {
-    global ftoc
+    global ftoc exmh
     # Try to chain to the next folder with unread messages.
     if {$implied != "no"} {
 	# Implied - chained with some other operation - be lenient
@@ -787,6 +787,7 @@ proc Ftoc_NextFolder { {implied no} } {
     set f [Flist_NextUnseen]
     if {[string length $f] != 0} {
 	if {$ftoc(softChange)} {
+	    set ftoc(lastFolder) $exmh(folder)
 	    Folder_Change $f Msg_ShowUnseen
 	    return
 	} else {
@@ -800,6 +801,14 @@ proc Ftoc_NextFolder { {implied no} } {
     }
     Exmh_Status ""
     Exmh_Status "End of folder" warn
+}
+proc Ftoc_LastFolder {} {
+    global ftoc
+    if {[info exist ftoc(lastFolder)]} {
+	return $ftoc(lastFolder)
+    } else {
+	return ""
+    }
 }
 proc Ftoc_PrevMarked { {show show} } {
     global ftoc

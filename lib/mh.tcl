@@ -672,7 +672,7 @@ proc Mh_Send { msg } {
 	"xterm" {
 	    eval exec $mhProfile(xtermcmd) { \
 		-title "Sending $mhProfile(draft-folder)/$msg ..." \
-		-e sh -c "send -draftf +$mhProfile(draft-folder) -draftm $dst || whatnow -draftf +$mhProfile(draft-folder) -draftm $dst" &}
+		-e sh -c "$mhProfile(sendproc) -draftf +$mhProfile(draft-folder) -draftm $dst || whatnow -draftf +$mhProfile(draft-folder) -draftm $dst" &}
 
 	}
     }

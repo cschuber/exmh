@@ -164,6 +164,7 @@ proc MsgChange {msgid {show show} {line {}} } {
 	    Ftoc_MoveFeedback $msgid $line
 	}
     }
+    Folder_CheckPointShared
 }
 
 proc MsgSeen { msgid } {

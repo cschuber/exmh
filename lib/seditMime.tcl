@@ -236,6 +236,11 @@ proc SeditMimeFirstPart { t type promote keep} {
 	SeditMsg $t "No message?"
 	$t mark set header end
     }
+    if [$t compare header == "header linestart"] {
+	# last header line was deleted during editing -- back up
+	# over newline
+	$t mark set header "header - 1c"
+    }
     $t insert header "\nMime-Version: 1.0"
     if [$t compare header == "end -1c"] {
 	# Nothing left after deleting the body
@@ -359,7 +364,9 @@ proc SeditStartMulti {t type {empty {}} } {
     $t mark set start $h
 
     if {$sedit($t,dash)} {
-	set dash "start lineend + 1c"
+	set dash start
+	set start "start lineend + 1c"
+#	set dash "start lineend + 1c"
 	# Insert copy of dashed line into outer body
 	$t insert start [$t get $dash "$dash lineend"]
 	# Remove dashed line from inner body, replacing it with blank line
