@@ -106,9 +106,23 @@ proc Addr_Init {} {
         {
             addr_db(searchlist)
             addressdbSearchlist
-            {Addr_FullNameMatch Addr_Lookup Alias_Lookup}
+            {Addr_FullNameMatch Addr_Lookup Alias_Lookup LDAP_Lookup}
             "Expand methods to use"
-            "A list of TCL procs, separated by spaces, which will be called sequentially to try to expand the address.  Valid choices are \"Addr_FullNameMatch\" to search full names, \"Addr_Lookup\" to search for mail addresses, and \"Alias_Lookup\" to search your MH/exmh alias list."
+            "A list of TCL procs, separated by spaces, which will be called sequentially to try to expand the address.  Valid choices are \"Addr_FullNameMatch\" to search full names, \"Addr_Lookup\" to search for mail addresses, \"Alias_Lookup\" to search your MH/exmh alias list, and LDAP_Lookup to use an LDAP server."
+        }
+        {
+            addr_db(ldap_server)
+            addressdbLDAPServer
+            {}
+            "LDAP Server"
+            "The server to send LDAP queries to."
+        }
+        {
+            addr_db(ldap_searchbase)
+            addressdbLDAPSearchBase
+            {}
+            "LDAP Search Root"
+            "The root under which to conduct LDAP searches."
         }
         {
             addr_db(filter_regexp)
@@ -652,6 +666,67 @@ proc Addr_FullNameMatch {n}  {
     }
 }
 
+    
+proc LDAP_Lookup {n} {
+    global addr_db
+
+    # Make sure the ldap_server variable has been set in the preferences.
+    if { ($addr_db(ldap_server) == {}) || ($addr_db(ldap_searchbase) == {}) } {
+        return {}
+    }
+    
+    Exmh_Status "Querying $addr_db(ldap_server) from $addr_db(ldap_searchbase) with $n..."
+
+    set query "(|(cn=*$n*)(mail=*$n*)(sn=*$n*)(givenname=*$n*))"
+    if [catch {set ldap_results [exec ldapsearch -h [string trim $addr_db(ldap_server)] \
+	                                         -b $addr_db(ldap_searchbase) \
+                                                 "$query" cn mail]} err] {
+        Exmh_Status "Error executing ldapsearch: $err"
+        return {}
+    }
+
+    # The return from ldapsearch will be something like this:
+    #
+    # cn=Lastname, Firstname
+    # mail=foo@nowhere.com
+    #
+    # cn=Anotherlastname, Anotherfirstname
+    # mail=bar@nowhere.com
+    #
+    # ...
+    set result {}
+    foreach i $ldap_results {
+        if [regexp -nocase {^mail=([^,]*)$} $i dummy email] {
+            lappend result "[LDAP_Entry_FormatForMail $email $name]"
+        } elseif [regexp -nocase "^cn=(.*)$" $i dummy tmp] {
+            set name $tmp
+        } else {
+            append name " $i"
+        }
+    }
+    
+    return $result
+}
+
+
+proc LDAP_Entry_FormatForMail { email name } {
+    global addr_db
+    
+    if {$addr_db(standard_address_format)} {
+        set formatted "$email ($name)"
+    } else {
+        # If there are characters in the name that require quoting,
+        # quote the string.
+        if [string match {*[<>.,'*?]*} $name] {
+            set formatted "\"$name\" <$email>"
+        } else {
+            set formatted "$name <$email>"
+        }
+    }
+
+    return $formatted
+}
+
 proc Addr_Lookup { n } {
     global addr_list
 
@@ -743,6 +818,10 @@ proc AddrShowDialog {w list} {
             AddrShowDialogDone $f $l ;\
             break \
             "
+    bind $l <Escape> "\
+            AddrShowDialogCancel $f ;\
+            break \
+            "
     focus $w.addrs.lb
     foreach i $list {
         $l insert end $i
@@ -773,6 +852,15 @@ proc AddrShowDialogDone {f l} {
         AddrDebug "Selected: <nothing>"
         set addr_db(expansion) ""
     }
+    AddrDebug "selected $addr_db(expansion)"
+    focus [winfo parent $f]
+    catch {destroy $f}
+}
+
+proc AddrShowDialogCancel {f} {
+    global addr_db
+
+    set addr_db(expansion) ""
     AddrDebug "selected $addr_db(expansion)"
     focus [winfo parent $f]
     catch {destroy $f}
