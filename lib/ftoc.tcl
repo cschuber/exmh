@@ -1367,11 +1367,25 @@ proc FtocToggleSequence { sequencename } {
     # If none are in the sequence, then remove from the sequence.
     set flag del
     set msgs {}
-    Ftoc_Iterate line {
-	set msgid [Ftoc_MsgNumber $line]	
-	lappend msgs $msgid
-	if {[lsearch -exact $sequence $msgid] == -1} {
+    if {$ftoc(curLine) != ""} {
+	set msgs [Ftoc_MsgNumber $ftoc(curLine)]
+	if {[lsearch -exact $sequence $msgs] == -1} {
 	    set flag add
+	}
+    } else {
+	Ftoc_Iterate line {
+	    set msgid [Ftoc_MsgNumber $line]	
+	    if {$flag == {del}} {
+		if {[lsearch -exact $sequence $msgid] == -1} {
+		    set flag add
+		    set msgs {}
+		}
+		lappend msgs $msgid
+	    } else {
+		if {[lsearch -exact $sequence $msgid] == -1} {
+		    lappend msgs $msgid
+		}
+	    }
 	}
     }
     if {$msgs != {}} {
