@@ -30,16 +30,6 @@ proc Msg_Reset { numMsgs {folder {}} } {
 proc Msg_CheckPoint {} {
     # push current MH state to disk
     global exmh msg
-    if {$msg(id) != ""} {
-	set cur $msg(id)
-    } else {
-	set cur ""
-    }
-    if {$cur != ""} {
-	Mh_SetCur $exmh(folder) $cur
-    } else {
-	Mh_ClearCur $exmh(folder)
-    }
     if {$msg(seen) != {}} {
 	Mh_MarkSeen $exmh(folder) $msg(seen)
 	set msg(seen) {}
