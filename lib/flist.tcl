@@ -95,7 +95,7 @@ proc Flist_FindAllFolders {{force 0}} {
 	close $in
 	set flist(cacheFileMtime) [file mtime $flist(cacheFile)]
 	FlistSubFoldersInit
-	BgAction FlistUnseenFoldersInit FlistUnseenFoldersInit
+	FlistUnseenFoldersInit
     }
     Folder_FindShared
 }
@@ -137,7 +137,7 @@ Please wait...
 
     set flist(allfolders) [FlistSort $raw]
     FlistSubFoldersInit
-    BgAction FlistUnseenFoldersInit FlistUnseenFoldersInit
+    FlistUnseenFoldersInit
     FlistCacheFolderList
     destroy .scanning
 }
@@ -150,7 +150,7 @@ proc Flist_AddFolder { folder } {
     }
     set flist(allfolders) [FlistSort $flist(allfolders)]
     FlistSubFoldersInit
-    BgAction FlistUnseenFoldersInit FlistUnseenFoldersInit
+    FlistUnseenFoldersInit
     FlistCacheFolderList
     Fdisp_Redisplay
 }
@@ -162,7 +162,7 @@ proc Flist_DelFolder { folder } {
     }
     set flist(allfolders) [FlistSort [lreplace $flist(allfolders) $ix $ix]]
     FlistSubFoldersInit
-    BgAction FlistUnseenFoldersInit FlistUnseenFoldersInit
+    FlistUnseenFoldersInit
     FlistCacheFolderList
     Fdisp_Redisplay
 }

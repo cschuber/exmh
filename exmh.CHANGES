@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 3/1/2005 cwg-exmh@deepeddy.com
+  lib/flist.tcl: Run FlistUnseenFoldersInit in the foreground so that
+  it actually works.
+
 cvs repository 2/18/2005 cwg-exmh@deepeddy.com
   lib/ftoc.tcl: Fix patch of 2/3 so it doesn't break if you don't have
   a detached message window.
