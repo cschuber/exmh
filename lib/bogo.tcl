@@ -18,15 +18,20 @@ it uses -Sn and -Ns; for off it uses -s and -n."}
     {bogo(otherham) bogoOtherHam {} {Other--Non-Spam}
 "How the other program is invoked, flags included, for non-spam."}
     {bogo(spammessage) bogoSpamMessage {CHOICE nothing rmm refile} {Spam Procedure}
-"What to do with a spam message."}
+"What to do with a spam message after your Bayesian filter has reclassified it."}
     {bogo(spamfolder) bogoSpamRefile bogus {Spam Folder}
 "If you selected 'refile' for spam messages, 
 this is the destination folder."}
     {bogo(hammessage) bogoHamMessage {CHOICE nothing refile} {Ham Procedure}
-"What to do with a ham message."}
+"What to do with a ham message after your Bayesian filter has reclassified it."}
     {bogo(hamfolder) bogoHamRefile inbox {Ham Folder}
 "If you selected 'refile' for ham messages,
 this is the destination folder."}
+    {bogo(stdin) bogoStdin ON {Feed messages on STDIN?}
+"If your filter expects mails to be passed via STDIN, leave this on.
+Your program will be passed mails via STDIN, one per invocation.
+Otherwise your filter program will get a list of files as arguments.
+Spamassassin supports either method."}
     }
     case $bogo(progname) {
 	"bogofilter" {
@@ -64,10 +69,21 @@ proc Bogo_Filter {{spam spam}} {
         set msgs [Ftoc_CurMsgs]
         Exmh_Status "Marking [llength $msgs] msg[expr {[llength $msgs] > 1 ? "s" : ""}] as SPAM"
         Exmh_Debug Bogo spamprog="$bogo(spamprog)", message="$msgs", action="$bogo(spammessage)"
-	Ftoc_MsgIterate msgid {
-	    if [catch "exec $bogo(spamprog) <$mhProfile(path)/$exmh(folder)/$msgid" in] {
-	        Exmh_Status $in
-	        return
+	if {$bogo(stdin)} {
+	    Ftoc_MsgIterate msgid {
+		if [catch "exec $bogo(spamprog) <$mhProfile(path)/$exmh(folder)/$msgid" in] {
+		    Exmh_Status $in
+		    return
+		}
+	    }
+	} else {
+	    set paths {}
+	    Ftoc_MsgIterate msgid {
+		lappend paths "$mhProfile(path)/$exmh(folder)/$msgid"
+	    }
+	    if [catch "exec $bogo(spamprog) $paths" in] {
+		Exmh_Status $in
+		return
 	    }
 	}
 	if {$bogo(spammessage) == "rmm"} {

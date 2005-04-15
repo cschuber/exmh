@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 4/15/2005 welch@panasas.com channeling Alexander Zangerl
+  lib/bogo.tcl: add the option to give the spam filter a list of message file
+    names on its command line instead of running the filter once on each
+    message as standard input.  We know this works for spamassassin,
+    but not sure about the other filters.
+
 cvs repository 4/4/2005 welch@panasas.com
   lib/fileselect.tcl: made use of the built-in tk file dialogs optional.
     The setting is under the "FS Box" preferences panel.
