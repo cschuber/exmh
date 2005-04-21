@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 4/21/2005 valdis.kletnieks@vt.edu
+  lib/mime.tcl: Add call to FileExistsDialog to prompt before saving a
+    MIME part into an already existing file.
+
 cvs repository 4/15/2005 welch@panasas.com channeling Alexander Zangerl
   lib/bogo.tcl: add the option to give the spam filter a list of message file
     names on its command line instead of running the filter once on each

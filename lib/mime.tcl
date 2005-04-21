@@ -2380,10 +2380,19 @@ proc Mime_SavePiece {part type} {
     Exmh_Status "Saving $type $fileName"
     set name [FSBox "Save $type to:" $default write]
     if {$name != {}} {
+	set forceit ""
+	if [file exists $name ] {
+	    if {! [FileExistsDialog $name]} {
+		Exmh_Status "Save canceled"
+		return 0
+	    }
+	    set forceit "-force"
+	}
 	if [catch {
-	    file copy -- $fileName $name
+	    eval file copy $forceit -- $fileName $name
             # Leading zero to ensure octal interpretation
 	    file attributes $name -permissions 0$mhProfile(msg-protect)
+	    Exmh_Status "Saved to $name"
 	} err] {
 	    Exmh_Status $err
 	}
