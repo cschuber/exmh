@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 4/27/2005 jbeck@eng.sun.com
+  lib/app-defaults-color
+  lib/msgShow.tcl: Updated regular expressions for Sun bug report
+    highlighting, added support for SpamAssassin report highlighting.
+
 cvs repository 4/27/2005 welch@panasas.com
   lib/bogo.tcl: Added BogoSetup as a trace on bogo(progname) so that
     preference changes are reflected immediately w/out restarting exmh.

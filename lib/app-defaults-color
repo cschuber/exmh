@@ -170,6 +170,10 @@
 
 ! Sun bug report colours - this appears in headers
 *b_bugrpttok: -foreground mediumseagreen
+
+! SpamAssassin report colours
+*b_spamass:     -foreground yellow   -background black
+
 !!! Saved Window Positions
 !!! Wed Mar 27 12:17:41 CST 2002
 !!! Do not edit below here

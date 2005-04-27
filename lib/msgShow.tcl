@@ -73,7 +73,7 @@ proc Msg_HighlightInit { t } {
     foreach tagname {attrib_me quote_me attrib1 attrib2 attrib3 attrib4 \
 			 attrib5 quote1 quote2 quote3 quote4 quote5 signature \
 			 listsig msheader1 msheader2 udiffold udiffnew \
-			 bugrpttok} {
+			 bugrpttok spamass} {
         set rval [option get . b_$tagname {}]
         eval {$t tag configure $tagname} $rval
     }
@@ -418,6 +418,7 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
     set in_msheader 0
     set in_listsig 0
     set in_udiff 0
+    set in_spamass 0
 
     set endx [$t index end]
     for {set idx [expr int($start)]} {$idx <= $endx} {incr idx} {
@@ -428,6 +429,7 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 	    set in_msheader 0
 	    set in_signature 0
 	    set in_udiff 0
+	    set in_spamass 0
 	} 
 
 	if {[regexp {^---------+$} $txt] || [regexp {^______+$} $txt]} {
@@ -435,15 +437,17 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 	    set in_msheader 0
 	    set in_signature 0
 	    set in_udiff 0
+	    set in_spamass 0
 	} 
 
 	if {[regexp {^--* *Original Message *--*$} $txt] 
-	    || [regexp {^[-]+ *Forwarded Message *$} $txt]
+	    || [regexp {^[-]+ (Begin )?Forwarded Message *-*$} $txt]
 	    || [regexp {^[-]+ *End of Forwarded Message *$} $txt]} {
 	    set in_listsig 0
 	    set in_msheader 1
 	    set in_signature 0
 	    set in_udiff 0
+	    set in_spamass 0
 	}
 
 	if {[regexp {^-- ?$} $txt]} {
@@ -451,6 +455,7 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 	    set in_msheader 0
 	    set in_signature 1
 	    set in_udiff 0
+	    set in_spamass 0
 	} 
 
 	if {[regexp {^@@.*@@$} $txt]} {
@@ -458,7 +463,16 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 	    set in_msheader 0
 	    set in_signature 0
 	    set in_udiff 1
+	    set in_spamass 0
 	} 
+
+	if {[regexp {^ pts rule name              description$} $txt]} {
+	    set in_listsig 0
+	    set in_msheader 0
+	    set in_signature 0
+	    set in_udiff 0
+	    set in_spamass 1
+	}
 
 	if {$in_udiff == 1} {
 	    if {[regexp {^-} $txt d line]} {
@@ -491,10 +505,10 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 #	if {[regexp {^(\+>)} $txt d quote] 
 #	    || [regexp {^(John>)} $txt d quote] 
 #	    || [regexp {^(JBeck>)} $txt d quote]} {
-#	    $t tag add attrib_me $idx.0 $idx.[expr [string length $quote] - 1]
-#	    $t tag add quote_me  $idx.[expr [string length $quote] - 1] $idx.end
+#	    $t tag add attrib_me $idx.0 $idx.[string length $quote]
+#	    $t tag add quote_me  $idx.[string length $quote] $idx.end
 #	    continue
-#        }
+#	}
 
 	lassign {qt_cnt qt_str} [MsgHighlightQuoteLevel $txt]
 	if {$qt_cnt >= 5} {
@@ -513,6 +527,11 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 	
 	if {$in_signature == 1} {
 	    $t tag add signature $idx.0 $idx.end
+	    continue
+	}
+
+	if {$in_spamass == 1} {
+	    $t tag add spamass $idx.0 $idx.end
 	    continue
 	}
 
@@ -552,29 +571,38 @@ proc MsgShow_BeautifyBugrpt {t {start 1.0} {end end}} {
 	if {[regexp {^Subject: BugId [0-9].* Has been Updated .*$} $txt] ||\
 	    [regexp {^Subject: BugId [0-9].* Priority value ch.*$} $txt] ||\
 	    [regexp {^Subject: BugId [0-9].* New .* Created, .*$}  $txt] ||\
-	    [regexp {^Subject: BugId [0-9].* Responsible .*er$}    $txt]} {
+	    [regexp {^Subject: BugId [0-9].* Responsible .*er$}    $txt] ||\
+	    [regexp {^Subject: CR [0-9].* responsible .*er}        $txt] ||\
+	    [regexp {^Subject: CR [0-9].* Updated .*$}             $txt] ||\
+	    [regexp {^Subject: CR [0-9].* Created .*$}             $txt] ||\
+	    [regexp {^Subject: CR [0-9].* Redispatched .*$}        $txt] ||\
+	    [regexp {^Subject: CR [0-9].* Has been .*$}            $txt]} {
 	    set in_bugrpt 1
 	}
 	if {$in_bugrpt == 1} {
-	    if {[regexp {^ Synopsis:} $txt d line]} {
+	    if {[regexp {^ ?\*?Synopsis\*?:} $txt d line]} {
+		$t tag add bugrpttok $idx.0 $idx.end
+	    } elseif {[regexp {^  ?\*?Description\*?:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.end
-	    } elseif {[regexp {^ Description:} $txt d line]} {
+	    } elseif {[regexp {^  ?\*?Justification\*?:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.end
-	    } elseif {[regexp {^ Justification:} $txt d line]} {
+	    } elseif {[regexp {^  ?\*?Work ?around\*?:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.end
-	    } elseif {[regexp {^ Work around:} $txt d line]} {
+	    } elseif {[regexp {^  ?\*?Suggested [Ff]ix\*?:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.end
-	    } elseif {[regexp {^ Suggested fix:} $txt d line]} {
-		$t tag add bugrpttok $idx.1 $idx.end
-	    } elseif {[regexp {^	Evaluation:} $txt d line]} {
+	    } elseif {[regexp {^(	|  )\*?Evaluation\*?:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.end
 	    } elseif {[regexp {^ Interest list:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.15
-	    } elseif {[regexp {^ Comments:} $txt d line]} {
+	    } elseif {[regexp {^  \*?Interest List\*?:} $txt d line]} {
+		$t tag add bugrpttok $idx.2 $idx.16
+	    } elseif {[regexp {^  ?\*?Comments\*?:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.end
 	    } elseif {[regexp {^ See also:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.10
-	    } elseif {[regexp {^ Public Summary:} $txt d line]} {
+	    } elseif {[regexp {^  \*?See Also\*?:} $txt d line]} {
+		$t tag add bugrpttok $idx.2 $idx.11
+	    } elseif {[regexp {^ \*?Public Summary\*?:} $txt d line]} {
 		$t tag add bugrpttok $idx.1 $idx.end
 	    }
 	}
