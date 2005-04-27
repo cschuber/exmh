@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 4/27/2005 welch@panasas.com
+  lib/bogo.tcl: Added BogoSetup as a trace on bogo(progname) so that
+    preference changes are reflected immediately w/out restarting exmh.
+
 cvs repository 4/21/2005 valdis.kletnieks@vt.edu
   lib/mime.tcl: Add call to FileExistsDialog to prompt before saving a
     MIME part into an already existing file.

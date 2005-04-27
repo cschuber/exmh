@@ -33,6 +33,12 @@ Your program will be passed mails via STDIN, one per invocation.
 Otherwise your filter program will get a list of files as arguments.
 Spamassassin supports either method."}
     }
+    trace variable bogo(progname) w BogoSetup
+    BogoSetup
+}
+
+proc BogoSetup {args} {
+    global bogo
     case $bogo(progname) {
 	"bogofilter" {
 	    if {$bogo(mismarked)} {
