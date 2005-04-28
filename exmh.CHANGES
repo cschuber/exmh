@@ -1,6 +1,11 @@
 HISTORY
 cvs repository 4/27/2005 jbeck@eng.sun.com
   lib/app-defaults-color
+  lib/msgShow.tcl: Added support for marking text between stars
+    (e.g., I *really* mean it) in a bold font.
+
+cvs repository 4/27/2005 jbeck@eng.sun.com
+  lib/app-defaults-color
   lib/msgShow.tcl: Updated regular expressions for Sun bug report
     highlighting, added support for SpamAssassin report highlighting.
 

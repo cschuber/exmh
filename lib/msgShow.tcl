@@ -73,7 +73,7 @@ proc Msg_HighlightInit { t } {
     foreach tagname {attrib_me quote_me attrib1 attrib2 attrib3 attrib4 \
 			 attrib5 quote1 quote2 quote3 quote4 quote5 signature \
 			 listsig msheader1 msheader2 udiffold udiffnew \
-			 bugrpttok spamass} {
+			 bugrpttok spamass embolded} {
         set rval [option get . b_$tagname {}]
         eval {$t tag configure $tagname} $rval
     }
@@ -494,6 +494,15 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 	    }
 	    continue
 	} 
+
+	if {[regexp {\*.+\*} $txt bolded]} {
+	    if {[regexp {^[^*]*\*} $txt beforefirststar]} {
+		set firstlen [expr [string length $beforefirststar]]
+		set endpos [expr $firstlen + [string length $bolded] - 2]
+		$t tag add embolded $idx.[expr $firstlen] $idx.[expr $endpos]
+		$t tag raise embolded
+	    }
+	}
 
 # Enable this block if you can recognise quotes of your (written by
 # you) text.  This will then attempt to coloruise that text using

@@ -174,6 +174,9 @@
 ! SpamAssassin report colours
 *b_spamass:     -foreground yellow   -background black
 
+! Text in stars (i.e., "*foo*") rendered bold
+*b_embolded: -font 9x15bold
+
 !!! Saved Window Positions
 !!! Wed Mar 27 12:17:41 CST 2002
 !!! Do not edit below here
