@@ -1,4 +1,8 @@
 HISTORY
+cvs repository 05/08/2005 valdis.kletnieks@vt.edu
+  exmh.l: debian bug #309891 by way of Alexander Zangerl
+  Fix a bunch of typos
+
 cvs repository 4/27/2005 jbeck@eng.sun.com
   lib/app-defaults-color
   lib/msgShow.tcl: Added support for marking text between stars

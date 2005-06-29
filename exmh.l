@@ -72,7 +72,7 @@ user settings for MH and exmh.
 regular MH programs to manipulate your mail folders
 and messages.
 This means it is compatible with command-line use of MH programs,
-and its actions should be familar if you are an experienced MH user.
+and its actions should be familiar if you are an experienced MH user.
 If you are a new MH user, then the details of running MH programs
 is hidden behind the graphical interface.
 The MH programs used by exmh are described
@@ -113,7 +113,7 @@ There are more command line options described in the \fBexmh-ref\fP
 man page.
 .PP
 You can add the exmh command to your startup X environment by
-editting your startup file (like .xsession).  You might also want
+editing your startup file (like .xsession).  You might also want
 to add it to the main menu of your window manager.  The details
 about this vary from X system to X system, so ask your local
 X guru for help.  \fIExmh\fP also supports the window manager
@@ -133,7 +133,7 @@ that apply to \fIexmh\fP itself.  Quit, for example, quits \fIexmh\fP.
 The Help button pops up a menu, and you can select the entries there
 to get more on-line information about \fIexmh\fP.
 Use the left mouse button to select the buttons and menus.
-A button will change its appearence when you press it, and it
+A button will change its appearance when you press it, and it
 will be invoked when you release the mouse over the button.
 If you slide the mouse off the button before releasing it,
 nothing happens.
@@ -176,7 +176,7 @@ current folder is displayed.
 \fBTable of Contents\fP.
 The middle subwindow of the display shows a summary of the messages in
 the folder.
-It shows the message number, the date of the mesage, the subject of
+It shows the message number, the date of the message, the subject of
 the message, and, space permitting, the first few words of the message.
 Left click on a line in the table of contents to view the
 corresponding message.
@@ -294,7 +294,7 @@ Type in your message.
 When you type in a long message, the lines will wrap automatically
 at word boundaries.
 To get a blank line for paragraph boundaries, press <Return>.
-The built-in editor supports several editting commands
+The built-in editor supports several editing commands
 that are based on the GNU emacs
 key bindings.
 If you select the \fISimple Edit\fP menu entry under the main Bindings
@@ -305,7 +305,7 @@ the key bindings.
 If you are happy with the message, you send it by pressing
 the Send button at the top-right corner of the window.
 The Send button will turn grey, and the window will disappear
-once the message has been sent succesfully.
+once the message has been sent successfully.
 .PP
 If you do not want to send the message, press the Abort button instead.
 If you want to save the message draft and continue to work on it later,
@@ -363,7 +363,7 @@ If you accidentally move the mouse off of the button
 as you release it, nothing will happen.  Don't worry,
 the wrong button will not be invoked.
 .PP
-Press the left button over a menubutton to  pull down a menu.
+Press the left button over a menu button to  pull down a menu.
 Most of the menus in \fIexmh\fP are distinguished with a "..."
 in their label, e.g. "More...".
 The menu will go away
@@ -373,7 +373,7 @@ if you do not want to invoke any menu item.
 the middle button will "tear off" a Tk menu.
 This is quite handy if you use the menu often.
 To get the menu to go away, you must click the left button over
-the menubutton.  This will reattach the menu to the menubutton,
+the menu button.  This will reattach the menu to the menu button,
 and another left click will make the menu go away.
 In the latest versions of Tk, the first menu entry
 is a dashed line that invokes this tear-off operation.)
@@ -483,7 +483,7 @@ This time the built-in editor will open a window with a message that
 is partly filled in.  All the headers are initialized based on the
 header components from the original message.
 The built-in editor will automatically position the cursor at the
-begining of the message body.  You can enter your reply message
+beginning of the message body.  You can enter your reply message
 like you did with the previous messages.  You should also double-check
 the header components.  In this case, add yourself to the Cc: component
 so you will get a copy of the reply message.  When you are done,
@@ -560,11 +560,11 @@ This will run little slower because \fIpick\fP must read through
 all of your messages, not just their headers.
 .PP
 If you select more than one attribute, \fIpick\fP finds messages
-that match all the criteria.  In otherwords, it does the logical
+that match all the criteria.  In other words, it does the logical
 \fIand\fP of the search criteria.  If you want to search for this \fIor\fP
 that, then you need to press the Or button in the dialog.
 This adds another set of fields to the dialog, and pick will search
-for everthing that matches the first set \fIor\fP matches the
+for everything that matches the first set \fIor\fP matches the
 second set.
 .PP
 The "Add to Sel" checkbutton should be set \fIbefore\fP you do the
@@ -590,7 +590,7 @@ it appeared in a new window, but currently it replaces the table
 of contents.  You can move around and manipulate messages in this
 table of contents.  However, if you do another pick, it will only
 find things in this limited table of contents, not the whole folder.
-(Yes, this is a bug .)
+(Yes, this is a bug.)
 Use the Rescan Folder menu entry in the folder More... menu to
 get a complete folder listing.
 .SH FORWARDING MESSAGES
@@ -674,7 +674,7 @@ that are always in the cache.  Click in the first field and
 backspace over the default value of 1.  Type in 0 instead, and
 press <Return>.  Voila!  The folder cache disappears.
 .PP
-If you like this setting, press Save one the main Preference dialog
+If you like this setting, press Save on the main Preference dialog
 and your changes will be saved to a file named ~/.exmh-defaults.
 Press Reset if you want to undo your changes.
 You should be a little careful here, because you are allowed to
@@ -682,7 +682,7 @@ Dismiss the preference dialog without saving.
 .PP
 Another useful preference item to set is under Background Processing.
 You can arrange for \fIexmh\fP to periodically run \fIinc\fP so your
-messages are automatcially transferred into your inbox.
+messages are automatically transferred into your inbox.
 The advantage of doing this is that the folder label highlighting
 works best this way.  Unfortunately, \fIexmh\fP does not give you
 any visual clues when mail is only waiting in your system spool file.
@@ -794,7 +794,7 @@ that sent the current message (or their organization).
 .PP
 \fBBackground processing\fP.  You can set \fIexmh\fP to run
 \fIinc\fP periodically,
-check for new mesages arriving asynchronously in folders,
+check for new messages arriving asynchronously in folders,
 run the MH \fImsgchk\fP program,
 or count up the messages in your mail spool file.
 .PP
