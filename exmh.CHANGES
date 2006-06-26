@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 06/26/2006 valdis.kletnieks@vt.edu
+  lib/html_dpackage.tcl: Skip over <style>..</style> blocks we don't
+  know how to interpret anyhow. Thanks to Don Koch <aardvark@krl.com>
+  for the patch, and Rick Baartman <baartman@lin12.triumf.ca> for asking.
+
 cvs repository 05/08/2005 valdis.kletnieks@vt.edu
   exmh.l: debian bug #309891 by way of Alexander Zangerl
   Fix a bunch of typos

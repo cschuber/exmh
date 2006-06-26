@@ -381,6 +381,11 @@ proc !HMtag_title {win param text} {
 	set data ""
 }
 
+# remove <style> block (since we don't process it, yet)
+proc HMtag_style {win param text} {
+	upvar $text data
+	set data ""
+}
 
 proc HMtag_br {win param text} {
 	upvar #0 HM$win var
