@@ -722,6 +722,7 @@ The key id is substituted with %s (using format)." }
 #               (max hits (per folder))
 #  -L {limit}:0:{flimit} : limit per file	: since 3.0:glimpse(maxHitsMsg)
 #               (max hits per message)
+#  -W : AND scope whole file			: since 2.0:glimpse(andScope) 
 
 proc Glimpse_Init {} {
 	global glimpse
@@ -773,7 +774,18 @@ If you have a single large glimpse index, it applies
 to the whole search.
 
 The maximum # of matches can be changed on the fly in the 'Glimpse Window'
-in the menu 'opts'"} } }
+in the menu 'opts'"} } 
+
+Preferences_Add "Glimpse" "" {
+    {glimpse(andScope) glimpseAndScope ON {AND scope is whole file}
+	"If set, the scope for boolean AND is the whole file.
+The default scope of Boolean AND queries is a single line, and 
+the query 'good;bad' will return all lines containing both 'good' 
+and 'bad'. This option changes the scope of Booleans to be the 
+whole file. With the option enabled, the query 'good;bad' would 
+return all lines containing 'good' or 'bad' if the file contains 
+matches for both terms."}}
+}
 
 if {$glimpse(version) >= 3.0} {
     Preferences_Add "Glimpse" "" {

@@ -63,7 +63,11 @@ proc Glimpse_Startup {} {
     }
     # set default variable values
     set glimpse(search) ""
+    if $glimpse(andScope) {
+	set glimpse(andscope) "-W"
+    } else {
     set glimpse(andscope) ""
+    }
     set glimpse(giall) 0
 
     if {$glimpse(maxErrors) == "none"} {
