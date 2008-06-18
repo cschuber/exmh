@@ -999,7 +999,7 @@ It appears you have not used the MH mail system before.
 Normally MH creates a directory named ~/Mail and puts
 its mail folders and some other files under there.
 If you want your folders elsewhere, you will have to
-exit Exmh and run the program install-mh by hand.
+exit Exmh and run the program /usr/bin/mh/install-mh by hand.
 
 Is it ok if Exmh sets up your MH environment for you?
 "
