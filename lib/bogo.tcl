@@ -107,12 +107,25 @@ proc Bogo_Filter {{spam spam}} {
         set msgs [Ftoc_CurMsgs]
         Exmh_Status "Marking [llength $msgs] msg[expr {[llength $msgs] > 1 ? "s" : ""}] as HAM"
         Exmh_Debug Bogo hamprog="$bogo(hamprog)", message="$msgs", action="$bogo(hammessage)"
-	Ftoc_MsgIterate msgid {
-	    if [catch "exec $bogo(hamprog) <$mhProfile(path)/$exmh(folder)/$msgid" in] {
-	        Exmh_Status $in
-	        return
+
+	if {$bogo(stdin)} {
+	    Ftoc_MsgIterate msgid {
+		if [catch "exec $bogo(hamprog) <$mhProfile(path)/$exmh(folder)/$msgid" in] {
+		    Exmh_Status $in
+		    return
+		}
+	    }
+	} else {
+	    set paths {}
+	    Ftoc_MsgIterate msgid {
+		lappend paths "$mhProfile(path)/$exmh(folder)/$msgid"
+	    }
+	    if [catch "exec $bogo(hamprog) $paths" in] {
+		Exmh_Status $in
+		return
 	    }
 	}
+
 	if {$bogo(hammessage) == "refile"} {
             set oldtarget $exmh(target)
 	    set exmh(target) $bogo(hamfolder)
