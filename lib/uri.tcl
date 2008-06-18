@@ -285,7 +285,7 @@ proc Hook_MsgShowParseUri {msgPath hmm} {
         if $uri(logOnEnter) {
 	    regsub -all % $temp_uri %% temp_uri
 	    bind $but <Enter> [list Exmh_Status "X-URL:\t$temp_uri"]
-	    bind $but <Leave> [list Exmh_Status "\t$temp_uri"]
+	    bind $but <Leave> [list Exmh_Status ""]
 	}
     } else {
 	Uri_ClearCurrent
@@ -318,7 +318,7 @@ proc URI_ActiveText { w start end URI} {
     set id [TextButtonRange $w $start $end [list URI_StartViewer $URI]]
     if $uri(logOnEnter) {
 	$w tag bind $id <Any-Enter> [list +Exmh_Status "X-URL:\t$URI"]
-	$w tag bind $id <Any-Leave> [list +Exmh_Status "\t$URI"]
+	$w tag bind $id <Any-Leave> [list +Exmh_Status ""]
     }
     update idletasks
     return $id

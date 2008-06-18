@@ -27,9 +27,11 @@ proc HMlink_setup {win htag} {
     regsub -all % $href %% href2
     $win tag configure $tag -foreground [Widget_ColorDefault $win c_link] -underline 1
     $win tag bind $tag <Enter> \
-	    [list HMlink_feedback $win hand2 $href2 $tag c_alink]
+	    [list HMlink_feedback $win hand2 "X-URL:\t$href2" $tag c_alink]
     $win tag bind $tag <Leave> \
 	    [list HMlink_feedback $win [option get $win cursor Text] "" $tag c_link]
+    # make the link clickable
+    $win tag bind $tag <ButtonRelease-1> [list URI_StartViewer $href2 ]
 
     # Add to history so it shows up in URL chooser dialog
     global History
