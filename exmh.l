@@ -1,19 +1,19 @@
-'\"
-'\" 
-'\" $Header$ SPRITE (Berkeley)
+.\"
+.\" 
+.\" $Header$ SPRITE (Berkeley)
 .\" .DS
 .\"	Begin an indented unfilled display.
 .\"
 .\" .DE
 .\"	End of indented unfilled display.
 .\"
-'	# DS - begin display
+.\"	# DS - begin display
 .de DS
 .RS
 .nf
 .sp
 ..
-'	# DE - end display
+.\"	# DE - end display
 .de DE
 .fi
 .RE
