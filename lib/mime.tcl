@@ -13,39 +13,30 @@
 # any specification.
 
 proc Mime_Init {} {
-    global mime env base64 mimeFont
+    global install mime env base64 mimeFont
 
     if [info exists mime(init)] {
 	return
     }
-    # Make sure Metamail is on the path
-    set hit 0
+
+    # no more metamail required
+    set env(NOMETAMAIL) 1
+
+    # look for mimencode or recode in path, prefer mimencode
+    set rhit 0
     foreach dir [split $env(PATH) :] {
-	if {[string compare $dir $mime(dir)] == 0 && [string length $mime(dir)]} {
-	    set hit 1
-	    break
+	if {[file executable "$dir/mimencode"]} {
+	    set mime(encode) "$dir/mimencode"
 	}
-    }
-    if {! $hit} {
-	set env(PATH) $mime(dir):$env(PATH)
+	if {[file executable "$dir/recode"]} {
+	    set mime(recode) "$dir/recode"
+	}
     }
 
     set mime(init) 1
     set mime(seed) 1
     set mime(junkfiles) {}
     set mime(stop) 0
-
-    foreach dir [split $env(PATH) :] {
-      if {[file executable $dir/mimencode]} {
-          set mime(encode) mimencode
-          break
-      }
-      if {[file executable $dir/mmencode]} {
-          set mime(encode) mmencode
-          break
-      }
-    }
-    # If mime(encode) is not set, we use a fallback path
 
     set types [concat [option get . mimeTypes {}] [option get . mimeUTypes {}]]
     Exmh_Debug MimeTypes $types
@@ -132,7 +123,7 @@ may be displayed by hand from the menu."}
 "This is the maximum size of a message before exmh displays a
 warning about a large message and STOP button."}
 	{mime(ftpMethod) ftpMethod
-        {CHOICE expect ftp {ftp -n} metamail {URI tool}}
+        {CHOICE expect ftp {ftp -n} {URI tool}}
 	{FTP access method}
 "Sometimes the automatic FTP transfer fails because of
 problems logging into the remote host.	This option lets
@@ -141,7 +132,6 @@ works for you:
 expect - use the ftp.expect script to download the file.
 ftp - use ftp and feed user and password to it via a pipe.
 ftp -n - use the ftp no-auto-login feature.
-metamail - pass control to metamail and let it try.
 URI tool - uses your favorite WWW browser to get the
            file.  See \"URI Preferences\"."}
 	{mime(ftpCommand) ftpCommand	ftp {FTP command name}
@@ -322,7 +312,8 @@ proc MimeHeader {part contentType encoding} {
     # the tspecials: ()<>@,;:\"/[]?=
     # the forward slash is kept.
     set mimeHdr($part,hdr,content-type) $contentType
-    regsub -all {[[:cntrl:][:blank:]()<>@,;:\\"?=[.[.][.].]]} $type {} type
+    regsub -all {[[:cntrl:][:blank:]()<>@,;:\\"?=[.[.][.].]]} $type {} type 
+    # "
     set mimeHdr($part,type) $type
     regsub -all {[^-[:print:]]} $encoding {} encoding
     set mimeHdr($part,encoding) $encoding
@@ -1462,12 +1453,18 @@ proc MimeDecode {fileName name encoding text} {
 	    }
 	    quoted-printable -
 	    base64 {
-                if {[info exist mime(encode)]} {
-                  if {$encoding == "base64"} {
-                    exec $mime(encode) -u -b $fileName >@ $out
-                  } else {
-                    exec $mime(encode) -u -q $fileName >@ $out
-                  }
+		# tre mimencode or recode if available
+                if {[info exist mime(encode)] || [info exists mime(recode)]} {
+		    if {[info exist mime(encode)]} {
+			set cmd [list exec $mime(encode) -u]
+			lappend cmd [expr {$encoding == "base64"?"-b":"-q"}]
+			lappend cmd $fileName >@ $out
+		    } else {
+			set cmd [list exec $mime(recode)]
+			lappend cmd [expr {$encoding == "base64"?"base64..data":"qp..data"}]
+			lappend cmd < $fileName >@ $out
+		    }
+		    eval $cmd
                 } else {
                   # Replace use of mimencode with Tcl versions.
                   # This is noticably slower.  We should also
@@ -1493,6 +1490,7 @@ proc MimeDecode {fileName name encoding text} {
                   } else {
                       puts -nonewline $out [::mime::qp_decode $buffer]
                   }
+		  catch  {close $in}
                 }
 	    }
 	    .*uue.* {

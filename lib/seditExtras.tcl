@@ -238,9 +238,11 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
             switch -- $encoding {
                 base64 {
                   if {[info exist mime(encode)]} {
-                    $t insert $mark [exec $mime(encode) -b < $file]
-                  } else {
-                    Base64_EncodeInit state old length
+		      $t insert $mark [exec $mime(encode) -b < $file]
+		  } elseif {[info exist mime(recode)]} {
+		      $t insert $mark [exec $mime(recode) data..base64 < $file]
+		  } else {
+		    Base64_EncodeInit state old length
                     set in [open $file]
 		    fconfigure $in -encoding binary -translation binary
                     while {![eof $in]} {
@@ -252,6 +254,8 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
                 quoted-printable {
                   if {[info exist mime(encode)]} {
                     $t insert $mark [exec $mime(encode) -q < $file]
+		  } elseif {[info exist mime(recode)]} {
+		    $t insert $mark [exec $mime(recode) data..qp < $file]
                   } else {
                     set line_cnt 0  ;# Accumulate lines before calling the encoder
                     set buffer ""
