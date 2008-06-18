@@ -97,15 +97,12 @@ proc FolderChange {folder msgShowProc} {
     set msg(id) ""
     if {$folder != $exmh(folder)} {
 	Exmh_Debug Exmh_CheckPoint [time Exmh_CheckPoint]
-	global mhProfile
-	set summary [Mh_Folder $folder]	;# Set MH folder state
     } else {
 	if {$ftoc(folder) == {} && $exmh(started)} {
 	    # pseudo-display -> Checkpoint to set cur msg
 	    # startup -> don't checkpoint (clears cur sequence)
 	    Exmh_Debug Exmh_CheckPoint [time Exmh_CheckPoint]
         }
-	set summary {}
     }
     set ftoc(displayValid) 1
     set exmh(started) 1
@@ -113,7 +110,7 @@ proc FolderChange {folder msgShowProc} {
     if [info exists folderHook(leave,$oldFolder)] {
 	$folderHook(leave,$oldFolder) $oldFolder leave
     }
-    Label_Folder $folder $summary
+    Label_Folder $folder
     Fdisp_HighlightCur $folder
     Flist_Visited $folder
     set exmh(folder) $folder

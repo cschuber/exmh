@@ -28,7 +28,7 @@ proc ScanFolder {folder adjustDisplay} {
     } else {
 	set samefolder 0
 	set cacheFile $mhProfile(path)/$folder/.xmhcache
-	if [catch {open $cacheFile} input] {
+	if {! [Scan_CacheValid $folder] || [catch {open $cacheFile} input]} {
 	    # No cache, scan last N messages
 	    Exmh_Status "Limit scan $folder last:$ftoc(scanSize) - Rescan?" warn
 	    set input  [open "|$mhProfile(scan-proc) [list +$folder] \
@@ -240,10 +240,16 @@ proc Scan_CacheValid {folder} {
     global mhProfile exmh
     set cacheFile $mhProfile(path)/$folder/.xmhcache
     if {![file exists $cacheFile] || ![file size $cacheFile]} {
+	Exmh_Debug No/empty scan cache for +$folder
 	return 0
     }
+    # note that nmh's folder command produces lockfiles 
+    # in the respective directory, which means the directory modification date 
+    # will be changed and cause a false "cache invalid" decision
+    # if folder is run before Scan_CacheUpdate on folder entry
     if {[file mtime $mhProfile(path)/$folder] >
 	[file mtime $cacheFile]} {
+	Exmh_Debug Outdated scan cache for +$folder
 	return 0
     }
     return 1
