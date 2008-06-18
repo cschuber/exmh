@@ -318,9 +318,11 @@ proc MimeHeader {part contentType encoding} {
 	set type text/plain
     }
     # Paranoia time - sanitize these just in case...
-    # Yes, we're ignoring the rfc2045 sec 5.1 definition of 'tspecials'
+    # rfc2045: any ascii char except space, controls and
+    # the tspecials: ()<>@,;:\"/[]?=
+    # the forward slash is kept.
     set mimeHdr($part,hdr,content-type) $contentType
-    regsub -all {[^-./[:print:]]} $type {} type
+    regsub -all {[[:cntrl:][:blank:]()<>@,;:\\"?=[.[.][.].]]} $type {} type
     set mimeHdr($part,type) $type
     regsub -all {[^-[:print:]]} $encoding {} encoding
     set mimeHdr($part,encoding) $encoding
