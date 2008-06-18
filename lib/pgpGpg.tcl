@@ -1,6 +1,9 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.15  2008/06/18 10:06:15  az143
+# patch from debian: added support for gnupg's gpg-agent
+#
 # Revision 1.14  2005/01/01 20:16:20  welch
 # Based on patches from Alexander Zangerl
 # lib/pgpGpg.tcl:
@@ -121,7 +124,6 @@ set pgp(pref,HKPkeyserverUrl) { HKPkeyserverUrl HKPKeyServerUrl {keys.pgp.com}
 It's used to tranfer keys to and from a keyserver.
 Give here a hkp server name." }
 
-
 # Needed for Preferences
 set pgp(gpg,description) "GNUPG is a free GPLed PGP clone written by Werner Koch"
 set pgp(gpg,prefs) [list rfc822 \
@@ -136,6 +138,10 @@ proc Pgp_gpg_Preferences {} {
     # GnuPG algorithms and algorithm modules
     set label $pgp(gpg,fullName)
     Preferences_Add "$label interface" {} [list \
+       [list pgp(gpg,useagent) gpgUseAgent OFF "Use GnuPG Agent" \
+"If this option is enabled, then Exmh defers all passphrase 
+handling to GnuPG's gpg-agent. This option overrides and disables 
+the pgpKeepPass option." ] \
                 [list pgp(gpg,comment) gpgComment \
 "Exmh [set exmh(version)]" "GnuPG Comment" \
 "Specify the comment GnuPG should put in the comment field
@@ -163,6 +169,11 @@ ON "PGP 5.0 Compatibility" \
 "You MUST have enabled this if you want that GnuPG produces
 PGP 5.0 compatible messages.
 Having this enabled, you don't need PGP 5.0 any more." ] ]
+
+### clear keeppass if agent is on
+if {[set pgp(gpg,useagent)]} {
+    set pgp(keeppass) 0
+}
 
     # Before we can build the algorithm choice preferences part
     # we need to examine, which modules are installed on the system
@@ -283,6 +294,9 @@ proc Pgp_Gpg_Arglist {} {
                  $pgp(gpg,pubkeymodfiles) ]
     ldelete modfiles {}
     set arglist [list --no-greeting --comment $pgp(gpg,comment)]
+    if {$pgp(gpg,useagent)} {
+	lappend arglist --use-agent
+    }
     # Take it
     if {$pgp(gpg,pgp5compatibility)} {
         lappend arglist --force-v3-sigs
@@ -491,6 +505,4 @@ set pgp(gpg,cmd_User) {
 ##################
 # WWW_QueryHKPKey
 set pgp(gpg,args_HKPimport) {--keyserver $server --recv-keys 0x$id}
-
-###
 }

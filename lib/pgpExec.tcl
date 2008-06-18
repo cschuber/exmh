@@ -6,6 +6,9 @@
 # 
 
 # $Log$
+# Revision 1.22  2008/06/18 10:06:15  az143
+# patch from debian: added support for gnupg's gpg-agent
+#
 # Revision 1.21  2005/01/01 20:16:20  welch
 # Based on patches from Alexander Zangerl
 # lib/pgpGpg.tcl:
@@ -213,27 +216,33 @@ proc Pgp_Exec { v exectype arglist outvar {privatekey {}} {interactive 0} } {
     if {![set pgp(keeppass)]} {
 	Pgp_ClearPassword $v
     }
-    if {$interactive || !([set pgp(keeppass)] || ($privatekey == {}))} {
-        Exmh_Debug "<Pgp_Exec> Pgp_Exec_Interactive $v $exectype $arglist output"
-	return [Pgp_Exec_Interactive $v $exectype $arglist output]
+    # gnupg agent requested? then batch!
+    if {[set pgp(gpg,useagent)]} {
+	Exmh_Debug "<Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output"
+	return [Pgp_Exec_Batch $v $exectype $arglist output]
     } else {
-	if {$privatekey == {}} {
-            Exmh_Debug "<PGP Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output"
-	    return [Pgp_Exec_Batch $v $exectype $arglist output]
+	if {$interactive || !([set pgp(keeppass)] || ($privatekey == {}))} {
+	    Exmh_Debug "<Pgp_Exec> Pgp_Exec_Interactive $v $exectype $arglist output"
+	    return [Pgp_Exec_Interactive $v $exectype $arglist output]
 	} else {
-	    Exmh_Debug v=$v
-
-	    set keyid [lindex $privatekey 0]
-	    Exmh_Debug keyid=$keyid
-	    # Check for passphrase. Pgp_GetPass is cache and expire aware!
-	    set p [Pgp_GetPass $v $privatekey]
-	    #Exmh_Debug "<Pgp_Exec> got passwd >$p<"
-
-	    if {[string length $p] == 0} {
-		return 0
+	    if {$privatekey == {}} {
+		Exmh_Debug "<Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output"
+		return [Pgp_Exec_Batch $v $exectype $arglist output]
+	    } else {
+		Exmh_Debug v=$v
+		
+		set keyid [lindex $privatekey 0]
+		Exmh_Debug keyid=$keyid
+		# Check for passphrase. Pgp_GetPass is cache and expire aware!
+		set p [Pgp_GetPass $v $privatekey]
+		#Exmh_Debug "<Pgp_Exec> got passwd >$p<"
+		
+		if {[string length $p] == 0} {
+		    return 0
+		}
+		Exmh_Debug "<Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output \(password\)"
+		return [Pgp_Exec_Batch $v $exectype $arglist output $p]
 	    }
-            Exmh_Debug "<Pgp_Exec> Pgp_Exec_Batch $v $exectype $arglist output \(password\)"
-	    return [Pgp_Exec_Batch $v $exectype $arglist output $p]
 	}
     }
 }

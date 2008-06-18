@@ -651,8 +651,10 @@ Here you can select, which version to use in these cases.
 
     Preferences_Add "General PGP Interface" "" {
     {pgp(keeppass) pgpKeepPass ON {Keep PGP passphrase}
-"Exmh tries to remember your passphrase between PGP
-invocations. If pgpExtPass is on, exmh will use an external passphrase
+"If this option is active, Exmh tries to remember your passphrase between PGP
+invocations. This option is disabled if you use GnuPG and
+select the gpgUseAgent option.
+If pgpExtPass is on, exmh will use an external passphrase
 cache program; otherwise the passphrase is then kept in a global
 variable, which is not safe, because of \"send\"'s power.
 If you turn this feature off, exmh will use xterm to run
