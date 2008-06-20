@@ -1,4 +1,21 @@
 HISTORY
+cvs repository 06/20/2008 az@debian.org
+  incorporated a number of patches from debian
+  exmh.l: silence some man warnings
+  lib/mh.tcl: mention install-mh by full path in initial greeting
+  lib/bogo.tcl: add learning-from-stdin for learning ham, too
+   (not just spam)
+  lib/glimpse.tcl: add the -W glimpse option (and scope for 
+   whole file) to permanent preferences
+  lib/scan.tcl, lib/folder.tcl: fix the stale scan cache problem  
+  lib/uri.tcl, html_links.tcl: make html links clickable in 
+   inline-displayed html, and consolidate status line handling for links
+  lib/seditExtras.tcl, lib/mime.tcl: patch from Marion Hakanson to
+   fix fd leakage in internal mime qp/base64 decoder
+   patch from debian: add support for recode as alternative to mimencode
+  lib/pgpExec.tcl, lib/pgpGpg.tcl, lib/extrasInit.tcl: added support
+   for gnupg's gpg-agent
+  
 cvs repository 06/26/2006 valdis.kletnieks@vt.edu
   lib/html_dpackage.tcl: Skip over <style>..</style> blocks we don't
   know how to interpret anyhow. Thanks to Don Koch <aardvark@krl.com>
