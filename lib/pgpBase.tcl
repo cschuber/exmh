@@ -6,6 +6,9 @@
 #
 
 # $Log$
+# Revision 1.9  2009/01/08 02:51:23  az143
+# gpg since version 1.2 uses "gpg.conf" as configfile, not "options"
+#
 # Revision 1.8  2003/05/20 03:43:30  welch
 # pgpPgp65.tcl added version check improvement for PGP 6.5 (Neil Rickert)
 #   (added . - and _ to the pattern, too (kre))
@@ -85,7 +88,7 @@ if [info exists env(GNUPGHOME)] {
     set pgp(gpg,defaultPath) "$env(HOME)/.gnupg"
 }
 
-set pgp(gpg,configFile) "$pgp(gpg,defaultPath)/options"
+set pgp(gpg,configFile) "$pgp(gpg,defaultPath)/gpg.conf"
 set pgp(gpg,pubring) "$pgp(gpg,defaultPath)/pubring.gpg"
 set pgp(gpg,secring) "$pgp(gpg,defaultPath)/secring.gpg"
 set pgp(gpg,pubringBkp) "$pgp(gpg,defaultPath)/pubring.gpg~"
