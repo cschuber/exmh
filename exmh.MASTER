@@ -34,11 +34,7 @@ proc auto_path_update { path } {
     # and that function override works
     global auto_path tk_version
     if [file exists $path/tclIndex] {
-	if {[info tclversion] != 7.0} {
-	    set auto_path "$path $auto_path"
-	} else {
-	    lappend auto_path $path
-	}
+	set auto_path "$path $auto_path"
 	# Used to have an "auto_reset" here, but that has the bad
 	# side effect of causing Tk's entry.tcl and text.tcl files
 	# to reload and redefine top-level Entry and Text bindings

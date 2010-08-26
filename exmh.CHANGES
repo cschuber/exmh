@@ -1,4 +1,9 @@
 HISTORY
+cvs repository 08/26/2010 valdis.kletnieks@vt.edu
+  Heave some tcl 7.0-specific code over the side, 7.1 came
+  out in 1993.  Is our core code *really* that old? :)
+  exmh-strip.MASTER exmh-bg.MASTER exmh.MASTER
+
 cvs repository 06/20/2008 az@debian.org
   incorporated a number of patches from debian
   exmh.l: silence some man warnings
