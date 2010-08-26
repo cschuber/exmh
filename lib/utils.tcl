@@ -23,7 +23,8 @@ proc setmin {varName value} {
 # Assign a set of variables from a list of values.
 # If there are more values than variables, they are ignored.
 # If there are fewer values than variables, the variables get the empty string.
-proc lassign {varList value} {
+# renamed to avoid conflicting with tcl8.5 lassign which has different calling
+proc exmh_lassign {varList value} {
     if {[string length $value] == 0} {
 	foreach var $varList {
 	    uplevel [list set $var {}]

@@ -690,7 +690,7 @@ proc FormIterate {win formVar callback} {
     upvar #0 HM[Window_GetMaster $win] var $formVar form
     foreach w [array names form widgets,*] {
         regsub ^widgets, $w {} w
-	lassign {htag param} $form(widgets,$w)
+	exmh_lassign {htag param} $form(widgets,$w)
 	if {"$htag" == "input"} {
 	    set type text
 	    HMextract_param $param type

@@ -1,5 +1,17 @@
 HISTORY
 cvs repository 08/26/2010 valdis.kletnieks@vt.edu
+  Finally found the cause of the exmh Log window breaking - we
+  carry our own lassign that had the parameters in opposite order
+  to what base 8.5 code expects, specifically breaking 'clock format'
+  and who knows what else. So rename our lassign to exmh_lassign.
+  lib/html.tcl, lib/html_formtag.tcl, lib/html_get_http.tcl,
+  lib/html_links.tcl lib/msgShow.tcl, lib/utils.tcl
+
+cvs repository 08/26/2010 valdis.kletnieks@vt.edu
+  By default, convert blanks to _ in the 'save as' dialog
+  lib/fileselect.tcl
+
+cvs repository 08/26/2010 valdis.kletnieks@vt.edu
   Heave some tcl 7.0-specific code over the side, 7.1 came
   out in 1993.  Is our core code *really* that old? :)
   exmh-strip.MASTER exmh-bg.MASTER exmh.MASTER

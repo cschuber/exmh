@@ -81,13 +81,13 @@ proc Url_Hit? {win x y} {
 }
 proc Url_Hit {win x y} {
     dputs Url_Hit $x $y
-    lassign {href name} [UrlGetLink $win $x $y]
+    exmh_lassign {href name} [UrlGetLink $win $x $y]
     Html_HistoryAdd $win $href
     Frame_Display $win $name $href
 }
 # This is like Url_Hit for regular hits, but it opens a new window.
 proc Url_HitNew {win x y} {
-    lassign {href target} [UrlGetLink $win $x $y]
+    exmh_lassign {href target} [UrlGetLink $win $x $y]
     Url_DisplayNew $href $win
 }
 
