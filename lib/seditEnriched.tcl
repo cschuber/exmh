@@ -44,6 +44,22 @@ proc SeditMimeEnriched {look {draft {}} {t {}} } {
 }
 
 proc SeditEnrichedExpand { t } {
+    # now quote nonstandard tags (if still unquoted)
+    set startpos [$t index header]
+    for {set tbq [$t search "<" $startpos "end"]} {$tbq!=""} {set tbq [$t search "<" $startpos "end"]} {
+	if {[$t get "$tbq +1c" "$tbq +2c"] == "<"} {
+	    # already quoted -> ignore
+	    set startpos "$tbq +2c"
+	} elseif [regexp -nocase {^</?(param|bold|italic|underline|fixed|fontfamily|color|smaller|bigger|center|flushleft|flushright|flushboth|paraindent|nofill|except|lang|x-[a-z-]+)>} [$t get "$tbq" "$tbq lineend"]] {
+	    # or known command -> ignore
+	    set startpos "$tbq +1c"
+	} else {
+	    # neither? then quote!
+	    $t insert $tbq "<"
+	    set startpos "$tbq +2c"
+	}
+    }
+
     # Add text/enriched formatting commands
     set tags {}	;# enriched text tags
     foreach tag [$t tag names] {
