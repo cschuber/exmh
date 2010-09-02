@@ -254,21 +254,25 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
     foreach index [array names header 0=1,hdr,list-*] {
 	# Get the suffix portion of the header name
 	regsub {^.*,list-} $index {} name
-	# Remove comments
-	regsub -all {\([^()]*\)} $header($index) {} h
-	# Remove whitespace
-	regsub -all "\[ \n\t\]" $h {} h
-	# Loop through the fields
-	foreach f [split $h ,] {
-	    # Stricture #1
-	    if {[string index $f 0] == "<"} {
-		# Stricture #2
-		regexp "<(.*)>" $f match url
-		regexp {^([^:]*)} $url match proto
-		lappend menuitems $name $proto $url
-	    } else {
+	# Stricture #1
+	# Remove leading white space and comments
+        regsub {^[ \n\t]*(\([^)]*\)[ \n\t]*)*} $header($index) {} h
+        if {[string index $h 0] == "<"} {
+	    # Loop through the fields
+	    while {[regexp -indices {<([^>]*)>} $h match i]} {
+                set url [eval {string range $h} $i]
 		# Stricture #3
-		break
+		if [regexp {^([^:]*):} $url -> proto] {
+		    lappend menuitems $name $proto $url
+		}
+		set next [expr [lindex $match 1]+1]
+		set h [string range $h $next end]
+		# Stricture #2
+                regsub {^[ \n\t]*(\([^)]*\)[ \n\t]*)*} $h {} h
+		if {[string index $h 0] != ","} {
+		    break
+		}
+                regsub {^[ \n\t]*(\([^)]*\)[ \n\t]*)*} $h {} h
 	    }
 	}
     }
@@ -278,7 +282,7 @@ proc Hook_MsgShowListHeaders {msgPath headervar} {
 	} else {
 	    set menu [Widget_AddMenuB $exwin(mopButtons) list "List..." {right padx 1 filly}]
 	}
-	$exwin(mopButtons).list.m delete 1 99
+	$exwin(mopButtons).list.m delete 0 99
 	foreach {name proto url} $menuitems {
 	    Widget_AddMenuItem $menu "$name ($proto)" [list URI_StartViewer $url]
 	}

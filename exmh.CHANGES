@@ -1,8 +1,12 @@
 HISTORY
+cvs repository 09/02/2010 az@debian.org
+  lib/msgShow.tcl: applied Harvey Eneman's patch that fixes handling
+  of rfc2369 list-* headers.
+
 cvs repository 08/29/2010 az@debian.org
   implemented quoting of unknown directives when editing 
   text/enriched mails with sedit
-  (this is a fix for debian bug #75193, http://bugs.debian.org/175193)
+  (this is a fix for debian bug #175193, http://bugs.debian.org/175193)
   
 cvs repository 08/26/2010 valdis.kletnieks@vt.edu
   Finally found the cause of the exmh Log window breaking - we
