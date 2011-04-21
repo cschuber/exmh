@@ -1,4 +1,11 @@
 HISTORY
+cvs repository az 04/21/2011 az@debian.org
+  mime.tcl: fixed  documentation of behaviour of mimeFullHeaders
+  exmh.MASTER: fixed tk8.5 font issue. default choice 'fixed' misinterpreted
+  by tk8.5 as a font face, not XLFD...now fixed defined as alias for
+  TkFixedFont, and aliases are consulted first. still somebody will have to
+  extend the font chooser dialog to cover font faces.
+
 cvs repository 09/02/2010 az@debian.org
   lib/msgShow.tcl: applied Harvey Eneman's patch that fixes handling
   of rfc2369 list-* headers.

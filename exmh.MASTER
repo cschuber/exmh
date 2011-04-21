@@ -28,6 +28,13 @@ if {$tcl_version < 8.0} {
 # appear all alone.
 wm withdraw .
 
+# fonts in tk8.5: short aliases like don't work properly anymore
+# (confusion with the font face stuff)
+# recreate the common fallback "fixed" as a copy of TkFixedFont
+if {$tcl_version > 8.4} {
+    eval font create fixed [font configure TkFixedFont]
+}
+
 proc auto_path_update { path } {
     # Add library directories to the auto_path,
     # ensuring that later paths have precedence

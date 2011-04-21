@@ -110,9 +110,13 @@ and the official start of a multipart message is displayed.  Sometimes
 this has useful information, while other times it has warnings about
 the rest of the message being in MIME format."}
 	{mime(fullHeaders) mimeFullHeaders	OFF {Show full headers}
-"This controls whether full headers are shown for message/rfc822 items
-inside MIME mail.  This prevents Folder-Display and Folder-Suppress
-profile options from taking effect."}
+"This controls whether full headers are shown for MIME mails. If enabled,  
+Header-Display and Header-Suppress .mh_profile options are ignored and 
+all headers are shown.
+If disabled, these profile options are live. Default action is to hide 
+headers (scrolled away). Also, tagnames \"hidden\" and \"default\" are 
+available for colorizing hidden and shown headers, respectively.
+See \"Colorizing Headers\" in the Customization document."}
 	{mime(maxSubpartsDisplayed) mimeMaxSubpartsDisplayed	5 
 	    {Maximum subparts to display}
 "This is the maximum number of subparts to display without hiding complex
