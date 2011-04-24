@@ -184,111 +184,90 @@ proc Ispell_Init { } {
 proc Ispell_Preferences {} { 
 
     Preferences_Add "I-Spell" \
-	    "This is a module to allow interactive spelling within a sedit window
-it has many fine features include suggested correction and the ability
-to add new words to a session or to your personnel dictionary.
+	    "This is a module to allow interactive spell checking  within 
+a sedit window.
+It's many fine features include suggested correction and the ability
+to add new words to a session or to your personal dictionary.
 For words that are either not correct or not generated 
 by a combination of roots or compounds, the word is marked as not
-spelled correctly." { 
+spelled correctly.
 
-	{ ispellVars(on) ispellOnOff ON {Turn Ispell On/Off} 
-	"This turns the ispell feature on/off.  Note that the feature
-	needs to be enabled BEFORE a message is brought up" } 
+Please note that the I-Spell module is only active if you select 
+the option \"interactive\" as Spell program (Simple Editor preferences).
+" { 
 
 	{ ispellVars(ReCheckAfterAdd) ispellRecheckAfterAdd ON {Re-Verify after Adds?} 
 	"Check this box if you want to re spell check words 
-	currently marked Miss Spelled after you add to the dictionary 
-	or session.  In general a good idea except if you work 
-	in extremely long documents a small delay may be noticed 
-	after you add words to your personal dictionary
+	currently marked as misspelled after you add to the dictionary 
+	or session.  In general this is a good idea except for 
+	extremely long documents where a small delay may be noticed 
+	after you add words to your personal dictionary.
 	Additionally the right mouse button can be used to
-	accept suggested words" }
+	accept suggested words." }
 
 	{ ispellVars(textOnly) ispellTextOnly OFF {Spell Check 'Text' only?} 
 	"Check this box if you want to only perform spell checking 
-of the text marked as 'text', this should avoid spell checking 
-To:, CC: & X-Face: lines, it comes at a small time penalty, turn it off
-if you want to see a small improvement in response time
-Note that turning this option on will also not spell check 'attachements'
+of the text marked as 'text'. This should avoid spell checking 
+To:, CC: & X-Face: lines. It comes at a small time penalty, turn it off
+if you want to see a small improvement in response time.
+Note that turning this option on will also not spell check 'attachments'
 unless they are marked as Content-Type: text/enriched or text/plain.
-if you find that spell checking STOPS working in a section of the document you
-may want to turn this off" }
+If you find that spell checking STOPS working in a section of the document you
+may want to turn this off." }
 
 	{ ispellVars(defaultCommand) ispellCommand "ispell -a -S" {Default speller invocation}
 	"This is the program used to actually do the real work
 'ispell -a' is probably a good choice.  if you want to 
 use an alternate dictionary, 'ispell -a -d <dictionary-file>' may be 
-appropriate. you may find that -S sorts the list of possible
-words better, see the ispell(1) man page for more details.
-(really, it's got a lot of details and you can really personalize
-how it works to fit best with your environment" } 
+appropriate. You may find that -S sorts the list of possible
+words better, see the ispell(1) man page for more details." } 
 	{ ispellVars(otherCommands) ispellOthers " German  { ispell -a -d deutsch } \
 		French { ispell -a -d francais } English { ispell -a -d english } " { Other Invocations }
-	"Alternate Invocations of of the 'Ispell' programs, mostly intended for 
-our friends in Europe who have to work in a variety of languages, this entry should
-be in label/invocation pairs" } 
+	"Alternate Invocations of the 'Ispell' programs, mostly intended for 
+our friends in Europe who have to work in a variety of languages. This 
+entry must be in label/invocation pairs." } 
 
 	
 	{ ispellVars(popupBinding) ispellPopupBinding "ButtonPress-3" {Menu popup bound to:}
-	" This controls what the 'popup' window is bound to, some examples include:
+	" A popup window is used for interactive correction of the word 
+under the mouse pointer. This option controls how the popup window is invoked. 
+
+Any TK bind() event specification that involves the mouse is allowed. Some examples:
 ButtonPress-3 
 ButtonPress-2
 ButtonPress-1
 Shift-3
 Control-3
 Meta-2
-Alt-1
-etc...
+Alt-1" }
 
-Note that the menu is unposted on any ButtonRelease" }
+	{ ispellVars(viewStyle) ispellStyle {CHOICE underline italic bold bgcolor fgcolor other } {Misspelled word style}
+	    "This is how to display misspelled words.
+Use the built in types or create your own using 'other'. 
+Colors are given as X11 color names or #RGB.
 
-	{ ispellVars(viewStyle) ispellStyle {CHOICE underline italic bold bgcolor fgcolor other } {Miss-spelled word style}
-	" this is how to display misspelled words
-	use the built in types or create your own
-	using 'other', for 'color' ones fill in the color 
-	examples using other include 
+Some examples for the 'other' style (see the TK docs for more info):
 	-underline t
 	-background red
 	-foreground Bisque
 	-font <font>
+ -font *italic*
+ -font *bold*
+ -relief <relief>
 	-fgstipple <bitmap>
 	-bgstipple <bitmap>
 
-	Bitmap's can be many things, 'gray50' and 'gray25' are popular
-
-	For example....
-
-	-font *italic*
-	or   -font *bold*
-	or   -font *24*    (Big!)
-
-	or   -font *italic*24* (big italics)
-
-	-relief <relief> (see tk doc's for more info...)
-
-	
-	Effects can also be combined as in 
+Bitmaps can be many things, 'gray50' and 'gray25' are popular.
+Effects can also be combined:
 	
 	-underline t -foreground red
-	-bgstipple gray25 -color red
-
-	
-	" } 
+ -bgstipple gray25 -color red" } 
 	{ ispellVars(viewStyle-Color) ispellStyleColor red {color:} 
 	"color for fgcolor and bgcolor" }
 	{ ispellVars(viewStyle-Other) ispellStyleOther {-underline t -foreground red}  {other:}
 	"Style if 'other' is selected" }
     }
-    if { [ info exists ispellVars(CheckButton) ] } {
-	if {$ispellVars(CheckButton) == 1} {
-
-	    option add *Sedit.Menubar.ubuttonlist {ispell}
 	    
-	    option add *Sedit.Menubar.ispell.text {Ispell}
-	    
-	    option add *Sedit.Menubar.ispell.command {Ispell_CheckEntireWindow $t}
-	}
-    }
     global ispellVars
     set ispellVars(language) default
     trace variable ispellVars(on) w IspellOnOff    
@@ -679,10 +658,22 @@ proc IspellReplaceWordInText { text x y word } {
 # a call to 'IspellPreferences' should do the trick...
 ##########################################################
 proc Hook_SeditInit_TagMissSpelled { file window } {
-    global ispellVars
+    global ispellVars sedit
     # only configure the window for ispell support if it is
     # actually needed, and if the appropriate variables exist
-    # 
+    set id [SeditId $file]
+    set b .sedit${id}.but
+    if {$sedit(spell) == "interactive"} {
+	set ispellVars(on) 1
+	$b.more.m entryconfigure Spell* -state disabled
+	$b.more.m entryconfigure I-Spell* -state normal
+    } else { 
+	set ispellVars(on) 0
+	$b.more.m entryconfigure Spell* -state normal
+	$b.more.m entryconfigure I-Spell* -state disabled
+	return
+    }
+    
     # bind the window.....
     # use default style of underline
     set style "-underline t"
@@ -705,12 +696,11 @@ proc Hook_SeditInit_TagMissSpelled { file window } {
     }
     
     # Only bind the window if 'ispell' is turned on...
-    if { [ info exists ispellVars(on) ] } {
+    # and if so, disable external ispell (and vice-versa)
+
 	if { $ispellVars(on) == 1 } { 
 	    set ispellVars($window,effect) 1
 	    Ispellbind $window 
-
-	}
     }
 
     set ispellVars(command) $ispellVars(defaultCommand)
@@ -901,7 +891,6 @@ proc Ispellbind { text } {
     # no user configurable way to select the unpost...
     # tk_popup should unpost the menu for us automatically
 #    bind $text <Any-ButtonRelease> { IspellUnPostMenuChoices %W } 
-    
 }
 
 

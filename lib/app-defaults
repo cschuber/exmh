@@ -869,7 +869,7 @@ exmh.iconic:		0
 *Sedit.Menubar.text.m.c_bigger:	SeditMimeEnriched bigger
 
 *Sedit.Menubar.more.text:	More...
-*Sedit.Menubar.more.m.entrylist: keep format receipt cite attach addr whom spell find  save preview alt
+*Sedit.Menubar.more.m.entrylist: keep format receipt cite attach addr whom spell ispell find  save preview alt
 *Sedit.Menubar.more.m.l_keep: Keep on send
 *Sedit.Menubar.more.m.t_keep: check
 *Sedit.Menubar.more.m.v_keep: sedit($t,keep)
@@ -926,6 +926,10 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.c_save: SeditSave {$draft} {$t}
 *Sedit.Menubar.more.m.l_spell: Spell...
 *Sedit.Menubar.more.m.c_spell: SeditSpell {$draft} $f {$t}
+
+*Sedit.Menubar.more.m.l_ispell: I-Spell Whole Buffer
+*Sedit.Menubar.more.m.c_ispell: Ispell_CheckEntireWindow {$t}
+
 *Sedit.Menubar.more.m.l_find: Find SEL
 *Sedit.Menubar.more.m.c_find: Sedit_Find {$draft} {$t}
 *Sedit.Menubar.more.m.l_preview: Mime Preview

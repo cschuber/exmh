@@ -1,4 +1,15 @@
 HISTORY
+cvs repository 04/24/2011 az@debian.org
+  consolidated spell checking options: main on sedit pref page,
+  i-spell specific stuff on its own page. i-spell now an explicit
+  choice among spelling programs. updated all related preference 
+  doc strings. 
+  updated app defaults to include i-spell whole buffer in the more... 
+  menu. updated i-spell sedit hook to enable/disable ispell or i-spell
+  depending on spell checker choice.
+  fixed exmh-async integration of custom spell checker: now in line with
+  ispell.
+
 cvs repository az 04/21/2011 az@debian.org
   mime.tcl: fixed  documentation of behaviour of mimeFullHeaders
   exmh.MASTER: fixed tk8.5 font issue. default choice 'fixed' misinterpreted

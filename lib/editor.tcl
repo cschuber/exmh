@@ -62,9 +62,6 @@ initially by the command line -sedit switch."] \
 "If enabled, after editing with external editor, exmh will bring the message
 up in sedit.  This is so you can initially create the message with your
 favorite editor, and then pop into to sedit for richtext or attachments."] \
-    [list editor(spell) spellCmd "exmh-async xterm -e ispell" {Spell command} \
-"The spell command specifies a program used to spell-check mail messages. 
-The filename will be appended to the command."] \
         [list editor(mhn) mhnCmd "mhn" {MHN command} \
 "The mhn command specifies a program used to reformat
 a message with the MH mhn program.

@@ -479,20 +479,20 @@ this is the character set used for text content types"}
 "If the type of a file cannot be determined from the mime.types file
 and from the file -m program, use this as the default MIME type
 when attaching files."}
-    {sedit(spell) seditSpell {CHOICE spell ispell custom} {spell program}
-"This chooses the spell program used by the built-in editor.
-Use custom if you want to define the program explicitly."}
-    {editor(spell) spellCmd {exmh-async xterm -e ispell} {custom spell command}
-"NOTE: this affects the same internal variable as the
-Spell Command in Editor preferences.
+    {sedit(spell) seditSpell {CHOICE spell ispell custom interactive} {Spell program}
+"This chooses the spell program used by the built-in editor. \"spell\" selects the standard
+spell program (which is not interactive). \"ispell\" enables checking 
+with the ispell program. \"custom\" runs the program set in the next preference.
+\"interactive\" enables the I-Spell module, which has its own preference page."}
+    {editor(spell) spellCmd {exmh-async xterm -e ispell} {Custom spell command}
+"This option is ignored unless you chose \"custom\" as the spell program option.
 
 There are two flavors of spell programs.  If your spell program just
 prints out the misspelled words, then just specify it directly.
-Examples include the standard \"spell\" program.  If you spell program
-is interactive, then run it from exmh-async:
-exmh-async xterm -e ispell
-(This is faked - exmh-async isn't really used.  Instead a temporary
-wish script is used.)"}
+Examples include the standard \"spell\" program.  If your spell program
+is interactive, then prefix it with exmh-async:
+ exmh-async xterm -e ispell
+Your spell program will be given the file name to check as argument."}
     {sedit(notifySuccess) seditNotifySuccess OFF {Notify on sucessful delivery}
 "This lets you say whether you would like to be informed (via an email
 message) when your mail has been delivered.  For it to work you will

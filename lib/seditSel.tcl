@@ -147,9 +147,12 @@ proc SeditSelSpell { f t } {
 
     set async_hack 0
     switch -- $sedit(spell) {
-	ispell {set prog "${argv0}-async xterm -e ispell" ; set async_hack 1}
+	ispell {set prog "exmh-async xterm -e ispell" ; set async_hack 1}
 	custom {set prog $editor(spell)}
 	default {set prog spell}
+    }
+    if {[regexp ^exmh-async $prog]} {
+	set async_hack 1
     }
     if {$async_hack} {
 	# exmh-async isn't really right
@@ -161,7 +164,7 @@ proc SeditSelSpell { f t } {
 	}
 	puts $out "wm withdraw ."
 	puts $out "catch \{"
-	puts $out "exec [lrange $editor(spell) 1 end] $path"
+	puts $out "exec [lrange $prog 1 end] $path"
 	puts $out "\}"
 	puts $out [list send [winfo name .] [list SeditReplaceSel $t $path]]
 	puts $out "file delete -force $path"
