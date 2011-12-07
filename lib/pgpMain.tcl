@@ -504,7 +504,10 @@ proc Pgp_Process { v srcfile dstfile } {
     set msg [open $msgfile w 0600]
     foreach line $pgpheaders { puts $msg [Pgp_Misc_FixHeader $line] }
     if {[llength $pgpheaders] > 0} { puts $msg "" }
-    puts -nonewline $msg [read $orig]
+    while {[gets $orig line] >= 0} {
+	set trimmed [string trimright $line]
+        puts $msg $trimmed
+    }
     close $orig
     close $msg
 
