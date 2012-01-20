@@ -1,7 +1,13 @@
 HISTORY
+
+cvs repository az az 01/20/2012 az@debian.org
+  repaired date/time parsing in addr.tcl, which kept 
+  address db expiration from working properly
+
 cvs repository 12/06/2011 valdis.kletnieks@vt.edu
   lib/pgpMail.tcl - add code to trim trailing blanks before
   doing PGP signing/encrypting.
+
 cvs repository 04/24/2011 az@debian.org
   consolidated spell checking options: main on sedit pref page,
   i-spell specific stuff on its own page. i-spell now an explicit

@@ -354,15 +354,29 @@ proc Addr_SaveFile { {force 0} } {
     }
     set fd [open "$homeDir/.exmh_addr_tmp" w]
     foreach i [array names addr_list] {
-       if {[catch {if {$addr_db(remove_entries) == 1 &&
-                       $addr_db(enabled) == 1 &&
-                       $expiration > 0 &&
-                       [lindex $addr_list($i) 1] != "" &&
-                       [clock scan [lindex $addr_list($i) 1]] < $expiration} {
-                      unset addr_list($i) 
-                  } else {
-                     puts $fd [list set addr_list($i) $addr_list($i)]
-                  }}]!= 0} {
+	# rfc2822: day name is optional, and comments after the timezone offset
+	regsub {^[a-zA-Z]+, } [lindex $addr_list($i) 1] {} mailtime; 
+	regsub {\(.+\)\s*$} $mailtime {} mailtime; 
+
+	global tcl_version
+	if {[catch {
+	    # clock scan in 8.4 has no format option, just free-form scan 
+	    # (which doesn't work well/at all), 8.5 has explicit format.
+	    if {$tcl_version > 8.4} { 
+		set mailsec [clock scan $mailtime -format "%d %b %Y %T %z"]
+	    } else {
+		set mailsec [clock scan $mailtime]
+	    }
+
+	    if {$addr_db(remove_entries) == 1 &&
+		$addr_db(enabled) == 1 &&
+		$expiration > 0 &&
+		[lindex $addr_list($i) 1] != "" &&
+		$mailsec < $expiration} {
+		unset addr_list($i) 
+	    } else {
+		puts $fd [list set addr_list($i) $addr_list($i)]
+	    }} response]!= 0} {
           if {$addr_db(remove_invalid_date)} {
              unset addr_list($i)
           } else {
