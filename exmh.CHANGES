@@ -1,5 +1,8 @@
 HISTORY
 
+cvs repository 01/23/2012 az@debian.org
+  repaired gnupg cipher option handling
+
 cvs repository az az 01/20/2012 az@debian.org
   repaired date/time parsing in addr.tcl, which kept 
   address db expiration from working properly

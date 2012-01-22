@@ -1,6 +1,9 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.16  2012/01/22 22:54:45  az143
+# az@debian.org repaired gpg cipher option handling
+#
 # Revision 1.15  2008/06/18 10:06:15  az143
 # patch from debian: added support for gnupg's gpg-agent
 #
@@ -184,25 +187,23 @@ if {[set pgp(gpg,useagent)]} {
     Preferences_Add "$label interface" {} [list \
                 [list pgp(gpg,cipheralgo) gpgCipherAlgo \
 [concat CHOICE $pgp(gpg,cipheralgos)] "Default Cipher Algo" \
-"Your preferred cipher algorithm."] \
+"Your preferred cipher algorithm. Select 'default' to leave the choice to GnuPG."] \
                 [list pgp(gpg,digestalgo) gpgDigestAlgo \
 [concat CHOICE $pgp(gpg,digestalgos)] "Default Digest Algo" \
-"Your preferred digest algorithm."] \
+"Your preferred digest algorithm. Select 'default' to leave the choice to GnuPG."] \
                 [list pgp(gpg,compressalgo) gpgCompressAlgo \
 [concat CHOICE $pgp(gpg,compressalgos)] "Default Compress Algo" \
 "The algorithm, GnuPG uses to compress the text before encrypting.
-You have the choice between the ZIP (RFC1951)
-and the ZLIB (RFC1950) algo. ZIP is used by PGP(2/5).
-If you choose none, the text is left uncompressed." ] ]
+Select 'default' to leave the choice to GnuPG, or 'none' to leave text uncompressed." ] ]
     } 
 
 
 #######################################################################
 # GPG BASIC CONFIG
 # builtin gpg algos
-set pgp(gpg,cipheralgos) {3des cast5 blowfish twofish}
-set pgp(gpg,digestalgos) {sha1 md5 ripemd160}
-set pgp(gpg,compressalgos) {zip zlib none}
+set pgp(gpg,cipheralgos) {default cast5 idea 3des blowfish aes aes192 aes256 twofish camellia128 camellia192 camellia256}
+set pgp(gpg,digestalgos) {default md5 sha1 ripemd160 sha224 sha256 sha384 sha512}
+set pgp(gpg,compressalgos) {default zip zlib bzip2 none}
 set pgp(gpg,pubkeyalgos) {}
 # module files
 set pgp(gpg,ciphermodfiles) {}
@@ -322,14 +323,19 @@ proc Pgp_Gpg_Arglist {} {
         set arglist [concat $arglist [list \
                      --load-extension $modfile] ]
     }
-    set arglist [concat $arglist [list \
-                     --cipher-algo $pgp(gpg,cipheralgo) \
-                     --digest-algo $pgp(gpg,digestalgo) ] ]
+    if {$pgp(gpg,cipheralgo) != "default"} {
+	lappend arglist --personal-cipher-preferences $pgp(gpg,cipheralgo)
+    }
+    if {$pgp(gpg,digestalgo) != "default"} {
+	lappend arglist --personal-digest-preferences $pgp(gpg,digestalgo)
+    }
     # compressalgo
-    switch $pgp(gpg,compressalgo) {
-        zip  { set arglist [concat $arglist --compress-algo 1] }
-        zlib { set arglist [concat $arglist --compress-algo 2] }
-        none { set arglist [concat $arglist -z 0] }
+    if {$pgp(gpg,compressalgo) != "default" } {
+	if {$pgp(gpg,compressalgo) == "none"} {
+	    lappend arglist -z 0
+	} else {
+	    lappend arglist --personal-compress-preferences $pgp(gpg,compressalgo)
+	} 
     }
     ldelete arglist {}
     return $arglist
