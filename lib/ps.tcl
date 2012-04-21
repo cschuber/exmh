@@ -64,6 +64,7 @@ switch -glob -- [string tolower $os] {
 	set ps(aflag) "-u $env(USER)"
     }
     osf1	-
+    darwin	-
     aix		-
     dgux	-
     sco_sv	-
