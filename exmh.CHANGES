@@ -1,6 +1,15 @@
 HISTORY
 
 cvs repository 04/21/2012 welch@panasas.com
+  Update version to 2.8.0
+  This changes
+  Makefile
+  exmh.install
+  lib/html/exmh.README.html
+  lib/html/index.html
+  lib/html/software.html
+
+cvs repository 04/21/2012 welch@panasas.com
   Added darwin to ps.tcl "SYS V like systems case
   Added jpilot scripts to misc, contributed by gerhard.siegesmund@epost.de
   Added Tar.exclude files used for generating tarball releases

@@ -2,7 +2,7 @@
 
 # To change the version,
 # change this variable and type "make version"
-VERSION=2.7.2
+VERSION=2.8.0
 
 RELDATE:=$(shell grep '^set date' ./exmh.install | cut -f3 -d" ")
 SNAPRELDATE:=$(shell /bin/date +%m/%d/%Y)
