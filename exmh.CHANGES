@@ -1,5 +1,17 @@
 HISTORY
 
+cvs repository 04/21/2012 welch@panasas.com
+  Added darwin to ps.tcl "SYS V like systems case
+  Added jpilot scripts to misc, contributed by gerhard.siegesmund@epost.de
+  Added Tar.exclude files used for generating tarball releases
+  Fixed MH references in index.html and software.html
+
+  Added misc/sequence.patch that reflects my local changes to how
+  sequence information is updated in the UI.  This is a non-trivial
+  change, and while it is faster, I think there are some lingering
+  corner cases where it isn't perfect.  So, I'm just saving the patch
+  and not committing the change to the code.
+
 cvs repository 01/23/2012 az@debian.org
   repaired gnupg cipher option handling
 
