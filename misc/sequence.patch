@@ -1,0 +1,173 @@
+This is a patch that reflects a non-trivial change I made to how exmh tracks
+changes in the unseen sequence.  The original behavior uses a Tcl variable trace
+on an array variable that gets updated for a lot of reasons.  This can be expensive
+and so this patch reflects a change away from this specific variable trace.  However,
+I don't think this change is 100% perfect, and you may notice less than perfect updates
+to the UI because of this change.  So, instead of committing this I'm just saving
+the patch in case someone wants to tinker with it.
+  Brent Welch, April 2012
+
+cvs diff: Diffing lib
+Index: lib/fcache.tcl
+===================================================================
+RCS file: /cvsroot/exmh/exmh/lib/fcache.tcl,v
+retrieving revision 1.13
+diff -u -r1.13 fcache.tcl
+--- lib/fcache.tcl	5 Apr 2003 01:24:35 -0000	1.13
++++ lib/fcache.tcl	21 Apr 2012 20:08:12 -0000
+@@ -68,7 +68,8 @@
+     trace variable fcache(nicknames) w Fcache_Redisplay
+     trace variable fcache(unseenCount) w Fcache_Redisplay
+ 
+-    trace variable flist wu Fcache_RedisplayUnseen
++    # This is an expensive trace.  See SeqSetCount
++    # trace variable flist wu Fcache_RedisplayUnseen
+ 
+     # Init the cache and handle various error cases.
+ 
+@@ -96,11 +97,10 @@
+ proc Fcache_Redisplay { args } {
+    Fcache_Display 1
+ }
+-proc Fcache_RedisplayUnseen { array elem op } {
++proc Fcache_RedisplayUnseen { seq } {
+     global fcache mhProfile
+     if {$fcache(unseenCount)} {
+-        set force [scan $elem "seqcount,%s,$mhProfile(unseen-sequence)" folder]
+-	Fcache_Display $force
++	Fcache_Display [expr {"$seq" == "$mhProfile(unseen-sequence)"}]
+     }
+ }
+ 
+Index: lib/mh.tcl
+===================================================================
+RCS file: /cvsroot/exmh/exmh/lib/mh.tcl,v
+retrieving revision 1.60
+diff -u -r1.60 mh.tcl
+--- lib/mh.tcl	18 Jun 2008 09:53:53 -0000	1.60
++++ lib/mh.tcl	21 Apr 2012 20:08:12 -0000
+@@ -578,6 +578,12 @@
+ # Directly modify the context files to add/remove/clear messages
+ # from a sequence
+ proc Mh_SequenceUpdate { folder how seq {msgids {}} {which public}} {
++  Exmh_Debug Mh_SequenceUpdate $folder $how $seq $msgids $which
++  Mh_SequenceUpdateTimed $folder $how $seq $msgids $which
++  Exmh_Debug Mh_Sequence Update complete
++}
++
++proc Mh_SequenceUpdateTimed { folder how seq {msgids {}} {which public}} {
+     global mhProfile mhPriv
+     if {0} {
+ 	Exmh_Debug Mh_SequenceUpdate $folder $how $seq $msgids $which
+Index: lib/sequences.tcl
+===================================================================
+RCS file: /cvsroot/exmh/exmh/lib/sequences.tcl,v
+retrieving revision 1.24
+diff -u -r1.24 sequences.tcl
+--- lib/sequences.tcl	7 Jan 2005 06:09:09 -0000	1.24
++++ lib/sequences.tcl	21 Apr 2012 20:08:12 -0000
+@@ -174,7 +174,7 @@
+ 
+     SeqWin_Init
+ 
+-    # This trace is crude, and now we do all the updating in
++    # This trace is expensive, and now we do all the updating in
+     # procedures in this file, so the calls are made explicitly.
+     # trace variable flist wu Seq_Trace
+     # Seq_Trace is now SeqCount
+@@ -186,11 +186,15 @@
+     # flist($seq) is the list of folders that have messages
+     # in that sequence.  Here we ensure that invariant.
+     set num $flist(seqcount,$folder,$seq)
+-    ldelete flist($seq) $folder
++    set ix [lsearch $flist($seq) $folder]
+     if {$num > 0} {
+-        lappend flist($seq) $folder
++        if {$ix < 0} {
++          lappend flist($seq) $folder
++        }
+     } elseif {![info exist flist($seq)]} {
+         set flist($seq) {}
++    } elseif {$ix >= 0} {
++        ldelete flist($seq) $folder
+     }
+     # Now tally up any changes
+     if [info exists flist(oldseqcount,$folder,$seq)] {
+@@ -217,6 +221,13 @@
+         BgRPC SeqWinShowSeqPane $seq
+     }
+ }
++# This procedure replaces an expensive trace on the flist var from fcache.tcl
++
++proc SeqSetCount {folder seq count} {
++  global flist mhProfile
++  set flist(seqcount,$folder,$seq) $count
++  Fcache_RedisplayUnseen $seq
++}
+ 
+ # Reset the cached state about sequences because the user
+ # has just packed, sorted, or threaded the folder.
+@@ -228,7 +239,7 @@
+     global flist
+     Mh_SequenceUpdate $folder clear $seq
+     set flist(seq,$folder,$seq) {}
+-    set flist(seqcount,$folder,$seq) 0
++    SeqSetCount $folder $seq 0
+     ldelete flist($seq) $folder
+ }
+ 
+@@ -276,7 +287,7 @@
+     if {$num <= 0} {
+ 	return
+     }
+-    set flist(seqcount,$folder,$seq) [expr $new + $num]
++    SeqSetCount $folder $seq [expr {$new + $num}]
+     set flist(seq,$folder,$seq) [concat $flist(seq,$folder,$seq) $msgids]
+     if {![info exist flist($seq)] || ([lsearch $flist($seq) $folder] < 0)} {
+ 	lappend flist($seq) $folder
+@@ -301,23 +312,26 @@
+ #    Mh_SequenceUpdate $folder replace $seq $msgids
+     set newnum [llength $msgids]
+     if {$newnum <= 0} {
+-	set flist(seqcount,$folder,$seq) 0
++        SeqSetCount $folder $seq 0
+ 	set flist(seq,$folder,$seq) {}
+         SeqCount $folder $seq
+ 	return
+     }
+-    set flist(seqcount,$folder,$seq) $newnum
++Exmh_Debug flist(seqcount) [time {
++    SeqSetCount $folder $seq $newnum
+     set flist(seq,$folder,$seq) $msgids
+-    if {![info exist flist($seq)] || ([lsearch $flist($seq) $folder] < 0)} {
+-	lappend flist($seq) $folder
++    if {![info exist flist($seq)]} {
++        # SeqCount will append $folder to flist($seq) if necessary
++	set flist($seq) {}
+     }
+-    SeqCount $folder $seq
++}]
++    Exmh_Debug SeqCount $folder $seq [time {SeqCount $folder $seq}]
+     if {$seq == $mhProfile(unseen-sequence)} {
+ 	if {[string compare $folder $exmh(folder)] != 0 &&
+ 	    [lsearch $flist(unvisited) $folder] < 0} {
+ 	    lappend flist(unvisitedNext) $folder
+ 	}
+-	Fdisp_HighlightUnseen $folder
++	Exmh_Debug Fdisp_HighlightUnseen [time {Fdisp_HighlightUnseen $folder}]
+     }
+ }
+ # Deletes messages from a sequence
+@@ -349,7 +363,9 @@
+ }
+ proc Seq_Msgs { folder seq } {
+     global flist
+-    Seq_Set $folder $seq [Mh_Sequence $folder $seq]
++Exmh_Debug Mh_Sequence $folder $seq [time {set s [Mh_Sequence $folder $seq]}]
++#    Seq_Set $folder $seq [Mh_Sequence $folder $seq]
++Exmh_Debug Seq_Set $folder $seq [time {Seq_Set $folder $seq $s}]
+     return $flist(seq,$folder,$seq)
+ }
+ proc Seq_Count { folder seq } {
+cvs diff: Diffing lib/bitmaps
+cvs diff: Diffing lib/html
