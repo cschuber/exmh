@@ -1,5 +1,10 @@
 HISTORY
 
+cvs repository 04/22/2012 az@debian.org
+  added two patches from debian:
+  . make audit logging a configurable option
+  . ensure that $HOSTNAME is set in exmhwrapper
+
 cvs repository 04/21/2012 welch@panasas.com
   Update version to 2.8.0
   This changes

@@ -10,6 +10,7 @@ exit 0
 EOF
     fi
 fi
+[ -z "$HOSTNAME" ] && HOSTNAME=`hostname`
 if echo $DISPLAY | grep --quiet '^:'; then
     DISPLAY="$HOSTNAME$DISPLAY"
 fi

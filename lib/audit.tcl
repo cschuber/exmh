@@ -23,6 +23,10 @@
 
 
 proc Audit { event } {
+    global exmh
+    if {![info exists exmh(auditEnabled)] || !$exmh(auditEnabled)} {
+	return
+    }
     after 1 [list AuditInner $event]
 }
 proc AuditInner { event } {
@@ -107,7 +111,10 @@ proc AuditGetStats {} {
     return $x
 }
 proc Audit_CheckPoint {} {
-    global audit mhProfile argv0
+    global audit mhProfile argv0 exmh
+    if {![info exists exmh(auditEnabled)] || !$exmh(auditEnabled)} {
+	return
+    }
     set file $audit(file)
     unset audit(file)
 

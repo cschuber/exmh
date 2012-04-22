@@ -40,6 +40,9 @@ memory usage.  You can enable the log temporarily."}
 	{exmh(logLines)	logLines 1000	{Max lines in debug log}
 "The log is implemented in a text widget.  This setting limits
 the number of lines kept in the log."}
+    {exmh(auditEnabled) auditEnabled OFF {Audit log enabled}
+	"This option controls the recording of an audit trail of operations on mail messages.
+ Audit information is collected in .exmhaudit in the exmh tempdir, and appended to ~/Mail/.exmhaudit on exit."}
 	{flist(debug)		flistDebug OFF	{Debug flist}
 "A listbox that displays the unseen and unvisited folder state
 is displayed to debug the flist module."}
