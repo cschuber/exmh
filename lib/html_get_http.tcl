@@ -155,7 +155,7 @@ proc Http_poke {} {
     }
     if {$protocol == "http"} {
 	# Callback to determine if a proxy is necessary
-	exmh_lassign {proxy pport} [Http_Proxy $host]
+	lassign [Http_Proxy $host] proxy pport
 	if [catch {
 	    if [string length $proxy] {
 		set sock [HttpConnect $proxy $pport $data(protocol) $url]

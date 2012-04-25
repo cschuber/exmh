@@ -561,4 +561,9 @@ proc Tcl_Tk_Vers_Init {} {
         ::tk::unsupported::ExposePrivateCommand tkTextResetAnchor
         ::tk::unsupported::ExposePrivateVariable tkPriv
     }
+    if {[info exists tcl_version] && ($tcl_version < "8.5")} {
+        proc lassign {values args} {
+          uplevel 1 [list foreach $args $values break]
+        }
+    }
 }

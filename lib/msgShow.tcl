@@ -523,7 +523,7 @@ proc Hook_MsgHighlight_jcl-beautify {t {start 1.0} {end end}} {
 #	    continue
 #	}
 
-	exmh_lassign {qt_cnt qt_str} [MsgHighlightQuoteLevel $txt]
+	lassign [MsgHighlightQuoteLevel $txt] qt_cnt qt_str
 	if {$qt_cnt >= 5} {
 	    set qt_cnt 5
 	}

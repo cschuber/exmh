@@ -1,4 +1,10 @@
 HISTORY
+cvs repository 04/24/2012 valdis.kletnieks@vt.edu
+  Fix the 'lassign' issue more correctly - Brent Welch suggested
+  how to define one on the fly for pre-tcl8.5.  So we bite the bullet
+  and actually use the 8.5 calling sequence.
+  main.tcl, html.tcl, html_formtag.tcl, html_get_http.tcl,
+  html_links.tcl, msgShow.tcl
 
 cvs repository 04/22/2012 az@debian.org
   added two patches from debian:
