@@ -712,7 +712,7 @@ proc Pgp_CheckBlankLines { pgptext } {
 	    # -----BEGIN PGP SIGNED MESSAGE-----
 	    # Hash: SHA1
 	    #####
-	    set a [regsub "^(-----BEGIN.+MESSAGE-----\n)(\[^ \n\t:\]+: \[^\n\]+\n)?((\[^ :\t\n]+\[ \t]*)+\n)" $pgptext "\\1\\2\n\\3" pgptext]
+	    set a [regsub "^(-----BEGIN\[^\n]+MESSAGE-----\n)(\[^ \n\t:\]+: \[^\n\]+\n)?((\[^ :\t\n]+\[ \t]*)+\n)" $pgptext "\\1\\2\n\\3" pgptext]
 	    #####
 	    # Blank line after
 	    # -----BEGIN PGP SIGNATURE-----
@@ -720,7 +720,7 @@ proc Pgp_CheckBlankLines { pgptext } {
 	    # Charset: noconv
 	    # ...    : ...
 	    #####
-	    set b [regsub "(-----BEGIN.+SIGNATURE-----\n)((\[^ \n\t:\]+: \[^\n\]+\n)+)((\[^ :\t\n]+\[ \t]*)+\n)" $pgptext "\\1\\2\n\\4" pgptext]
+	    set b [regsub "^(-----BEGIN\[^\n]+SIGNATURE-----\n)((\[^ \n\t:\]+: \[^\n\]+\n)+)((\[^ :\t\n]+\[ \t]*)+\n)" $pgptext "\\1\\2\n\\4" pgptext]
 	    Exmh_Debug "<Pgp_CheckBlankLines> Number of blank lines added: $a-$b"
 	    }
 	{BEGIN PGP MESSAGE} {
@@ -731,7 +731,7 @@ proc Pgp_CheckBlankLines { pgptext } {
             # Charset: noconv
             # ...    : ...
 	    #####
-	    set a [regsub "^(-----BEGIN.+MESSAGE-----\n)((\[^ \n\t:\]+: \[^\n\]+\n)+)((\[^ :\t\n]+\[ \t]*)+\n)" $pgptext "\\1\\2\n\\4" pgptext]
+	    set a [regsub "^(-----BEGIN\[^\n]+MESSAGE-----\n)((\[^ \n\t:\]+: \[^\n\]+\n)+)((\[^ :\t\n]+\[ \t]*)+\n)" $pgptext "\\1\\2\n\\4" pgptext]
 	    Exmh_Debug "<Pgp_CheckBlankLines> Number of blank lines added: $a"
 	    }
     }
