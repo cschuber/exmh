@@ -1,4 +1,9 @@
 HISTORY
+
+cvs repository 8/5/2012 az@debian.org
+  applied patches by tom lane and kevin cosgrove:
+  improved handling of xhost issues, more robust pgp message parsing
+ 
 cvs repository 04/24/2012 valdis.kletnieks@vt.edu
   Fix the 'lassign' issue more correctly - Brent Welch suggested
   how to define one on the fly for pre-tcl8.5.  So we bite the bullet
