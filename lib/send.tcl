@@ -14,7 +14,7 @@ if {[info command tk-send] == ""} {
  proc send { args } {
     global errorInfo errorCode
     if [catch {eval tk-send $args} x] {
-	if [string match "X server insecure*" $x] {
+	if [string match "*X server insecure*" $x] {
 	    catch {exec xhost} out
 	    set retry 0
 	    if [regexp disabled $out] {
