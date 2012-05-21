@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 21/5/2012 az@debian.org
+  fixed receipt.tcl so that content-disposition-notifications
+  work with nmh 1.5.
+
 cvs repository 8/5/2012 az@debian.org
   applied patches by tom lane and kevin cosgrove:
   improved handling of xhost issues, more robust pgp message parsing

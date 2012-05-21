@@ -485,9 +485,14 @@ proc MDNBuildDraft { draft address doit choice} {
 	close $in
 	error "Cannot create mdn"
     }
-    # Bug - someplace right here, we need to make 'post' generate
-    # a 'MAIL FROM:<>' to be fully RFC compliant.,..
-    puts $out "Subject: Disposition notification\nTo: $address"
+    puts $out "Subject: Disposition notification\nTo: $address\nFrom: $rcpt"
+    # if nmh 1.5 or newer, use Envelope-From: to force mail from: <>
+    catch {exec scan -version} nmhversion
+    if [ regexp {nmh-(\d+)\.(\d+)} $nmhversion allofit major minor ] { 
+	if {$major >= 1 && $minor >= 5 } {
+	    puts $out "Envelope-From:"
+	}
+    }
 
     set bdry [FvMimeStartMulti $out \
 	"multipart/report; report-type=disposition-notification" 0]
