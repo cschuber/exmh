@@ -1,5 +1,9 @@
 HISTORY
 
+cvs repository 16/6/2012 az@debian.org
+  applied patch by Wolfgang Denk to add 'from+to+cc' option 
+  to the pick dialog.
+
 cvs repository 21/5/2012 az@debian.org
   fixed receipt.tcl so that content-disposition-notifications
   work with nmh 1.5.

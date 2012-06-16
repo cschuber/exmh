@@ -39,7 +39,7 @@ proc PickSetup {} {
     catch {unset pick}
     set pick(panes) 0
     set pick(addtosel) 0
-    set pick(fields) {subject from to cc tocc before after search sender mailing-list component}
+    set pick(fields) {subject fromtocc from to cc tocc before after search sender mailing-list component}
 
     set f [Widget_Frame .pick rim0 Rim]
     Widget_BeginEntries 20 25 Pick_It
@@ -163,6 +163,7 @@ proc Pick_It {} {
 		switch -exact $field \
 		component    {lappend cmd --$pick($pane,$who,component) $text} \
 		tocc         {lappend cmd -lbrace -to $text -or -cc $text -rbrace} \
+		fromtocc     {lappend cmd -lbrace -from $text -or -to $text -or -cc $text -rbrace} \
 		sender       {lappend cmd -lbrace --sender $text -rbrace} \
 		mailing-list {lappend cmd -lbrace --mailing-list $text -rbrace} \
 		default      {lappend cmd -$field $text}
