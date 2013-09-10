@@ -274,14 +274,14 @@ proc Scan_CacheUpdate {} {
 	set curLine [Ftoc_ClearCurrent]			;# Clear +
         if [file writable $cacheFile] {
             set scancmd "exec $mhProfile(scan-proc) [list +$folder] \
-		    -width $ftoc(scanWidth) -noheader > [list $cacheFile]"
+		    -width $ftoc(scanWidth) -noheader >@ [open $cacheFile w 0$mhProfile(msg-protect)]"
             if [catch $scancmd err] {
                 Exmh_Status "failed to rescan folder $folder: $err" warn
             }
         }
 	Ftoc_Change $curLine	;# Restore it
     } elseif [catch {
-	set cacheIO [open $cacheFile w]
+	set cacheIO [open $cacheFile w 0$mhProfile(msg-protect)]
 	set curLine [Ftoc_ClearCurrent]			;# Clear +
 	set display [$exwin(ftext) get 1.0 "end -1 char"]
 	Ftoc_Change $curLine	;# Restore it
@@ -309,7 +309,7 @@ proc Scan_Move { folder scanlinesR new } {
     }
     set len [string length $prefix]
     set fmt [format "%%%dd%%s" $len]
-    set cacheIO [open $cacheFile a]
+    set cacheIO [open $cacheFile a 0$mhProfile(msg-protect)]
     for {set i [expr [llength $scanlinesR]-1]} {$i >= 0} {incr i -1} {
 	set line [lindex $scanlinesR $i]
 	if [regsub {( *[0-9]+)(\+)} $line {\1 } newline] {
@@ -338,7 +338,7 @@ proc Scan_AllFolders { {force 0} } {
 	if {$force || ! [Scan_CacheValid $f]} {
 	    puts $out "catch \{send $myname \{Exmh_Status \"scan +$f\"\}\}"
 	    puts $out "catch {
-		set out \[open $mhProfile(path)/$f/.xmhcache w $mhProfile(msg-protect)\]
+		set out \[open $mhProfile(path)/$f/.xmhcache w 0$mhProfile(msg-protect)\]
 		exec $mhProfile(scan-proc) +$f -width $ftoc(scanWidth) -noheader >@\$out
 		close \$out
 	    }"
