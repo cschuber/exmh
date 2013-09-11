@@ -1,9 +1,9 @@
 if {$exmh(sourceHook) && [info command source-orig] ==  ""} {
     rename source source-orig
-    proc source {file} {
+    proc source {args} {
 	 global SourceHook
-	 set result [uplevel 1 [list source-orig $file]]
-	 set fn [file rootname [file tail $file]]
+	 set result [uplevel 1 "source-orig $args"]]
+	 set fn [file rootname [file tail [lindex $args end]]]
 	 if [info exists SourceHook($fn)] {
 	    if [catch {uplevel 1 $SourceHook($fn)} err] {
 		Exmh_Status "Error in source hook for $fn: $err" warning
