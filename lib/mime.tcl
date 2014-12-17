@@ -1308,7 +1308,12 @@ proc MimeShowTime { tkw time } {
     global mime
 
     catch {
-	set msgtime   [clock scan $time]
+	set msgtime   [regsub -all {\([^)]*\)} $time {}]
+	set msgtime   [string trim $msgtime]
+	if [regexp {.* -0000$} $msgtime] {
+	    return
+	}
+	set msgtime   [clock scan $msgtime -format "%a, %d %b %Y %T %Z"]
 	set localtime [clock format $msgtime -format " %T"]
 	if { [string first $localtime $time] == -1 } {
 	    Preferences_Resource mime(localTimeFormat) localTimeFormat \
