@@ -1,6 +1,9 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.17  2017/03/25 03:02:30  az143
+# Summary: small patch in pgpGPG to support long and short keyids
+#
 # Revision 1.16  2012/01/22 22:54:45  az143
 # az@debian.org repaired gpg cipher option handling
 #
@@ -385,12 +388,12 @@ set pgp(gpg,pat_dropKeys) {(^|\n)(pub|sub|sec|ssb|uid):[dren]:[^\n]+}
 set pgp(gpg,pat_splitKeys) \n
 # Patterns that match out interesting keys
 set pgp(gpg,pat_keySec) \
-                {^(pub|sec):[^:]*:[^:]*:([^:]*):[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:([^:]+).*$}
+		{^(pub|sec):[^:]*:[^:]*:([^:]*):([0-9A-F]+):[^:]*:[^:]*:[^:]*:[^:]*:([^:]+).*$}
 set pgp(gpg,pat_keySec_sub) \
-                {^(ssb):[^:]*:[^:]*:([^:]+):[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*.*$}
+                {^(ssb):[^:]*:[^:]*:([^:]+):([0-9A-F]+):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*.*$}
 set pgp(gpg,pat_keyPub) $pgp(gpg,pat_keySec)
 set pgp(gpg,pat_keyPub_sub) \
-                {^(sub):[^:]*:[^:]*:([^:]+):[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]([^:]+):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*.*$}
+                {^(sub):[^:]*:[^:]*:([^:]+):([0-9A-F]+):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*.*$}
 set pgp(gpg,pat_uid) \
                 {^(uid):[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:([^:]+).*$}
 # TclCmd to match out userid and keyid
@@ -442,7 +445,7 @@ set pgp(gpg,pat_checkError) "(BAD_PASSPHRASE\[^\n]+)\n"
 #######################
 # Exec_DetDecryptKeyid
 set pgp(gpg,args_getDecryptKeyid) {--dry-run $in}
-set pgp(gpg,pat_getDecryptKeyid) "NEED_PASSPHRASE ........(........)"
+set pgp(gpg,pat_getDecryptKeyid) "NEED_PASSPHRASE \[\[:alnum:]_]+ (\[\[:alnum:]_]+)"
 set pgp(gpg,pat_getDecryptSym) "NEED_PASSPHRASE_SYM"
 
 ###############
