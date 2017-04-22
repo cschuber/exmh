@@ -61,8 +61,8 @@ snaprpm:
 snaptar:
 	make realsrctar VERSION=$(VERSION)_$(SNAPDATE)
 
-version: 
-	./version.csh
+version:
+	./version.bash
 	./PatchVersion $(VERSION) < exmh.install > exmh.install.new
 	mv exmh.install.new exmh.install
 

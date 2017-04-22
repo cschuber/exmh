@@ -1,5 +1,9 @@
 HISTORY
 cvs repository 04/21/2017 valdis.kletnieks@vt.edu
+  Use version.bash rather than version.csh - who still uses csh for shell scripting?
+  Makefile, version.bash
+
+cvs repository 04/21/2017 valdis.kletnieks@vt.edu
   Proclaim myself emperor
   exmh.install
 
