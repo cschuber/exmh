@@ -1,6 +1,9 @@
 # pgpGpg.tcl
 
 # $Log$
+# Revision 1.18  2017/04/22 01:14:14  sysphrog
+# Fix gnupg Comment field to dynamically update to the currently running version
+#
 # Revision 1.17  2017/03/25 03:02:30  az143
 # Summary: small patch in pgpGPG to support long and short keyids
 #
@@ -149,7 +152,7 @@ proc Pgp_gpg_Preferences {} {
 handling to GnuPG's gpg-agent. This option overrides and disables 
 the pgpKeepPass option." ] \
                 [list pgp(gpg,comment) gpgComment \
-"Exmh [set exmh(version)]" "GnuPG Comment" \
+"Exmh [eval set exmh(version)]" "GnuPG Comment" \
 "Specify the comment GnuPG should put in the comment field
 of encrypted or signed text."] \
                 [list pgp(gpg,modulepath) gpgModulePath \

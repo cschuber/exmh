@@ -1,5 +1,14 @@
 HISTORY
 cvs repository 04/21/2017 valdis.kletnieks@vt.edu
+  Fix gnupg Comment field to dynamically update to the currently running version
+  lib/pgpGpg.tcl
+
+cvs repository 04/21/2017 valdis.kletnieks@vt.edu
+  Add skeleton support for nmh 'mhical'  and third-party 'gcalcli' to deal
+  with text/calendar mail.
+  lib/mh.tcl, lib/mime.types, lib/calendar.tcl, lib/extrasInit.tcl
+
+cvs repository 04/21/2017 valdis.kletnieks@vt.edu
   Tk/Tcl 8.5 is now a decade old.  Heave all pre-8.5 support code
   over the side.
   exmh.MASTER, exmh.install, exmh, install.tcl, lib/addr.tcl,
