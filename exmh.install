@@ -16,7 +16,7 @@ source ./install.tcl
 
 set program exmh
 set vers 2.8.0
-set date 04/21/2012
+set date 04/21/2017
 
 if [catch {package require Tcl 8.5}] {
     error "Tcl/Tk 8.5 or higher required for exmh.  You have $tcl_version"
@@ -29,7 +29,7 @@ install_version	exmh(version) "version $vers $date" {Exmh Version number}
 
 # The following are settings inside exmh that depend on the local environment
 install_name	exmh(name)	exmh		{Name of main exmh script}
-install_var	exmh(maintainer) welch@acm.org {Target of error mailings}
+install_var	exmh(maintainer) valdis.kletnieks@vt.edu {Target of error mailings}
 install_dirVar	mh_path		[installGuessDir /usr/local/bin inc]	{MH binary directory}
 install_progVar	exmh(slocal)	[installGuessPath /usr/local/lib/mh/slocal slocal]	{MH slocal program}
 install_dirVar	mime(dir)	[installGuessDir /usr/local/bin metamail]	{Metamail bin directory}
