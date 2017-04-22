@@ -70,12 +70,12 @@ proc Sedit_Start { draft } {
 	Drop_Attach $t SeditDragDrop
 
 	# PGP version-setting moved out from seditpgp code
- 	if {$pgp(enabled)} {
- 	    if {![info exists pgp($pgp(version,$id),myname,$id)]} {
- 		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
- 	    }
- 	    EditMaybeAddPhrasePane $id .sedit$id
- 	}
+	if {$pgp(enabled)} {
+	    if {![info exists pgp($pgp(version,$id),myname,$id)]} {
+		set pgp($pgp(version,$id),myname,$id) $pgp($pgp(version,$id),myname)
+	    }
+	    EditMaybeAddPhrasePane $id .sedit$id
+	}
 
 	set sedit($t,status) [Widget_Entry .sedit${id} status {top fill} -relief raised]
 
@@ -92,7 +92,7 @@ proc Sedit_Start { draft } {
 
 	# Send has command defined by app-defaults, but we
 	# need to fix it up with an eval here
-	Widget_AddButDef $b send 
+	Widget_AddButDef $b send
 	pack [frame $b.sendpad -width 6 -height 1] -side right -fill y
 	Widget_ReEvalCmd $b.send	;# expand variables now
 
@@ -174,7 +174,7 @@ proc Sedit_Start { draft } {
 
 	# Make sure only valid entries are enabled in version submenu
 	# otherwise things will crash when we try submenu command.
-	# We don't have to take care of the active entry since 
+	# We don't have to take care of the active entry since
 	# preferences only allows valid entries as initial version
 	if {$pgp(enabled)} {
 	    set submenu $b.pgp.m.version
@@ -419,17 +419,13 @@ proc SeditNuke { draft t } {
 }
 proc SeditMsg { t text } {
     # Status line message output
-    global sedit tk_version
+    global sedit 
     $sedit($t,status) configure -state normal
     $sedit($t,status) delete 0 end
     $sedit($t,status) insert 0 $text
-    if {$tk_version > 8.3} {
-        # get the readonlybackground to match the regular one...
-        set stat_color [lindex [ $sedit($t,status) configure -background ] 4 ]
-        $sedit($t,status) configure -state readonly -readonlybackground $stat_color
-    } else {
-        $sedit($t,status) configure -state disabled
-    }
+    # get the readonlybackground to match the regular one...
+    set stat_color [lindex [ $sedit($t,status) configure -background ] 4 ]
+    $sedit($t,status) configure -state readonly -readonlybackground $stat_color
     update idletasks
 }
 
@@ -518,25 +514,25 @@ proc SeditSendOnly { draft t } {
 	set argu ""
 	set argsep " "
 	if {$sedit($t,notifySuccess) || $sedit($t,notifyFailure) \
-	    || $sedit($t,notifyDelay)} { 
+	    || $sedit($t,notifyDelay)} {
 	    set argu "-notify"
 	}
- 	if {$sedit($t,notifySuccess)} { 
- 	    append argu $argsep "success" 
+	if {$sedit($t,notifySuccess)} {
+	    append argu $argsep "success"
 	    set argsep ","
- 	}
- 	if {$sedit($t,notifyFailure)} { 
- 	    append argu $argsep "failure"
+	}
+	if {$sedit($t,notifyFailure)} {
+	    append argu $argsep "failure"
 	    set argsep ","
- 	}
- 	if {$sedit($t,notifyDelay)} { 
- 	    append argu $argsep "delay"
- 	}
- 	if {$sedit($t,notifyRet)} { 
- 	    if {[info exists argu]} { 
- 		append argu " -ret full" 
- 	    } else { set argu "-ret full" }
- 	}
+	}
+	if {$sedit($t,notifyDelay)} {
+	    append argu $argsep "delay"
+	}
+	if {$sedit($t,notifyRet)} {
+	    if {[info exists argu]} {
+		append argu " -ret full"
+	    } else { set argu "-ret full" }
+	}
 
 	SeditMsg $t "Sending message..."
 	SeditMarkSent $t
@@ -604,7 +600,7 @@ proc SeditSave { draft t {hook {}} {isigw 1} } {
 	    regsub -all -nocase "(^|\n)(x-exmh-isig-(comptype|folder):\[^\n\]*\n)+" $X1 {\1} X1
 	    # No X-Mailer on redistributed messages
 	    if {$sedit(xMailHeader) && [string compare $exmh($id,action) dist] != 0} {
-		    
+
 		puts $out "X-Mailer: exmh $exmh(version) with $exmh(mh_vers)"
 	    }
 	    # Replace X-Exmh-Isig-* headers if necessary

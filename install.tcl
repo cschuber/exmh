@@ -3,23 +3,20 @@
 # install.tcl - Installation support
 #
 option add *Entry.background		white	startup
-option add *Entry.foreground 		black 	startup
-option add *Button.padX 		1	startup
-option add *Button.padX 		1	startup
-option add *Button.highlightThickness 	0	startup
-option add *Entry.relief 		flat	startup
-option add *Entry.highlightThickness 	0	startup
-option add *font 			fixed 	startup
+option add *Entry.foreground		black	startup
+option add *Button.padX			1	startup
+option add *Button.padX			1	startup
+option add *Button.highlightThickness	0	startup
+option add *Entry.relief		flat	startup
+option add *Entry.highlightThickness	0	startup
+option add *font			fixed	startup
 option add *Text.c_link			blue	startup
 
 proc install_init { appName dotFile } {
     global install tk_version tk_patchLevel tcl_version tcl_patchLevel
     # Work around namespaces issue in Tk8.4a2 and later
-    if [info exists tk_version] {
-        if {$tk_version > "8.3"} {
-            ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
-        }
-    }
+    ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
+
     set install(appName) $appName
     install_progVar wish [installGuessPath /usr/local/bin/wish wish] {wish absolute pathname}
     set install(dotFile) $dotFile
@@ -719,10 +716,10 @@ proc install_dialog {} {
 
     set install(msg) [label .rim.feedback -text "" -anchor w -padx 10]
     pack $install(msg) -side top -expand true -fill both
-    
+
     frame .rim.buttons -relief raised
     pack .rim.buttons -side top -expand true -fill both
-    
+
     button .rim.buttons.quit -text "Quit" -command {exit}
     button .rim.buttons.keys -text "Keys" -command {installBindKeys}
     button .rim.buttons.conf -text "Conf" -command {installConfigs}
@@ -822,7 +819,7 @@ proc installKeyItem { frame width name keystroke } {
     global install
     frame $frame.$name
     label $frame.$name.label -text $name -width $width
-    entry $frame.$name.entry 
+    entry $frame.$name.entry
     set install(keyval,$name) $frame.$name.entry
     $frame.$name.entry insert 0 $keystroke
     lappend install(allEntries) $frame.$name.entry
@@ -922,7 +919,7 @@ proc installBindEntryInner { what } {
 		break
 	    }
 	}
-	%W icursor $x	
+	%W icursor $x
     }
 
     bind $what $install(key,backchar) {

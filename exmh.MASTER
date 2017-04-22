@@ -20,8 +20,8 @@
 #END CONFIGURATION
 
 package require Tk
-if {$tcl_version < 8.0} {
-    error "Tcl 8.0 (final release) or higher required."
+if {$tcl_version < 8.5} {
+    error "Tcl 8.5 or higher required."
     exit 1
 }
 # Do this so popups related to user initialization
@@ -31,9 +31,7 @@ wm withdraw .
 # fonts in tk8.5: short aliases like don't work properly anymore
 # (confusion with the font face stuff)
 # recreate the common fallback "fixed" as a copy of TkFixedFont
-if {$tcl_version > 8.4} {
-    eval font create fixed [font configure TkFixedFont]
-}
+eval font create fixed [font configure TkFixedFont]
 
 proc auto_path_update { path } {
     # Add library directories to the auto_path,

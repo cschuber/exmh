@@ -12,7 +12,7 @@
 # any specification.
 
 proc Exmh {} {
-    global exmh argv 
+    global exmh argv
 
     Tcl_Tk_Vers_Init	;# Do per-release Tcl/Tk setup here
     Mh_Init		;# Defines mhProfile and identifies mh vs nmh
@@ -249,7 +249,7 @@ proc ExmhResources {} {
 }
 
 proc Exmh_Status {string { level normal } } {
-    global exmh exwin tk_version
+    global exmh exwin
     if {[string compare $string 0] == 0 } { set string $exmh(version) }
     if [info exists exwin(status)] {
 	switch -- $level {
@@ -266,16 +266,9 @@ proc Exmh_Status {string { level normal } } {
 	catch {$exwin(status) configure -fg $exmh(c_st_$level)}
 	$exwin(status) delete 0 end
 	$exwin(status) insert 0 $string
-	# Oh, the inhumanity.. backward-incompatible behavior changes
-	if [info exists tk_version] {
-	    if {$tk_version > "8.3"} {
-		# get the readonlyBackground to match the regular one...
-		set state_color [lindex [ $exwin(status) configure -background ] 4 ]
-		$exwin(status) configure -state readonly -readonlybackground $state_color
-	    } else {
-		$exwin(status) configure -state disabled
-	    }
-	}
+	# get the readonlyBackground to match the regular one...
+	set state_color [lindex [ $exwin(status) configure -background ] 4 ]
+	$exwin(status) configure -state readonly -readonlybackground $state_color
 	ExmhLog $string
 	update idletasks
     } else {
@@ -312,7 +305,7 @@ proc Exmh_Done {{exit 1}} {
 	}
 	# The following is done in response to WM_SAVE_YOURSELF
 	foreach cmd {Sedit_CheckPoint Aliases_CheckPoint
-		    Exmh_CheckPoint Fcache_CheckPoint	    
+		    Exmh_CheckPoint Fcache_CheckPoint
 		    Exwin_CheckPoint } {
 	    if {[info command $cmd] != {}} {
 		Exmh_Status $cmd
@@ -321,7 +314,7 @@ proc Exmh_Done {{exit 1}} {
 		}
 	    }
 	}
-	if {$exit} { 
+	if {$exit} {
 	    # This only happens when we quit.
 	    Background_Wait
 	    set cmds [concat {Scan_CacheUpdate Background_Cleanup
@@ -407,33 +400,29 @@ proc ExmhLog { stuff } {
     }
     if [info exists exmh(log)] {
 	catch {
-#	    $exmh(log) insert end " [bw_delta] "
 	    $exmh(log) insert end [clock format [clock seconds] -format "%H:%M:%S "]
-            global tcl_version
-            if {$tcl_version >= 8.3} {
-                set sec [clock seconds]
-                set now [clock clicks -milliseconds]
-                if {[info exist exmh(logLastClicks)]} {
-                    set delta [expr {$now - $exmh(logLastClicks)}]
-                    set delta_sec [expr {$sec - $exmh(logLastSeconds)}]
+            set sec [clock seconds]
+            set now [clock clicks -milliseconds]
+            if {[info exist exmh(logLastClicks)]} {
+                set delta [expr {$now - $exmh(logLastClicks)}]
+                set delta_sec [expr {$sec - $exmh(logLastSeconds)}]
 
-                    # We don't really know how long the clock clicks value
-                    # runs before wrapping.  If the seconds delta is "too big",
-                    # we just ditch the milliseconds
-                    if {$delta < 0 || $delta_sec > 20} {
-                      $exmh(log) insert end "([format %d. $delta_sec]) "
-                    } else {
-                      set delta_sec 0
-                      while {$delta > 1000} {
-                        incr delta_sec
-                        incr delta -1000
-                      }
-                      $exmh(log) insert end "([format %d.%.03d $delta_sec $delta]) "
-                    }
+                # We don't really know how long the clock clicks value
+                # runs before wrapping.  If the seconds delta is "too big",
+                # we just ditch the milliseconds
+                if {$delta < 0 || $delta_sec > 20} {
+                  $exmh(log) insert end "([format %d. $delta_sec]) "
+                } else {
+                  set delta_sec 0
+                  while {$delta > 1000} {
+                    incr delta_sec
+                    incr delta -1000
+                  }
+                  $exmh(log) insert end "([format %d.%.03d $delta_sec $delta]) "
                 }
-                set exmh(logLastClicks) $now
-                set exmh(logLastSeconds) $sec
             }
+            set exmh(logLastClicks) $now
+            set exmh(logLastSeconds) $sec
 	    $exmh(log) insert end $stuff
 	    $exmh(log) insert end \n
 	    if {$exmh(logYview)} {
@@ -560,10 +549,5 @@ proc Tcl_Tk_Vers_Init {} {
         ::tk::unsupported::ExposePrivateCommand tkEntryButton1
         ::tk::unsupported::ExposePrivateCommand tkTextResetAnchor
         ::tk::unsupported::ExposePrivateVariable tkPriv
-    }
-    if {[info exists tcl_version] && ($tcl_version < "8.5")} {
-        proc lassign {values args} {
-          uplevel 1 [list foreach $args $values break]
-        }
     }
 }

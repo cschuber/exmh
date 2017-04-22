@@ -1,5 +1,5 @@
 ############################################################################
-# 
+#
 #  Insidious Mail DB
 #
 #-------------------
@@ -28,24 +28,24 @@
 # When you type part of an address in the To: or Cc: field, Ctrl-TAB will
 # attempt to complete the address.
 #
-# The concept owes a lot to the Gnu Emacs package "BBDB" by Jamie Zawinski 
+# The concept owes a lot to the Gnu Emacs package "BBDB" by Jamie Zawinski
 # (jwz@netscape.com) but this implementation is strictly my own.  Thanks, Jamie!
 #
 #
 # A neat feature of the browser (and entry editor) is that you can pop up (a la Clip)
-# the last message you got from that person.  Be careful, though; if that message was 
+# the last message you got from that person.  Be careful, though; if that message was
 # deleted or the folder was packed since that message arrived, it will fail.
 #
-# I've been using this (or earlier versions) for about 2 years now and my database 
+# I've been using this (or earlier versions) for about 2 years now and my database
 # is about 5000 entries; I find it EXTERMELY useful when I cannot quite remember the email
 # address of that guy I got a message from 6 months ago and need to reply to, but
 # I remember it was "Ted something".
 #
-# It takes a little while to load the browser window (at least for me, sorting 5000 
+# It takes a little while to load the browser window (at least for me, sorting 5000
 # strings and then inserting them into a listbox takes a while), but then it "stays"
 # even if you dismiss it so it's not too painful.
 #
-# Enjoy; if you find this useful please let me know; if you make it better 
+# Enjoy; if you find this useful please let me know; if you make it better
 # please send me the code.
 #
 #   --Berry Kercheval, Xerox PARC, March 1996 (kerch@parc.xerox.com)
@@ -63,7 +63,7 @@ if {0 == [info exists Addr_debug]} {
 }
 
 #
-# Addr_Init loads the database file at startup time, and arranges the 
+# Addr_Init loads the database file at startup time, and arranges the
 # partial-address-expansion keybinding.
 #
 proc Addr_Init {} {
@@ -74,7 +74,7 @@ proc Addr_Init {} {
 
     # addrFile is the name of the file the address database is kept in
     set addrFile "exmh_addrs"
-    
+
     # homeDir is the directory the database is kept in.
     set homeDir "$env(HOME)/.exmh"
 
@@ -97,7 +97,7 @@ proc Addr_Init {} {
             "If set, addresses excluded from the expansion process will not be displayed by the Address DB Browser."
         }
         {
-            addr_db(checkpoint_on_folder_change) 
+            addr_db(checkpoint_on_folder_change)
             addressdbFolderChangeCheckpoint
             ON
             "Checkpoint on Folder Change"
@@ -199,7 +199,7 @@ proc Addr_Init {} {
     #addr_db is an array used for keeping state.
     #make this an array from the get-go and set the default pref...
     global addr_db
-    set addr_db(init) 1;  
+    set addr_db(init) 1;
     if ![info exists addr_db(curmethod)]            {set addr_db(curmethod) 0}
     if ![info exists addr_db(laststring)]           {set addr_db(laststring) ""}
     if ![info exists addr_db(lastfound)]            {set addr_db(lastfound) ""}
@@ -213,7 +213,7 @@ proc Addr_Init {} {
     Addr_LoadDB
 }
 #
-# Hook_MsgShow is called when exmh displays a message.  We parse out the 
+# Hook_MsgShow is called when exmh displays a message.  We parse out the
 # From: header and call Addr_Save to update the entry in the database.
 #
 proc Hook_MsgShowAddr {path headervar } {
@@ -229,7 +229,7 @@ proc Hook_MsgShowAddr {path headervar } {
 }
 
 #
-# Hook_FolderChange is called when a new folder is visited.  Save the 
+# Hook_FolderChange is called when a new folder is visited.  Save the
 # database then too.
 #
 proc Hook_FolderChangeAddr {newfolder} {
@@ -242,7 +242,7 @@ proc Hook_FolderChangeAddr {newfolder} {
 
 
 #
-# Hook_CheckPoint is called when exmh checkpoints its state.  Save the 
+# Hook_CheckPoint is called when exmh checkpoints its state.  Save the
 # database here.
 #
 proc Addr_CheckPoint {} {
@@ -257,7 +257,7 @@ proc Addr_CheckPoint {} {
 
 ########################################################################
 #
-# This one is bound to a key of the user's choosing to force-save 
+# This one is bound to a key of the user's choosing to force-save
 # the from address of the current message (info stored in last-seen by
 # the Hook_MsgShow routine above.
 #
@@ -291,7 +291,7 @@ proc SaveTo { w } {
             set t2 [string range $t2 [expr $t0 + 1] end]
             ##  AddrDebug "  multi, will keep \"$t1\", new partial name=\"$t2\""
         }
-        # Save address ($t2) 
+        # Save address ($t2)
         Addr_Save [MsgParseFrom $t2] "NEW" $t2 "NULL" "force"
 
     } else {
@@ -306,7 +306,7 @@ proc SaveTo { w } {
 #
 
 #
-# This is "magically" executed when exmh is setting up 
+# This is "magically" executed when exmh is setting up
 # keystroke bindings for the main window
 #
 proc Addr_Bindings { w } {
@@ -336,7 +336,7 @@ proc Addr_LoadDB { {ldmsg ""} } {
     Addr_Browse_LoadListbox $ldmsg
 }
 #
-# Addr_SaveFile saves the database into a unix file 
+# Addr_SaveFile saves the database into a unix file
 #
 proc Addr_SaveFile { {force 0} } {
     global addr_list addr_db
@@ -348,32 +348,26 @@ proc Addr_SaveFile { {force 0} } {
     Exmh_Status "Saving address database..."
     if {$addr_db(remove_days) == ""} {
         set expiration 0
-     
+
     } else {
         set expiration [expr [clock seconds] - (60*60*24*$addr_db(remove_days))]
     }
     set fd [open "$homeDir/.exmh_addr_tmp" w]
     foreach i [array names addr_list] {
 	# rfc2822: day name is optional, and comments after the timezone offset
-	regsub {^[a-zA-Z]+, } [lindex $addr_list($i) 1] {} mailtime; 
-	regsub {\(.+\)\s*$} $mailtime {} mailtime; 
+	regsub {^[a-zA-Z]+, } [lindex $addr_list($i) 1] {} mailtime;
+	regsub {\(.+\)\s*$} $mailtime {} mailtime;
 
 	global tcl_version
 	if {[catch {
-	    # clock scan in 8.4 has no format option, just free-form scan 
-	    # (which doesn't work well/at all), 8.5 has explicit format.
-	    if {$tcl_version > 8.4} { 
-		set mailsec [clock scan $mailtime -format "%d %b %Y %T %z"]
-	    } else {
-		set mailsec [clock scan $mailtime]
-	    }
+	    set mailsec [clock scan $mailtime -format "%d %b %Y %T %z"]
 
 	    if {$addr_db(remove_entries) == 1 &&
 		$addr_db(enabled) == 1 &&
 		$expiration > 0 &&
 		[lindex $addr_list($i) 1] != "" &&
 		$mailsec < $expiration} {
-		unset addr_list($i) 
+		unset addr_list($i)
 	    } else {
 		puts $fd [list set addr_list($i) $addr_list($i)]
 	    }} response]!= 0} {
@@ -389,7 +383,7 @@ proc Addr_SaveFile { {force 0} } {
     if [file exists $homeDir/$addrFile] {
         Mh_Rename $homeDir/$addrFile $homeDir/$addrFile.bak
     }
-    Mh_Rename $homeDir/.exmh_addr_tmp $homeDir/$addrFile 
+    Mh_Rename $homeDir/.exmh_addr_tmp $homeDir/$addrFile
     set addr_db(changed) 0
     Exmh_Status "Saving address database...done."
 }
@@ -423,7 +417,7 @@ proc Addr_Entry_SetExcluded {key} {
         }
         set addr_db(changed) 1
     }
-    return 
+    return
 }
 
 proc Addr_Entry_UnsetExcluded {key} {
@@ -437,7 +431,7 @@ proc Addr_Entry_UnsetExcluded {key} {
             set addr_db(changed) 1
         }
     }
-    return 
+    return
 }
 
 proc Addr_Entry_ToggleExcluded {key} {
@@ -480,7 +474,7 @@ proc Addr_Entry_FormatForMail {key} {
             }
         }
     }
-    
+
     return $formatted
 
 }
@@ -569,7 +563,7 @@ proc Addr_Save {from path rawfrom date {forcesave "not"}} {
     } else {
         Exmh_Status "Saving address \"$from\"."
         set newone [list $path $date  \
-                [Addr_ParseFrom $rawfrom] $rawfrom] 
+                [Addr_ParseFrom $rawfrom] $rawfrom]
         set newentry 1
     }
     set addr_list($from) $newone
@@ -661,7 +655,7 @@ proc Alias_Lookup {n} {
             return [list [Addr_Entry_FormatForMail $aliases($t2)]]
         }
         # Note: cannot use Address_Entry_FormatForMail here since contents
-        # of alias is too unpredicatble.  May be a list of names, may be 
+        # of alias is too unpredicatble.  May be a list of names, may be
         # a preformatted fullname and address.  So send it back as-is
         return $aliases($t2)
     }
@@ -686,7 +680,7 @@ proc Addr_FullNameMatch {n}  {
         if {$match} {
             AddrDebug "   fullname match on $fn"
             lappend result "[Addr_Entry_FormatForMail $i]"
-        }  
+        }
     }
     if {[llength $result] > 0} {
         return $result
@@ -696,7 +690,7 @@ proc Addr_FullNameMatch {n}  {
     }
 }
 
-    
+
 proc LDAP_Lookup {n} {
     global addr_db
 
@@ -704,7 +698,7 @@ proc LDAP_Lookup {n} {
     if { ($addr_db(ldap_server) == {}) || ($addr_db(ldap_searchbase) == {}) } {
         return {}
     }
-    
+
     Exmh_Status "Querying $addr_db(ldap_server) from $addr_db(ldap_searchbase) with $n via $addr_db(ldap_searchprog)..."
 
     set query "\"(|(cn=*$n*)(mail=*$n*)(sn=*$n*)(givenname=*$n*))\""
@@ -738,14 +732,14 @@ proc LDAP_Lookup {n} {
             set name $tmp
         }
     }
-    
+
     return $result
 }
 
 
 proc LDAP_Entry_FormatForMail { email name } {
     global addr_db
-    
+
     if {$addr_db(standard_address_format)} {
         set formatted "$email ($name)"
     } else {
@@ -820,12 +814,12 @@ proc Addr_ParseFrom { fromline } {
             set token {}
         }
     }
-    
+
     #    AddrDebug "  result is $token"
     #    set token [string trim $token "\"()"]
     if [regexp {^\((.*)\)$} $token t1 t2] {
        set token $t2
-    } 
+    }
     if [regexp {^\"(.*)\"$} $token t1 t2] {
        set token $t2
     }
@@ -841,7 +835,7 @@ proc AddrDebug { s {nonewline {}}} {
     global Addr_debug
     if {$Addr_debug == 1} {
         if {[string compare $nonewline ""] == 0} {
-            puts stdout $s 
+            puts stdout $s
         } else {
             puts stdout $s nonewline
         }
@@ -849,7 +843,7 @@ proc AddrDebug { s {nonewline {}}} {
 }
 
 proc AddrShowDialog {w list} {
-    global addr_db 
+    global addr_db
 
     catch {destroy $w.addrs}
     set f [frame $w.addrs -bd 4 -relief ridge]
@@ -918,8 +912,8 @@ proc AddrShowDialogCancel {f} {
 
 proc Addr_Browse { {state normal} } {
     global exwin
-    global addr_br 
-    global addr_db 
+    global addr_br
+    global addr_db
     global addr_list
     global Addr_debug
 
@@ -985,7 +979,7 @@ proc Addr_Browse { {state normal} } {
         bind $addr_db(win) <ButtonRelease>   {Addr_Browse_TrackSel}
         bind $addr_db(win) <Button-2>        {Addr_Browse_Selected Exclude}
 
-        # Menu key accelerators for the toplevel, 
+        # Menu key accelerators for the toplevel,
         # but don't do 'em if in the find entry field
         bind $t <Meta-x> {
             if {0 != [string compare "%W" ".addr_br.find.entry"]} {Addr_Browse_Selected Exclude}
@@ -1009,17 +1003,17 @@ proc Addr_Browse { {state normal} } {
         pack $addr_db(win) -expand true -fill both
     }
 
-    if {0 == [string compare "$state" "normal"]} { 
+    if {0 == [string compare "$state" "normal"]} {
         Exmh_Status $ldmsg
     }
 
     # All built, now load up the listbox
     Addr_Browse_LoadListbox $ldmsg $state
-    
+
     # Initial focus to the listbox so accelerators work.
     focus $addr_db(win)
-    if {0 == [string compare "$state" "normal"]} { 
-        Exmh_Status "$ldmsg done" 
+    if {0 == [string compare "$state" "normal"]} {
+        Exmh_Status "$ldmsg done"
     }
 }
 
@@ -1048,7 +1042,7 @@ proc Addr_Browse_LoadListbox { {ldmsg ""} {state normal}} {
 
     $addr_db(win) delete 0 end
 
-    if {0 == [string compare "$state" "normal"]} { 
+    if {0 == [string compare "$state" "normal"]} {
         Exmh_Status "$ldmsg getting names..."
     }
 
@@ -1060,7 +1054,7 @@ proc Addr_Browse_LoadListbox { {ldmsg ""} {state normal}} {
     }
 
     if {[llength $l]} {
-        if {0 == [string compare "$state" "normal"]} { 
+        if {0 == [string compare "$state" "normal"]} {
             Exmh_Status "$ldmsg sorting names..."
         }
         set l [lsort $l]
@@ -1074,7 +1068,7 @@ proc Addr_Browse_LoadListbox { {ldmsg ""} {state normal}} {
                 }
                 incr n
                 if { 0==($n%100) } {
-                    if {0 == [string compare "$state" "normal"]} { 
+                    if {0 == [string compare "$state" "normal"]} {
                         Exmh_Status "$ldmsg inserting names... [lindex $whiz $w]"
                     }
                     set w [expr {($w+1)%4}]
@@ -1085,7 +1079,7 @@ proc Addr_Browse_LoadListbox { {ldmsg ""} {state normal}} {
                 $addr_db(win) insert end $i
                 incr n
                 if { 0==($n%100) } {
-                    if {0 == [string compare "$state" "normal"]} { 
+                    if {0 == [string compare "$state" "normal"]} {
                         Exmh_Status "$ldmsg inserting names... [lindex $whiz $w]"
                     }
                     set w [expr {($w+1)%4}]
@@ -1093,9 +1087,9 @@ proc Addr_Browse_LoadListbox { {ldmsg ""} {state normal}} {
             }
         }
     }
-    if {0 == [string compare "$state" "normal"]} { 
+    if {0 == [string compare "$state" "normal"]} {
         Exmh_Status  "$ldmsg done"
-        update idletasks 
+        update idletasks
     }
 }
 
@@ -1139,7 +1133,7 @@ proc Addr_Browse_Reload {} {
         }  else {
             Exmh_Status "$ldmsg aborted."
         }
-    } else { 
+    } else {
         Exmh_Status $ldmsg
         unset addr_list
         Addr_LoadDB $ldmsg
@@ -1165,10 +1159,10 @@ proc Addr_Browse_ChangedDialog {w} {
     return $addr_db(changeresult)
 }
 
-proc Addr_LabelledTextField { name label width command  } { 
+proc Addr_LabelledTextField { name label width command  } {
     frame $name
     label $name.label -text $label -width $width -anchor w
-    eval {entry $name.entry -relief sunken -width  50 } 
+    eval {entry $name.entry -relief sunken -width  50 }
     pack $name.label -side left
     pack $name.entry -side right -fill x -expand true
     bind $name.entry <Return> "$command ; break"
@@ -1274,7 +1268,7 @@ proc Addr_Browse_Edit {sel} {
         set a [Addr_LabelledTextField $t.address  "Address"       12 "Addr_Edit_Save $t $sel" ]
         set l [Addr_LabelledTextField $t.lastMsg  "Last Message"  12 "Addr_Edit_Save $t $sel" ]
         set d [Addr_LabelledTextField $t.date     "Date"          12 "Addr_Edit_Save $t $sel" ]
-        
+
         pack $t.name $t.address  $t.lastMsg  $t.date
 
     }
@@ -1283,7 +1277,7 @@ proc Addr_Browse_Edit {sel} {
     $a delete 0 end;    $a insert 0 $addr
     $l delete 0 end;    $l insert 0 $last
     $d delete 0 end;    $d insert 0 $date
-        
+
     if {$exclude == 1} {
         $e config -text "Include"
         AddrDebug "$e config -text Include"
@@ -1340,7 +1334,7 @@ proc Addr_New_Save {winname} {
     Exmh_Status "Updating address \"$index\"."
     set addr_db(changed) 1
     set addr_list($index) [list $last $date  \
-            [Addr_ParseFrom $addr] $addr] 
+            [Addr_ParseFrom $addr] $addr]
 
     # update browser window...
     $addr_db(win) insert end [Addr_Entry_FormatForListbox $index]
@@ -1348,8 +1342,8 @@ proc Addr_New_Save {winname} {
     # make it all go away so we can redo it next time.
     Addr_Edit_Dismiss $winname
 }
-  
-  
+
+
 proc Addr_Load_Source {}  {
     global env
     # HACK HACK HACK!!!
@@ -1395,7 +1389,7 @@ proc Addr_Edit_Save {winname sel} {
     Exmh_Status "Updating address \"$index\"."
     set addr_db(changed) 1
     set addr_list($index) [list $last $date  \
-            [Addr_ParseFrom $addr] $addr] 
+            [Addr_ParseFrom $addr] $addr]
 
     # update browser window...
     $addr_db(win) delete $sel

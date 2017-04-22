@@ -18,8 +18,8 @@ set program exmh
 set vers 2.8.0
 set date 04/21/2012
 
-if [catch {package require Tcl 8.0}] {
-    error "Tcl/Tk 8.0 or higher required for exmh.  You have $tcl_version"
+if [catch {package require Tcl 8.5}] {
+    error "Tcl/Tk 8.5 or higher required for exmh.  You have $tcl_version"
 }
 
 # Define app name and install save file
@@ -28,11 +28,11 @@ install_init exmh ./.exmhinstall
 install_version	exmh(version) "version $vers $date" {Exmh Version number}
 
 # The following are settings inside exmh that depend on the local environment
-install_name	exmh(name) 	exmh 		{Name of main exmh script}
+install_name	exmh(name)	exmh		{Name of main exmh script}
 install_var	exmh(maintainer) welch@acm.org {Target of error mailings}
 install_dirVar	mh_path		[installGuessDir /usr/local/bin inc]	{MH binary directory}
 install_progVar	exmh(slocal)	[installGuessPath /usr/local/lib/mh/slocal slocal]	{MH slocal program}
-install_dirVar	mime(dir)	[installGuessDir /usr/local/bin metamail]    	{Metamail bin directory}
+install_dirVar	mime(dir)	[installGuessDir /usr/local/bin metamail]	{Metamail bin directory}
 install_fileVar mailcap_default	[installGuessPath /usr/etc/mailcap mailcap]	{System mailcap file}
 install_fileVar mimetypes_default [installGuessPath /usr/local/lib/exmh-$vers/mime.types mime.types]	{System mime.types file}
 install_expect	exmh(expect)	[installGuessPath /usr/local/bin/expect expect]	{expect program}
@@ -45,11 +45,11 @@ install_var	faces(set,unknown)	{domains unknown} \
 install_var	faces(set,news)	{news}	{Search path for news faces}
 install_var	faces(defaultDomain) eng.sun.com	{Your default domain}
 install_var	faces(suffix) {xpm gif xbm}	{Faces file suffixes}
-install_dirVar	pgp(pgp,path)	[installGuessDir /usr/local/bin pgp]    	{Pgp2 bin directory}
+install_dirVar	pgp(pgp,path)	[installGuessDir /usr/local/bin pgp]		{Pgp2 bin directory}
 install_dirVar  pgp(pgp5,path)	[installGuessDir /usr/local/bin pgpk]            {Pgp5 bin directory}
 install_dirVar  pgp(gpg,path)	[installGuessDir /usr/local/bin gpg]            {GnuPG bin directory}
 install_dirVar  pgp(pgp6,path)	[installGuessDir /usr/local/bin pgp6]            {Pgp6 bin directory}
-install_dirVar	glimpse(path)	[installGuessDir /usr/local/bin glimpse]   	{Glimpse bin directory}
+install_dirVar	glimpse(path)	[installGuessDir /usr/local/bin glimpse]	{Glimpse bin directory}
 install_var	sound(cmd)	{/usr/demo/SOUND/play -v 38} \
 							{Audio play command}
 
@@ -87,7 +87,7 @@ install_html {
 <h2 align=center>TK front end to the MH mail system. </h2>
 <p>
 After you read these instructions, click <button -command install_pack_buttons>I have read the instructions</button>
-to reveal more buttons that do the installation. 
+to reveal more buttons that do the installation.
 <p>
 The installer has many fields in a scrolling list. Each field value
 is used to patch exmh.MASTER in order to make the exmh script. Most
@@ -101,10 +101,10 @@ Tk 8.0 or higher (e.g., Tk 8.4) is required.
 By default, the program is installed as "exmh", and it also uses related
 scripts named "exmh-bg" and "exmh-async". If you want to install it
 under an alternate name, use the "Name of main exmh script" setting
-to change the base name. 
+to change the base name.
 <p>
 You may not have some support programs or packages. In this case, just
-delete the default value and leave the field blank. 
+delete the default value and leave the field blank.
 
 <h2>Recommended Packages</h2>
 <p>
@@ -114,42 +114,42 @@ See <a href=lib/html/exmh.README.html>exmh.README.html</a> for pointers to these
 This also includes mimecode that handles base64 and quoted-printable
 encodings used to transmit 8-bit data safely in mail messaegs. This
 is highly recommended. If you use 8-bit character sets, then you must
-have this package to properly encode messages. 
+have this package to properly encode messages.
 </ul>
 <h2>Optional Packages</h2>
 <p>
 See <a href=lib/html/exmh.README.html>exmh.README.html</a> for pointers to these.
 <ul>
 <li>The expect program. This can be used to do FTP transfers of MIME
-message/external-body messages of subtype anon-ftp. 
+message/external-body messages of subtype anon-ftp.
 <li>The facesaver database. Exmh needs to know the root directory of
 the database and then the set of subdirectories under that which contain
-directory trees of face bitmaps. 
+directory trees of face bitmaps.
 <li>Glimpse is a search tool that can help you find mail messages by
-their content. 
-<li>The play program that plays audio files. 
+their content.
+<li>The play program that plays audio files.
 </ul>
 <h3>Reminder</h3>
 <p>
 Check out the optional slocal.patch and folder.patch files. These are
-optional - see the man page for details. 
+optional - see the man page for details.
 
 <h2>Field descriptions </h2>
 <ul>
 <li>Wish absolute pathname. Exmh is a script. It needs to be run by
-the Tcl/Tk shell, "wish". Enter the complete, absolute pathname. 
+the Tcl/Tk shell, "wish". Enter the complete, absolute pathname.
 <li> Exmh version number. Do not change this so that automatic bug
-reports properly reflect the version of exmh in use. 
+reports properly reflect the version of exmh in use.
 <li> Name of main script. This lets you change the name from exmh to
-something else, like "exmh2" or "exmh-solaris". 
+something else, like "exmh2" or "exmh-solaris".
 <li> Error mailing target. Change it if you want to see errors at your
-site. Otherwise I'll get them, which is OK. 
+site. Otherwise I'll get them, which is OK.
 <li> MH binary directory. The directory that has MH programs like inc,
-send scan, folders, etc. 
+send scan, folders, etc.
 <li> MH slocal program. Use for presorting mail. This is in the MH
-library directory. Give the complete pathname. 
+library directory. Give the complete pathname.
 <li> Metamail bin directory. The home for metamail and mimencode. These
-programs are required by exmh for MIME handling. 
+programs are required by exmh for MIME handling.
 <li> System mailcap file. This file has rules for metamail that describe
 how to view MIME parts. Exmh uses these rules, too.
 <li> System mime.types file. Maps file extensions into MIME types. Used by
@@ -166,17 +166,17 @@ not have the related package. There are more required fields described
 after these)
 <ul>
 <li>Expect program. Only needed if you use the "expect" method for
-FTP transfers. This is the most reliable method. 
+FTP transfers. This is the most reliable method.
 <li>Root for faces. The facesaver directory. It has subdirectories
-that correspond to different faces (i.e., picons) databases. 
+that correspond to different faces (i.e., picons) databases.
 <li> Search path for user faces. This is a list of directory names
-relative to the root of the faces databases. 
+relative to the root of the faces databases.
 <li> Search path for generic faces. This is a list of directory names
-relative to the root of the faces databases. 
+relative to the root of the faces databases.
 <li> Default domain. This is used in faces lookup to fully qualify
-addresses. 
+addresses.
 <li> Faces file suffixes. These are the file extentions that are used
-in your faces database. Narrowing this speeds face lookup. 
+in your faces database. Narrowing this speeds face lookup.
 </ul>
 <blockquote>Faces example: Suppose you have a directory /usr/local/faces
 that contains these subdirectories: domains, misc, unknown, usenix,
@@ -186,14 +186,14 @@ names. You'll have domains/com, domains/edu, as well as users/com and
 users/edu, for example. The databases are split into user and generic
 categories to help find real faces before more generic icons. </blockquote>
 <ul>
-<li>PGP bin. The directory that contains the PGP binaries. 
+<li>PGP bin. The directory that contains the PGP binaries.
 <li>Glimpse bin. The directory that contains the glimpse and glimpseindex
-programs. 
-<li>Audio play program. A program that plays .au files 
+programs.
+<li>Audio play program. A program that plays .au files
 </ul>
 <h2>More Required Fields</h2>
 <ul>
-<li>Script Library. The runtime location of the exmh .tcl files. 
+<li>Script Library. The runtime location of the exmh .tcl files.
 </ul>
 <blockquote>Note that the "Script Library" and the "Install lib directory"
 are usually the same place. The script library is the runtime value
@@ -202,8 +202,8 @@ value. Ordinarily they should be the same. If you have AFS, you might
 need to set these two differently because of read-only volumes. </blockquote>
 <ul>
 <li>Install bin directory. The place to install the main exmh script.
-<li> Install man directory. The place to install the man pages. 
-<li> Install lib directory. The place to copy the .tcl scripts. 
+<li> Install man directory. The place to install the man pages.
+<li> Install lib directory. The place to copy the .tcl scripts.
 </ul>
 <blockquote>The "Install lib Library" should be private to exmh (unshared
 with other apps). In addition, it cannot be the same place as ./lib.
@@ -214,7 +214,7 @@ as it removes itself before copying onto itself... </blockquote>
 <h2>Install Commands </h2>
 <p>
 The Test button runs exmh and automatically switches the script library
-run-time value to "./lib" for the duration of the test. 
+run-time value to "./lib" for the duration of the test.
 <p>
 When you press "Patch" the configuration is saved in the file named
 .exmhinstall. If you save this to an alternate name (e.g., .exmhinstall.sun4)
@@ -223,11 +223,11 @@ you can use the <button -command installConfigs>Conf</button> button to choose a
 <p>
 After you set things up, then
 <ol>
-<li><button -command installPatch>Patch</button> - apply site-dependent patches to exmh. 
-<li><button -command installTclIndex>TclIndex</button> - compute the auto-load library index. 
-<li><button -command installTest>Test</button> - run the patched script. 
-<li><button -command installVerify>Verify</button> - see what the Install will do. 
-<li><button -command installInner>Install</button> - install exmh. 
+<li><button -command installPatch>Patch</button> - apply site-dependent patches to exmh.
+<li><button -command installTclIndex>TclIndex</button> - compute the auto-load library index.
+<li><button -command installTest>Test</button> - run the patched script.
+<li><button -command installVerify>Verify</button> - see what the Install will do.
+<li><button -command installInner>Install</button> - install exmh.
 </ol>
 <h2><a href=lib/html/index.html>More Exmh Documentation</a></h2>
 
