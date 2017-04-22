@@ -20,7 +20,7 @@ cvs repository 04/21/2017 valdis.kletnieks@vt.edu
   Tk/Tcl 8.5 is now a decade old.  Heave all pre-8.5 support code
   over the side.
   exmh.MASTER, exmh.install, exmh, install.tcl, lib/addr.tcl,
-  lib/main.tcl, lib/mime.tcl, lib/sedit.tcl
+  lib/main.tcl, lib/mime.tcl, lib/sedit.tcl, lib/utils.tcl
 
 cvs repository 16/6/2012 az@debian.org
   applied patch by Wolfgang Denk to add 'from+to+cc' option

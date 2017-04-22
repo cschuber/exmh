@@ -6,7 +6,7 @@ proc setmax {varName value} {
     if {![info exists var] || ($value > $var)} {
 	set var $value
 	return 1
-    } 
+    }
     return 0
 }
 # setmin - set the variable to the minimum of its current value
@@ -17,21 +17,8 @@ proc setmin {varName value} {
     if {![info exists var] || ($value < $var)} {
 	set var $value
 	return 1
-    } 
-    return 0
-}
-# Assign a set of variables from a list of values.
-# If there are more values than variables, they are ignored.
-# If there are fewer values than variables, the variables get the empty string.
-# renamed to avoid conflicting with tcl8.5 lassign which has different calling
-proc exmh_lassign {varList value} {
-    if {[string length $value] == 0} {
-	foreach var $varList {
-	    uplevel [list set $var {}]
-	}
-    } else {
-	uplevel [list foreach $varList $value { break }]
     }
+    return 0
 }
 
 # Delete a list item by value.  Returns 1 if the item was present, else 0
@@ -74,7 +61,7 @@ proc File_Delete {args} {
     Exmh_Debug "file delete $args"
     foreach f $args {
         if [file isdirectory $f] {
-    	error "Should not delete directories this way"
+	error "Should not delete directories this way"
         }
         file delete -force $f
     }
