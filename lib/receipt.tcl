@@ -49,8 +49,9 @@ proc MDNAskReceipt { draft t } {
 proc MDNGenerate { file address choice mode } {
     global exwin mimeHdr
 
+Exmh_Debug "file=$file address=$address choice=$choice mode=$mode"
     if {$choice != "ignored"} {
-	set mdnfile [MDNBuildDraft $file $address $choice $mode]
+	set mdnfile [MDNBuildDraft $file "$address" $choice $mode]
 	if [catch {exec send -nopush $mdnfile} result] {
 	  Exmh_Debug "send result: $result"
 	  Exmh_Status "Could not send message disposition notification" error
@@ -104,17 +105,17 @@ proc MDNAsk {tkw address explain} {
     $tkw insert insert "\n\n       "
     TextButton $tkw " Send confirmation " \
 	[list MDNGenerate $mimeHdr(0,rawfile) \
-	     $mimeHdr(0=1,hdr,disposition-notification-to) \
+	     { set dummy "$mimeHdr(0=1,hdr,disposition-notification-to)" } \
 	     "displayed" "manual-action/MDN-sent-manually"]
     $tkw insert insert "    "
     TextButton $tkw " Send denial " \
 	[list MDNGenerate $mimeHdr(0,rawfile) \
-	     $mimeHdr(0=1,hdr,disposition-notification-to) \
+	     { set dummy "$mimeHdr(0=1,hdr,disposition-notification-to)" } \
 	     "denied" "manual-action/MDN-sent-manually"]
     $tkw insert insert "    "
     TextButton $tkw " Ignore silently " \
 	[list MDNGenerate $mimeHdr(0,rawfile) \
-	$mimeHdr(0=1,hdr,disposition-notification-to) \
+	{ set dummy "$mimeHdr(0=1,hdr,disposition-notification-to)" } \
 	     "ignored" {}]
     $tkw insert insert "\n"
     MimeInsertSeparator $tkw 0 6
@@ -224,7 +225,7 @@ proc MDNCheck { tkw } {
 	    if {[string compare $mdnAction1 "ask"] == 0} {
 		MDNAsk $tkw $dnt $mdnExplain
 	    } else {
-		MDNGenerate $mimeHdr(0,rawfile) $dnt $mdnAction1 \
+		MDNGenerate $mimeHdr(0,rawfile) { set dummy "$dnt" } $mdnAction1 \
 		    "manual-action/MDN-sent-automatically"
 	    }
 	}
