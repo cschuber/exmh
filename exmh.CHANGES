@@ -1,7 +1,12 @@
 HISTORY
+cvs repository 04/21/2017 valdis.kletnieks@vt.edu
+  Tk/Tcl 8.5 is now a decade old.  Heave all pre-8.5 support code
+  over the side.
+  exmh.MASTER, exmh.install, exmh, install.tcl, lib/addr.tcl,
+  lib/main.tcl, lib/mime.tcl, lib/sedit.tcl
 
 cvs repository 16/6/2012 az@debian.org
-  applied patch by Wolfgang Denk to add 'from+to+cc' option 
+  applied patch by Wolfgang Denk to add 'from+to+cc' option
   to the pick dialog.
 
 cvs repository 21/5/2012 az@debian.org
@@ -11,7 +16,7 @@ cvs repository 21/5/2012 az@debian.org
 cvs repository 8/5/2012 az@debian.org
   applied patches by tom lane and kevin cosgrove:
   improved handling of xhost issues, more robust pgp message parsing
- 
+
 cvs repository 04/24/2012 valdis.kletnieks@vt.edu
   Fix the 'lassign' issue more correctly - Brent Welch suggested
   how to define one on the fly for pre-tcl8.5.  So we bite the bullet
@@ -49,7 +54,7 @@ cvs repository 01/23/2012 az@debian.org
   repaired gnupg cipher option handling
 
 cvs repository az az 01/20/2012 az@debian.org
-  repaired date/time parsing in addr.tcl, which kept 
+  repaired date/time parsing in addr.tcl, which kept
   address db expiration from working properly
 
 cvs repository 12/06/2011 valdis.kletnieks@vt.edu
@@ -59,9 +64,9 @@ cvs repository 12/06/2011 valdis.kletnieks@vt.edu
 cvs repository 04/24/2011 az@debian.org
   consolidated spell checking options: main on sedit pref page,
   i-spell specific stuff on its own page. i-spell now an explicit
-  choice among spelling programs. updated all related preference 
-  doc strings. 
-  updated app defaults to include i-spell whole buffer in the more... 
+  choice among spelling programs. updated all related preference
+  doc strings.
+  updated app defaults to include i-spell whole buffer in the more...
   menu. updated i-spell sedit hook to enable/disable ispell or i-spell
   depending on spell checker choice.
   fixed exmh-async integration of custom spell checker: now in line with
@@ -79,10 +84,10 @@ cvs repository 09/02/2010 az@debian.org
   of rfc2369 list-* headers.
 
 cvs repository 08/29/2010 az@debian.org
-  implemented quoting of unknown directives when editing 
+  implemented quoting of unknown directives when editing
   text/enriched mails with sedit
   (this is a fix for debian bug #175193, http://bugs.debian.org/175193)
-  
+
 cvs repository 08/26/2010 valdis.kletnieks@vt.edu
   Finally found the cause of the exmh Log window breaking - we
   carry our own lassign that had the parameters in opposite order
@@ -106,17 +111,17 @@ cvs repository 06/20/2008 az@debian.org
   lib/mh.tcl: mention install-mh by full path in initial greeting
   lib/bogo.tcl: add learning-from-stdin for learning ham, too
    (not just spam)
-  lib/glimpse.tcl: add the -W glimpse option (and scope for 
+  lib/glimpse.tcl: add the -W glimpse option (and scope for
    whole file) to permanent preferences
-  lib/scan.tcl, lib/folder.tcl: fix the stale scan cache problem  
-  lib/uri.tcl, html_links.tcl: make html links clickable in 
+  lib/scan.tcl, lib/folder.tcl: fix the stale scan cache problem
+  lib/uri.tcl, html_links.tcl: make html links clickable in
    inline-displayed html, and consolidate status line handling for links
   lib/seditExtras.tcl, lib/mime.tcl: patch from Marion Hakanson to
    fix fd leakage in internal mime qp/base64 decoder
    patch from debian: add support for recode as alternative to mimencode
   lib/pgpExec.tcl, lib/pgpGpg.tcl, lib/extrasInit.tcl: added support
    for gnupg's gpg-agent
-  
+
 cvs repository 06/26/2006 valdis.kletnieks@vt.edu
   lib/html_dpackage.tcl: Skip over <style>..</style> blocks we don't
   know how to interpret anyhow. Thanks to Don Koch <aardvark@krl.com>
@@ -176,7 +181,7 @@ cvs repository 3/4/2005 cwg-exmh@deepeddy.com
   the folder.
 
 cvs repository 3/1/2005 cwg-exmh@deepeddy.com
-  lib/html_content.tcl, lib/main.tcl, lib/mime.tcl, lib/msg.tcl, 
+  lib/html_content.tcl, lib/main.tcl, lib/mime.tcl, lib/msg.tcl,
   lib/seditExtras.tcl - Call tk_getOpenDialog or tk_GetSaveDialog
   instead of FSBox.
 
@@ -326,9 +331,9 @@ cvs repository 1/1/2005 welch@panasas.com (for Alexander Zangerl)
   (These changes are inspired by a patch from Alexander, but not the same)
   lib/inc.tcl: use $install(dir,bin) to specify an absolute path to
     the inc.expect script
-  lib/seditExtras.tcl: use $install(dir,bin) to specify an absolute path to 
+  lib/seditExtras.tcl: use $install(dir,bin) to specify an absolute path to
     the exmh-async script
-  lib/mime.tcl: use $install(dir,bin) to specify an absolute path to 
+  lib/mime.tcl: use $install(dir,bin) to specify an absolute path to
     the ftp.expect script.
     Also changed MimeMakeBoundary to use [clock seconds] instead of
     re-writing the output of [exec date].
@@ -417,7 +422,7 @@ cvs repository 07/28/2004 welch@panasas.com
   lib/app-defaults - Added new key bindings
     <Key-S> Bogo_Filter spam
     <Key-H> Bogo_Filter ham
-  lib/html_images.tcl 
+  lib/html_images.tcl
   lib/html.tcl - added preference to disable image display in
     a list of folder patterns.  Contributed by Jürgen Vollmer
   lib/sequences.tcl - changed default for seqwin(show) to "unseen" from "cur"
@@ -479,7 +484,7 @@ cvs repository 07/26/2004 valdis.kletnieks@vt.edu
   of their worries...)
 
   lib/report.tcl - DTRT if user has a personalized 'components' file, or
-  a 'comp: -form some.other.comps' MH profile.. (very important if they 
+  a 'comp: -form some.other.comps' MH profile.. (very important if they
   have stuff like a From: header needed to make the mail actually usable...)
 
   lib/folder.tcl - Change a /tmp to [Env_Tmp] to stop races
@@ -531,10 +536,10 @@ cvs repository 06/14/2004 welch@panasas.com
 cvs repository 05/22/2004 cwg-exmh@deepeddy.com
   exmhwrapper - Prepend the hostname if we're running on the local
   host.  This allows bifffolder to work even if it's on a different
-  machine. 
+  machine.
 
 cvs repository 05/11/2004 cwg-exmh@deepeddy.com
-  mime.tcl - Don't display part inline by default if its 
+  mime.tcl - Don't display part inline by default if its
   disposition is "attachment".
 
 cvs repository 09/29/2003 cwg-exmh@deepeddy.com
@@ -557,10 +562,10 @@ cvs repository 06/11/2003 haldevore@acm.org
 
 cvs repository 06/11/2003 haldevore@acm.org
   Added code, and a README for Patrick Carr's Bogofilter stuff to misc directory
-  
+
 cvs repository 06/11/2003 haldevore@acm.org
   Added code, manpage, and a README for Justin Mason's mhthread to misc directory
-  
+
 cvs repository 06/11/2003 haldevore@acm.org
   patch from "Klaus Elsbernd" <elsbernd@dfki.uni-kl.de>
     mh.tcl It clears the mhPriv(otherpriv) variable, which otherwise grows infinitly,
@@ -574,7 +579,7 @@ cvs repository 05/19/2003 welch@panasas.com
   pgpPgp65.tcl - Added +compatible=off to batchmode flags (Neil Rickert)
     added version check improvement for PGP 6.5 (Neil Rickert)
     (added . - and _ to the pattern, too (kre))
-  preferences.tcl - In the toplevel display, 
+  preferences.tcl - In the toplevel display,
       changed row of unsorted buttons to a sorted listbox
 
 cvs repository 04/21/2003 valdis.kletnieks@vt.edu
@@ -620,7 +625,7 @@ cvs repostiory 4/1/2003 welch@panasas.com
 
 cvs repository 04/01/2003 haldevore@acm.org
   Multiple fixes from Robert Elz (kre@munnari.OZ.AU)
-  select.tcl, html/guide.html - Select message by typing now allows 
+  select.tcl, html/guide.html - Select message by typing now allows
     "s" to show the message or "-" to go to the prior message
   mh.tcl - Ignore garbage in sequence files
   main.tcl - Add Disable/Enable button to debug log window
@@ -669,7 +674,7 @@ cvs repository 03/18/2003 valdis.kletnieks@vt.edu
 
 cvs repository 03/18/2003 welch@panasas.coM
     exmh.install - bumped up date for 2.6.2
-    msgShow.tcl - added \n adn \t to the white-space removal in the 
+    msgShow.tcl - added \n adn \t to the white-space removal in the
         Hook_MsgShowListHeaders proc.
 
 cvs repository 03/15/2003 valdis.kletnieks@vt.edu
@@ -732,11 +737,11 @@ cvs repository 02/18/2003 welch@panasas.com
     described below.  Repackaged 2.6.1 and updated cvs tag.
 
 cvs repository 02/18/2003 welch@panasas.com
-    Makefile, exmh.README, exmh.install, version.sed, 
+    Makefile, exmh.README, exmh.install, version.sed,
     exmh.README.html, index.html, software.html
       2.6.1 release
     cvs tag exmh-2-6-1
-      
+   
 cvs repository 02/18/2003 welch@panasas.com
     mime.tcl - MimeHeaderSort fix from Tom Lane so that it displays
       headers that appear in Header-Display first, before unsuppressed ones.
@@ -765,10 +770,10 @@ cvs repository 02/17/2003 welch@panasas.com
     thread.tcl - fixed call to Flist_ForgetSequence (changed to Seq_Forget)
     Minor HTML cleanup, including pointer to the Wiki.
     I added comments to several files that identify old exmh APIs, including
-    flist.tcl, folder.tcl, mh.tcl, msg.tcl, 
+    flist.tcl, folder.tcl, mh.tcl, msg.tcl,
 
 cvs repository 02/16/2003 cwg-exmh@deepeddy.com
-    msg.tcl - Only call Ftoc_ShowSequence in MsgChange if we have a valid 
+    msg.tcl - Only call Ftoc_ShowSequence in MsgChange if we have a valid
 	message.
     ftoc.tcl - Bulletproof Ftoc_ShowSequence
 
@@ -826,7 +831,7 @@ cvs repository 11/1/2002 cwg-exmh@deepeddy.com
 
 cvs repository 10/30/2002 cwg-exmh@deepeddy.com
     mh.tcl - When compacting sequences, don't compact if it's already
-	compacted. 
+	compacted.
 
 cvs repository 10/29/2002 cwg-exmh@deepeddy.com
     msg.tcl - In Msg_Show, if there are no messages in the sequence
@@ -835,12 +840,12 @@ cvs repository 10/29/2002 cwg-exmh@deepeddy.com
 	debug code.
     flist.tcl - in FlistResetVars, sort array names so that totalcount
 	gets cleared after seqcount in order to keep it from going
-	negative. 
+	negative.
     mh.tcl - When rewriting the sequences file, don't expand the other
 	sequences.
 
 cvs repository 10/28/2002 cwg-exmh@deepeddy.com
-    msg.tcl, editor.tcl, folder.tcl, ftoc.tcl, main.tcl, mh.tcl, 
+    msg.tcl, editor.tcl, folder.tcl, ftoc.tcl, main.tcl, mh.tcl,
 	sequences.tcl, thread.tcl  - Remove message checkpoint code
 	which was originally intended to work around an mh mark bug,
 	but which now seems unneeded and needlessly complex (causing
@@ -862,11 +867,11 @@ cvs repository 09/21/2002 cwg-exmh@deepeddy.com
 	Ftoc_ShowSequences to call Ftoc_ShowSequence or to specify the
 	optional argument or both.
 
-cvs repository 09/09/2002 Robert Elz <kre@munnari.OZ.AU> via 
+cvs repository 09/09/2002 Robert Elz <kre@munnari.OZ.AU> via
 	welch@panasas.com
     ftoc.tcl - Fixed reference to $L
 
-cvs repository 08/26/2002 Robert Elz <kre@munnari.OZ.AU> via 
+cvs repository 08/26/2002 Robert Elz <kre@munnari.OZ.AU> via
 	cwg-exmh@deepeddy.com
     pick.tcl - change the order of the arguments to pick to get around
 	nmh bug.
@@ -888,19 +893,19 @@ cvs repository 08/22/2002 cwg-exmh@deepeddy.com
 
 cvs repository 08/21/2002 cwg-exmh@deepeddy.com
     flag.tcl - Don't die in Flag_MsgSeen if flist(totalcount,unseen)
-	is undefined. 
+	is undefined.
     app-defaults - Msg_MarkUnseen is now {Msg_Mark unseen}.
     msg.tcl - left a $ off of $mhProfile(unseen-sequence)
     ftoc.tcl - Needed quotes around argument to Exmh_Status.
 
 cvs repository 08/20/2002 cwg-exmh@deepeddy.com
     app-defaults-color - Change default colors of ftoc so highlighted
-	sequences will appear better. 
+	sequences will appear better.
     seqwin.tcl - New File; Replacement for unseenwin...more generalized.
     sequences.tcl - seqwin hooks are in here.
     flist.tcl - Initialize flist() elements differently;
 	Flist_FindUnseen is now Flist_FindSeqs and calls Seq_Set
-	instead of doing it by hand. 
+	instead of doing it by hand.
     ftoc.tcl - Ftoc_FindMsgs replaces Ftoc_FindMsg and handles lists
 	of messages; Ftoc_MsgNumbers replaces Ftoc_MsgNumber and
 	handles lists of lines; ftoc_NewFtoc now takes an optional
@@ -919,20 +924,20 @@ cvs repository 08/20/2002 cwg-exmh@deepeddy.com
 	Ftoc_FindMsgs instead of Ftoc_FindMsg; Call Seq_Add or Seq_Del
 	instead of Seq_RemoveMsg or Mh_SequenceUpdate; Call
 	Ftoc_MsgNumbers or Ftoc_MsgIterate where it's simpler than
-	Ftoc_Iterate;  
+	Ftoc_Iterate;
     app-defaults, background.tcl, inc.tcl, pgpWWW.tcl, user.tcl - Use
 	Flist_FindSeqs instead of Flist_FindUnseen.
     bindings.tcl, folder.tcl, inc.tcl - Msg_ShowCurrent and
-	Msg_ShowUnseen are now Msg_Show. 
+	Msg_ShowUnseen are now Msg_Show.
     editor.tcl - use new Ftoc_FindMsgs instead of Ftoc_FindMsg
     pick.tcl - use Seq_Del instead of Seq_RemoveMsg.
     print.tcl - Use Ftoc_MsgIterate instead of Ftoc_Iterate.
     scan.tcl - Use Ftoc_MsgNumbers instead of Ftoc_MsgNumber; call
 	Ftoc_ClearMsgCache and Ftoc_ShowSequences in
-	Scan_ProjectSelection. 
+	Scan_ProjectSelection.
     thread.tcl - Use Ftoc_MsgNumbers instead of Ftoc_MsgNumber;
-	Ftoc_FindMsgs instead of Ftoc_FindMsg 
-    bindings.tcl, fcache.tcl, flag.tcl, flist.tcl - use 
+	Ftoc_FindMsgs instead of Ftoc_FindMsg
+    bindings.tcl, fcache.tcl, flag.tcl, flist.tcl - use
 	$mhProfile(unseen-sequence) instead of hard
 	coding 'unseen'.
     extrasInit - remove UnseenWin initialization; change topten
@@ -952,7 +957,7 @@ cvs repository 08/06/2002 cwg-exmh@deepeddy.com
 cvs repository 08/06/2002 cwg-exmh@deepeddy.com
     app-defaults, fcache.tcl, flag.tcl, flist.tcl, ftoc.tcl, inc.tcl,
     main.tcl, mh.tcl, msg.tcl, pick.tcl, scan.tcl, sequences.tcl
-    thread.tcl, unseenwin.tcl - 
+    thread.tcl, unseenwin.tcl -
 	1) Renamed flist(new,???) to flist(seqcount,???,unseen),
 	flist(newseq,???) to flist(seq,???,unseen), and flist(newMsgs)
 	to flist(totalcount,unseen) and generalized many of the
@@ -988,12 +993,12 @@ cvs repository 07/25/2002 welch@panasas.com
     lib/uri.tcl: Added way to display defered HTML inside exmh.  Contributed
       by Tomas Gradin
     lib/msg.tcl: Added Msg_Mark and Msg_UnMark, but these are not used.
-      Thought I needed them for Sequence support, but the Sequences... 
+      Thought I needed them for Sequence support, but the Sequences...
       menu already works without them.
     lib/seditBind.tcl: Moved the SeditBeautify binding to the correct
       bindtag so it doesn't fire on the main message window.
     lib/widgets.tcl: Added catch inside Widget_ReEvalCmd
-    
+ 
 cvs repository 07/26/2002 cwg-exmh@deepeddy.com
     folder.tcl - Call Msg_Change with skipdisplay in Folder_Pack too.
 
@@ -1005,7 +1010,7 @@ cvs repository 07/25/2002 cwg-exmh@deepeddy.com
     flist.tcl - New proc Flist_SetUnseen which can be called instead
 	of Flist_AddUnseen to avoid calling Flist_ForgetUnseen.  Call
 	it in Flist_UnseenMsgs.  Also remove some ancient dead code
-	from the end of Flist_AddUnseen. 
+	from the end of Flist_AddUnseen.
     folder.tcl, flist.tcl - Move ftoc(autoSort) test from
 	FolderChange to Flist_UnseenUpdate so that it will be called
 	more in more cases.
@@ -1015,7 +1020,7 @@ cvs repository 07/25/2002 cwg-exmh@deepeddy.com
 	Folder_Sort so sorts don't cause the message display to
 	rescroll to the top.  This makes them much less anoying;
 	pretty important if it gets called automatically by background
-	processing. 
+	processing.
     scan.tcl - In Scan_FolderForce, call Flist_UnseenMsgs instead of
 	Flist_ForgetUnseen so that the folder doesn't move in the
 	unseen window; also call Ftoc_Change because the current
@@ -1075,7 +1080,7 @@ cvs repository 07/12/2002 cwg-exmh@deepeddy.com
 cvs repository 07/12/2002 cwg-exmh@deepeddy.com
     scan.tcl - Back out the removal of Ftoc_Reset from 7/3/2002 as
 	well as yesterday's attempt to fix some of the problems caused
-	by that bad idea. 
+	by that bad idea.
 
 cvs repository 07/11/2002 cwg-exmh@deepeddy.com
     scan.tcl - in ScanFolder, we don't know what the last message is
@@ -1095,7 +1100,7 @@ cvs repository 07/03/2002 cwg-exmh@deepeddy.com
     scan.tcl - Remove unnecessary call to Ftoc_Reset in ScanFolder
 
 cvs repository 07/02/2002 cwg-exmh@deepeddy.com
-    folder.tcl - Call Flist_UnseenUpdate just before calling Scan_Folder 
+    folder.tcl - Call Flist_UnseenUpdate just before calling Scan_Folder
 	in FolderChange
 
 cvs repository 07/02/2002 cwg-exmh@deepeddy.com
@@ -1111,7 +1116,7 @@ cvs repository 06/06/2002 welch@panasas.com
 
 cvs repository 05/01/2002 Hal DeVore <haldevore@acm.org>
     lib/sedit.tcl - moved calls to SeditSend hooks to much earlier
-    
+ 
 cvs repository 04/30/2002 welch@panasas.com
     A whole collection of patches.  If marked with ** then I've lost
     track of who gave them to me and I apologize for that:
@@ -1123,7 +1128,7 @@ cvs repository 04/30/2002 welch@panasas.com
     lib/extrasInit.tcl: help text updates about the uquoteAdd resource (**)
     lib/faces.tcl: fix for space-in-pathname problem (**)
     lib/fcache.tcl: New Feature! display the count of unseen messages
-      in the folder cache. (Paul Menage) 
+      in the folder cache. (Paul Menage)
     lib/html_get_http.tcl: trap errors from bad http: links
     lib/inc.tcl: tweaked feedback about inc'ed messages to do case-insensitive
       grep for Subject: (**)
@@ -1221,7 +1226,7 @@ cvs repository 12/06/2001 kchrist
     lib/pgpMain.tcl: Fixed the "Always choose the sign key." option. Fixed
         a clearsigning bug. Modified interpretation of app/pgp header to
         avoid hang.
-    lib/pgpExec.tcl : Exmh can now parse the GnuPG options file and 
+    lib/pgpExec.tcl : Exmh can now parse the GnuPG options file and
     lib/pgpGpg.tcl  : identify the "default-key" (same as "myname" in PGP).
         Added "--status-fd 2" to args_decrypt so that the output can
         be parsed with Pgp_InterpretOutput.
@@ -1267,7 +1272,7 @@ cvs repository 07/11/2001 Brent Welch <welch@panasas.com>
     lib/sedit.tcl: Added SeditBeautify from John Beck
     lib/seditBind.tcl: Added "highlight" virtual function to sedit bindings
     lib/app-defaults: Added <Control-l> binding to sedit to beautify it.
-    
+ 
 cvs repository 07/10/2001 Brent Welch <welch@panasas.com>
     lib/editor.tcl: A -- is passed to the exmh-async script to
     turn off any argument/flag parsing by wish.  This means you can
@@ -1313,7 +1318,7 @@ cvs repository 05/31/2001 kchrist
     lib/scan.tcl: Allow arguments in scan-proc configuration.
     lib/app-defaults: Have "Use message as draft" call Msg_CompUse. This
       sidesteps an internal bug in MsgComp. To fix the bug MsgComp
-      needs to be drafts-folder aware like Mh_CompSetup.      
+      needs to be drafts-folder aware like Mh_CompSetup.   
 
 cvs repository 05/18/2001 bmah
     lib/extrasInit.tcl:
@@ -1351,8 +1356,8 @@ cvs repository 05/14/2001 kchrist
 
 cvs repository 05/11/2001 kchrist
     A bunch of changes having to do with making sure exmh($id,action)
-    is there when we need it. Also... Replaced Sedit_Mailto with 
-    Msg_Mailto (extending Ovidiu's patch). Replaced exmh(ctype) 
+    is there when we need it. Also... Replaced Sedit_Mailto with
+    Msg_Mailto (extending Ovidiu's patch). Replaced exmh(ctype)
     with exmh($id,action).
 
     lib/editor.tcl: Set exmh($id,action) in Sedit_DraftID.
@@ -1362,11 +1367,11 @@ cvs repository 05/11/2001 kchrist
     lib/mh.tcl: Made sure exmh($id,action) is set when comp'osing and
       reset when done.
     lib/msg.tcl: Turned Msg_CompTo into Msg_Mailto as replacement for
-      Sedit_Mailto. Made new Msg_CompTo. Removed exmh(ctype). Set 
+      Sedit_Mailto. Made new Msg_CompTo. Removed exmh(ctype). Set
       exmh($id,action) in MsgComp and Msg_Edit. Moved DecodeURL from
       seditExtras into here and renamed it to MsgDecodeURL.
     lib/sedit.tcl: Don't check if exmh($id,action) or pgp(version,$id)
-      exist before using them. If they don't it is a bug we should 
+      exist before using them. If they don't it is a bug we should
       catch and fix. Modified call to SeditSetIsigHeaders.
     lib/seditExtras.tcl: Modified parameters to SeditSetIsigHeader.
       Replaced Sedit_Mailto with a stub that calls Msg_Mailto. Removed
@@ -1477,7 +1482,7 @@ cvs repository 01/12/2001 Brent Welch <brent.welch@interwoven.com>
 
 cvs repository 01/03/2001 Bruce A. Mah <bmah@acm.org>
     lib/pgpPgp5.tcl - Add +force to correct a problem with verifying
-    the signatures of PGP5 clearsigned messages.  From 
+    the signatures of PGP5 clearsigned messages.  From
     Dave Tweten <tweten@nas.nasa.gov>, via the FreeBSD Project.
 
 cvs repository 01/03/2001 Hal DeVore <haldevore@acm.org>
@@ -1502,11 +1507,11 @@ cvs respository 12/11/2000 Hal DeVore <haldevore@acm.org>
 cvs respository 11/22/2000 Hal DeVore <haldevore@acm.org>
     lib/html/guide.html - Corrected a couple of improperly closed
     <code> tags
-    lib/sedit.tcl - patch from Chris Keane to eliminate the 
+    lib/sedit.tcl - patch from Chris Keane to eliminate the
     removal of charset in SeditSetHeader proc
 
 cvs repository 11/17/2000 Brent Welch <brent.welch@interwoven.com>
-    lib/glimpse.tcl - Grouped some expressions with { } to avoid 
+    lib/glimpse.tcl - Grouped some expressions with { } to avoid
     double-substitutions on file and directory names.  If they had
     $ in them it would raise errors.
 
@@ -1538,7 +1543,7 @@ cvs respository 09/15/2000 Hal DeVore <haldevore@earthling.net>
     other mail-fetching-and-filtering tool directly from exmh.
     Original patch developed by Carl D. Roth, code updated and
     merged into current exmh by Chris Keane.
- 
+
 cvs respository 09/13/2000 Hal DeVore <haldevore@earthling.net>
     lib/html.tcl Fixed preferences item spelling mismatch
     problem and solution pointed out by Ben Escoto
@@ -1548,7 +1553,7 @@ cvs respository 09/07/2000 Hal DeVore <haldevore@earthling.net>
     getting clobbered.
 
 cvs respository 08/30/2000 Hal DeVore <haldevore@earthling.net>
-    lib/seditMime.tcl applied patch from Chris Garrigues 
+    lib/seditMime.tcl applied patch from Chris Garrigues
     <cwg-exmh@deepeddy.com> to prevent flowing of mhn directives
     when running sedit with formatting on send.
 
@@ -1582,11 +1587,11 @@ cvs repository 06/22/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/receipt.tcl - generate proper Final-Recipient: field
 
 cvs repository 06/22/2000 Bruce A. Mah <bmah@cisco.com>
-    lib/html/exmh-faq.html:  Added FAQ #15a on folder-specific template 
+    lib/html/exmh-faq.html:  Added FAQ #15a on folder-specific template
     files.
 
     lib/html/exmh-faq.html: Added FAQ #23 on keeping sender's address
-    from appearing in the cc line, written by Pete Gelbman 
+    from appearing in the cc line, written by Pete Gelbman
     <pete@arraycomm.com>.
 
 cvs repository 06/21/2000 Bruce A. Mah <bmah@cisco.com>
@@ -1606,9 +1611,9 @@ cvs repository 06/20/2000 Brent Welch <welch@ajubasolutions.com>
     Errors can occur in Pgp_Exec_Init if the path to PGP is wrong.
 
 cvs repository 06/16/2000 Bruce A. Mah <bmah@cisco.com>
-    lib/html/exmh-faq.html:  Add FAQ #22 about giving preference 
-      to displaying text/plain over text/html.  Fix minor HTML glitch 
-      in FAQ #21. 
+    lib/html/exmh-faq.html:  Add FAQ #22 about giving preference
+      to displaying text/plain over text/html.  Fix minor HTML glitch
+      in FAQ #21.
     exmh.CHANGES:  In a fit of anal-retentiveness, fix a typo.
 
 cvs repository 06/16/2000 Brent Welch <welch@ajubasolutions.com>
@@ -1620,7 +1625,7 @@ cvs repository 06/16/2000 Brent Welch <welch@ajubasolutions.com>
 
 cvs repository 06/16/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/app-defaults - missed a PGP menu
-    lib/pgpBase.tcl, lib/pgpExec.tcl, lib/pgpMain.tcl - handle missing 
+    lib/pgpBase.tcl, lib/pgpExec.tcl, lib/pgpMain.tcl - handle missing
     "pattern" which caused PGP 6.5 to not list private keyring.
     lib/pgpMain.tcl - after changing PGP version in sedit, wrong
     PGP version used in 'select key' dialog.
@@ -1628,7 +1633,7 @@ cvs repository 06/16/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
 cvs repository 06/15/2000 Valdis Kletnieks <valdis.kletnieks@vt.edu>
     lib/main.tcl, lib/sedit.tcl, lib/seditMime.tcl - output MH version
     as well as Exmh on X-Mailer: line
-    lib/pgpExec.tcl, lib/pgpGpg.tcl, lib/pgpPgp65.tcl - make PGP Comment: 
+    lib/pgpExec.tcl, lib/pgpGpg.tcl, lib/pgpPgp65.tcl - make PGP Comment:
     line track the Exmh version actually used...
 
 cvs repository 06/12/2000 Brent Welch <welch@ajubasolutions.com>
@@ -1718,18 +1723,18 @@ cvs repository 04/19/2000
 
 cvs repository 04/18/2000
     lib/seditExtras.tcl
-    Add better support for composing RFC2017 URL external-references 
+    Add better support for composing RFC2017 URL external-references
     Still need to add better support for displaying them
     - vkletnieks
 
 cvs repository 04/18/2000
     lib/app-defaults, lib/scan.tcl, lib/seditBind.tcl
-    Handle embedded blanks better 
+    Handle embedded blanks better
     - vkletnieks, patch by Jacob Morzinski <jmorzins@MIT.EDU>
 
 cvs repository 04/18/2000
     lib/PgpDecryptExpect, lib/PgpExec.tcl, lib/pgpGpg.tcl, lib/pgpPgp5.tcl
-    Use ASCII quote character 
+    Use ASCII quote character
     - vkletnieks, patch by Jacob Morzinski <jmorzins@MIT.EDU>
 
 cvs repository 04/05/2000
@@ -1748,11 +1753,11 @@ cvs repository 03/23/2000
         with a cross-reference under question 18 (FTOC).
     b)  Did some minor markup changes to question list
     c)  Did some markup revisions to 14 (mailing lists).  Also added
-        pointer to mailing list archive and info on digested exmh-user 
+        pointer to mailing list archive and info on digested exmh-user
         list.
     d)  Markup revisions and additional info in question 15 (templates).
         It noted 4 types of templates but only listed 3.  Now it has
-        info on 4 MH plus 1 new nmh template.  
+        info on 4 MH plus 1 new nmh template.
                                              -haldevore
 
 cvs repository 02/29/2000
@@ -1781,11 +1786,11 @@ cvs repository 12/2/1999
     Tweaked error message in install.tcl
 
 cvs repository 11/08/1999
-    Roll back 11/04/1999 bug fix and re-implement it in a different 
+    Roll back 11/04/1999 bug fix and re-implement it in a different
     way. -kchrist
 
 cvs repository 11/05/1999
-    Removed app-defaults assumption of PGP use when treating 
+    Removed app-defaults assumption of PGP use when treating
     multipart/signed or multipart/encrypted -kchrist
 
 cvs repository 11/04/1999
@@ -1821,7 +1826,7 @@ cvs repository 10/12/1999
 cvs repository 10/07/1999
     Changed documentation string for quote file name to indicate it
     is created relative to the exmh startup directory.
-    Fixed a bug in sign+encrypt processing when composing a MIME 
+    Fixed a bug in sign+encrypt processing when composing a MIME
     message. Added a couple of bugs to the list to remind me of what
     still needs to be done. -kchrist
 
@@ -1830,20 +1835,20 @@ cvs repository 09/29/1999
 
 cvs repository 09/27/1999
     More PGP changes. Consolidated passphrase entry to sedit field or
-    pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass) 
-    and pgp(echopass). Moved pgp(keeppass), pgp(echopass) and 
+    pgpExec routine. Made the pgp-sedit field aware of pgp(keeppass)
+    and pgp(echopass). Moved pgp(keeppass), pgp(echopass) and
     pgp(grabfocus) to PGP General Interface. Fixed a minor bug left
     over from my previous GUI changes. -kchrist
 
 cvs repository 09/22/1999
-    Changed the PGP interface, basically the stuff under the Crypt... 
+    Changed the PGP interface, basically the stuff under the Crypt...
     button. The hope is that the change will help make the different
     sign options a bit clearer - kchrist
 
 exmh-2.1.0 Released, 9/17/1999
 
 cvs repository 09/17/1999
-    Fixed RPM build, and added spanish support to the RPM,  thanks to 
+    Fixed RPM build, and added spanish support to the RPM,  thanks to
     Francisco Monserrat <francisco.monserrat@rediris.es>
        -slipcon
 
@@ -1864,8 +1869,8 @@ cvs repository 08/25/1999
 	logs.  --George Ross <gdmr@dcs.ed.ac.uk> via bmah.
 
 cvs repository 08/24/1999
-    Importing keys from email keyserver queries now works.  Attaching 
-	keys to an email message is now RFC 2015 compliant 
+    Importing keys from email keyserver queries now works.  Attaching
+	keys to an email message is now RFC 2015 compliant
 	(content-type: application/pgp-keys instead of application/pgp).
 	--Kevin.Christian@lsil.com via bmah.
     Made reply-to-all invoke repl -group if repl claims to support a
@@ -1873,17 +1878,17 @@ cvs repository 08/24/1999
 	(iko)
 
 cvs repository 08/22/1999
-    Fix a few bugs related to email PGP querying (queries now can go out).  
-	Use Exmh_Status to let user know what's happening during an 
+    Fix a few bugs related to email PGP querying (queries now can go out).
+	Use Exmh_Status to let user know what's happening during an
 	email query.  --Kevin.Christian@lsil.com and bmah.
-    Sanitize PGP info out of debugging logs.  
+    Sanitize PGP info out of debugging logs.
 	--George Ross <gdmr@dcs.ed.ac.uk> via bmah.
     Delete More...->old PGP->Encrypt cascaded menu, due to apparent
 	lack of need for this functionality and difficulty in getting
 	it correctly implemented.  --bmah.
 
 cvs repository 08/19/1999
-    Change address book expansion to NOT insert new header lines as this 
+    Change address book expansion to NOT insert new header lines as this
         broke the "continue lookup" feature.  Also changes to allow address
         expansion on ANY header line (doc changes still to be done).
         -Kevin.Christian via haldevore
@@ -1894,27 +1899,27 @@ cvs repository 08/17/1999
 	- slipcon
 
 cvs repository 08/13/1999
-    Don't try to coerce text/plain PGP messages to application/pgp 
+    Don't try to coerce text/plain PGP messages to application/pgp
 	unless PGP is actually enabled.  --bmah
     Really fix problems with 8-byte GPG keyIDs and keyservers this
 	time.  --Kevin.Christian@lsil.com, via bmah
     Rudimentary support for LDAP  --Jason Day <jday@ixl.com> and cwg
     If we ask the user for help in picking the PGP key to use for a
-	receipient and they cancel the resulting dialog, generate 
+	receipient and they cancel the resulting dialog, generate
 	an error (instead of asking the user ad infinitum).  --bmah
 
 cvs repository 08/12/1999
     Fix a number of key/passphrase management problems:  pgpsedit now
-	manages PGP versions, keys, and passphrases on a per-window 
+	manages PGP versions, keys, and passphrases on a per-window
 	basis.  Decryption now works when no passphrases are cached.
-	One timeout parameter controls passphrases for all PGP 
+	One timeout parameter controls passphrases for all PGP
 	versions.  seditpgp UI slightly modified.  --bmah
     Get rid of "PGP Preview" menu item in sedit left over from
 	debugging.  --bmah
 
 cvs repository 08/10/1999
     Properly use [Env_Tmp] in the below patch -cwg
-    Ignore high-order bytes of key IDs returned by GPG for compatability 
+    Ignore high-order bytes of key IDs returned by GPG for compatability
 	with keyservers.  --bmah
     Properly process PGP/MIME messages that have boundary characters
 	containing regular expression special characters.  --bmah
@@ -1930,10 +1935,10 @@ cvs repository 08/04/1999
 
 cvs repository 08/03/1999
     Display the body of a message which fails to be decoded by
-	PGP. -cwg 
+	PGP. -cwg
     Finished <button> tagging exmh-ref.n.html; and tagged
 	exmh-use.n.html as well as finding various problems in various
-	html pages -cwg 
+	html pages -cwg
 
 cvs repository 08/02/1999
     Spell checked html documentation and fleshed out documentation on
@@ -1945,13 +1950,13 @@ cvs repository 08/02/1999
     Merge in PGP2/PGP5/GPG support from multipgp branch.  --bmah.
 
 cvs repository 07/31/1999
-    changed wording of preferences moved dialog, as suggested by 
+    changed wording of preferences moved dialog, as suggested by
     Axel Belinfante <Axel.Belinfante@cs.utwente.nl>
 	- slipcon
 
 cvs repository 07/30/1999
     Fixed stupid typo in flag.tcl
-	-Steven Bakker <steven@icoe.att.com> via cwg 
+	-Steven Bakker <steven@icoe.att.com> via cwg
     Support access to nntp servers which require authentication
 	-Gareth Owen <oweng@aston.ac.uk> and cwg
     Added newfeatures.html and bugfixes.html to documentation -cwg
@@ -1991,12 +1996,12 @@ cvs repository 6/10/1999
     Small doc update
         -Valdis Kletnieks via haldevore
     This change adds a command to the mouse-right menu for
-    message/rfc822 parts of "Extract Message".  Selecting 
-    this pulls the message out of the enclosing message 
+    message/rfc822 parts of "Extract Message".  Selecting
+    this pulls the message out of the enclosing message
     and puts it into the current folder.
         -cwg via Valdis Kletnieks via haldevore
     DNS/MDN documentation -Valdis Kletnieks via cwg
-    
+ 
 cvs repository 6/9/1999
     Changed $HOME/.exmhdisplay to $HOME/.exmh/.display in misc scripts -cwg
     Allow ispell preferences to work before sedit has been opened
@@ -2059,13 +2064,13 @@ cvs repository 4/30/1999
     Support for multiple pgp keys -"Jan L. Peterson" <jlp@Part.NET> via cwg
     Allow external editor to have the "sedit PGP password" turned on;
 	doing so adds a passphrase field to the What Now window.
-	Also updated the pgp... menu in the whatnow window to be a crypt... 
+	Also updated the pgp... menu in the whatnow window to be a crypt...
 	menu just like sedit's.  -cwg
     Minor change to List... menu so it will not disappear when you
 	change messages if detached. -cwg
 
 cvs repository 4/29/1999
-    Fixed bug in which people using an external editor get a PGP related 
+    Fixed bug in which people using an external editor get a PGP related
 	error and can't send email  -cwg
 
 cvs repository 4/26/1999
@@ -2076,7 +2081,7 @@ cvs repository 4/26/1999
         -Jan L. Peterson via haldevore
 
 cvs repository 4/23/1999
-    Remove unused argument from Folder_TargetClear proc 
+    Remove unused argument from Folder_TargetClear proc
         -steve rader via haldevore
     Make background process run User_Layout()
         -Christer Borang via haldevore
@@ -2159,7 +2164,7 @@ cvs repository 4/8/1999
 
 cvs repository 4/4/1999
     Code cleanup:  Removed dead code which only ran in pre tk-4.1 versions.
-	Also, removed the -mono flag since it hasn't actually worked since 
+	Also, removed the -mono flag since it hasn't actually worked since
 	tk-4.0b3. -cwg
 
 cvs repositry 4/3/1999
@@ -2184,7 +2189,7 @@ cvs repository 4/1/1999
         sequence bookkeeping is correct after a sort or pack.
         -patch page via haldevore
     Forward Subject patch that optionally adds (fwd) to the
-        subject of forwarded messages. 
+        subject of forwarded messages.
         -Chris Keane via haldevore
     Support for color icons on main window -cwg w/ help from jbeck@eng.sun.com
     New black&white and color icons -jbeck@eng.sun.com  via cwg
@@ -2198,7 +2203,7 @@ cvs repository 3/31/1999
     Dates display localtime in parentheses -patch page via cwg
     Better support for WindowMaker -cwg
     support for the X-image-url: header -ovidiu@cup.hp.com via cwg
-    middle button on unseenwin configurable to do an inc 
+    middle button on unseenwin configurable to do an inc
 	-khearn@legato.com via cwg
 	
 2.0.3 3/22/1999 (Been way to long!)
@@ -2408,7 +2413,7 @@ cvs repository 3/31/1999
     Fixed redisplay of subparts
     Fixed conflict between fonts in encoded headers and fonts from
 	m_tagnames resources
-    Fixed glimpse search strings with spaces. 
+    Fixed glimpse search strings with spaces.
     Eliminated extra name= parameter on External Body parts
     Fixed <format> operation in sedit on last para in buffer.
     Fixed FormatMail Default preference.
@@ -2510,7 +2515,7 @@ cvs repository 3/31/1999
     Added new multipart/signature (Ben Escoto and Chris Garrigues)
     Added address memorization (Berry Kercheval)
     Added Glimpse option to use a single index file. (Ethan Miller)
-    Added Eudora Content-Disposition header option. 
+    Added Eudora Content-Disposition header option.
     Added Disposition Notification header for Return reciept. (Kjell Irgens)
     Added in-line image display. (Chris Garrigues)
     Added new mime option display (Chris Garrigues)
@@ -2540,7 +2545,7 @@ cvs repository 3/31/1999
     Fixed interface to Surfit! browser.
     Fixed regexp for URLs in <a> </a> tags. (Paris)
     Updated content-type guessing (Medley)
-    Unified the two spell check program preference settings. 
+    Unified the two spell check program preference settings.
     Fixed "adding preferences to existing pane" bug.
     Replace spaces in default file name with _ in filename selector.
     Put bound on hack that adds blank lines to messages.
@@ -2590,7 +2595,7 @@ cvs repository 3/31/1999
 	    by your keyboard.
 	Fixed delete operations to properly save up multiple deletes
 	    a la emacs <Control-k> behavior.
-    Added support for X-Sun-Charset 
+    Added support for X-Sun-Charset
     Added WM_SAVE_YOURSELF support
     Guard against user deleting the Scanning for nested folder dialog.
     Fixed <Return> from showing up in Command entries.
@@ -2785,7 +2790,7 @@ cvs repository 3/31/1999
     Fixed regular expression with bad performance characteristics used
 	in processing RFC1522 mail headers (=?charset?encoding?stuff?=)
     Fixed Log key bindings
-    Tweaked tk colormodel emulation 
+    Tweaked tk colormodel emulation
     Added Thread_Display to Search... menu
     Moved text widget wrap attributes into app-defaults
     Fixed WhatNow dialogs alternate editor menu entry
@@ -2799,7 +2804,7 @@ cvs repository 3/31/1999
     Added FAQ 6.c  How do you create an X-Face: header line?
     Fixed MsgParseFrom to not always stomp on global address variable.
     Move Folder_Pack that is part of folder change into the background.
-    Undid smooth-scroll-on-scrollbar-arrow bug 
+    Undid smooth-scroll-on-scrollbar-arrow bug
     Fixed ancient binding bug for Entry class that was
 	not clearing old bindings properly
     Fixed active text buttons for 4.0 (last character wrong)
@@ -2925,12 +2930,12 @@ cvs repository 3/31/1999
 	    related resources g_* (button groups) and gm_* (menu groups)
 	Thanks to Achim Bohnet for this.
     Fixed bugs in folder summary line.
-    Added Stop button to MIME display when there are lots                      
-	of parts to a message, like big digests.                 
-    Added support for $exmh(library)/local.mime.types and 
+    Added Stop button to MIME display when there are lots                   
+	of parts to a message, like big digests.              
+    Added support for $exmh(library)/local.mime.types and
 	$exmh(userLibrary)/user.mime.types
     Fixed MHN $path bug.
-    Fixed Mime Redisplay menu bug (there were double bindings in TK 4.0)      
+    Fixed Mime Redisplay menu bug (there were double bindings in TK 4.0)   
     Beefed up faces to allow weird from lines.
     Allow for "bell" sound special case.
     Added preferences for FS Box: size of directory threashold to
@@ -2945,11 +2950,11 @@ cvs repository 3/31/1999
 	$mailcap_default	(This is set by the installer)
     Fixed handling of Shift key in PGP password entry. (Tk 4.0 problem)
     Fixed update of Content-type header when promoting to text/enriched.
-    Fixed pick focus initialization. 
+    Fixed pick focus initialization.
     Fixed Exmh_Status so that "warn", "error", and "background" messages
 	now appear in the color they should (not "normal" blue)
     Tweaked user feedback in Compose Key dialog
-    Eliminated troublesome Button-2 and Button-3 bindings on resize diamond.  
+    Eliminated troublesome Button-2 and Button-3 bindings on resize diamond.
     Fixed saving of current message when multiple messages selected.
     Fixed Burst Digest and auto-commit
     Added Stop button to URL scan when the message is bigger
@@ -3038,19 +3043,19 @@ cvs repository 3/31/1999
 *   AUDIT
 	Added audit log of exmh actions.  These are saved into
 	    ~/Mail/.exmhaudit at the end of each session.
-	Audit Statistics added to Fops.more menu       
+	Audit Statistics added to Fops.more menu    
     BASIC EXMH STUFF
 *	Added icon feedback for spooled messages.  Works if you do
 	    background "count" or "msgchk" operations.  Icon label
 	    shows number of unread messages, or number of spooled messages.
 	    See exmh-custom man page for related resource settings.
-*	Change to folder with unseen messages also displays the            
+*	Change to folder with unseen messages also displays the         
 	    first unread message in the folder.  This happens with <Key-F>
 	    (Folder_Unseen) and implied change to folder with unseen,
 	    but not with explicit folder change.
 	ExwinFtocMsgBoundary and friends added to resize internal window sizes.
 *	    The black diamond in the interface is the target for this.
-*	Re-Read MH Profile added to Fops.more menu 
+*	Re-Read MH Profile added to Fops.more menu
 *	Highlighting of parent folders in folder cache and ".." label
 	    is turned off (unseen state only).
 *	fixed infinite loop in Ftoc_FindMsg
@@ -3058,9 +3063,9 @@ cvs repository 3/31/1999
 	Background rescan uses $wish instead of plain wish to avoid
 	    path problems.
 	iconic resources can have "true" "false" values.
-	Added msgShowProc hook to Folder_Change    
-	WhatNow dialog is hidden during a re-edit.                           
-	Cursors set via resources 
+	Added msgShowProc hook to Folder_Change 
+	WhatNow dialog is hidden during a re-edit.                        
+	Cursors set via resources
 	Sticky raised relief of faces fixed.
 	Tweaked Widget_CascadeMenuItem so it creates the submenu.
 	Added args to Widget_CheckMenuItem
@@ -3069,7 +3074,7 @@ cvs repository 3/31/1999
 	    from outside the Preferences UI
 	Replaced tk_dialog with FtocDialog
     PGP - more new code from Stefan Monnier
-*	Added PGP options to WhatNow dialog                 
+*	Added PGP options to WhatNow dialog              
     MIME
 	Run external programs under sh -c for metamail compatibility.
 	Fix problem with font families that have spaces in their name.
@@ -3081,7 +3086,7 @@ cvs repository 3/31/1999
 	Personal .mime.types file also supported.
 	x-uuencode format supported, although never recommended.
 	Make sure to turn on formatting if text/enriched is used.
-    Tk 4.0 
+    Tk 4.0
 	canvas yview bug fixed in fdispPopup.tcl
 	pack info bug fixed in Command Binding dialog.
     HELP
@@ -3246,9 +3251,9 @@ cvs repository 3/31/1999
     Fixed O'reilly typo in the man page.
 
 1.5.1 12/2/94  Bug fix/minor tweaks over 1.5
-    Fixed cursor in message display area. 
+    Fixed cursor in message display area.
     Made Command Binding interface resizable.
-    Commit Links before Refiles so you can link and refile the                 
+    Commit Links before Refiles so you can link and refile the
 	same message and the right thing happens.
     Fixed drafts folder name used in bug report/registration mailings
 	(REMEMBER TO REGISTER YOUR USERS with the item under Help... :-)
@@ -3324,7 +3329,7 @@ cvs repository 3/31/1999
 	cleanly handle the new focus policy, which honors the users
 	main focus model.  Focus within an exmh window is still
 	click to type, but you can shift focus among the various
-	top-level exmh windows in your "normal" way 
+	top-level exmh windows in your "normal" way
 	(i.e., focus-follows-mouse works ok)
     Added Pgp_ShowMessage as the handler for application/pgp MIME type
     Simple Edit bindings:
@@ -3394,7 +3399,7 @@ cvs repository 3/31/1999
     Fixed Flist highlight clearing that caused parent folders to get
 	highlighted incorrectly in some cases.
     New Folder dialog adds the new folder to the folder cache.
-    Changed FTOC to jump when you get to the top or bottom of the screen.  
+    Changed FTOC to jump when you get to the top or bottom of the screen.
     Added Ftoc_NewFtoc and overhauled ftoc(lineset) management.
     Nuked *c_label resource - use *Label.foreground instead.
 	If you don't like all the blue labels, set this to black.
@@ -3693,7 +3698,7 @@ cvs repository 3/31/1999
 	command to Preferences.  This is for when you receive a non-MIME
 	message that contains a postscript file.
     Added more general Apply to body & Apply to message commands that will run
-	a UNIX command on the message or on a temp file containing 
+	a UNIX command on the message or on a temp file containing
 	the message body.
     Cleaned up scan listing scroll behavior during background incs.
     ftocShowNew resource controls whether the scan listing is scrolled
@@ -3724,7 +3729,7 @@ cvs repository 3/31/1999
     Fixed focusing in pick window
     Added Sequence entry to Pick to add results to a sequence.
     Added fontSize, titleSize, and noteSize MIME preferences to control
-	font sizes.  
+	font sizes.
     Fixed display of message parts with no headers.
     Fixed bugs with other borderline message formats.
     (Look for a pre-release version of PGP support in misc/exmh_pgp.tcl)
@@ -4261,7 +4266,7 @@ cvs repository 3/31/1999
     app-defaults no longer specifies iconpositions
 
 1.0delta - 11/17/93
-    (My announcemnt of 1.0delta was delayed by our mail gateway. 
+    (My announcemnt of 1.0delta was delayed by our mail gateway.
     I fixed two bugs this morning and reinstalled the tar file.)
     Fixed the -iconic and iconic: Xresource specification.
     Optimized the Ftoc_PickMsgs routine so that marking messages after

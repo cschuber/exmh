@@ -43,6 +43,15 @@ proc Mh_Init {} {
 	    if [info exists d2] { set exmh(mh_vers) [string trim $d2] }
 	}
     }
+    # Test for now, only present in nmh 1.6+dev and 1.7
+   if { $nmh} {
+        catch {MhExec mhical -version} d
+        regexp {.*-- *([^ ]*)[ ]} $d d2
+        if [info exists d2] {set exmh(have_mhical) 1 }
+        catch {MhExec gcalcli --version} d
+        regexp {.*v([.0-9]*)[ ]} $d d2
+        if [info exists d2] {set exmh(have_gcalcli) 1 }
+   }
 }
 
 proc Mh_Preferences {} {

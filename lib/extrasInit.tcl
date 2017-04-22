@@ -844,3 +844,13 @@ mail sent to addresses only in these domains will always be signed
 with the local signature."}
     }
 }
+
+proc Calendar_Init {} {
+    Preferences_Add "Calendar support" \
+"Configuring personal preferences and configurations for calendar support" {
+    { calendar(pref_ical) calendarIcal {mhical} {mhical command string}
+"This is the command string used to invoke mhical for display" }
+    { calendar(googleAddr) calendarGoogle {} {Google calendar name}
+"This is the Google calendar to update via gcalcli, if installed" }
+    }
+}
