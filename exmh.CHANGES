@@ -1,11 +1,15 @@
 HISTORY
 cvs repository 04/21/2017 valdis.kletnieks@vt.edu
-  Fix insufficent quoting of parameters to MDNGenerate - blows up if syntactically invalid address
-  is passed in the DSN: header.
+  Add lib/stacktrace.tcl for debugging use
+
+cvs repository 04/21/2017 valdis.kletnieks@vt.edu
+  Fix insufficent quoting of parameters to MDNGenerate - blows up if
+  syntactically invalid address is passed in the DSN: header.
   lib/recipt.tcl
 
 cvs repository 04/21/2017 valdis.kletnieks@vt.edu
-  Use version.bash rather than version.csh - who still uses csh for shell scripting?
+  Use version.bash rather than version.csh - who still uses csh for
+  shell scripting?
   Makefile, version.bash
 
 cvs repository 04/21/2017 valdis.kletnieks@vt.edu
