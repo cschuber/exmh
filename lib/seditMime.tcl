@@ -356,7 +356,7 @@ proc SeditStartMulti {t type {empty {}} } {
     global sedit
     set sedit($t,multi) 1
     set sedit($t,level,0) 0
-    set sedit($t,mhn) 0			;# Don't try MHN
+    set sedit($t,mhbuild) 0			;# Don't try mhbuild
 
     Exmh_Debug SeditStartMulti
 
@@ -364,7 +364,7 @@ proc SeditStartMulti {t type {empty {}} } {
     $t mark set start $h
 
     if {$sedit($t,dash)} {
-	
+
 	# We need to find the dash.  Rather than assume that it has
 	# a particular relation to the start index, it's probably
 	# safer to just scan for it, since the user could either
@@ -724,8 +724,8 @@ proc SeditFormatMail { t out isigw } {
 		    }
 		    continue
 		}
-		if {$sedit($t,mhn) && [string first {#} $line] == 0} {
-		    # This is an mhn directive
+		if {$sedit($t,mhbuild) && [string first {#} $line] == 0} {
+		    # This is an mhbuild directive
 		    puts $out $line
 		    continue
 		}

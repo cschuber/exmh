@@ -10,8 +10,8 @@ proc Partial_Concatenate {} {
     global exmh
     set msgids [Ftoc_CurMsgs]
     Exmh_Status "Concatenate message $msgids"
-    Exmh_Debug exec mhn -store +$exmh(folder) $msgids
-    if [catch {open "|mhn -store +$exmh(folder) $msgids |& cat"} input] {
+    Exmh_Debug exec mhstore +$exmh(folder) $msgids
+    if [catch {open "|mhstore +$exmh(folder) $msgids |& cat"} input] {
 	Exmh_Status $input
 	return
     }

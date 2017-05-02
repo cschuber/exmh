@@ -62,9 +62,9 @@ initially by the command line -sedit switch."] \
 "If enabled, after editing with external editor, exmh will bring the message
 up in sedit.  This is so you can initially create the message with your
 favorite editor, and then pop into to sedit for richtext or attachments."] \
-        [list editor(mhn) mhnCmd "mhn" {MHN command} \
-"The mhn command specifies a program used to reformat
-a message with the MH mhn program.
+        [list editor(mhbuild) mhbuildCmd "mhbuild" {mhbuild command} \
+"The mhbuild command specifies a program used to reformat
+a message with the nhm mhbuild program.
 The filename will be appended to the command."] \
     ]
     set editor(sedit) sedit
@@ -112,8 +112,8 @@ proc EditWhatNow {draftID {edittype prog}} {
 	# Must be a message in a non-drafts folder
 	set path $mhProfile(path)/$draftID
     } else {
-	# Delete ".orig" file if it exists, Mhn_* thanks to Colm Buckley
-	Mhn_DeleteOrig $draftID
+	# Delete ".orig" file if it exists, Mhbuild_* thanks to Colm Buckley
+	Mhbuild_DeleteOrig $draftID
 	set path [Mh_Path $mhProfile(draft-folder) $draftID]
     }
     if [EditStart $path $edittype] {
@@ -451,7 +451,7 @@ proc Edit_Done {act {msg cur} argu} {
 	    Exmh_Debug "Mh_Send [time {set code [catch {Mh_Send $msg $argu} err2]}]"
 	    if $code {
 		# move the orig message back to the draft if it exists
-		Mhn_RenameOrig $msg
+		Mhbuild_RenameOrig $msg
 		Exmh_Status $err2 error
 		Send_Error $err2 $msg
 		return
@@ -464,7 +464,7 @@ proc Edit_Done {act {msg cur} argu} {
 	    }
 	    Exmh_Status "Draft $msg sent" normal
 	    # Delete "orig" message if it exists
-	    Mhn_DeleteOrig $msg
+	    Mhbuild_DeleteOrig $msg
 	    Quote_Cleanup
 	    if {$anno} {
 		if {[string compare $exmh($msg,folder) $exmh(folder)] == 0} {
@@ -488,7 +488,7 @@ proc Edit_Done {act {msg cur} argu} {
 	reedit	{
 	    Exmh_Status " "
             # Rename the orig message back to the draft
-	    Mhn_RenameOrig $msg
+	    Mhbuild_RenameOrig $msg
 	    EditWhatNow $msg prog
 	}
 	sedit	{
@@ -503,24 +503,24 @@ proc Edit_Done {act {msg cur} argu} {
             Exmh_Status " "
             EditWhatNow $msg spell
         }
-        mhn {
+        mhbuild {
 	    # If the orig file exists, move it back to the draft
-	    Mhn_RenameOrig $msg
+	    Mhbuild_RenameOrig $msg
 	    if [info exists path] {
 		set env(mhdraft) $path
 	    } else {
 		set env(mhdraft) [Mh_Path $mhProfile(draft-folder) $msg]
 	    }
-	    if [catch {exec $editor(mhn) $env(mhdraft)} err] {
-		EditDialogMsg $msg "MHN failed: $err"
+	    if [catch {exec $editor(mhbuild) $env(mhdraft)} err] {
+		EditDialogMsg $msg "mhbuild failed: $err"
 	    } else {
-		EditDialogMsg $msg "MHN returned a-o.k."
+		EditDialogMsg $msg "mhbuild returned a-o.k."
 	    }
         }
 	abort	{
 	    if ![info exists path]  {
 		catch {Mh_Rmm $mhProfile(draft-folder) $msg}
-		Mhn_DeleteOrig $msg
+		Mhbuild_DeleteOrig $msg
 		if {$exmh(folder) == $mhProfile(draft-folder)} {
 		    # Clean up scan listing
 		    if [catch {Msg_RemoveById $msg} err] {
@@ -542,7 +542,7 @@ proc Edit_Done {act {msg cur} argu} {
 	dismiss	{
 	    Exmh_Status "Draft $msg dismissed" normal
 	    Quote_Cleanup
-	    Mhn_RenameOrig $msg
+	    Mhbuild_RenameOrig $msg
 	    Mh_AnnoCleanup $msg
 	}
 	whom	{

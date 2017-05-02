@@ -911,15 +911,15 @@ proc Sedit_Mailto { url } {
     Msg_Mailto $url
 }
 
-# Run MHN now to format a message
-proc SeditMHN {draft t} {
+# Run mhbuild now to format a message
+proc SeditMHBuild {draft t} {
     global env sedit editor
 
     set format $sedit($t,format)
     set sedit($t,format) Never
 # add these two clauses from SeditSend
-    if {$sedit($t,mhn)} {
-      SeditFixupMhn $draft $t
+    if {$sedit($t,mhbuild)} {
+      SeditFixupMhbuild $draft $t
     }
     if {$sedit(iso)} {
       SeditFixupCharset $draft $t
@@ -932,7 +932,7 @@ proc SeditMHN {draft t} {
     set sedit($t,format) $format
 
     set env(mhdraft) $draft
-    if [catch {exec $editor(mhn) $draft} err] {
+    if [catch {exec $editor(mhbuild) $draft} err] {
 	SeditMsg $t $err
     } else {
 	if [catch {open $draft r} in] {

@@ -1164,16 +1164,16 @@ proc MhSetMailDrops {} {
 	catch {puts stderr "Multidrop needs $name mapping file"}
     }
 }
-proc Mhn_DeleteOrig { msgid } {
+proc Mhbuild_DeleteOrig { msgid } {
     global mhProfile
     set path $mhProfile(path)/$mhProfile(draft-folder)/$mhProfile(delprefix)$msgid
     if {[file exists $path.orig]} {
-	Exmh_Debug Mhn_DeleteOrig deleting $path.orig
+	Exmh_Debug Mhbuild_DeleteOrig deleting $path.orig
 	File_Delete $path.orig
     }
 }
 
-proc Mhn_RenameOrig { msgid } {
+proc Mhbuild_RenameOrig { msgid } {
     global mhProfile
     set path $mhProfile(path)/$mhProfile(draft-folder)/$mhProfile(delprefix)$msgid
     if {[file exists $path.orig]} {

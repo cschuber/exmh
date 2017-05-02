@@ -1,5 +1,11 @@
 HISTORY
-cvs repository 04/21/2017 valdis.kletnieks@vt.edu
+cvs repository 04/25/2017 valdis.kletnieks@vt.edu
+  Finally heave 'mhn' over the side.
+  lib/app-defaults lib/editor.tcl lib/extrasInit.tcl lib/mh.tcl lib/msg.tcl
+  lib/partial.tcl lib/sedit.tcl lib/seditExtras.tcl lib/seditMime.tcl
+  lib/partial/{Sedit,custom,guide,mime.attack,reference,software}.html
+
+cvs repository 04/24/2017 valdis.kletnieks@vt.edu
   Add lib/stacktrace.tcl for debugging use
 
 cvs repository 04/21/2017 valdis.kletnieks@vt.edu

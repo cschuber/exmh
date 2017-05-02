@@ -11,22 +11,22 @@
 <p>
 Sedit is a simple editor built into exmh. The editor works on draft
 messages that are kept in your MH draft folder. When you do Compose,
-Reply, or Forward, a new draft is created for you. 
+Reply, or Forward, a new draft is created for you.
 <p>
 You can customize the <a HREF="Seditpref.html">key bindings</a> for
-this editor. 
+this editor.
 <p>
-Here is what the buttons do: 
+Here is what the buttons do:
 <p>
 Abort - remove the draft message from the drafts folder. The editor
-window is removed. 
+window is removed.
 <p>
 Save&amp;Quit - saves the message in the draft folder but does not
-send it. 
+send it.
 <p>
-Help - displays this window. 
+Help - displays this window.
 <p>
-Quote... - Bring up a menu with the following options (replies only): 
+Quote... - Bring up a menu with the following options (replies only):
 <ul>
 <p>
 Quote - Insert a copy of the current message.  See the
@@ -38,11 +38,11 @@ multipart MIME message.
 </ul>
 <p>
 Send - saves and posts the message. By default it is removed from the
-draft folder when you do this, unless you select Keep on Send. 
+draft folder when you do this, unless you select Keep on Send.
 <p>
 Sign - append your .signature file to the message. If you have autoSign
 set, or multiple files match .signature* then this button is replaced
-with the following menu. 
+with the following menu.
 <p>
 Sign... - Select the signature file for the message. It is added when
 you select it, or when you Send the message if you have the autoSign
@@ -65,62 +65,62 @@ key selection. Finally, for those that cache their passphrases the
 "Clear Passphrase(s)" allows for clearing the cache.
 
 <p>
-More... - Bring up a menu with the following options: 
+More... - Bring up a menu with the following options:
 <ul>
   <p>
   Keep on Send - if this button is highlighted, then Send will not remove
 the editor window and the draft will remain in the drafts folder after
-you send it. 
+you send it.
   <p>
   Format mail - this breaks long lines (&gt; 79 characters) at word boundaries.
 
   <p>
-  Attempt mhn - run the message body through mhn before sending. If you
-know the # directives of mhn, you can use this quick hack to compose
-MIME messages. 
+  Attempt mhbuild - run the message body through mhbuild before sending. If you
+know the # directives of mhbuild, you can use this quick hack to compose
+MIME messages.
   <p>
   Quoted Printable Text - make the content transfer encoding of regular
-text messages quoted printable to protect 8-bit characters. 
+text messages quoted printable to protect 8-bit characters.
   <p>
   Ask for Receipt - Add a Disposition-notification-to header to the mail.
-This will request a receipt to the address in the header field. 
+This will request a receipt to the address in the header field.
   <p>
-  Attachment... - Bring up a sub-menu with the following options: 
+  Attachment... - Bring up a sub-menu with the following options:
   <ul>
     <p>
     Attach File... - Attach a file as a part into a multipart MIME message.
     <p>
-    Attach Message... - Attach a message as a part into a multipart MIME 
+    Attach Message... - Attach a message as a part into a multipart MIME
 message.
     <p>
-    Attach Reference... - Attach a message/external-body part as a 
-reference to a FTP file or a local file. 
+    Attach Reference... - Attach a message/external-body part as a
+reference to a FTP file or a local file.
     <p>
-    Insert File... - Insert a file directly into the message. 
+    Insert File... - Insert a file directly into the message.
   </ul>
   <p>
-  Whom - displays the list of recipients for the message. 
+  Whom - displays the list of recipients for the message.
   <p>
   Spell... - run your spell program over the message body. Select this
-with the spell preferences for the Simple Editor. 
+with the spell preferences for the Simple Editor.
   <p>
-  Find SEL - search the message body for the selected string. 
+  Find SEL - search the message body for the selected string.
   <p>
 Save Buffer - write out the editor buffer to disk. This is only for
 paranoid folks. The Save&amp;Quit button or Keep on Send options actually
 result in the draft remaining. This Save button just writes the buffer
 to disk but does not change the default behavior of renaming drafts
-after you send them. 
+after you send them.
   <p>
-  Run mhn now Pre-process the message with the mhn program and put the
-results into the editor buffer. 
+  Run mhbuild now - Pre-process the message with the mhbuild program and put the
+results into the editor buffer.
   <p>
   Mime Preview - Display the message as it will be seen by an exmh user.
   <p>
-  Alternate Editor - switch to using your alternate editor. 
+  Alternate Editor - switch to using your alternate editor.
 </ul>
 <p>
-Filter - 
+Filter -
 The Unix filter mechanism provides an entry widget where you
 	can specify an arbitrary Unix command line.  Once specified,
 	selecting a region of text and hitting "Filter" has the effect

@@ -1081,14 +1081,11 @@ proc Mime_WithTextFile {fileIOVar tkw part body} {
 }
 
 proc Mime_SetFileEncoding {fileIO part} {
-    global tcl_version
-    if {$tcl_version >= 8.1} {
-	set charset [Mime_GetCharset {} $part]
-	regsub {^us-} $charset {} charset
-	regsub {^(mac|iso)-} $charset {\1} charset
-	if {[catch {fconfigure $fileIO -encoding $charset} err]} {
-	    Exmh_Debug "Mime_SetFileEncoding: $err"
-	}
+    set charset [Mime_GetCharset {} $part]
+    regsub {^us-} $charset {} charset
+    regsub {^(mac|iso)-} $charset {\1} charset
+    if {[catch {fconfigure $fileIO -encoding $charset} err]} {
+        Exmh_Debug "Mime_SetFileEncoding: $err"
     }
 }
 

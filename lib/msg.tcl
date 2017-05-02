@@ -382,10 +382,10 @@ proc Msg_Forward { args } {
 	}
 	# sedit hack
 	global sedit
-	set old $sedit(mhnDefault)
-	if {$mime} {set sedit(mhnDefault) 1}
+	set old $sedit(mhbuildDefault)
+	if {$mime} {set sedit(mhbuildDefault) 1}
 	Edit_Draft					;# Run the editor
-	set sedit(mhnDefault) $old
+	set sedit(mhbuildDefault) $old
     }
 }
 

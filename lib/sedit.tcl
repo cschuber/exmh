@@ -211,7 +211,7 @@ proc Sedit_Start { draft } {
 	$b.repl configure -state disabled
     }
     set sedit($t,keep) $sedit(keepDefault)
-    set sedit($t,mhn) $sedit(mhnDefault)
+    set sedit($t,mhbuild) $sedit(mhbuildDefault)
     set sedit($t,notifySuccess) $sedit(notifySuccess)
     set sedit($t,notifyFailure) $sedit(notifyFailure)
     set sedit($t,notifyDelay) $sedit(notifyDelay)
@@ -454,8 +454,8 @@ proc SeditSendCommon { draft t {post 0} } {
 	    SeditMsg $t "$cmd $err"
 	}
     }
-    if {$sedit($t,mhn)} {
-	SeditFixupMhn $draft $t
+    if {$sedit($t,mhbuild)} {
+	SeditFixupMhbuild $draft $t
     }
     if {$sedit(iso)} {
 	SeditFixupCharset $draft $t
@@ -467,11 +467,11 @@ proc SeditSendCommon { draft t {post 0} } {
 	} else {
 	    $sedit($t,toplevel).but.post config -state disabled
 	}
-	# Decide if this file needs to go through mhn
-	if {$sedit($t,mhn) && ![catch {exec grep -l ^# $draft}]} {
+	# Decide if this file needs to go through mhbuild
+	if {$sedit($t,mhbuild) && ![catch {exec grep -l ^# $draft}]} {
 	    set env(mhdraft) $draft
-	    SeditMsg $t "Running mhn..."
-	    if [catch {exec $editor(mhn) $draft} err] {
+	    SeditMsg $t "Running mhbuild..."
+	    if [catch {exec $editor(mhbuild) $draft} err] {
 		SeditMsg $t $err
 		if {$post==0} {
 		    $sedit($t,toplevel).but.send config -state normal
@@ -678,12 +678,12 @@ proc SeditPeriodicSave {} {
     }
 }
 
-proc SeditFixupMhn { draft t } {
+proc SeditFixupMhbuild { draft t } {
     global sedit
     set state header
-    set mhn 0
+    set mhbuild 0
     set lines {}
-    Exmh_Debug SeditFixupMhn
+    Exmh_Debug SeditFixupMhbuild
     for {set i 1} {[$t compare $i.0 < end]} {incr i} {
 	set line [$t get $i.0 $i.end]
 	set len [string length $line]
@@ -696,18 +696,18 @@ proc SeditFixupMhn { draft t } {
 	    }
 	} else {
 	    if [regexp ^# $line] {
-		set mhn 1
+		set mhbuild 1
 	    }
 	}
     }
-    if {$mhn} {
+    if {$mhbuild} {
 	if [llength $lines] {
-	    SeditMsg $t "Cleaning up for MHN"
+	    SeditMsg $t "Cleaning up for MHBuild"
 	}
 	foreach i [lsort -integer -decreasing $lines] {
 	    $t delete $i.0 "$i.end +1 char"
 	}
-	set sedit($t,8bit) 0	;# Let MHN do quote-printable
+	set sedit($t,8bit) 0	;# Let mhbuild do quote-printable
 	set sedit($t,quote) 0
     }
 }

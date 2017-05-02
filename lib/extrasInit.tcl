@@ -434,10 +434,10 @@ you can change with the Format menu entry."}
 "Mail sent can include a header indicating the version of the mail
 program used to create t he mail.  You can allow exmh to include this
 header, or retain anonymity using this preference item."}
-    {sedit(mhnDefault) seditAttemptMhn OFF {Attempt mhn default}
-"Sedit can send your message thru mhn in order to expand its #
-MIME formating directives (see the man page about mhn for details).
-You can control whethor or not this happens with the Attempt mhn menu
+    {sedit(mhbuildDefault) seditAttemptMhbuild OFF {Attempt mhbuild default}
+"Sedit can send your message thru mhbuild in order to expand its #
+MIME formating directives (see the man page about mhbuild for details).
+You can control whethor or not this happens with the Attempt mhbuild menu
 item.  This Preference setting chooses the default for that item."}
     {sedit(keepDefault) seditKeepOnSend OFF {Keep on send default}
 "Sedit can save its window after you send a message.  This is useful

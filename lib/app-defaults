@@ -877,7 +877,7 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.l_format: Format mail
 *Sedit.Menubar.more.m.t_format: cascade
 *Sedit.Menubar.more.m.m_format: format
-*Sedit.Menubar.more.m.format.entrylist: none soft hard mhn mhn2 quote
+*Sedit.Menubar.more.m.format.entrylist: none soft hard mhbuild mhbuild2 quote
 *Sedit.Menubar.more.m.format.l_none: No Line Breaking
 *Sedit.Menubar.more.m.format.t_none: radio
 *Sedit.Menubar.more.m.format.v_none: sedit($t,format)
@@ -890,11 +890,11 @@ exmh.iconic:		0
 *Sedit.Menubar.more.m.format.t_hard: radio
 *Sedit.Menubar.more.m.format.v_hard: sedit($t,format)
 *Sedit.Menubar.more.m.format.x_hard: OnType
-*Sedit.Menubar.more.m.format.l_mhn: Attempt mhn
-*Sedit.Menubar.more.m.format.t_mhn: check
-*Sedit.Menubar.more.m.format.v_mhn: sedit($t,mhn)
-*Sedit.Menubar.more.m.format.l_mhn2: Run mhn now
-*Sedit.Menubar.more.m.format.c_mhn2: SeditMHN {$draft} {$t}
+*Sedit.Menubar.more.m.format.l_mhbuild: Attempt mhbuild
+*Sedit.Menubar.more.m.format.t_mhbuild: check
+*Sedit.Menubar.more.m.format.v_mhbuild: sedit($t,mhbuild)
+*Sedit.Menubar.more.m.format.l_mhbuild2: Run mhbuild now
+*Sedit.Menubar.more.m.format.c_mhbuild2: SeditMHBuild {$draft} {$t}
 *Sedit.Menubar.more.m.format.l_quote: Quote Printable
 *Sedit.Menubar.more.m.format.t_quote: check
 *Sedit.Menubar.more.m.format.v_quote: sedit($t,quote)
@@ -1153,11 +1153,11 @@ exmh.iconic:		0
 *WhatNow.send.command: EditDialogDone send $id
 
 *WhatNow.more.text: More...
-*WhatNow.more.m.entrylist: whom mhn spell sedit encrypt alt
+*WhatNow.more.m.entrylist: whom mhbuild spell sedit encrypt alt
 *WhatNow.more.m.l_whom:	Whom
 *WhatNow.more.m.c_whom:	EditDialogDone whom $id nohide
-*WhatNow.more.m.l_mhn:	MHN
-*WhatNow.more.m.c_mhn:	EditDialogDone mhn $id nohide
+*WhatNow.more.m.l_mhbuild:	mhbuild
+*WhatNow.more.m.c_mhbuild:	EditDialogDone mhbuild $id nohide
 *WhatNow.more.m.l_spell:	Spell
 *WhatNow.more.m.c_spell:	EditDialogDone spell $id nohide
 *WhatNow.more.m.l_sedit:	Sedit
