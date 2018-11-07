@@ -14,7 +14,6 @@ SNAPDATE=`/bin/date +%Y%m%d`
 srctar: realsrctar
 
 realsrctar: htmltar
-	find . -name CVS > Tar.exclude
 	find . -name .git > Tar.exclude
 	echo ./lib/html/Tar.exclude >> Tar.exclude
 	echo ./.exmhinstall >> Tar.exclude
