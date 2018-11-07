@@ -15,6 +15,7 @@ srctar: realsrctar
 
 realsrctar: htmltar
 	find . -name CVS > Tar.exclude
+	find . -name .git > Tar.exclude
 	echo ./lib/html/Tar.exclude >> Tar.exclude
 	echo ./.exmhinstall >> Tar.exclude
 	echo ./Tar.exclude >> Tar.exclude
