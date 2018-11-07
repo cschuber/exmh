@@ -1,4 +1,8 @@
 HISTORY
+7/11/2018 valdis.kletnieks@vt.edu
+  Tag and push a 2.9.0 release to clear up the confusion
+  from 6 years of moving code calling itself 2.8.0
+
 cvs repository 04/25/2017 valdis.kletnieks@vt.edu
   Finally heave 'mhn' over the side.
   lib/app-defaults lib/editor.tcl lib/extrasInit.tcl lib/mh.tcl lib/msg.tcl
