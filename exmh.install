@@ -96,7 +96,7 @@ pathnames are correct for your system. The fields are described below.
 
 <p>
 The wish pathname is for the program that runs exmh.
-Tk 8.0 or higher (e.g., Tk 8.4) is required.
+Tk 8.5 or higher is required.
 <p>
 By default, the program is installed as "exmh", and it also uses related
 scripts named "exmh-bg" and "exmh-async". If you want to install it
