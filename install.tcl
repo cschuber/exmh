@@ -14,8 +14,6 @@ option add *Text.c_link			blue	startup
 
 proc install_init { appName dotFile } {
     global install tk_version tk_patchLevel tcl_version tcl_patchLevel
-    # Work around namespaces issue in Tk8.4a2 and later
-    ::tk::unsupported::ExposePrivateCommand tkEntryBackspace
 
     set install(appName) $appName
     install_progVar wish [installGuessPath /usr/local/bin/wish wish] {wish absolute pathname}
@@ -870,7 +868,7 @@ proc installBindEntryInner { what } {
 	catch {%W delete sel.first sel.last}
     }
 
-    set bsProc tkEntryBackspace
+    set bsProc ::tk::EntryBackspace
     foreach bs {backspace backspace2 backspace3} {
 	bind $what $install(key,$bs) "$bsProc %W"
     }

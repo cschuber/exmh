@@ -5,28 +5,28 @@
 # - John Robert LoVerso
 #
 proc TextButton_Init { {t {}} } {
-    global tkPriv
+    global ::tk::Priv
 
-    set tkPriv(seed) 0
+    set ::tk::Priv(seed) 0
     if {[winfo depth .] > 4} {
-	Preferences_Resource tkPriv(background)	c_uri thistle
-	Preferences_Resource tkPriv(foreground)	c_uriFg black
-	Preferences_Resource tkPriv(activebackground)	c_uriAbg white
-	Preferences_Resource tkPriv(activeforeground)	c_uriAfg black
+	Preferences_Resource ::tk::Priv(background)	c_uri thistle
+	Preferences_Resource ::tk::Priv(foreground)	c_uriFg black
+	Preferences_Resource ::tk::Priv(activebackground)	c_uriAbg white
+	Preferences_Resource ::tk::Priv(activeforeground)	c_uriAfg black
     } else {
-	Preferences_Resource tkPriv(background)	c_uri black
-	Preferences_Resource tkPriv(foreground)	c_uriFg white
-	Preferences_Resource tkPriv(activebackground)	c_uriAbg white
-	Preferences_Resource tkPriv(activeforeground)	c_uriAfg black
+	Preferences_Resource ::tk::Priv(background)	c_uri black
+	Preferences_Resource ::tk::Priv(foreground)	c_uriFg white
+	Preferences_Resource ::tk::Priv(activebackground)	c_uriAbg white
+	Preferences_Resource ::tk::Priv(activeforeground)	c_uriAfg black
     }
     if {$t != {}} {
 	# Hack - we know tags with names hdrlook=* are preserved.
 	# These tags just serve to pre-allocate our colors
-	$t tag configure hdrlook=TextButton1 -foreground $tkPriv(foreground) \
-		-background $tkPriv(background)
+	$t tag configure hdrlook=TextButton1 -foreground $::tk::Priv(foreground) \
+		-background $::tk::Priv(background)
 	$t tag configure hdrlook=TextButton2 \
-		-foreground $tkPriv(activeforeground) \
-		-background $tkPriv(activebackground)
+		-foreground $::tk::Priv(activeforeground) \
+		-background $::tk::Priv(activebackground)
     }
 }
 
@@ -42,17 +42,17 @@ proc TextButton { w text cmd } {
 }
 
 proc TextButtonRange { w start end cmd } {
-    global tkPriv
+    global ::tk::Priv
 
-    incr tkPriv(seed)
-    set id tkPriv$tkPriv(seed)
+    incr ::tk::Priv(seed)
+    set id ::tk::Priv$::tk::Priv(seed)
     $w tag add $id $start "$end +1 char"
     $w tag bind $id <Any-Enter> [concat TextButtonEnter $w $id]
     $w tag bind $id <Any-Leave> [concat TextButtonLeave $w $id]
     $w tag bind $id <1> [concat TextButtonDown $w $id]
     $w tag bind $id <ButtonRelease-1> [concat TextButtonUp $w $id [list $cmd]]
     $w tag configure $id -relief raised -borderwidth 2 \
-	     -background $tkPriv(background) -foreground $tkPriv(foreground)
+	     -background $::tk::Priv(background) -foreground $::tk::Priv(foreground)
     return $id
 }
 
@@ -66,12 +66,12 @@ proc TextButtonRange { w start end cmd } {
 # state of the button to active unless the button is disabled.
 
 proc TextButtonEnter {w id} {
-    global tkPriv
-    $w tag configure $id -background $tkPriv(activebackground) \
-			-foreground $tkPriv(activeforeground)
+    global ::tk::Priv
+    $w tag configure $id -background $::tk::Priv(activebackground) \
+			-foreground $::tk::Priv(activeforeground)
     $w configure -cursor cross
-    set tkPriv(window) $w
-    set tkPriv(id) $id
+    set ::tk::Priv(window) $w
+    set ::tk::Priv(id) $id
 }
 
 # The procedure below is invoked when the mouse pointer leaves a
@@ -79,14 +79,14 @@ proc TextButtonEnter {w id} {
 # inactive.
 
 proc TextButtonLeave {w id} {
-    global tkPriv
+    global ::tk::Priv
     #puts "Leave"
-    $w tag configure $id -background $tkPriv(background) \
-			-foreground $tkPriv(foreground)
+    $w tag configure $id -background $::tk::Priv(background) \
+			-foreground $::tk::Priv(foreground)
     $w configure -cursor [option get $w cursor Text ]
-    set tkPriv(window) ""
-    set tkPriv(id) ""
-    set tkPriv(cmd) ""
+    set ::tk::Priv(window) ""
+    set ::tk::Priv(id) ""
+    set ::tk::Priv(cmd) ""
 }
 
 # The procedure below is invoked when the mouse button is pressed in
@@ -95,10 +95,10 @@ proc TextButtonLeave {w id} {
 # (b) to save the button's relief so it can be restored later.
 
 proc TextButtonDown {w id} {
-    global tkPriv
-    set tkPriv(relief) [lindex [$w tag config $id -relief] 4]
-    set tkPriv(buttonWindow) $w
-    set tkPriv(buttonId) $id
+    global ::tk::Priv
+    set ::tk::Priv(relief) [lindex [$w tag config $id -relief] 4]
+    set ::tk::Priv(buttonWindow) $w
+    set ::tk::Priv(buttonId) $id
     $w tag configure $id -relief sunken
 }
 
@@ -108,21 +108,21 @@ proc TextButtonDown {w id} {
 # hasn't left the button.
 
 proc TextButtonUp {w id {cmd {}}} {
-    global tkPriv
+    global ::tk::Priv
     #puts "Up"
-    if {$w == $tkPriv(buttonWindow) && $id == $tkPriv(buttonId)} {
-	$w tag config $id -relief $tkPriv(relief)
-	if {$w == $tkPriv(window) && $id == $tkPriv(id)} {
-	    set tkPriv(cmd) $cmd
+    if {$w == $::tk::Priv(buttonWindow) && $id == $::tk::Priv(buttonId)} {
+	$w tag config $id -relief $::tk::Priv(relief)
+	if {$w == $::tk::Priv(window) && $id == $::tk::Priv(id)} {
+	    set ::tk::Priv(cmd) $cmd
 	    #puts "Primed"
 	    after 1 TextButtonActivate $w $id
 	}
-	set tkPriv(buttonWindow) ""
-	set tkPriv(buttonId) ""
+	set ::tk::Priv(buttonWindow) ""
+	set ::tk::Priv(buttonId) ""
     }
 }
 proc TextButtonActivate {w id} {
-    global tkPriv
-    #puts "Activate cmd=$tkPriv(cmd)"
-    eval $tkPriv(cmd)
+    global ::tk::Priv
+    #puts "Activate cmd=$::tk::Priv(cmd)"
+    eval $::tk::Priv(cmd)
 }

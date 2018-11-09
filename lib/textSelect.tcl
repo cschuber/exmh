@@ -17,11 +17,11 @@
 # Selections: making, claiming, and handling requests for.
 #
 proc Text_HandleSelRequest { w offset maxBytes } {
-    global tkPriv
-    if ![info exists tkPriv(lastsel)] {
+    global ::tk::Priv
+    if ![info exists ::tk::Priv(lastsel)] {
 	return ""
     }
-    return [string range $tkPriv(lastsel) $offset [expr {$offset+$maxBytes}]]
+    return [string range $::tk::Priv(lastsel) $offset [expr {$offset+$maxBytes}]]
 }
 
 proc Text_LoseSelection { w } {
@@ -29,15 +29,15 @@ proc Text_LoseSelection { w } {
 }
 
 proc Text_SelectTo {w index} {
-    global tkPriv
+    global ::tk::Priv
 
      if [catch {$w index anchor}] {
 	return
      }
-    if ![info exists tkPriv(selectMode)] {
-	set tkPriv(selectMode) char
+    if ![info exists ::tk::Priv(selectMode)] {
+	set ::tk::Priv(selectMode) char
     }
-    case $tkPriv(selectMode) {
+    case $::tk::Priv(selectMode) {
 	char {
 	    if [$w compare $index == anchor] {
 		set first $index
@@ -77,12 +77,12 @@ proc Text_SelectTo {w index} {
 
 # Called when we're done doing a selection.
 proc Text_SelectionEnd { w rotate } {
-    global tkPriv
+    global ::tk::Priv
     set sel ""
     if {[catch {set sel [$w get sel.first sel.last]}]} {
 	return
     }
-    set tkPriv(lastsel) $sel
+    set ::tk::Priv(lastsel) $sel
     selection own $w "Text_LoseSelection $w"
     if {$rotate} { Text_CutRotate 1 }
     cutbuffer set 0 $sel
@@ -117,10 +117,10 @@ proc Text_IndexCloser {w a b c} {
 
 # Start extending a selection.  Chooses the end farthest from the mouse hit.
 proc Text_StartExtend { w index } {
-    global tkPriv
-    set tkPriv(delstate) {}
+    global ::tk::Priv
+    set ::tk::Priv(delstate) {}
     if {[$w tag ranges sel] == ""} {
-	set tkPriv(selectMode) char
+	set ::tk::Priv(selectMode) char
 	$w mark set anchor insert
     } else {
 	if {[Text_IndexCloser $w $index sel.first sel.last]} {
@@ -151,7 +151,7 @@ proc Text_Selection {} {
 #
 
 proc Text_Delete {w start {end {}} {addkill 0}} {
-    global TextNames TextType tkPriv
+    global TextNames TextType ::tk::Priv
     if {![info exists TextType($w)]} {
 	set TextType($w) text
     }
@@ -192,39 +192,39 @@ proc Text_Delete {w start {end {}} {addkill 0}} {
 # if the start or end point lines up with the old delete point.  Otherwise,
 # zap the delete point.
 proc Text_DoKill {w start end addkill} {
-    global tkPriv
+    global ::tk::Priv
     if {! $addkill} {
-	set tkPriv(delstate) {}
+	set ::tk::Priv(delstate) {}
 	return
     }
-    if ![info exists tkPriv(delstate)] {
-	set tkPriv(delstate) {}
+    if ![info exists ::tk::Priv(delstate)] {
+	set ::tk::Priv(delstate) {}
     }
     if [$w compare $start == $end] { return }
     set text [$w get $start $end]
-    set oldwin [lindex $tkPriv(delstate) 0]
-    set oldmode [lindex $tkPriv(delstate) 1]
-    set oldpos [lindex $tkPriv(delstate) 2]
+    set oldwin [lindex $::tk::Priv(delstate) 0]
+    set oldmode [lindex $::tk::Priv(delstate) 1]
+    set oldpos [lindex $::tk::Priv(delstate) 2]
     if {$oldwin != $w || $oldmode != "killing" || [string length $oldpos]==0} {
 	Text_CutRotate 1
-	set tkPriv(lastsel) $text
+	set ::tk::Priv(lastsel) $text
     } elseif {[$w compare $start == $oldpos]} {
-	set tkPriv(lastsel) "$tkPriv(lastsel)$text"
+	set ::tk::Priv(lastsel) "$::tk::Priv(lastsel)$text"
     } elseif {[$w compare $end == $oldpos]} {
-	set tkPriv(lastsel) "$text$tkPriv(lastsel)"
+	set ::tk::Priv(lastsel) "$text$::tk::Priv(lastsel)"
     } else {
 	Text_CutRotate 1
-	set tkPriv(lastsel) $text
+	set ::tk::Priv(lastsel) $text
     }
-    cutbuffer set 0 $tkPriv(lastsel)
-    catch {clipboard clear ; clipboard append $tkPriv(lastsel)}
+    cutbuffer set 0 $::tk::Priv(lastsel)
+    catch {clipboard clear ; clipboard append $::tk::Priv(lastsel)}
     selection own $w "Text_LoseSelection $w"
-    set tkPriv(delstate) "$w killing $start"
+    set ::tk::Priv(delstate) "$w killing $start"
 }
 
 proc Text_Insert {w place text {tags {}}} {
-    global TextNames TextType tkPriv
-    set tkPriv(delstate) {}
+    global TextNames TextType ::tk::Priv
+    set ::tk::Priv(delstate) {}
     if {![info exists TextType($w)]} {
 	set TextType($w) text
     }
@@ -295,7 +295,7 @@ proc Text_Insert {w place text {tags {}}} {
 }
 
 proc Text_Yank { w } {
-    global tkPriv sedit
+    global ::tk::Priv sedit
     set sel [Text_Selection]
     if {[string length $sel] != 0} {
 	# check for 8bit characters in the selection
@@ -306,18 +306,18 @@ proc Text_Yank { w } {
 	Text_Insert $w insert $sel
 	$w yview -pickplace insert
 	set end [$w index insert]
-	set tkPriv(delstate) "$w yank $start $end"
+	set ::tk::Priv(delstate) "$w yank $start $end"
     }
 }
 
 proc Text_YankPop { w } {
-    global tkPriv
-    set oldwin [lindex $tkPriv(delstate) 0]
-    set oldmode [lindex $tkPriv(delstate) 1]
-    set oldstart [lindex $tkPriv(delstate) 2]
-    set oldend [lindex $tkPriv(delstate) 3]
+    global ::tk::Priv
+    set oldwin [lindex $::tk::Priv(delstate) 0]
+    set oldmode [lindex $::tk::Priv(delstate) 1]
+    set oldstart [lindex $::tk::Priv(delstate) 2]
+    set oldend [lindex $::tk::Priv(delstate) 3]
     if {$w != $oldwin || $oldmode != "yank" || [$w compare insert != $oldend]} {
-	set tkPriv(delstate) {}
+	set ::tk::Priv(delstate) {}
 	return
     }
     Text_Delete $w $oldstart $oldend
@@ -325,13 +325,13 @@ proc Text_YankPop { w } {
     set start [$w index insert]
     Text_Insert $w insert [cutbuffer get 0]
     set end [$w index insert]
-    set tkPriv(delstate) "$w yank $start $end"
+    set ::tk::Priv(delstate) "$w yank $start $end"
 }
 
 proc Text_MoveInsert {w place {clear clear}} {
-    global tkPriv
-    set tkPriv(selectMode) char
-    set tkPriv(delstate) {}
+    global ::tk::Priv
+    set ::tk::Priv(selectMode) char
+    set ::tk::Priv(delstate) {}
     global sedit
     if {[string compare $clear "clear"] == 0 && $sedit(typeKillsSel)} {
         $w tag remove sel 0.0 end
@@ -379,7 +379,7 @@ proc Text_NextWord {w index} {
 }
 
 proc Text_KillSelection { w } {
-    global tkPriv
+    global ::tk::Priv
     return [expr ! [catch {
 	if {[$w compare sel.first <= insert] &&
 	    [$w compare sel.last >= insert]} {
@@ -536,14 +536,14 @@ proc Text_SetInsert { w mark } {
     focus $w
 }
 proc Text_WordSelect { w mark } {
-    global tkPriv
-    set tkPriv(selectMode) word
+    global ::tk::Priv
+    set ::tk::Priv(selectMode) word
     $w mark set insert "$mark wordstart"
     Text_SelectTo $w insert
 }
 proc Text_LineSelect { w mark } {
-    global tkPriv
-    set tkPriv(selectMode) line
+    global ::tk::Priv
+    set ::tk::Priv(selectMode) line
     $w mark set insert "$mark linestart"
     Text_SelectTo $w insert
 }
@@ -562,12 +562,12 @@ bind Text <1> {
     if {[lindex [%W config -state] 4] == "normal"} {focus %W}
 }
 bind Text <Double-1> {
-    set tkPriv(selectMode) word
+    set ::tk::Priv(selectMode) word
     %W mark set insert "@%x,%y wordstart"
     Text_SelectTo %W insert
 }
 bind Text <Triple-1> {
-    set tkPriv(selectMode) line
+    set ::tk::Priv(selectMode) line
     %W mark set insert "@%x,%y linestart"
     Text_SelectTo %W insert
 }

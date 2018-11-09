@@ -1,4 +1,9 @@
 HISTORY
+8/11/2018 valdis.kletnieks@vt.edu
+  clean up alias usage in Tcl_Tk_Vers_Init - this requires going through
+  and changing the oldnames to the new namespaced names.
+  ex   tkEntryBackspace  ==>  ::tk::EntryBackspace
+
 7/11/2018 valdis.kletnieks@vt.edu
   Tag and push a 2.9.0 release to clear up the confusion
   from 6 years of moving code calling itself 2.8.0

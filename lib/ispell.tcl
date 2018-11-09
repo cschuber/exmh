@@ -603,7 +603,7 @@ proc IspellUnPostMenuChoices {window } {
     global ispellVars
 
     catch {
-	tkMenuUnpost $ispellVars(PopupMenu)
+	::tk::MenuUnpost $ispellVars(PopupMenu)
     }
 }
 

@@ -30,33 +30,33 @@
 #
 
 proc text_menu_post {w wx wy x y} {
-	global tkPriv
+	global ::tk::Priv
 	set tags [$w tag names @$wx,$wy]
 	Exmh_Debug $tags
-	set tkPriv(textmenu) {}
+	set ::tk::Priv(textmenu) {}
 	foreach tag $tags {
 	    catch {
 		if {[winfo class $w.$tag] == "Menu"} {
-		    set tkPriv(textmenu) $w.$tag
+		    set ::tk::Priv(textmenu) $w.$tag
 		}
 	    }
 	}
-	catch {menu_post $tkPriv(textmenu) $w $x $y}
+	catch {menu_post $::tk::Priv(textmenu) $w $x $y}
 }
 proc text_menu_unpost {w} {
-	global tkPriv
-	catch {menu_unpost $tkPriv(textmenu) $w}
-	catch {unset tkPriv(textmenu)}
+	global ::tk::Priv
+	catch {menu_unpost $::tk::Priv(textmenu) $w}
+	catch {unset ::tk::Priv(textmenu)}
 }
 
 # post the given menu at the given position in the widget (or canvas) w
 
 proc menu_post {menu w x y} {
-	global tkPriv
+	global ::tk::Priv
 
 	$menu activate none
 	tk_popup $menu $x $y
-	set tkPriv(cursor) [$w cget -cursor]
+	set ::tk::Priv(cursor) [$w cget -cursor]
 	$w config -cursor arrow
 	grab set $w
 }
@@ -65,10 +65,10 @@ proc menu_post {menu w x y} {
 # unpost the given menu in the widget
 
 proc menu_unpost {menu w} {
-	global tkPriv
+	global ::tk::Priv
 
-	tkMenuUnpost $menu
-	catch {$w config -cursor $tkPriv(cursor)}
+	::tk::MenuUnpost $menu
+	catch {$w config -cursor $::tk::Priv(cursor)}
 	grab release $w
 }
 

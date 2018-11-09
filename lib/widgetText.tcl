@@ -318,7 +318,7 @@ proc Widget_TextEnd {w} {
 }
 
 proc tk_textResetAnchor {args} {
-    eval tkTextResetAnchor $args
+    eval ::tk::TextResetAnchor $args
 }
 
 # Fill out the text widget with enough blanks to allow the

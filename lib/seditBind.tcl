@@ -15,8 +15,8 @@
 # By auto-loading these procedures we also fault in the global Text and
 # Entry bindings done by the Tk library code.
 
-auto_load tkEntryButton1
-auto_load tkTextButton1
+auto_load ::tk::EntryButton1
+auto_load ::tk::TextButton1
 
 proc Sedit_BindInit {} {
     global sedit exmh
@@ -221,7 +221,7 @@ proc Sedit_ClassBindings { } {
 	SeditDirty %W
     }
     SeditBind Entry backspace {
-	tkEntryBackspace %W
+	::tk::EntryBackspace %W
     }
 
     SeditBind $tclass openline {
@@ -279,7 +279,7 @@ proc Sedit_ClassBindings { } {
     SeditBind Entry delwordback {
 	%W delete [string wordstart [%W get] [expr [%W index insert] - 1]] \
 		insert
-	tkEntrySeeInsert %W
+	::tk::EntrySeeInsert %W
     }
 
     SeditBind $tclass delchar {
@@ -331,7 +331,7 @@ proc Sedit_ClassBindings { } {
     }
     SeditBind Entry linestart {
 	%W icursor 0
-	tkEntrySeeInsert %W
+	::tk::EntrySeeInsert %W
    }
 
     SeditBind $tclass lineend {
@@ -339,7 +339,7 @@ proc Sedit_ClassBindings { } {
     }
     SeditBind Entry lineend {
 	%W icursor end
-	tkEntrySeeInsert %W
+	::tk::EntrySeeInsert %W
     }
 
     set sedit(lastpos,Text) {}
@@ -368,7 +368,7 @@ proc Sedit_ClassBindings { } {
 	    }
 	}
 	%W icursor $x
-	tkEntrySeeInsert %W
+	::tk::EntrySeeInsert %W
     }
 
     SeditBind $tclass forwword {
@@ -387,7 +387,7 @@ proc Sedit_ClassBindings { } {
 	    }
 	}
 	%W icursor $x	
-	tkEntrySeeInsert %W
+	::tk::EntrySeeInsert %W
     }
 
     SeditBind $tclass backchar {
@@ -398,7 +398,7 @@ proc Sedit_ClassBindings { } {
 	if {$x > 0} {
 	    incr x -1
 	    %W icursor $x
-	    tkEntrySeeInsert %W
+	    ::tk::EntrySeeInsert %W
 	}
     }
 
@@ -409,7 +409,7 @@ proc Sedit_ClassBindings { } {
 	set x [%W index insert]
 	incr x
 	%W icursor $x
-	tkEntrySeeInsert %W
+	::tk::EntrySeeInsert %W
     }
 
     SeditBind $tclass up1page {
@@ -628,7 +628,7 @@ proc SeditEntryInsert { w a } {
 	    catch {$w delete sel.first sel.last}
 	}
 	$w insert insert $a
-	tkEntrySeeInsert $w
+	::tk::EntrySeeInsert $w
     }
 }
 proc SeditEntrySelect { w x } {
@@ -671,7 +671,7 @@ proc SeditEntryWordSelect { w x } {
     set ix [SeditEntryFindWord $w $x 0]
     $w select from $ix
     $w icursor $ix
-    tkEntrySeeInsert $w
+    ::tk::EntrySeeInsert $w
     $w select to [SeditEntryFindWord $w $x 1]
     set sedit(anchor,$w) $ix
 }
@@ -708,7 +708,7 @@ proc SeditEntryLineSelect { w x } {
     $w select from 0
     $w select to end
     $w icursor 0
-    tkEntrySeeInsert $w
+    ::tk::EntrySeeInsert $w
 }
 proc SeditEntryTranspose { w {how ""} } {
     set _x [$w index insert]
@@ -729,7 +729,7 @@ proc SeditEntryTranspose { w {how ""} } {
 	incr _x
 	$w insert $_x $_c
     }
-    tkEntrySeeInsert $w
+    ::tk::EntrySeeInsert $w
 }
 
 proc SeditKill?Sel { w } {
