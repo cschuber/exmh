@@ -117,7 +117,7 @@ pressing the Mail to button, or just Dismiss me."
 proc bgerror [info args tkerror] [info body tkerror]
 
 proc ExmhMailError { w errInfo } {
-    global exmh
+    global exmh env
     if [file exists [Env_Tmp]/exmhErrorMsg] {
         file delete [Env_Tmp]/exmhErrorMsg
     }
@@ -127,8 +127,10 @@ proc ExmhMailError { w errInfo } {
     }
     if [catch {
 	global env tk_version tk_patchLevel tcl_version tcl_patchLevel
+	set host [exec hostname]
 	puts $out "To: $exmh(maintainer)"
 	puts $out "Subject: error exmh [lrange $exmh(version) 1 end]"
+        puts $out "From: $env(USER)@$host"
 	puts $out ""
 	set line [$w.user get 1.0 1.end]
 	if [regexp {^What happened:} $line] {
@@ -159,6 +161,8 @@ proc ExmhMailError { w errInfo } {
 	puts $out "$uname"
 	puts $out ""
 	puts $out $errInfo
+        puts $out ""
+        puts $out [stacktrace]
 	close $out
     } msg] {
 	Exmh_Status "[Env_Tmp]/exmhErrorMsg $msg" error

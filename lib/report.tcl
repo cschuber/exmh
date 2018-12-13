@@ -11,7 +11,7 @@
 # any specification.
 
 proc Report_Bug {} {
-    global mhProfile exmh tk_version
+    global mhProfile exmh tk_version env
 
     set draft [Mh_Path $mhProfile(draft-folder) new]
     if [catch {open $draft w} out] {
@@ -19,8 +19,10 @@ proc Report_Bug {} {
 	return
     }
     Report_UseComp $out
+    set host [exec hostname]
     puts $out "To: $exmh(maintainer)"
     puts $out "Subject: exmh bug"
+    puts $out "From: $env(USER)@$host"
     puts $out "------"
     puts $out "$exmh(version)"
     catch {puts $out [exec uname -a]}
@@ -37,9 +39,11 @@ proc Report_Registration {} {
 	return
     }
     Report_UseComp $out
+    set host [exec hostname]
     puts $out \
-"To: welch@acm.org
+"To: valdis.kletnieks@vt.edu
 Subject: Register exmh user
+From: $env(USER)@$host
 -----
 $exmh(version) $env(USER)
 [exec uname -a]
@@ -53,7 +57,7 @@ Tcl $tcl_patchLevel
 >   If you have registered for an earlier release you need not
 >   register again, unless you want to, of course.
 >
->	Brent Welch <welch@acm.org>
+>	Valdis Kletnieks <valdis.kletnieks@vt.edu>
 
 
 Please comment on exmh:
@@ -66,7 +70,7 @@ I don't really like...
     Edit_DraftID [file tail $draft]
 }
 proc Report_Subscribe {list what} {
-    global mhProfile exmh
+    global mhProfile exmh env
 
     set draft [Mh_Path $mhProfile(draft-folder) new]
     if [catch {open $draft w} out] {
@@ -74,8 +78,10 @@ proc Report_Subscribe {list what} {
 	return
     }
     Report_UseComp $out
+    set host [exec hostname]
     puts $out "To: $list-request@redhat.com"
     puts $out "Subject: $what"
+    puts $out "From: $env(USER)@$host"
     puts $out "------"
     puts $out "$what $list"
     puts $out "--"
