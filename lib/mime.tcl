@@ -1420,7 +1420,7 @@ proc MimeDecode {fileName name encoding text} {
 	    }
 	    quoted-printable -
 	    base64 {
-		# tre mimencode or recode if available
+		# try mimencode or recode if available
                 if {[info exists mime(encode)] || [info exists mime(base64)] || [info exists mime(recode)]} {
 		    if {[info exists mime(encode)]} {
 			set cmd [list exec $mime(encode) -u]
