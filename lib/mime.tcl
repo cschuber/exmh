@@ -19,14 +19,14 @@ proc Mime_Init {} {
 	return
     }
 
-    # no more metamail required
-    set env(NOMETAMAIL) 1
-
     # look for mimencode or recode in path, prefer mimencode
     set rhit 0
     foreach dir [split $env(PATH) :] {
 	if {[file executable "$dir/mimencode"]} {
 	    set mime(encode) "$dir/mimencode"
+	}
+	if {[file executable "$dir/base64"]} {
+	    set mime(base64) "$dir/base64"
 	}
 	if {[file executable "$dir/recode"]} {
 	    set mime(recode) "$dir/recode"
@@ -446,14 +446,6 @@ proc MimeSetStdMenuItems {tkw part} {
 	    MimeMenuAdd $part command \
 		-label "Print $descr as text..." \
 		-command [list Mime_PrintPiece $part $type]
-	}
-	if ![info exists env(NOMETAMAIL)] {
-	    MimeMenuAdd $part command \
-		-label "Pass [Mime_TypeDescr $part] to metamail..." \
-		-command [list MimeMetaMail \
-			       $type \
-			       $mimeHdr($part,encoding) \
-			       [MimeGetOrigFile $part]]
 	}
     }
 }
@@ -902,10 +894,6 @@ proc Mime_ShowDefault {tkw part} {
 		MimeInsertNote $tkw [MimeLabel $part part] \
 		    "Invoke menu with right button."
 	    }
-	} elseif ![info exists env(NOMETAMAIL)] {
-	    $tkw insert insert "It might be displayable with metamail.\t"
-	    MimeInsertNote $tkw [MimeLabel $part part] \
-		"Invoke menu with right button."
 	}
 	if [regexp {^multipart} $mimeHdr($part,type)] {
 	    $tkw insert insert "Its subparts may be displayed individually.\t"
@@ -926,10 +914,6 @@ proc Mime_ShowDefault {tkw part} {
 			exec sh -c $viewer &
 		    }
 		}
-	    } elseif ![info exists env(NOMETAMAIL)] {
-		MimeMetaMail $mimeHdr($part,hdr,content-type) \
-			     $mimeHdr($part,encoding) \
-			     [MimeGetOrigFile $part]
 	    } else {
 		Exmh_Status "Couldn't display part $part"
 	    }
@@ -963,29 +947,6 @@ proc MimeAddURIInfo { tkw part } {
         append uri /$mimeHdr($part,param,$uripart)
     }
     $tkw insert insert "\tURI = $uri\n"
-}
-proc MimeMetaMail {contentType encoding fileName} {
-    global mimeHdr
-
-    if [catch {
-	Exmh_Status "metamail $fileName -c $contentType ..."
-	set mcmd [list exec metamail -b\
-		    -c $contentType \
-		    -E $encoding \
-		    -f [MsgParseFrom $mimeHdr(0=1,hdr,from)] \
-		    -m exmh ]
-	if [regexp -nocase {^audio|^image|^video} $contentType] {
-	    lappend mcmd -B
-	} else {
-	    lappend mcmd -p
-	}
-	lappend mcmd $fileName < /dev/null > /dev/null &
-	# recall that eval concats its arguments, thus exploding things for us
-	Exmh_Debug MimeMetaMail $mcmd
-	eval $mcmd
-    } err] {
-	 Exmh_Status "$err"
-    }
 }
 
 proc Mime_ShowText {tkw part} {
@@ -1460,10 +1421,14 @@ proc MimeDecode {fileName name encoding text} {
 	    quoted-printable -
 	    base64 {
 		# tre mimencode or recode if available
-                if {[info exist mime(encode)] || [info exists mime(recode)]} {
-		    if {[info exist mime(encode)]} {
+                if {[info exists mime(encode)] || [info exists mime(base64)] || [info exists mime(recode)]} {
+		    if {[info exists mime(encode)]} {
 			set cmd [list exec $mime(encode) -u]
 			lappend cmd [expr {$encoding == "base64"?"-b":"-q"}]
+			lappend cmd $fileName >@ $out
+		    } elseif {[info exists mime(base64)] && $encoding == "base64"} {
+			set cmd [list exec $mime(base64)]
+			lappend cmd "-d"
 			lappend cmd $fileName >@ $out
 		    } else {
 			set cmd [list exec $mime(recode)]
@@ -1576,7 +1541,7 @@ proc Mime_ShowMessageExternal {tkw part} {
     }
     if ![info exists mime(accessMethod,$atype)] {
 	MimeInsertNote $tkw [MimeLabel $part part] \
-		       "Use Metamail to access $type via '$atype'"
+		       "Unable to access $type via '$atype'"
     }
 
     set color $mimeHdr($part,color)
@@ -1638,11 +1603,6 @@ proc MimeFTPTransfer {tkw part} {
 		ftp* {
 		    Exmh_Status "$mime(ftpCommand) -n $site ..."
 		    busy MimeFTPInner $site $directory $theirname $myname $mode
-		}
-		metamail {
-		    MimeMetaMail $mimeHdr($part,hdr,content-type) \
-			   $mimeHdr($part,encoding) \
-			   $mimeHdr($part,file)
 		}
 		default {
 		    error "Unknown ftpMethod $mime(ftpMethod)"

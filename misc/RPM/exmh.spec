@@ -3,7 +3,7 @@ Name: exmh
 Version: EXMHVERSION 
 Release: 1
 BuildArchitectures: noarch
-Requires: mh, metamail
+Requires: nmh
 Copyright: freeware
 Group: Applications/Mail
 Source0: ftp://ftp.tcl.tk/pub/tcl/exmh/exmh-%{version}.tar.gz

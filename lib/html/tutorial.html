@@ -443,20 +443,16 @@ offer you these choices:
 Save Hello from the author...
 View using mailcap rule...
 Print Hello from the author as text...
-Pass an audio fragment to metamail...
 </blockquote></pre>
 
 The first item is a checkbox menu item that lets you view the raw
 content if you want to. The Save... menu entry displays a file
 selection box so you can choose a non-temporary file to store the
 content. This same function is available through the text button, but
-not all MIME parts displays buttons like this. The next two entries
-should result in the same thing. They use the mailcap specifications
-to run another program that displays the content. In the first case,
-View using mailcap rule..., <i>exmh</i> runs the program directly. In
-the other case, Pass to metamail..., the <i>metamail</i> program is
-run first, and it decodes the mailcap file and runs the external
-program. Again, the text button labeled "Play attached audio" also
+not all MIME parts displays buttons like this. 
+The next entry uses the mailcap specifications
+to run another program that displays the content.
+Again, the text button labeled "Play attached audio" also
 plays the audio.
 
 <h3><a NAME="REPLYING TO MAIL" HREF="#CONTENTS">REPLYING TO MAIL</a></h3>
@@ -781,7 +777,7 @@ in the other <i>exmh</i> pages.
   <dt>MIME support
   <dd><i>Exmh</i> can display MIME (Multipurpose Internet Mail
       Extensions) messages, either directly or with the help of the
-      <i>metamail</i> package. The built-in editor lets you compose
+      <i>mailcap</i> package. The built-in editor lets you compose
       enriched text messages and insert files as parts of a multipart
       message. 
 

@@ -25,7 +25,6 @@ proc Tioga_ShowMsg { tkw part } {
     set mimeHdr($part=$t,hdr,content-description) "Press right button for menu"
     MimeShowPart $tkw $part=$t [MimeLabel $part part] 0
     MimeMenuDelete $part=$t "View using mailcap rule..."
-    MimeMenuDelete $part=$t "Pass a*to metamail..."
 
     MimeMenuAdd $part=$t command \
 	-label "View Tioga..." \

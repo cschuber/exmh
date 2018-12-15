@@ -133,9 +133,6 @@ proc mailcap_load {} {
   } else {
       set mailcap_path $exmh(userLibrary)/user.mailcap:$env(HOME)/.mailcap:$exmh(library)/local.mailcap:$exmh(library)/mailcap/:$mailcap_default
   }
-  if [info exists env(METAMAIL_HOME)] {
-    append mailcap_path :$env(METAMAIL_HOME)/mailcap
-  }
 
   foreach mailcap_file [split $mailcap_path :] {
     catch {close $fh}
@@ -314,7 +311,6 @@ proc mailcap_getrule {content_type params method field_array body_filename
       continue;
     }
     set fa() [lindex $rule 1];
-# Ignore empty view-commands; note that metamail won't handle this
     if {[string length $fa()] == 0} {unset fa()};
     set forget_it 0;
 

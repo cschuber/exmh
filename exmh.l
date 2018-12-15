@@ -453,7 +453,6 @@ popup menu will offer you these choices:
 Decode part as MIME
 Save Hello from the author...
 View using mailcap rule...
-Pass an audio fragment to metamail...
 .DE
 The first item is a checkbox menu item that lets you view the raw content
 if you want to.
@@ -461,12 +460,8 @@ The Save... menu entry displays a file selection box so you can choose
 a non-temporary file to store the content.
 This same function is available through the text button,
 but not all MIME parts displays buttons like this.
-The next two entries should result in the same thing.
-They use the mailcap specifications to run another program that
-displays the content.  In the first case, View using mailcap rule...,
-\fIexmh\fP runs the program directly.  In the other case,
-Pass to metamail..., the \fImetamail\fP program is run first, and it
-decodes the mailcap file and runs the external program.
+The next uses the mailcap specifications to run another program that
+displays the content.
 Again, the text button labeled "Play attached audio" also plays
 the audio.
 .SH REPLYING TO MAIL
@@ -768,7 +763,7 @@ here are some of the features described in the other \fIexmh\fP man pages.
 \fBMIME support\fP.  \fIExmh\fP can display
 MIME (Multipurpose Internet Mail Extensions)
 messages, either directly or with the
-help of the \fImetamail\fP package.
+help of the \fImailcap\fP package.
 The built-in editor lets you compose enriched text messages
 and insert files as parts of a multipart message.
 .PP

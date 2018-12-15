@@ -1,7 +1,11 @@
 HISTORY
+12/15/2018 valdis.kletnieks@vt.edu
+  removed remaining references to Metamail, use 'base64' command if available
+
 8/11/2018 valdis.kletnieks@vt.edu
   cleaned up a few more stale references to pre-8.6 Tk/Tcl, fixed some URLs
   Still needs a lot more work though.
+
 8/11/2018 valdis.kletnieks@vt.edu
   clean up alias usage in Tcl_Tk_Vers_Init - this requires going through
   and changing the oldnames to the new namespaced names.

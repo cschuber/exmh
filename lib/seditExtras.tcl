@@ -239,6 +239,8 @@ proc SeditInsertFile { draft t file {newpart 0} {encoding {}} {type text/plain} 
                 base64 {
                   if {[info exist mime(encode)]} {
 		      $t insert $mark [exec $mime(encode) -b < $file]
+		  } elseif {[info exist mime(base64)]} {
+		      $t insert $mark [exec $mime(base64) -e < $file]
 		  } elseif {[info exist mime(recode)]} {
 		      $t insert $mark [exec $mime(recode) data..base64 < $file]
 		  } else {

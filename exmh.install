@@ -32,7 +32,6 @@ install_name	exmh(name)	exmh		{Name of main exmh script}
 install_var	exmh(maintainer) valdis.kletnieks@vt.edu {Target of error mailings}
 install_dirVar	mh_path		[installGuessDir /usr/local/bin inc]	{MH binary directory}
 install_progVar	exmh(slocal)	[installGuessPath /usr/local/lib/mh/slocal slocal]	{MH slocal program}
-install_dirVar	mime(dir)	[installGuessDir /usr/local/bin metamail]	{Metamail bin directory}
 install_fileVar mailcap_default	[installGuessPath /usr/etc/mailcap mailcap]	{System mailcap file}
 install_fileVar mimetypes_default [installGuessPath /usr/local/lib/exmh-$vers/mime.types mime.types]	{System mime.types file}
 install_expect	exmh(expect)	[installGuessPath /usr/local/bin/expect expect]	{expect program}
@@ -110,11 +109,8 @@ delete the default value and leave the field blank.
 <p>
 See <a href=lib/html/exmh.README.html>exmh.README.html</a> for pointers to these.
 <ul>
-<li>The metamail program that handles unknown (by exmh) MIME formats.
-This also includes mimecode that handles base64 and quoted-printable
-encodings used to transmit 8-bit data safely in mail messaegs. This
-is highly recommended. If you use 8-bit character sets, then you must
-have this package to properly encode messages.
+You'll want the base64, recode, or mimencode programs to convert to/from
+various MIME encodings
 </ul>
 <h2>Optional Packages</h2>
 <p>
@@ -148,9 +144,7 @@ site. Otherwise I'll get them, which is OK.
 send scan, folders, etc.
 <li> MH slocal program. Use for presorting mail. This is in the MH
 library directory. Give the complete pathname.
-<li> Metamail bin directory. The home for metamail and mimencode. These
-programs are required by exmh for MIME handling.
-<li> System mailcap file. This file has rules for metamail that describe
+<li> System mailcap file. This file has rules for mailcap that describe
 how to view MIME parts. Exmh uses these rules, too.
 <li> System mime.types file. Maps file extensions into MIME types. Used by
 Exmh to set the mime type correctly for attachments when composing a MIME
