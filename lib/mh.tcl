@@ -25,6 +25,10 @@ proc Mh_Init {} {
 	# 'repl -- version [compiled etc etc]' - catch version
 	catch {MhExec repl -version} d
 	regexp {.*-- *([^ ]*)[ ]} $d {} exmh(mh_vers) 
+	if { $exmh(mh_vers) < "1.6"} {
+	    puts stderr "Exmh requires nmh 1.6. or later"
+	    exit 1
+	}
 	# See if it's an nmh patched to support setting info for rfc3461 DSNs
 	set exmh(nmh_dsn) 0
 	catch {MhExec send -help} d
@@ -34,24 +38,16 @@ proc Mh_Init {} {
 	    if [info exists d2] { set exmh(nmh_dsn) 1 }
 	}
     } else {
-	# UCI MH - 'version: .*'
-	# weirdness - 6.8 puts 'version (build on ...)', 6.6 (blech) doesnt.
-	catch {MhExec repl -help} d
-	set d1 [ split $d "\n"]
-	foreach line $d1 {
-	    regexp {^version:[ ]*([^(]*)} $line d2
-	    if [info exists d2] { set exmh(mh_vers) [string trim $d2] }
-	}
+	puts stderr "Exmh requires nmh 1.6 or later"
+	exit 1
     }
     # Test for now, only present in nmh 1.6+dev and 1.7
-   if { $nmh} {
-        catch {MhExec mhical -version} d
-        regexp {.*-- *([^ ]*)[ ]} $d d2
-        if [info exists d2] {set exmh(have_mhical) 1 }
-        catch {MhExec gcalcli --version} d
-        regexp {.*v([.0-9]*)[ ]} $d d2
-        if [info exists d2] {set exmh(have_gcalcli) 1 }
-   }
+    catch {MhExec mhical -version} d
+    regexp {.*-- *([^ ]*)[ ]} $d d2
+    if [info exists d2] {set exmh(have_mhical) 1 }
+    catch {MhExec gcalcli --version} d
+    regexp {.*v([.0-9]*)[ ]} $d d2
+    if [info exists d2] {set exmh(have_gcalcli) 1 }
 }
 
 proc Mh_Preferences {} {

@@ -487,13 +487,7 @@ proc MDNBuildDraft { draft address doit choice} {
 	error "Cannot create mdn"
     }
     puts $out "Subject: Disposition notification\nTo: $address\nFrom: $rcpt"
-    # if nmh 1.5 or newer, use Envelope-From: to force mail from: <>
-    catch {exec scan -version} nmhversion
-    if [ regexp {nmh-(\d+)\.(\d+)} $nmhversion allofit major minor ] { 
-	if {$major >= 1 && $minor >= 5 } {
-	    puts $out "Envelope-From:"
-	}
-    }
+    puts $out "Envelope-From:"
 
     set bdry [FvMimeStartMulti $out \
 	"multipart/report; report-type=disposition-notification" 0]
