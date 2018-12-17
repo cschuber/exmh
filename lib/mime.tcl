@@ -814,7 +814,7 @@ proc Mime_ShowImage {tkw part} {
 		Exmh_Status "Creating tk photo"
 		set mimeHdr($part,photo) \
 			[image create photo [MimeLabel $part image] \
-			-file $mimeHdr($part,file)]
+			-file [Mime_GetUnencodedFile $part]]
 		Exmh_Status "Created tk photo"
 	    }
 	    set photo $tkw.[MimeLabel $part photo]
