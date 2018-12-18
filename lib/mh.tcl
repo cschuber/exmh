@@ -25,7 +25,7 @@ proc Mh_Init {} {
 	# 'repl -- version [compiled etc etc]' - catch version
 	catch {MhExec repl -version} d
 	regexp {.*-- *([^ ]*)[ ]} $d {} exmh(mh_vers) 
-	if { $exmh(mh_vers) < "1.6"} {
+	if { $exmh(mh_vers) < "nmh-1.6"} {
 	    puts stderr "Exmh requires nmh 1.6. or later"
 	    exit 1
 	}
