@@ -9,7 +9,7 @@ SNAPRELDATE:=$(shell /bin/date +%m/%d/%Y)
 SNAPDATE=`/bin/date +%Y%m%d`
 
 # Don't add "version" to the srctar production because it may
-# re-write files we've tinkered with by hand (e.g., lib/html/exmh.README.html)
+# re-write files we've tinkered with by hand (e.g., lib/html/exmh.README.txt)
 
 srctar: realsrctar
 
