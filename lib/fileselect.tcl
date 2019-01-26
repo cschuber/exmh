@@ -92,10 +92,10 @@ proc fileselect {{purpose "Select file:"} {defaultName ""} {cmd ""} {errorHandle
 
     if {$smash} {
         # Smash out anything that isn't alphanumeric, period, underscore or dash
-        regsub -all {[^[:alpha:][.digit.]._-]+} $defaultName _ defaultName
+        regsub -all {[^[:alpha:][:digit:]._-]+} $defaultName _ defaultName
         # Embedded blanks are a pain...
 	regsub -all {[ ]+} $defaultName _ defaultName
-        # Oh, and too many things treat dot-files as special...
+        # Oh, and no '../' games, and too many things treat dot-files as special...
         regsub {^\.+} $defaultName _ defaultName
     }
 
