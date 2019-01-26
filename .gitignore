@@ -6,3 +6,6 @@ exmh-strip
 ftp.expect
 inc.expect
 .exmhinstall
+*.tar.gz
+Tar.exclude
+lib/html/exmh.CHANGES.txt
