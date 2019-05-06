@@ -80,7 +80,6 @@ image/x-xpixmap			xpm
 image/x-xwindowdump		xwd
 message/external-body
 message/news
-message/partial
 message/rfc822
 multipart/alternative
 multipart/appledouble

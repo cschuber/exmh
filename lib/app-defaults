@@ -401,7 +401,7 @@ exmh.iconic:		0
 *Mops.spam.m.c_f_no:	Bogo_FilterFolder ham
 
 *Mops.more.text: 	More...
-*Mops.more.m.entrylist: 	print unmark clip xunseen burst distrib save use edit uudecode postscript apply1 apply2 munseen pgp uriscan uriopen partial ref post grabaddr attach
+*Mops.more.m.entrylist: 	print unmark clip xunseen burst distrib save use edit uudecode postscript apply1 apply2 munseen pgp uriscan uriopen ref post grabaddr attach
 *Mops.more.m.uentrylist:
 
 *Mops.more.m.l_print: 	Print
@@ -444,8 +444,6 @@ exmh.iconic:		0
 *Mops.more.m.c_uriscan: URI_ScanMsg
 *Mops.more.m.l_uriopen: View selected URL
 *Mops.more.m.c_uriopen: URI_OpenSelection
-*Mops.more.m.l_partial: Concatenate partial messages
-*Mops.more.m.c_partial: Partial_Concatenate
 *Mops.more.m.l_ref: Automatic Refile
 *Mops.more.m.c_ref: Folder_AutoRefile
 *Mops.more.m.l_post: Post this message to a Newsgroup
@@ -490,12 +488,12 @@ exmh.iconic:		0
 *Mops.groups:		current range nodraft comp pgp
 
 *Mops.g_current:	link move delete reply forward spam
-*Mops.gm_current:	Print {Unmark (Undo)} Clip Redistribute {Burst Digest} {Save to file} {Use message as draft} {Edit message} {uudecode message} {Print postscript content} {Apply command to body} {Apply command to message} {Mark Unseen} {PGP Encrypt} {old PGP...} {Highlight URI} {Scan for URLs} {View selected URL} {Post this message to a Newsgroup} {Automatic Refile} {Concatenate partial messages} {Save "From" address}
+*Mops.gm_current:	Print {Unmark (Undo)} Clip Redistribute {Burst Digest} {Save to file} {Use message as draft} {Edit message} {uudecode message} {Print postscript content} {Apply command to body} {Apply command to message} {Mark Unseen} {PGP Encrypt} {old PGP...} {Highlight URI} {Scan for URLs} {View selected URL} {Post this message to a Newsgroup} {Automatic Refile} {Save "From" address}
 *Mops.ug_current:
 *Mops.ugm_current:
 
 *Mops.g_range:		link move delete forward spam
-*Mops.gm_range:		Print {Unmark (Undo)} {Mark Unseen} {Concatenate partial messages}
+*Mops.gm_range:		Print {Unmark (Undo)} {Mark Unseen}
 *Mops.ug_range:
 *Mops.ugm_range:
 
