@@ -332,7 +332,7 @@ proc Msg_Reply { args } {
 	if {$edit} {
 	    Edit_Draft					;# Run the editor
 	} else {
-	    Edit_Done send				;# Just send it
+	    Edit_Done send {}				;# Just send it
 	}
     }
 }

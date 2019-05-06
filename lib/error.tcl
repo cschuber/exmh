@@ -235,7 +235,7 @@ proc Send_Error { msg draftID } {
     button $name.buttons.retry -text "Retry Send" -command "
 	    destroy $name
             unset $name
-	    Edit_Done send $draftID
+	    Edit_Done send $draftID {}
 	"
     pack append $name.buttons $name.buttons.retry {right}
     global widgetText TextType
