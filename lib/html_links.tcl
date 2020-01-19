@@ -30,8 +30,6 @@ proc HMlink_setup {win htag} {
 	    [list HMlink_feedback $win hand2 "X-URL:\t$href2" $tag c_alink]
     $win tag bind $tag <Leave> \
 	    [list HMlink_feedback $win [option get $win cursor Text] "" $tag c_link]
-    # make the link clickable
-    $win tag bind $tag <ButtonRelease-1> [list URI_StartViewer $href2 ]
 
     # Add to history so it shows up in URL chooser dialog
     global History
