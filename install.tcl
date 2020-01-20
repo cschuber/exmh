@@ -13,7 +13,7 @@ option add *font			fixed	startup
 option add *Text.c_link			blue	startup
 
 proc install_init { appName dotFile } {
-    global install tk_version tk_patchLevel tcl_version tcl_patchLevel
+    global install tk_version tk_patchLevel tcl_version tcl_patchLevel uri
 
     set install(appName) $appName
     install_progVar wish [installGuessPath /usr/local/bin/wish wish] {wish absolute pathname}
@@ -27,6 +27,8 @@ proc install_init { appName dotFile } {
 	    installAlternates $files 1
 	}
     }
+    # Rashly assume that we have a browser available
+    set uri(viewer) "netscape"
 }
 proc installAlternates { files isdefault } {
     wm withdraw .
