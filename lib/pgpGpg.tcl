@@ -487,6 +487,7 @@ set pgp(gpg,pat_validKeys) "\n?(ssb|pub|sec|sub|uid)\[^\n]*"
 set pgp(gpg,cmd_Keyid) {
     if {[regexp {GOODSIG ([^ ]*)} $in {} pgpresult(keyid)]} {
     } elseif {[regexp {BADSIG ([^ ]*)} $in {} pgpresult(keyid)]} {
+    } elseif {[regexp {EXPKEYSIG ([^ ]*)} $in {} pgpresult(keyid)]} {
     } else {regexp {ERRSIG ([^ ]*)} $in {} pgpresult(keyid)}
 
     # Keyservers like only the last four octets of the keyid.
@@ -505,13 +506,14 @@ set pgp(gpg,cmd_Beauty) {
 # patterns for interpreting output
 set pgp(gpg,pat_SecretMissing) {ENC_TO.*DECRYPTION_FAILED}
 set pgp(gpg,pat_PublicMissing) {ERRSIG}
-set pgp(gpg,pat_GoodSignature) {GOODSIG}
+set pgp(gpg,pat_GoodSignature) {(GOODSIG|EXPKEYSIG)}
 set pgp(gpg,pat_Untrusted) {(TRUST_UNDEFINED|TRUST_NEVER)}
 set pgp(gpg,pat_BadSignature) {BADSIG}
 set pgp(gpg,pat_UnknownError) {ERROR}
+set pgp(gpg,pat_Expired) {EXPIRED}
 # command that matches out the Originator
 set pgp(gpg,cmd_User) {
-    regexp {(GOODSIG|BADSIG) [^ ]* ([^\n]*)} $in {} {} user
+    regexp {(GOODSIG|BADSIG|EXPKEYSIG) [^ ]* ([^\n]*)} $in {} {} user
 }
 
 ##################

@@ -1254,7 +1254,11 @@ proc Pgp_DisplayMsg { v tkw part pgpresultvar } {
 	    -label "Query keyserver for key $pgpresult(keyid)" \
 	    -command "Pgp_WWW_QueryKey $v $pgpresult(keyid)"
 	if {[regexp "PublicMissing" $pgpresult(summary)]} {
-	    TextButton $tkw "Query keyserver" \
+	    TextButton $tkw "Query keyserver for key $pgpresult(keyid)" \
+		"Pgp_WWW_QueryKey $v $pgpresult(keyid)"
+	} elseif {$pgpresult(expired) == 1} {
+	    $tkw insert insert "Warning: Key has expired: "
+	    TextButton $tkw "Query keyserver for key $pgpresult(keyid)" \
 		"Pgp_WWW_QueryKey $v $pgpresult(keyid)"
 	}
 	$tkw insert insert "\n"
@@ -1304,6 +1308,7 @@ proc Pgp_InterpretOutput { v in outvar } {
     }
 
     set pgpresult(ok) 1
+    set pgpresult(expired) 0
 
     # get out the keyid
     eval [set pgp($v,cmd_Keyid)]
@@ -1313,6 +1318,10 @@ proc Pgp_InterpretOutput { v in outvar } {
     }
 
     # interpret the output
+    if { [info exists pgp($v,pat_Expired)] && \
+       [regexp [set  pgp($v,pat_Expired)] $in redin]} {
+       set pgpresult(expired) 1
+    }
     if [regexp [set pgp($v,pat_SecretMissing)] $in redin] {
 	set pgpresult(summary) "SecretMissing"
 	set pgpresult(ok) 0
@@ -1362,21 +1371,26 @@ proc Pgp_InterpretOutput { v in outvar } {
     }
 
     Exmh_Debug OK=$pgpresult(ok) $pgpresult(summary)
+    if [info exists pgpresult(keyid)] {
+	set id $pgpresult(keyid)
+    } else {
+	set id {}
+    }
 
     if [set pgp($v,shortmsgs)] {
-	set pgpresult(msg) [Pgp_ShortenOutput $v $pgpresult(msg) \
+	set pgpresult(msg) [Pgp_ShortenOutput $v $pgpresult(msg) $id \
 				$pgpresult(summary) $user]
     }
 }
 
-proc Pgp_ShortenOutput { v pgpresult summary user } {
+proc Pgp_ShortenOutput { v pgpresult id summary user } {
     global pgp
 
-    catch {Exmh_Debug "<PGP ShortenOutput> $user"}
+    catch {Exmh_Debug "<PGP ShortenOutput> id = $id user = $user "}
 
     switch $summary {
        SecretMissing {return "Cannot decrypt, missing secret key."}
-       PublicMissing {return "Missing public key."}
+       PublicMissing {return "Missing public key for $id."}
        GoodSignatureUntrusted {return "Good untrusted signature from $user."}
        GoodSignatureTrusted {return "Good trusted signature from $user."}
        BadSignature {return "Bad signature from $user."}
