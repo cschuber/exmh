@@ -2172,7 +2172,7 @@ proc MimeParseSingle {tkw part fileIO } {
         }
         if [regexp $miscRE(beginpgp) $firstLine] { set mimeHdr($part,decode) 1 }
     } else {
-	Exmh_Status "Warning - no headers" warn
+	Exmh_Status "Warning - no headers" warning
 	set firstLine $line
 	set mimeHdr($part,type) [set type text/plain]
 	set mimeHdr($part,encoding) [set encoding 8bit]
@@ -2750,7 +2750,7 @@ proc MimeMailcapView { part subparts } {
 	    exec sh -c $rule &
 	}
     } err] {
-	Exmh_Status $err warn
+	Exmh_Status $err warning
     }
 }
 proc MimeMailcapPrint { part subparts } {
@@ -2761,7 +2761,7 @@ proc MimeMailcapPrint { part subparts } {
     } else {
 	Exmh_Status Printing...
 	if [catch {exec sh -c $rule} err] {
-	    Exmh_Status $err warn
+	    Exmh_Status $err warning
 	}
     }
 }

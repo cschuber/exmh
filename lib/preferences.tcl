@@ -512,7 +512,7 @@ proc Preferences_RewriteSection { boundary1 boundary2 newstuff } {
 	set oldValues {}
     }
     if [catch {open $pref(userDefaults).new w} out] {
-	Exmh_Status "Cannot save in $pref(userDefaults).new: $out" warn
+	Exmh_Status "Cannot save in $pref(userDefaults).new: $out" warning
 	return
     }
     set state "before"
@@ -662,7 +662,7 @@ proc Preferences_Tweak { _varName } {
 	return
     }
     if [catch {open $pref(userDefaults).new w} out] {
-	Exmh_Status "Cannot save in $pref(userDefaults).new: $out" warn
+	Exmh_Status "Cannot save in $pref(userDefaults).new: $out" warning
 	close $old
 	return
     }

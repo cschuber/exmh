@@ -30,7 +30,7 @@ proc ScanFolder {folder adjustDisplay} {
 	set cacheFile $mhProfile(path)/$folder/.xmhcache
 	if {! [Scan_CacheValid $folder] || [catch {open $cacheFile} input]} {
 	    # No cache, scan last N messages
-	    Exmh_Status "Limit scan $folder last:$ftoc(scanSize) - Rescan?" warn
+	    Exmh_Status "Limit scan $folder last:$ftoc(scanSize) - Rescan?" warning
 	    set input  [open "|$mhProfile(scan-proc) [list +$folder] \
 		    last:$ftoc(scanSize) -width $ftoc(scanWidth) -noheader"]
 	    set ftoc(displayDirty) 1
@@ -276,7 +276,7 @@ proc Scan_CacheUpdate {} {
             set scancmd "exec $mhProfile(scan-proc) [list +$folder] \
 		    -width $ftoc(scanWidth) -noheader >@ [open $cacheFile w 0$mhProfile(msg-protect)]"
             if [catch $scancmd err] {
-                Exmh_Status "failed to rescan folder $folder: $err" warn
+                Exmh_Status "failed to rescan folder $folder: $err" warning
             }
         }
 	Ftoc_Change $curLine	;# Restore it

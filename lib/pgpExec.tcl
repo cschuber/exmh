@@ -703,7 +703,7 @@ proc Pgp_Exec_DecryptExpect { v infile outfile msgvar } {
     if [catch {exec $exmh(expectk) -f $exmh(library)/PgpDecryptExpect \
                         $v $infile $outfile $exmh(bgInterp)} error] {
         Exmh_Debug "<PGP Exec_DecryptExpect> error: $error"
-        Exmh_Status "Error executing expect process" warn
+        Exmh_Status "Error executing expect process" warning
     }
 
     set msg [lindex [send $exmh(bgInterp) {list $pgpmsg}] 0]
@@ -754,7 +754,7 @@ proc Pgp_GetPass { v key } {
 	    Exmh_Debug "running cmd $cmd"
 	    if [ catch {exec sh -c "$cmd"} result ] {
 		Exmh_Debug "error running cmd: $result"
-		Exmh_Status "Error executing external cmd" warn
+		Exmh_Status "Error executing external cmd" warning
 		return {}
 	    } else {
 		if {[Pgp_Exec_CheckPassword $v $result $key]} {

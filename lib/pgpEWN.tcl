@@ -70,7 +70,7 @@ proc EncryptWhatNow { v action id } {
 		puts $f_tmp $pgpaction
 	} else {
 		# print warning
-		Exmh_Status "[set pgp($v,fullName)] not enabled" warn
+		Exmh_Status "[set pgp($v,fullName)] not enabled" warning
 	}
 	# faster
 	puts $f_tmp $line

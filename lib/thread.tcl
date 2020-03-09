@@ -158,7 +158,7 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
 #  Check that the current FTOC corresponds to a 'real folder' scan.
 #
     if !$ftoc(displayValid) {
-        Exmh_Status "Already threaded or not a valid display" warn
+        Exmh_Status "Already threaded or not a valid display" warning
         return
     }
 
@@ -166,7 +166,7 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
 #  Selection activated and nothing selected, so do nothing
 #
     if {$selected && [Ftoc_PickSize] < 1} {
-	Exmh_Status "You must select at least one message first" warn
+	Exmh_Status "You must select at least one message first" warning
 	return
     }
 
@@ -248,7 +248,7 @@ proc Thread_Ftoc { {selected 0} {breakoff 20} {mark "+->"} } {
 	set numsel [llength $msginfo(out)]
 	set numseltext "$numsel/"
     } elseif {[llength $msginfo(out)] != $maxlines} {
-        Exmh_Status "folder incorrectly threaded. line number mismatch" warn
+        Exmh_Status "folder incorrectly threaded. line number mismatch" warning
     }
 
 #    Seq_Forget $folder $mhProfile(unseen-sequence)

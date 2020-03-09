@@ -592,7 +592,7 @@ proc Msg_Edit {} {
     }
     if [regsub {^([ 	]*)exmh-async(.*)$} $editor($edittype) {\2} newprog] {
 	set cmd [split [join [string trimright $newprog "& \t"]]]
-	Exmh_Status "Starting $cmd ..." warn
+	Exmh_Status "Starting $cmd ..." warning
 	if [catch {eval exec $cmd $msg(path) &} err] {
 	    Exmh_Status $err error
 	}

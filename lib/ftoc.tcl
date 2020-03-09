@@ -509,7 +509,7 @@ proc Ftoc_FindMsg { msgid } {
     }
     while (1) {
         if {$msgid > $maxmsgid || $msgid < $minmsgid} {
-            Exmh_Status "Cannot find $msgid ($minmsgid,$maxmsgid)" warn
+            Exmh_Status "Cannot find $msgid ($minmsgid,$maxmsgid)" warning
             if {[info exist msgtolinecache($msgid)]} {
                 unset msgtolinecache($msgid)
             }
@@ -540,7 +540,7 @@ proc Ftoc_FindMsg { msgid } {
             set maxlineno $nextlineno
             set maxmsgid $nextmsgid
         } elseif {$minlineno == $nextlineno} {
-            Exmh_Status "Cannot find $msgid" warn
+            Exmh_Status "Cannot find $msgid" warning
             if {[info exist msgtolinecache($msgid)]} {
                 unset msgtolinecache($msgid)
             }
@@ -646,7 +646,7 @@ proc Ftoc_NewFtoc {{linenos ftoclineset}} {
     }
     set msgids [Ftoc_MsgNumbers $linenos]
     if {[llength $msgids] <= 1} {
-	Exmh_Status "Select more than one message first" warn
+	Exmh_Status "Select more than one message first" warning
 	return
     }
     if {[Ftoc_Changes "new ftoc"] == 0} {
@@ -898,7 +898,7 @@ proc Ftoc_NextFolder { {implied no} } {
 		Msg_ClearCurrent
 	    }
 	    Exmh_Status ""
-	    Exmh_Status "Changes pending; End of folder" warn
+	    Exmh_Status "Changes pending; End of folder" warning
 	    return
 	}
     }
@@ -913,12 +913,12 @@ proc Ftoc_NextFolder { {implied no} } {
 	    Ftoc_ClearCurrent
 	    Msg_ClearCurrent
 	    Exmh_Status ""
-	    Exmh_Status "End of folder; <Next> => $folder" warn
+	    Exmh_Status "End of folder; <Next> => $folder" warning
 	    return
 	}
     }
     Exmh_Status ""
-    Exmh_Status "End of folder" warn
+    Exmh_Status "End of folder" warning
 }
 proc Ftoc_LastFolder {} {
     global ftoc
@@ -998,7 +998,7 @@ proc Ftoc_Changes {type {allowAuto 1} } {
 		}
 	    }
 	    Exmh_Focus
-	    Exmh_Status $msg warn
+	    Exmh_Status $msg warning
 	    Sound_Error
 	} else {
 	    Exmh_Status "Oops, $ftoc(changed) left over changes" error
@@ -1334,7 +1334,7 @@ proc Ftoc_FindPrev {} {
 proc Ftoc_FindAll {string} {
     global exwin find ftoc
     if {[string length $string] == 0} {
-	Exmh_Status "No search string" warn
+	Exmh_Status "No search string" warning
 	return -1
     }
     set msgids {}
@@ -1350,7 +1350,7 @@ proc Ftoc_FindAll {string} {
 	}
     }
     if {[llength $msgids] == 0} {
-	Exmh_Status "No match" warn
+	Exmh_Status "No match" warning
 	return 0
     } else {
 	Ftoc_PickMsgs $msgids 0

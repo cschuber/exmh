@@ -168,7 +168,7 @@ proc Mh_CompUseSetup {} {
 	Exmh_Status "comp -use $msg(id)"
 	MhExec comp +$exmh(folder) $msg(id) -nowhatnowproc
     } else {
-	Exmh_Status "No current message" warn
+	Exmh_Status "No current message" warning
     }
     set exmh([Mh_Cur $mhProfile(draft-folder)],action) comp
 }

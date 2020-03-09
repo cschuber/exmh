@@ -360,7 +360,7 @@ proc ExwinFtocMsgStop {canvas x y} {
     # Deduce height of text line in FTOC
     if ![info exists exwin(ftocLineHeight)] {
 	if [catch {ExwinLineHeight $exwin(ftext)} x] {
-	    Exmh_Status "Display a message before resizing" warn
+	    Exmh_Status "Display a message before resizing" warning
 	    return
 	}
 	set exwin(ftocLineHeight) $x

@@ -93,6 +93,6 @@ proc Folder_AutoTrash {m f} {
 	Msg_Move
 	set exmh(target) $savetarget
     } else {
-	Exmh_Status "replied-to $f/$m NOT moved (not current)" warn
+	Exmh_Status "replied-to $f/$m NOT moved (not current)" warning
     }
 }

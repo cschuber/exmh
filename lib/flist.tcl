@@ -115,7 +115,7 @@ button to update the folder set.
 
 Please wait...
 "
-    Exmh_Status "Scanning for nested folders ..." warn
+    Exmh_Status "Scanning for nested folders ..." warning
     update
     set bogus [catch {exec folders -all -fast -recurse} raw]
     set raw [split $raw \n]

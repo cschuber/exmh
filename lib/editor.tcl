@@ -352,16 +352,16 @@ proc EditStart { draft {type prog} } {
 	    Exmh_Debug mxReset $id
 	    if [catch {send $id mxReset}] {
 		if [catch {send $exmh(editInterp) {set mxVersion}}] {
-		    Exmh_Status "Starting mxedit..." warn
+		    Exmh_Status "Starting mxedit..." warning
 		    # Start the editor and tell it to make a callback
 		    # that identifies the TCL interpreter in the editor
 		    eval exec $editor($type) {-globalCmd [list mxSendInterpName [winfo name .] Edit_Ident] $draft &}
 		} else {
-		    Exmh_Status "Opening mxedit..." warn
+		    Exmh_Status "Opening mxedit..." warning
 		    catch {send $exmh(editInterp) [list mxOpen $draft]}
 		}
 	    } else {
-		Exmh_Status "Reopening mxedit..." warn
+		Exmh_Status "Reopening mxedit..." warning
 		catch {send $id {wm deiconify .}}
 	    }
 	    return 0		;# Asynchronous edit
@@ -372,7 +372,7 @@ proc EditStart { draft {type prog} } {
 	}
 	exmh-async* {
 	    global wish argv0
-	    Exmh_Status "Starting ASYNC $editor($type) ..." warn
+	    Exmh_Status "Starting ASYNC $editor($type) ..." warning
 	    eval {exec $wish -f ${argv0}-async -- [winfo name .]} \
 		[lrange $editor($type) 1 end] {$draft &}
 	    return 0		;# Asynchronous edit
@@ -383,7 +383,7 @@ proc EditStart { draft {type prog} } {
 	    set cmd $editor($type)	;# Tcl 7.0 bug in regsub
 	    regsub ^give-away $cmd {} cmd
             set cmd [string trimright $cmd "& \t"]
-	    Exmh_Status "Starting $cmd ..." warn
+	    Exmh_Status "Starting $cmd ..." warning
             if [catch {eval exec $cmd $draft &} err] {
                 Exmh_Status $err error
             }
@@ -391,7 +391,7 @@ proc EditStart { draft {type prog} } {
 
 	}
 	*& {
-	    Exmh_Status "Starting TK $editor($type) ..." warn
+	    Exmh_Status "Starting TK $editor($type) ..." warning
             set cmd [string trimright $editor($type) "& \t"]
             if [catch {eval exec $cmd \"[winfo name .]\" $draft &} err] {
                 Exmh_Status $err error
@@ -400,7 +400,7 @@ proc EditStart { draft {type prog} } {
 
 	}
 	default {
-	    Exmh_Status "Starting $editor($type) ..." warn
+	    Exmh_Status "Starting $editor($type) ..." warning
 	    if [catch {eval exec $editor($type) $draft} err] {
 		Exmh_Status $err error
 	    }
