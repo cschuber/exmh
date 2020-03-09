@@ -3,38 +3,38 @@
 set WebTk(version) "Exmh HTML Browser 1.0"
 
 proc Html_Init {} {
-    global window
+    global window exmh
     Preferences_Add "Html Viewer" \
-"Exmh has a simple HTML viewer for its on-line documentation." {
-
+"Exmh has a simple HTML viewer for its on-line documentation." \
+[list \
     {window(fontsize) htmlFontAdjust {CHOICE 0 4 8} {Font size adjustment}
-"This setting adds to the font size used for HTML display."}
+"This setting adds to the font size used for HTML display."} \
     {Http(server) httpProxy {} {HTTP Proxy Server}
 "This sets the proxy used to make HTTP requests through a firewall.
-Leave this blank if you have no proxy."}
+Leave this blank if you have no proxy."} \
     {Http(port) httpProxyPort 8080 {HTTP Proxy Port}
-"This is the port number for the proxy server."}
-    {WebTk(cache) htmlCacheDir /tmp/.webtkcache {Image Cache Directory}
+"This is the port number for the proxy server."} \
+    [list WombatTk(cache) htmlCacheDir  $exmh(tmpdir)/.webtkcache {Image Cache Directory} \
 "This directory holds image data that is used for long term
-caching, such as between runs of the browser."}
+caching, such as between runs of the browser." ] \
     {cachesize(max) htmlCacheSize 1000000 {Max Bytes in Cache Directory}
-"This limits the data stored in the image cache directory."}
+"This limits the data stored in the image cache directory."} \
     {imagecachesize imageCacheSize 10 {Max Images Cached in Memory}
 "This limits the number of images saved in main memory.
-A setting of 0 minimizes memory use."}
+A setting of 0 minimizes memory use."} \
     {window(imagesEnabled) imageEnable ON {Enable display of in-line images}
-"Use this to enable or disable images in your HTML messages."}
+"Use this to enable or disable images in your HTML messages."} \
     {window(skipImagesInFolder) skipImagesInFolder spam {Disable display of in-line images in folder(s)}
 "Set this to the list of folders for which in-line images should not
 be fetched nor be displayed. Elements of the list don't have to be
 actual folders: they can be patterns, using *, ?, \[a-z] (and \\ to
 quote those special chars). For instance
 */spam will disable images in foo/spam as well as bar/spam."}
-}
+]
     HtmlInitVars
 }
 proc HtmlInitVars {} {
-    global window
+    global window exmh
     set window(colorAnchor) 0
     if {![info exists window(fontsize)] ||
 	[string length $window(fontsize)] == 0} {
@@ -51,7 +51,7 @@ proc HtmlInitVars {} {
     # For installer
     global WebTk
     if ![info exists WebTk(cache)] {
-	set WebTk(cache) /tmp/.webtkcache
+	set WebTk(cache) $exmh(tmpdir)/.webtkcache
     }
     Cache_Init
 }
