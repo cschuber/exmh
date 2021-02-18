@@ -4,7 +4,7 @@ Version: EXMHVERSION
 Release: 1
 BuildArchitectures: noarch
 Requires: nmh
-Copyright: freeware
+License: freeware
 Group: Applications/Mail
 Source0: ftp://ftp.tcl.tk/pub/tcl/exmh/exmh-%{version}.tar.gz
 Url: http://www.beedub.com/exmh/
