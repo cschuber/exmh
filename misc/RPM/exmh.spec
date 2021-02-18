@@ -17,7 +17,6 @@ Source2: exmh.desktop
 # make sure to change all the paths that need to be changed
 # by comparing to the previous conf patch.
 Patch0: exmh-%{version}-conf.patch
-#BuildRoot: %{_tmppath}/%{name}-root
 
 Summary(de): EXMH-Mail-Programm
 Summary(fr): Programme de courrier EXMH
