@@ -70,11 +70,12 @@ echo 'auto_mkindex ./lib *.tcl' | tclsh
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/etc/X11/wmconfig
+#mkdir -p $RPM_BUILD_ROOT/etc/X11/wmconfig
 mkdir -p $RPM_BUILD_ROOT/etc/X11/applnk/Internet
-mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man1}
-mkdir -p $RPM_BUILD_ROOT%{_libdir}/exmh-%{version}
-mkdir -p $RPM_BUILD_ROOT%{_libdir}/exmh-%{version}/misc
+mkdir -p $RPM_BUILD_ROOT/%{_bindir}
+mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man1
+mkdir -p $RPM_BUILD_ROOT/%{_libexecdir}/exmh-%{version}
+mkdir -p $RPM_BUILD_ROOT/%{_libexecdir}/exmh-%{version}/misc
 
 for i in exmh exmh-bg exmh-async ftp.expect inc.expect; do
 	install -m755 $i $RPM_BUILD_ROOT/%{_bindir}
@@ -83,40 +84,34 @@ for i in *.l; do
 	install -m644 $i $RPM_BUILD_ROOT%{_mandir}/man1/${i%%.l}.1
 done
 
-mkdir -p $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc/
-cp -ar lib/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}
-cp -ar misc/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc
+mkdir -p $RPM_BUILD_ROOT/%{_libexecdir}/exmh-%{version}/misc/
+cp -ar lib/* $RPM_BUILD_ROOT/%{_libexecdir}/exmh-%{version}
+cp -ar misc/* $RPM_BUILD_ROOT/%{_libexecdir}/exmh-%{version}/misc
 
 cp %SOURCE2 $RPM_BUILD_ROOT/etc/X11/applnk/Internet/
-install -m644 $RPM_SOURCE_DIR/exmh.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/exmh
+#install -m644 $RPM_SOURCE_DIR/exmh.wmconfig $RPM_BUILD_ROOT/etc/X11/wmconfig/exmh
 
-find $RPM_BUILD_ROOT/usr/lib/exmh-%{version}    -type f | grep -v $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc |sed -e "s|$RPM_BUILD_ROOT||" > filelist
+find $RPM_BUILD_ROOT/%{_libexecdir}/exmh-%{version} -type f | \
+grep -v $RPM_BUILD_ROOT/%{_libexecdir}/exmh-%{version}/misc | \
+sed -e "s|$RPM_BUILD_ROOT||" > filelist
 cat filelist
 %clean
 rm -rf $RPM_BUILD_ROOT
-#
-# Maybe the /usr/lib stuff in the %dir clause and the find statement should
-# be changed to use %{_libdir}? Does %files -f support macros?
-#
+
 %files -f filelist
 %defattr(-,root,root)
-%dir /usr/lib/exmh-%{version}
-%dir /usr/lib/exmh-%{version}/html
-%dir /usr/lib/exmh-%{version}/bitmaps
-%doc COPYRIGHT exmh.BUGS exmh.CHANGES exmh.TODO exmh.README lib/html/
-%config /etc/X11/wmconfig/exmh 
-%config /etc/X11/applnk/Internet/exmh.desktop
 %{_bindir}/exmh
 %{_bindir}/exmh-bg
 %{_bindir}/exmh-async
 %{_bindir}/ftp.expect
 %{_bindir}/inc.expect
-#%{_libdir}/exmh-%{version}
+%doc COPYRIGHT exmh.BUGS exmh.CHANGES exmh.TODO exmh.README lib/html/
+%config /etc/X11/applnk/Internet/exmh.desktop
 %{_mandir}/man1/exmh.1*
 
 %files misc
 %defattr(-,root,root)
-%{_libdir}/exmh-%{version}/misc
+%{_libexecdir}/exmh-%{version}/misc
 
 %changelog
 * Sun Jul 29 2001 Anders Eriksson <aer-list@mailandnews.com>
