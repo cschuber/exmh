@@ -60,7 +60,7 @@ The misc package contains user contributed programs which work well with
 exmh.
 
 %prep
-%setup -q -n exmh-%{PACKAGE_VERSION}
+%setup -q -n exmh-%{version}
 for i in *.MASTER; do
 	cp $i ${i%%.MASTER}
 done
