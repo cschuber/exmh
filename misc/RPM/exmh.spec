@@ -84,6 +84,7 @@ for i in *.l; do
 	install -m644 $i $RPM_BUILD_ROOT%{_mandir}/man1/${i%%.l}.1
 done
 
+mkdir -p $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc/
 cp -ar lib/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}
 cp -ar misc/* $RPM_BUILD_ROOT/usr/lib/exmh-%{version}/misc
 
