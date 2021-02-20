@@ -18,8 +18,8 @@ set program exmh
 set vers 2.9.0
 set date 11/07/2018
 
-if [catch {package require Tcl 8.5}] {
-    error "Tcl/Tk 8.5 or higher required for exmh.  You have $tcl_version"
+if [catch {package require Tcl 8.6}] {
+    error "Tcl/Tk 8.6 or higher required for exmh.  You have $tcl_version"
 }
 
 # Define app name and install save file
@@ -95,7 +95,7 @@ pathnames are correct for your system. The fields are described below.
 
 <p>
 The wish pathname is for the program that runs exmh.
-Tk 8.5 or higher is required.
+Tk 8.6 or higher is required.
 <p>
 By default, the program is installed as "exmh", and it also uses related
 scripts named "exmh-bg" and "exmh-async". If you want to install it

@@ -538,7 +538,7 @@ proc Exmh_DoCommand {} {
 proc Tcl_Tk_Vers_Init {} {
     # Here we do any special tuning needed for specific Tcl/Tk releases
     global tk_version tk_patchLevel tcl_version tcl_patchLevel
-    if {[info exists tk_version] && ($tk_version > "8.5")} {
+    if {[info exists tk_version] && ($tk_version > "8.6")} {
         # Do version-dependent stuff here
     }
 }

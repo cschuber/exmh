@@ -3,7 +3,7 @@ valdis.kletnieks@vt.edu
  
 exmh is a TCL/TK based interface to the MH mail system.
 MH can be found at http://www.mhost.com/nmh/
-Version 2.9.0 requires Tcl/Tk 8.5 or higher
+Version 2.10.0 requires Tcl/Tk 8.6 or higher
 
 All the docs have moved into html and are viewable from within
 the installer as well as from within a running exmh.
