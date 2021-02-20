@@ -3,5 +3,5 @@ Name=exmh
 Name[sv]=exmh
 Type=Application
 Comment=Mail reader which handles mh-style mail folders
-Comment[sv]=E-postl‰sare som kan hantera e-postmappar av mh-typ
+Comment[sv]=E-postl√§sare som kan hantera e-postmappar av mh-typ
 Exec=exmh

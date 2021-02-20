@@ -472,7 +472,7 @@ cvs repository 07/28/2004 welch@panasas.com
     <Key-H> Bogo_Filter ham
   lib/html_images.tcl
   lib/html.tcl - added preference to disable image display in
-    a list of folder patterns.  Contributed by Jürgen Vollmer
+    a list of folder patterns.  Contributed by JÃ¼rgen Vollmer
   lib/sequences.tcl - changed default for seqwin(show) to "unseen" from "cur"
 
 cvs repository 07/28/2004 valdis.kletnieks@vt.edu
@@ -2448,7 +2448,7 @@ cvs repository 3/31/1999
     Cleanup of news posting code.
     Cleanup of address book code.
     Fixed cache hash function and tk version handling.
-    Added compose keys for å and Å  (
+    Added compose keys for Ã¥ and Ã…  (
     New help files for the Address Book (Hal DeVore)
 
 2.0gamma 1/27/97

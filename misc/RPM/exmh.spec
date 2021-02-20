@@ -20,7 +20,7 @@ Patch0: exmh-%{version}-conf.patch
 
 Summary(de): EXMH-Mail-Programm
 Summary(fr): Programme de courrier EXMH
-Summary(tr): e-posta yazılımı
+Summary(tr): e-posta yazÃ½lÃ½mÃ½
 Summary(es): Pograma lector de correo exmh
 
 %description
@@ -35,20 +35,20 @@ marcado en colores de las cabeceras, PGP y GPGP, enlaces URL, y
 muchas mas cosas. Necesita sox (o play) para el sonido
 
 %description -l de
-exmh ist eine grafische Oberfläche für das MH-Mail-System. Zu den
-Funktionen gehören MIME-Unterstützung, Faces, Glimpse-Indexing, 
+exmh ist eine grafische OberflÃ¤che fÃ¼r das MH-Mail-System. Zu den
+Funktionen gehÃ¶ren MIME-UnterstÃ¼tzung, Faces, Glimpse-Indexing, 
 farbiges Markieren, PGP-Schnittstelle usw. Erfordert sox (oder play)
-für Sound-Unterstützung.
+fÃ¼r Sound-UnterstÃ¼tzung.
 
 %description -l fr
-exmh est uen interface graphique au système de courrier MH. Il
-gère MIME, les aspects, l'indexation glimpse, la mise en valeur par
-couleurs, PGP, et autres. Il faut sox (ou play) pour gérér le son. 
+exmh est uen interface graphique au systÃ¨me de courrier MH. Il
+gÃ¨re MIME, les aspects, l'indexation glimpse, la mise en valeur par
+couleurs, PGP, et autres. Il faut sox (ou play) pour gÃ©rÃ©r le son. 
 
 %description -l tr
-exmh, yaygın olarak kullanılan mh paketi için X11 arayüzüdür. MIME desteği,
-PGP desteği, faces, glimpse yardımıyla dizin oluşturma gibi yetenekleri
-vardır. Ses desteği için sox (ya da play) gerekir.
+exmh, yaygÃ½n olarak kullanÃ½lan mh paketi iÃ§in X11 arayÃ¼zÃ¼dÃ¼r. MIME desteÃ°i,
+PGP desteÃ°i, faces, glimpse yardÃ½mÃ½yla dizin oluÃ¾turma gibi yetenekleri
+vardÃ½r. Ses desteÃ°i iÃ§in sox (ya da play) gerekir.
 
 
 %package misc
