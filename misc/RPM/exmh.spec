@@ -9,7 +9,7 @@ Requires: tk >= 8.6
 Requires: tkimg >= 1.4
 License: freeware
 Group: Applications/Mail
-Source0: ftp://ftp.tcl.tk/pub/tcl/exmh/exmh-%{version}.tar.gz
+Source0: https://sourceforge.net/projects/exmh/files/exmh/exmh-%{version}.tar.gz/download
 Url: http://www.beedub.com/exmh/
 Source1: exmh.wmconfig
 Source2: exmh.desktop
