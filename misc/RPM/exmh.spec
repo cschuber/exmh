@@ -4,6 +4,9 @@ Version: EXMHVERSION
 Release: 1
 BuildArchitectures: noarch
 Requires: nmh
+Requires: tcl >= 8.6
+Requires: tk >= 8.6
+Requires: tkimg >= 1.4
 License: freeware
 Group: Applications/Mail
 Source0: ftp://ftp.tcl.tk/pub/tcl/exmh/exmh-%{version}.tar.gz
