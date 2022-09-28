@@ -181,17 +181,19 @@ proc TextUndoTagRemove {stateVar win endix} {
 }
 proc TextUndoTagAddProc {stateVar win key value ix} {
     upvar $stateVar state
-    switch -- $key {
-	tagon {
-	    if {[string compare $value $state(tag)] == 0} {
-		TextUndoTagAdd state $win $ix
-	    }
-	}
-	tagoff {
-	    if {[string compare $value $state(tag)] == 0} {
-		set state(ix) $ix
-	    }
-	}
+    if [info exists state(tag)] {
+        switch -- $key {
+            tagon {
+                if {[string compare $value $state(tag)] == 0} {
+                    TextUndoTagAdd state $win $ix
+                }
+            }
+            tagoff {
+                if {[string compare $value $state(tag)] == 0} {
+                    set state(ix) $ix
+                }
+            }
+        }
     }
 }
 proc TextUndoTagAdd {stateVar win endix} {
