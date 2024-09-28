@@ -97,6 +97,7 @@ set startup_code {
     Crypt_Init
     Pgp_Init
     Glimpse_Init
+    Recoll_Init
     Addr_Init
     Background_Init
     fileselect_Init

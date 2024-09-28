@@ -49,6 +49,7 @@ install_dirVar  pgp(pgp5,path)	[installGuessDir /usr/local/bin pgpk]            
 install_dirVar  pgp(gpg,path)	[installGuessDir /usr/local/bin gpg]            {GnuPG bin directory}
 install_dirVar  pgp(pgp6,path)	[installGuessDir /usr/local/bin pgp6]            {Pgp6 bin directory}
 install_dirVar	glimpse(path)	[installGuessDir /usr/local/bin glimpse]	{Glimpse bin directory}
+install_dirVar	recoll(path)	[installGuessDir /usr/bin recollq]	{Recoll bin directory}
 install_var	sound(cmd)	{/usr/demo/SOUND/play -v 38} \
 							{Audio play command}
 

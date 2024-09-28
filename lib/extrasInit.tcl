@@ -712,6 +712,20 @@ The key id is substituted with %s (using format)." }
 
 }
 
+# Recoll_Init: adjusts the fopsmenu for recoll iff installed
+proc Recoll_Init {} {
+    global recoll
+
+    if { ! [ info exists recoll(path) ] || [string length $recoll(path)] == 0} {
+        global exwin
+        catch {destroy $exwin(fopButtons).recoll}
+        catch {$exwin(fopButtons).search.m entryconfigure Recoll* -state disabled}
+        return
+    }
+    if [info exists recoll(init)] { return }
+    set recoll(init) 1
+}
+
 # Glimpse_Init
 #
 #  glimpse options used in extrasInit.tcl	: version   : variable
@@ -727,9 +741,10 @@ The key id is substituted with %s (using format)." }
 #  -W : AND scope whole file			: since 2.0:glimpse(andScope) 
 
 proc Glimpse_Init {} {
-	global glimpse
+    global glimpse
 
-	if {[string length $glimpse(path)] == 0} {
+    # unlisted or blank means none, please
+    if { ! [ info exists glimpse(path) ] || [string length $glimpse(path)] == 0} {
 	    global exwin
 	    catch {destroy $exwin(fopButtons).glimpse}
 	    catch {$exwin(fopButtons).search.m entryconfigure Glimpse* -state disabled}

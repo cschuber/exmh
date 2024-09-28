@@ -340,7 +340,7 @@ exmh.iconic:		0
 
 
 *Fops.search.text: 	Search...
-*Fops.search.m.entrylist: help msg fast pick glimpse thread
+*Fops.search.m.entrylist: help msg fast pick glimpse recoll thread
 *Fops.search.m.uentrylist:
 
 *Fops.search.m.l_help: Search Help
@@ -353,8 +353,11 @@ exmh.iconic:		0
 *Fops.search.m.c_pick:	Pick
 *Fops.search.m.l_glimpse: All messages in all folders (glimpse)
 *Fops.search.m.c_glimpse: Glimpse_Startup
+*Fops.search.m.l_recoll: All messages in all folders (Recoll)
+*Fops.search.m.c_recoll: Recoll_Startup
 *Fops.search.m.l_thread: Display related messages
 *Fops.search.m.c_thread: Thread_Display
+
 
 *Fops.sequences.text:	Sequences...
 
